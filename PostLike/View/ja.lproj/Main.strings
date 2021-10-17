@@ -1,0 +1,78 @@
+
+/* Class = "UILabel"; text = "BTS"; ObjectID = "0FE-BQ-HOf"; */
+"0FE-BQ-HOf.text" = "BTS";
+
+/* Class = "UIButton"; normalTitle = "すべてのルームを見る"; ObjectID = "23R-SU-7vI"; */
+"23R-SU-7vI.normalTitle" = "すべてのルームを見る";
+
+/* Class = "UILabel"; text = "コメント"; ObjectID = "2Br-Wr-xIO"; */
+"2Br-Wr-xIO.text" = "コメント";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "6fD-e8-5dz"; */
+"6fD-e8-5dz.text" = "Label";
+
+/* Class = "UILabel"; text = "写真を追加する"; ObjectID = "7Di-ep-kq9"; */
+"7Di-ep-kq9.text" = "写真を追加する";
+
+/* Class = "UILabel"; text = "投稿"; ObjectID = "NhC-QY-FfH"; */
+"NhC-QY-FfH.text" = "投稿";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "OLf-kM-cG1"; */
+"OLf-kM-cG1.text" = "Label";
+
+/* Class = "UILabel"; text = "LabelTest photo,Test photo,Test photo,Test photo,Test photo,Test photo,Test photo"; ObjectID = "RRK-k1-IML"; */
+"RRK-k1-IML.text" = "LabelTest photo,Test photo,Test photo,Test photo,Test photo,Test photo,Test photo";
+
+/* Class = "UILabel"; text = "BTS"; ObjectID = "Vdy-A8-c5l"; */
+"Vdy-A8-c5l.text" = "BTS";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "WxE-3g-CAE"; */
+"WxE-3g-CAE.text" = "Label";
+
+/* Class = "UILabel"; text = "PostLike"; ObjectID = "YQo-jG-0GO"; */
+"YQo-jG-0GO.text" = "PostLike";
+
+/* Class = "UILabel"; text = "報告する項目を選んでください。"; ObjectID = "f7V-Mx-B4d"; */
+"f7V-Mx-B4d.text" = "報告する項目を選んでください。";
+
+/* Class = "UIButton"; normalTitle = "投稿"; ObjectID = "gy3-Qw-cDv"; */
+"gy3-Qw-cDv.normalTitle" = "投稿";
+
+/* Class = "UILabel"; text = "3時間前"; ObjectID = "h5y-FT-7YT"; */
+"h5y-FT-7YT.text" = "3時間前";
+
+/* Class = "UIButton"; normalTitle = "キャンセル"; ObjectID = "hMF-Ci-y24"; */
+"hMF-Ci-y24.normalTitle" = "キャンセル";
+
+/* Class = "UIButton"; normalTitle = "キャンセル"; ObjectID = "hyg-4h-J4u"; */
+"hyg-4h-J4u.normalTitle" = "キャンセル";
+
+/* Class = "UIButton"; normalTitle = "投稿を報告する"; ObjectID = "ig3-rf-FtR"; */
+"ig3-rf-FtR.normalTitle" = "投稿を報告する";
+
+/* Class = "UIButton"; normalTitle = "投稿を報告する"; ObjectID = "jKe-rN-PyR"; */
+"jKe-rN-PyR.normalTitle" = "投稿を報告する";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "qlV-w9-vZn"; */
+"qlV-w9-vZn.text" = "Label";
+
+/* Class = "UILabel"; text = "0秒前"; ObjectID = "rth-Y9-Kie"; */
+"rth-Y9-Kie.text" = "0秒前";
+
+/* Class = "UIButton"; normalTitle = "報告する"; ObjectID = "u83-aA-DdH"; */
+"u83-aA-DdH.normalTitle" = "報告する";
+
+/* Class = "UILabel"; text = "ルームリスト"; ObjectID = "ufM-tV-UKp"; */
+"ufM-tV-UKp.text" = "ルームリスト";
+
+/* Class = "UIButton"; normalTitle = "送信"; ObjectID = "v5O-BK-E1T"; */
+"v5O-BK-E1T.normalTitle" = "送信";
+
+/* Class = "UILabel"; text = "taichi"; ObjectID = "wHH-P0-tv0"; */
+"wHH-P0-tv0.text" = "taichi";
+
+/* Class = "UILabel"; text = "ルームメイト 0人"; ObjectID = "wrt-Yg-3JP"; */
+"wrt-Yg-3JP.text" = "ルームメイト 0人";
+
+/* Class = "UILabel"; text = "報告"; ObjectID = "xo4-65-hlN"; */
+"xo4-65-hlN.text" = "報告";
