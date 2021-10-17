@@ -1,0 +1,6 @@
+framework module Pods_PostLike {
+  umbrella header "Pods-PostLike-umbrella.h"
+
+  export *
+  module * { export * }
+}

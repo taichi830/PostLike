@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "postlike-66c0c",
+    "staging": "postlike-4843e",
+    "develop": "postlike-66c0c",
+    "release": "postlike-release"
+  }
+}
