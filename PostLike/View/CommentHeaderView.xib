@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentHeaderView" customModule="PostLike_" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentHeaderView" customModule="PostLike" customModuleProvider="target">
             <connections>
                 <outlet property="commentLabel" destination="CNz-CI-u17" id="01Q-JN-gG7"/>
                 <outlet property="createdAtLabel" destination="HUc-gD-pav" id="fYv-g5-Oto"/>
@@ -72,7 +72,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2R-rm-M0k">
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2R-rm-M0k">
                     <rect key="frame" x="334" y="13" width="19" height="22"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="22" id="QGU-ts-Q3Y"/>

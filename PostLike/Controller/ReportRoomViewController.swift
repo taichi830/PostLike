@@ -37,7 +37,7 @@ class ReportRoomViewController: UIViewController {
     
     @IBAction func sendReport(_ sender: Any) {
         let field = ["spam","sensitive","discriminatory","discomfort","other"]
-        let docData = ["roomID":passedRoomID,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
+        let docData = ["documentID":passedRoomID,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
         Firestore.firestore().collection("reportedRooms").document(passedRoomID).setData(docData, merge: true){
             (err) in
             if let err = err {

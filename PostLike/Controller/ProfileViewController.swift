@@ -432,7 +432,7 @@ class ProfileViewController: UIViewController {
     
     func fetchLikeContents(documentIDs:[String]){
         let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("likes").whereField("documentID", in: documentIDs).getDocuments { (querySnapshot, err) in
+        Firestore.firestore().collection("users").document(uid).collection("likes").whereField("documentID", in: documentIDs).getDocuments { (querySnapshot, err) in
             if let err = err {
                 print("取得に失敗しました。\(err)")
                 return
@@ -778,7 +778,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
         let postedAt = contentsArray[row].createdAt
         let timestamp = Timestamp()
         let docData = ["media": contentsArray[row].mediaArray,"text":contentsArray[row].text,"userImage":contentsArray[row].userImage,"userName":contentsArray[row].userName,"documentID":documentID,"roomID":roomID,"uid":uid,"postedAt":postedAt,"createdAt":timestamp,"myUid":uid] as [String:Any]
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("likes").document(documentID)
+        let ref = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
         batch.setData(docData, forDocument: ref)
     }
     
@@ -839,10 +839,12 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     }
     
     
+    
+    
     func deleteLikeContents(sender:UIButton,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[sender.tag].documentID
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("likes").document(documentID)
+        let ref = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
         batch.deleteDocument(ref)
     }
     
@@ -884,7 +886,6 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
                 count += 1
                 countLabel.text = count.description
                 contentsArray[sender.tag].likeCount = count
-                
             }
             
         }else if sender.tintColor == .red{

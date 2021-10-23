@@ -137,25 +137,47 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // Print full message.
         print(userInfo)
         
+        
+        if var badgeCount = UserDefaults.standard.value(forKey: "badgeCount") as? Int {
+            //E. increase the badgeCount by 1 since one notification came through
+            badgeCount += 1
+            //F. update UserDefaults with the updated badgeCount
+            UserDefaults.standard.setValue(badgeCount, forKey: "badgeCount")
+            //G. update the application with the current badgeCount so that it will appear on the app icon
+            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+        }
+        
         // Change this to your preferred presentation option
-        completionHandler([[.banner,.list,.sound]])
+        completionHandler([[.banner, .sound, .list]])
     }
+    
+    
+    
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
-        // ...
-        
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
         
         // Print full message.
         print(userInfo)
-        
+        UserDefaults.standard.setValue(0, forKey: "badgeCount")
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        let window = UIApplication.shared.windows.first {$0.isKeyWindow}
+        let storyboard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+        let vc = storyboard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+        vc.selectedIndex = 2
+        window?.rootViewController = vc
+//        let storyboard = UIStoryboard(name: "Notification", bundle: nil)
+//        let vc = storyboard.instantiateViewController(identifier: "notification") as! NotificationViewController
+//        window?.rootViewController?.present(vc, animated: true, completion: nil)
         completionHandler()
     }
+    
+    
     
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],

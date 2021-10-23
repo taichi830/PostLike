@@ -34,12 +34,15 @@ class NotificationViewController: UIViewController {
         notificationTableView.tableHeaderView = headerView
         
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         fetchNotificationInfo()
+        UserDefaults.standard.setValue(0, forKey: "badgeCount")
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     

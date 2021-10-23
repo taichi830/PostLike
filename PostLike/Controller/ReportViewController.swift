@@ -16,11 +16,14 @@ class ReportViewController: UIViewController  {
     var row = Int()
     var passedDocumentID = String()
     var passedRoomID = String()
+    var passedUid = String()
+    var reportCategory = String()
+    var titleTableViewDelegate: TimeLineTableViewControllerDelegate?
     
     
     @IBOutlet weak var reportItemTableView: UITableView!
     @IBOutlet weak var reportButton: UIButton!
-    
+    @IBOutlet weak var topLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +33,13 @@ class ReportViewController: UIViewController  {
         
         reportButton.isEnabled = false
         reportButton.layer.cornerRadius = 23
+        
+        if reportCategory == "post"{
+            topLabel.text = "投稿を報告・ミュート"
+        }else if reportCategory == "user" {
+            topLabel.text = "ユーザーを報告・ブロック"
+        }
+        
     }
     
     
@@ -39,19 +49,43 @@ class ReportViewController: UIViewController  {
     
     
     @IBAction func sendReport(_ sender: Any) {
-        
+        let batch = Firestore.firestore().batch()
+        let uid = Auth.auth().currentUser!.uid
         let field = ["spam","sensitive","discriminatory","discomfort","other"]
-        let docData = ["documentID":passedDocumentID,"roomID":passedRoomID,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
-        Firestore.firestore().collection("reportedPosts").document(passedDocumentID).setData(docData, merge: true){
-            (err) in
-            if let err = err {
-                print("firestoreへの保存に失敗しました。\(err)")
-                return
+        let docData = ["documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
+        let docData2 = ["documentID":"\(passedRoomID)-\(passedUid)","roomID":passedRoomID,"uid":passedUid,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
+        
+        
+        if reportCategory == "post"{
+            let reportPostRef = Firestore.firestore().collection("reportedPosts").document(passedDocumentID)
+            let muteRef = Firestore.firestore().collection("users").document(uid).collection("reports").document(passedDocumentID)
+            batch.setData(docData, forDocument: reportPostRef,merge: true)
+            batch.setData(["category":reportCategory,"documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
+            batch.commit { err in
+                if err != nil {
+                    return
+                }else{
+                    self.dismiss(animated: true) {
+                        self.titleTableViewDelegate!.removeMutedContent(documentID: self.passedDocumentID)
+                    }
+                }
             }
-            print("fireStoreへの保存に成功しました。")
-            self.dismiss(animated: true, completion: nil)
-            
+        }else if reportCategory == "user"{
+            let reportUserRef = Firestore.firestore().collection("reportedUsers").document("\(passedRoomID)-\(passedUid)")
+            let muteRef = Firestore.firestore().collection("users").document(uid).collection("reports").document("\(passedRoomID)-\(passedUid)")
+            batch.setData(docData2, forDocument: reportUserRef,merge: true)
+            batch.setData(["category":reportCategory,"documentID":"\(passedRoomID)-\(passedUid)","roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
+            batch.commit { err in
+                if err != nil {
+                    return
+                }else{
+                    self.dismiss(animated: true) {
+                        self.titleTableViewDelegate!.removeBlockedUserContents(uid: self.passedUid, roomID: self.passedRoomID)
+                    }
+                }
+            }
         }
+        
         
         
     }
@@ -87,12 +121,21 @@ extension ReportViewController:UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = reportItemTableView.cellForRow(at: indexPath)
-        cell?.viewWithTag(2)?.backgroundColor = .systemRed
-        reportButton.isEnabled = true
-        reportButton.backgroundColor = .systemRed
-        reportButton.isEnabled = true
-        self.row = indexPath.row
+        let uid = Auth.auth().currentUser!.uid
+        if passedUid == uid {
+            reportButton.isEnabled = false
+            reportButton.backgroundColor = .lightGray
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                self.dismiss(animated: true, completion: nil)
+            }
+            self.showAlert(title: "自分の投稿は報告できません", message: "", actions: [okAction])
+        }else{
+            let cell = reportItemTableView.cellForRow(at: indexPath)
+            cell?.viewWithTag(2)?.backgroundColor = .systemRed
+            reportButton.isEnabled = true
+            reportButton.backgroundColor = .systemRed
+            self.row = indexPath.row
+        }
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

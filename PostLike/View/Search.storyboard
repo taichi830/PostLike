@@ -367,6 +367,35 @@
                                     <constraint firstItem="obb-TL-WuF" firstAttribute="top" secondItem="pfK-ld-EKd" secondAttribute="top" id="bi4-5R-Xg1"/>
                                 </constraints>
                             </view>
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="zle-dn-PKy">
+                                <rect key="frame" x="10" y="597" width="355" height="120"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbp-qB-CAq">
+                                        <rect key="frame" x="0.0" y="0.0" width="355" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                        <state key="normal" title="投稿を報告・ミュート">
+                                            <color key="titleColor" systemColor="labelColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="reportPost:" destination="RVL-g5-YJg" eventType="touchUpInside" id="ojC-II-orE"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qsB-ax-iD5">
+                                        <rect key="frame" x="0.0" y="60" width="355" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                        <state key="normal" title="ユーザーを報告・ブロック">
+                                            <color key="titleColor" systemColor="labelColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="reportUser:" destination="RVL-g5-YJg" eventType="touchUpInside" id="66P-Tw-PcL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="JSb-tY-4u2"/>
+                                </constraints>
+                            </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V2K-Aa-wrD">
                                 <rect key="frame" x="0.0" y="286" width="375" height="526"/>
                                 <subviews>
@@ -495,6 +524,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="udA-il-dNm" firstAttribute="trailing" secondItem="pfK-ld-EKd" secondAttribute="trailing" constant="10" id="3Wi-3S-IFT"/>
+                            <constraint firstItem="Di5-C9-w5u" firstAttribute="top" secondItem="zle-dn-PKy" secondAttribute="bottom" constant="10" id="4Tv-Bf-c0u"/>
                             <constraint firstItem="jdD-u7-7gs" firstAttribute="bottom" secondItem="udA-il-dNm" secondAttribute="bottom" id="6jl-jq-7By"/>
                             <constraint firstItem="pfK-ld-EKd" firstAttribute="leading" secondItem="udA-il-dNm" secondAttribute="leading" constant="10" id="7NN-JL-9VW"/>
                             <constraint firstAttribute="bottom" secondItem="Di5-C9-w5u" secondAttribute="bottom" constant="35" id="8ND-oM-FXp"/>
@@ -512,6 +542,8 @@
                             <constraint firstAttribute="bottom" secondItem="V2K-Aa-wrD" secondAttribute="bottom" id="bDJ-hj-gNQ"/>
                             <constraint firstItem="Di5-C9-w5u" firstAttribute="leading" secondItem="udA-il-dNm" secondAttribute="leading" constant="10" id="cb3-9c-BHW"/>
                             <constraint firstItem="T4M-jW-Mwg" firstAttribute="trailing" secondItem="udA-il-dNm" secondAttribute="trailing" id="gYG-gG-B77"/>
+                            <constraint firstItem="udA-il-dNm" firstAttribute="trailing" secondItem="zle-dn-PKy" secondAttribute="trailing" constant="10" id="iap-sK-HHb"/>
+                            <constraint firstItem="zle-dn-PKy" firstAttribute="leading" secondItem="udA-il-dNm" secondAttribute="leading" constant="10" id="q1W-p1-k6w"/>
                             <constraint firstItem="jdD-u7-7gs" firstAttribute="trailing" secondItem="udA-il-dNm" secondAttribute="trailing" id="vkG-s7-eoL"/>
                             <constraint firstItem="jdD-u7-7gs" firstAttribute="leading" secondItem="udA-il-dNm" secondAttribute="leading" id="yQX-Av-mhf"/>
                         </constraints>
@@ -523,11 +555,12 @@
                         <outlet property="bottomConstraint" destination="bDJ-hj-gNQ" id="aRQ-hy-CzM"/>
                         <outlet property="cancelView" destination="Di5-C9-w5u" id="yb7-fv-J2i"/>
                         <outlet property="completeButton" destination="okH-yw-YJ2" id="H2u-bu-MX8"/>
+                        <outlet property="contentsTableView" destination="jdD-u7-7gs" id="rak-NH-N06"/>
                         <outlet property="personImage" destination="7lJ-Zy-gQ3" id="fbP-BJ-IFj"/>
                         <outlet property="plusBackView" destination="uyF-kH-IgG" id="OwM-7e-z8R"/>
                         <outlet property="profileImage" destination="Hzp-Ym-AR8" id="k1n-j3-tg4"/>
                         <outlet property="roomName" destination="YSL-e7-AyU" id="t5L-W2-OyX"/>
-                        <outlet property="roomPostsTableView" destination="jdD-u7-7gs" id="rak-NH-N06"/>
+                        <outlet property="stackView" destination="zle-dn-PKy" id="WHN-Vm-Lg6"/>
                         <outlet property="userNameTextField" destination="zGM-TL-qo4" id="OBN-Eo-yR2"/>
                     </connections>
                 </viewController>
@@ -922,8 +955,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="報告" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTP-0G-c2T">
-                                <rect key="frame" x="170" y="32" width="35" height="31"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ルームを報告" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTP-0G-c2T">
+                                <rect key="frame" x="135.66666666666666" y="32" width="104" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="Nb8-Tn-Cqp"/>
                                 </constraints>

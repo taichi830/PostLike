@@ -189,7 +189,8 @@ exports.sendPushNotification = functions.region("asia-northeast1").firestore.doc
         const payload = {
         notification: {
           title: `${roomName}`,
-          body: `${giverName}さんがあなたの投稿にいいねしました!`
+          body: `${giverName}さんがあなたの投稿にいいねしました!`,
+          sound: "default"
         }
       };
       admin.messaging().sendToDevice(user.fcmToken, payload);

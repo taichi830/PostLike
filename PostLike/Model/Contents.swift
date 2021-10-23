@@ -54,8 +54,6 @@ class Contents{
         self.category = dic["category"] as? String ?? ""
         self.roomID = dic["roomID"] as? String ?? ""
         self.uid = dic["uid"] as? String ?? ""
-
-      
     }
     
    

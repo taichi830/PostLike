@@ -11,7 +11,7 @@
         <!--Notification View Controller-->
         <scene sceneID="GcY-Di-caZ">
             <objects>
-                <viewController storyboardIdentifier="notification" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XpT-t1-7dV" customClass="NotificationViewController" customModule="PostLike_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="notification" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XpT-t1-7dV" customClass="NotificationViewController" customModule="PostLike" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0Sm-Dd-3Yi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

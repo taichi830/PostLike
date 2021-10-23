@@ -19,34 +19,37 @@ class EnteredRoomContentViewController: UIViewController{
     @IBOutlet weak var contentsTableView: UITableView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var bluredView: UIView!
-    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var backView2: UIView!
     @IBOutlet weak var cancelView: UIView!
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var collectionButton: UIButton!
+    @IBOutlet weak var stackView: UIStackView!
     
     
     
     
     
-    var contentsArray = [Contents]()
+    private var contentsArray = [Contents]()
+    private var profileArray = [Room]()
+    private var likeContentsArray = [Contents]()
+    private var reportedContentsArray = [Contents]()
+    private var reportedUsersArray = [Contents]()
     var passedTitle = String()
     var passedDocumentID = String()
     var passedProfileImage = String()
     var passedUserName = String()
     var passedModerator = String()
-    var roomInfo:Room?
-    var profileInfo:Contents?
-    var profileArray = [Room]()
-    var likeContentsArray = [Contents]()
-    var scrollBeginingPoint:CGPoint?
-    var currentScrollPoint:CGPoint?
-    var lastDocument:QueryDocumentSnapshot?
-    var lastLikeDocument:QueryDocumentSnapshot?
-    var label = UILabel()
-    var reportdocumentID = String()
-    var reportroomID = String()
-    var memberCount:Room?
+    private var roomInfo:Room?
+    private var profileInfo:Contents?
+    private var scrollBeginingPoint:CGPoint?
+    private var currentScrollPoint:CGPoint?
+    private var lastDocument:QueryDocumentSnapshot?
+    private var lastLikeDocument:QueryDocumentSnapshot?
+    private var label = UILabel()
+    private var reportdocumentID = String()
+    private var reportroomID = String()
+    private var reportUid = String()
+    private var memberCount:Room?
     
     
     
@@ -82,13 +85,13 @@ class EnteredRoomContentViewController: UIViewController{
         
         
         cancelView.layer.cornerRadius = 10
-        backView.layer.cornerRadius = 10
+        stackView.layer.cornerRadius = 10
         
         startIndicator()
         
         self.fetchContents {
             self.dismissIndicator()
-//            self.contentsTableView.reloadData()
+            self.contentsTableView.reloadData()
         }
         
         
@@ -116,7 +119,6 @@ class EnteredRoomContentViewController: UIViewController{
     
     @objc func swiped(_ sender:UISwipeGestureRecognizer){
         navigationController?.popViewController(animated: true)
-        
     }
     
     
@@ -128,6 +130,7 @@ class EnteredRoomContentViewController: UIViewController{
         self.likeContentsArray.removeAll()
         fetchContents {
             self.contentsTableView.refreshControl?.endRefreshing()
+            self.contentsTableView.reloadData()
         }
     }
     
@@ -174,20 +177,41 @@ class EnteredRoomContentViewController: UIViewController{
     
     @IBAction func repotContent(_ sender: Any) {
         let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-        backView.isHidden = true
+        stackView.isHidden = true
         bluredView.isHidden = true
         cancelView.isHidden = true
         tabBarController?.tabBar.isHidden = false
         reportVC.passedDocumentID = self.reportdocumentID
         reportVC.passedRoomID = self.reportroomID
+        reportVC.passedUid = self.reportUid
+        reportVC.reportCategory = "post"
+        reportVC.titleTableViewDelegate = self
         present(reportVC, animated: true, completion: nil)
     }
     
     
     
+    @IBAction func reportAndBlockUser(_ sender: Any) {
+        let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
+        stackView.isHidden = true
+        bluredView.isHidden = true
+        cancelView.isHidden = true
+        tabBarController?.tabBar.isHidden = false
+        reportVC.passedDocumentID = self.reportdocumentID
+        reportVC.passedRoomID = self.reportroomID
+        reportVC.passedUid = self.reportUid
+        reportVC.reportCategory = "user"
+        reportVC.titleTableViewDelegate = self
+        present(reportVC, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
     @IBAction func cancelButton(_ sender: Any) {
-        
-        backView.isHidden = true
+        stackView.isHidden = true
         bluredView.isHidden = true
         cancelView.isHidden = true
         tabBarController?.tabBar.isHidden = false
@@ -261,7 +285,6 @@ class EnteredRoomContentViewController: UIViewController{
     
     func fetchMemberCount(){
         Firestore.firestore().collection("rooms").document(passedDocumentID).collection("memberCount").document("count").getDocument { snapShot, err in
-            
             if let err = err {
                 print("false\(err)")
                 return
@@ -276,13 +299,87 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    
-    
-    
-    
-    func fetchLikeContents(documentIDs:[String]){
+    func fetchReportedContents(documentIDs:[String],_ completed: @escaping() -> Void){
         let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("likes").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { (querySnapshot, err) in
+        Firestore.firestore().collection("users").document(uid).collection("reports").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { querySnapshot, err in
+            if err != nil {
+                return
+            }else{
+                for document in querySnapshot!.documents{
+                    let dic = document.data()
+                    let reportedContents = Contents.init(dic: dic)
+                    self.reportedContentsArray.append(reportedContents)
+                }
+                let filteredArray = self.reportedUsersArray.filter {
+                    $0.category == "post"
+                }
+                for content in filteredArray {
+                    self.contentsArray.removeAll(where: {$0.documentID == content.documentID})
+                }
+                if self.contentsArray.count == 0{
+                    self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
+                    self.label.text = "投稿がまだありません"
+                    self.label.textAlignment = .center
+                    self.label.textColor = .lightGray
+                    self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+                    self.contentsTableView.addSubview(self.label)
+                    completed()
+                }else{
+                    completed()
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    func fetchReportedUsers(uids:[String],_ completed: @escaping() -> Void){
+        let uid = Auth.auth().currentUser!.uid
+        Firestore.firestore().collection("users").document(uid).collection("reports").whereField("uid", in: uids).limit(to: 10).getDocuments { querySnapshot, err in
+            if err != nil {
+                return
+            }else{
+                for document in querySnapshot!.documents{
+                    let dic = document.data()
+                    let reportedUsers = Contents.init(dic: dic)
+                    self.reportedUsersArray.append(reportedUsers)
+                }
+                let filteredArray = self.reportedUsersArray.filter {
+                    $0.category == "user"
+                }
+                for content in filteredArray {
+                    self.contentsArray.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
+                }
+                if self.contentsArray.count == 0{
+                    self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
+                    self.label.text = "投稿がまだありません"
+                    self.label.textAlignment = .center
+                    self.label.textColor = .lightGray
+                    self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+                    self.contentsTableView.addSubview(self.label)
+                    completed()
+                }else{
+                    completed()
+                }
+                
+            }
+    }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    func fetchLikeContents(documentIDs:[String],_ completed: @escaping() -> Void){
+        let uid = Auth.auth().currentUser!.uid
+        Firestore.firestore().collection("users").document(uid).collection("likes").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { (querySnapshot, err) in
             if let err = err {
                 print("情報の取得に失敗しました。\(err)")
                 return
@@ -292,29 +389,13 @@ class EnteredRoomContentViewController: UIViewController{
                 let likeContents = Contents.init(dic: dic)
                 self.likeContentsArray.append(likeContents)
             }
-            self.contentsTableView.reloadData()
+            completed()
         }
     }
     
     
     
-//    func fetchMoreLikeContents(){
-//        guard let lastLikeDocument = lastLikeDocument else {return}
-//        let uid = Auth.auth().currentUser!.uid
-//        Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("likes").order(by: "createdAt", descending: true).start(afterDocument: lastLikeDocument).limit(to: 10).getDocuments { (querySnapshot, err) in
-//            if let err = err {
-//                print("情報の取得に失敗しました。\(err)")
-//                let okAction = UIAlertAction(title: "ok", style: .cancel, handler: nil)
-//                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [okAction])
-//                return
-//            }
-//            for document in querySnapshot!.documents{
-//                let dic = document.data()
-//                let likeContents = Contents.init(dic: dic)
-//                self.likeContentsArray.append(likeContents)
-//            }
-//        }
-//    }
+
     
     
     
@@ -324,7 +405,7 @@ class EnteredRoomContentViewController: UIViewController{
         Firestore.firestore().collectionGroup("posts").whereField("roomID", isEqualTo: passedDocumentID).order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
             if let err = err {
                 print("取得に失敗しました。\(err)")
-                let okAction = UIAlertAction(title: "ok", style: .cancel, handler: nil)
+                let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                 self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [okAction])
                 return
             }
@@ -348,16 +429,23 @@ class EnteredRoomContentViewController: UIViewController{
                 completed()
             }else{
                 self.label.text = ""
-                let mappedArray = self.contentsArray.map { Room -> String in
+                let mappedDocumentArray = self.contentsArray.map { Room -> String in
                     let documentID = Room.documentID
                     return documentID
                 }
-                self.fetchLikeContents(documentIDs: mappedArray)
-                completed()
+                let mappedUidArray = self.contentsArray.map { Room -> String in
+                    let uid = Room.uid
+                    return uid
+                }
+                self.fetchReportedUsers(uids: mappedUidArray) {
+                    self.fetchReportedContents(documentIDs: mappedDocumentArray) {
+                        self.fetchLikeContents(documentIDs: mappedDocumentArray) {
+                            completed()
+                        }
+                    }
+                }
             }
-            
         }
-
     }
     
     
@@ -394,11 +482,23 @@ class EnteredRoomContentViewController: UIViewController{
             }
             
             if contentsArray2.count != 0 {
-                let mappedArray = contentsArray2.map { Room -> String in
+                let mappedDocumentArray = contentsArray2.map { Room -> String in
                     let documentID = Room.documentID
                     return documentID
                 }
-                self.fetchLikeContents(documentIDs: mappedArray)
+                let mappedUidArray = contentsArray2.map { Room -> String in
+                    let uid = Room.uid
+                    return uid
+                }
+                self.fetchReportedUsers(uids: mappedUidArray) {
+                    self.fetchReportedContents(documentIDs: mappedDocumentArray) {
+                        self.fetchLikeContents(documentIDs: mappedDocumentArray) {
+                            self.contentsTableView.reloadData()
+                        }
+                    }
+                }
+                
+                
             }
         }
     }
@@ -412,7 +512,10 @@ class EnteredRoomContentViewController: UIViewController{
 
 
 
-extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataSource{
+extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataSource,TimeLineTableViewControllerDelegate{
+    
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if contentsArray.count == 0 {
@@ -583,20 +686,23 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == self.contentsArray.count {
+        if ((indexPath.row + 1) == (self.contentsArray.count - 8)) && self.contentsArray.count == 10 {
             fetchMoreContetns()
         }
+        
+        
     }
     
     
     
     @objc func pushedReportButton(_ sender:UIButton){
         bluredView.isHidden = false
-        backView.isHidden = false
+        stackView.isHidden = false
         cancelView.isHidden = false
         tabBarController?.tabBar.isHidden = true
         self.reportdocumentID = contentsArray[sender.tag - 10000000000000].documentID
         self.reportroomID = contentsArray[sender.tag - 10000000000000].roomID
+        self.reportUid = contentsArray[sender.tag - 10000000000000].uid
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedbluredView(_:)))
         bluredView.addGestureRecognizer(tapGesture)
     }
@@ -605,7 +711,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     @objc func tappedbluredView(_ sender: UITapGestureRecognizer){
-        backView.isHidden = true
+        stackView.isHidden = true
         bluredView.isHidden = true
         cancelView.isHidden = true
         tabBarController?.tabBar.isHidden = false
@@ -639,7 +745,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         let postedAt = contentsArray[sender.tag].createdAt
         let docData = ["media": contentsArray[sender.tag].mediaArray,"text":contentsArray[sender.tag].text,"userImage":contentsArray[sender.tag].userImage,"userName":contentsArray[sender.tag].userName,"documentID":documentID,"roomID":passedDocumentID,"createdAt":timestamp,"uid":uid,"postedAt":postedAt,"myUid":myuid] as [String:Any]
         
-        let ref = Firestore.firestore().collection("users").document(myuid).collection("rooms").document(passedDocumentID).collection("likes").document(documentID)
+        let ref = Firestore.firestore().collection("users").document(myuid).collection("likes").document(documentID)
         batch.setData(docData, forDocument: ref, merge: true)
         
     }
@@ -687,24 +793,6 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-//    func fetchLatestLikeContent(sender:UIButton){
-//        let likedContent = contentsArray[sender.tag]
-//        self.likeContentsArray.append(likedContent)
-////        let uid = Auth.auth().currentUser!.uid
-////        Firestore.firestore().collection("users").document(uid).collection("likes").order(by: "createdAt",descending: true).limit(to: 1).getDocuments { querySnapshot, err in
-////            if let err = err {
-////                print("情報の取得に失敗しました。\(err)")
-////                return
-////            }
-////            for document in querySnapshot!.documents{
-////                let dic = document.data()
-////                let likeContents = Contents.init(dic: dic)
-////                self.likeContentsArray.append(likeContents)
-////            }
-////        }
-//    }
-    
-    
     
     
     func likeBatch(sender:UIButton){
@@ -731,7 +819,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     func deleteLikeContents(sender:UIButton,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[sender.tag].documentID
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("likes").document(documentID)
+        let ref = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
         batch.deleteDocument(ref)
     }
     
@@ -849,6 +937,28 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         cLVC.hidesBottomBarWhenPushed = true
         present(cLVC, animated: true, completion: nil)
     }
+    
+
+    
+    
+
+    func removeMutedContent(documentID:String) {
+        self.contentsArray.removeAll {
+            return ($0.documentID  == documentID )
+        }
+        self.contentsTableView.reloadData()
+    }
+    
+    
+    func removeBlockedUserContents(uid:String,roomID:String){
+        self.contentsArray.removeAll {
+            return (($0.uid  == uid) && ($0.roomID == roomID))
+        }
+        self.contentsTableView.reloadData()
+    }
+    
+    
+    
     
     
     
