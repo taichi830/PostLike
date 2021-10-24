@@ -998,7 +998,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
             let postID = followContent.documentID
             let roomID = followContent.roomID
             let roomInfo = joinedRoomArray.filter{ $0.documentID == followContent.roomID }
-            let documentID = "\(myUid)_\(postID)"
+            let documentID = "\(myUid)-\(postID)"
             let docData = ["userName":roomInfo[0].userName,"userImage":roomInfo[0].userImage,"uid":myUid,"roomName":roomInfo[0].roomName,"createdAt":Timestamp(),"postID":postID,"roomID":roomID,"documentID":documentID,"category":"like"] as [String:Any]
             let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
             if uid == myUid {
@@ -1084,7 +1084,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
             let uid = followContent.uid
             let myuid = Auth.auth().currentUser!.uid
             let postID = followContent.documentID
-            let documentID = "\(myuid)_\(postID)"
+            let documentID = "\(myuid)-\(postID)"
             let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
             if uid == myuid {
                 return

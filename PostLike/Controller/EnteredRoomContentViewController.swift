@@ -777,8 +777,8 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         let uid = contentsArray[sender.tag].uid
         let myUid = Auth.auth().currentUser!.uid
         let postID = contentsArray[sender.tag].documentID
-        let documentID = "\(myUid)_\(postID)"
-        let docData = ["userName":profileInfo!.userName,"userImage":profileInfo!.userImage,"uid":myUid,"roomName":passedTitle,"createdAt":Timestamp(),"postID":postID,"roomID":contentsArray[sender.tag].roomID,"documentID":documentID,"category":"like"] as [String:Any]
+        let documentID = "\(myUid)-\(postID)"
+        let docData = ["userName":profileInfo!.userName,"userImage":profileInfo!.userImage,"uid":myUid,"roomName":self.roomInfo!.roomName,"createdAt":Timestamp(),"postID":postID,"roomID":contentsArray[sender.tag].roomID,"documentID":documentID,"category":"like"] as [String:Any]
         let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
         
         if uid == myUid {
@@ -851,7 +851,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         let uid = contentsArray[sender.tag].uid
         let myuid = Auth.auth().currentUser!.uid
         let postID = contentsArray[sender.tag].documentID
-        let documentID = "\(myuid)_\(postID)"
+        let documentID = "\(myuid)-\(postID)"
         let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
         if uid == myuid {
             return

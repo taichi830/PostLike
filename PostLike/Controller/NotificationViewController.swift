@@ -98,14 +98,11 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 80
-//    }
     
     func fetchNotificationInfo(){
         self.notificationArray.removeAll()
         let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 5).getDocuments { (querySnapshot, err) in
+        Firestore.firestore().collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
             if let err = err {
                 print("情報の取得に失敗しました。\(err)")
                 return
