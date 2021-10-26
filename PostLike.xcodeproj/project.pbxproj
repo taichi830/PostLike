@@ -84,6 +84,8 @@
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator.swift */; };
+		CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */; };
+		CEF363292725858B00D5D443 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363282725858B00D5D443 /* PresentationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -174,6 +176,8 @@
 		CEE6A42225C104AA00F6FE06 /* ContentsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContentsCollectionViewCell.xib; sourceTree = "<group>"; };
 		CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CEED29B5260E27BE00AFA2FB /* CreateHostProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHostProfileViewController.swift; sourceTree = "<group>"; };
+		CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileModalViewController.swift; sourceTree = "<group>"; };
+		CEF363282725858B00D5D443 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		D2CB292E52BB16F49AE10808 /* Pods-PostLike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike.debug.xcconfig"; path = "Target Support Files/Pods-PostLike/Pods-PostLike.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -325,6 +329,8 @@
 				CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */,
 				CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */,
 				CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */,
+				CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */,
+				CEF363282725858B00D5D443 /* PresentationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -544,12 +550,14 @@
 				CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */,
 				CE012C1626B6EFD4006CC20E /* ContentViewController.swift in Sources */,
 				CE012C1726B6EFD4006CC20E /* SearchResultHeaderView.swift in Sources */,
+				CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */,
 				CE012C1826B6EFD4006CC20E /* ContentsCollectionViewCell.swift in Sources */,
 				CE012C1926B6EFD4006CC20E /* ProfileCollectionViewCell.swift in Sources */,
 				CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
 				CED4902126ED024900582742 /* ShowIndicator.swift in Sources */,
+				CEF363292725858B00D5D443 /* PresentationController.swift in Sources */,
 				CE012C1D26B6EFD4006CC20E /* EnteredRoomContentViewController.swift in Sources */,
 				CE012C1E26B6EFD4006CC20E /* CustomRefreshController.swift in Sources */,
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,

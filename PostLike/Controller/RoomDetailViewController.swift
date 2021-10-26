@@ -11,6 +11,11 @@ import Firebase
 import FirebaseStorage
 import DKImagePickerController
 
+protocol CreateProfileDelegate {
+    func joinRoomBatch(_ completed: @escaping() -> Void,userName:String)
+    func createStrageWithBatch(_ completed: @escaping() -> Void,userName:String,profileImageView:UIImageView)
+}
+
 class RoomDetailViewController: UIViewController {
     
     
@@ -18,17 +23,9 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var roomName: UILabel!
     @IBOutlet weak var bluredView: UIView!
     @IBOutlet weak var contentsTableView: UITableView!
-    @IBOutlet weak var backView: UIView!
     @IBOutlet weak var backView2: UIView!
     @IBOutlet weak var stackView: UIStackView!
-    
-    @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var personImage: UIImageView!
-    @IBOutlet weak var userNameTextField: UITextField!
-    @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var cancelView: UIView!
-    @IBOutlet weak var plusBackView: UIView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     
     
@@ -63,23 +60,13 @@ class RoomDetailViewController: UIViewController {
         self.contentsTableView.dataSource = self
         self.contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
         
-        backView.layer.cornerRadius = 10
-        
-        profileImage.layer.cornerRadius = 60
-        
-        completeButton.layer.cornerRadius = 23
-        completeButton.clipsToBounds = true
-        
-        userNameTextField.delegate = self
+       
         
         cancelView.layer.cornerRadius = 10
         backView2.layer.cornerRadius = 10
         stackView.layer.cornerRadius = 10
         
         
-        plusBackView.layer.cornerRadius = 20
-        plusBackView.layer.borderWidth = 5
-        plusBackView.layer.borderColor = UIColor.white.cgColor
         
         headerView.roomImage.layer.cornerRadius = 40
         headerView.roomImage.layer.borderColor = UIColor.systemGray6.cgColor
@@ -92,9 +79,6 @@ class RoomDetailViewController: UIViewController {
         headerView.joinButton.layer.borderColor = UIColor.systemGray5.cgColor
         headerView.joinButton.addTarget(self, action: #selector(pushedJoinButton(_:)), for: .touchUpInside)
         
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         
         fetchRoomDetail()
@@ -222,12 +206,11 @@ class RoomDetailViewController: UIViewController {
     
     @objc func pushedJoinButton(_ sender: UIButton) {
         if sender.titleLabel?.text == "参加する" && self.joinedRoom?.documentID == ""{
-            bluredView.isHidden = false
-            backView.isHidden = false
-            tabBarController?.tabBar.isHidden = true
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedbluredView(_:)))
-            bluredView.addGestureRecognizer(tapGesture)
-            
+            let modalVC = self.storyboard?.instantiateViewController(withIdentifier: "modal") as! CreateProfileModalViewController
+            modalVC.modalPresentationStyle = .custom
+            modalVC.transitioningDelegate = self
+            modalVC.createProfileDelegate = self
+            present(modalVC, animated: true, completion: nil)
         }else if sender.titleLabel?.text == "参加する" && self.joinedRoom?.documentID != "" && self.joinedRoom?.isJoined == false{
             creatProfileWhenHaveCreated()
             
@@ -245,196 +228,9 @@ class RoomDetailViewController: UIViewController {
     
     
     @objc func tappedbluredView(_ sender: UITapGestureRecognizer){
-        backView.isHidden = true
         bluredView.isHidden = true
         tabBarController?.tabBar.isHidden = false
-        userNameTextField.resignFirstResponder()
     }
-    
-    
-    
-    
-    
-    @IBAction func callAlubm(_ sender: Any) {
-        let pickerController = DKImagePickerController()
-        pickerController.maxSelectableCount = 1
-        pickerController.sourceType = .photo
-        pickerController.assetType = .allPhotos
-        pickerController.allowSelectAll = true
-        pickerController.showsCancelButton = true
-        pickerController.didSelectAssets = {(assets: [DKAsset]) in
-            for asset in assets {
-                asset.fetchFullScreenImage(completeBlock: { (image, info) in
-                    self.profileImage.image = image
-                    self.personImage.image = UIImage()
-                })
-            }
-        }
-        pickerController.modalPresentationStyle = .fullScreen
-        pickerController.UIDelegate = CustomUIDelegate()
-        self.present(pickerController, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    func createMemberList(batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let docData = ["uid":uid]
-        let ref =  Firestore.firestore().collection("rooms").document(passedDocumentID).collection("members").document(uid)
-        batch.setData(docData, forDocument: ref)
-    }
-    
-    
-    
-    func increaseMemberCount(batch:WriteBatch){
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("memberCount").document("count")
-        batch.setData(["memberCount": FieldValue.increment(1.0)], forDocument: ref, merge: true)
-    }
-    
-    
-    
-    
-    func creatProfileWhenHaveCreated(){
-        let batch = Firestore.firestore().batch()
-        let uid = Auth.auth().currentUser!.uid
-        let timestamp = Timestamp()
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
-
-        batch.updateData(["isJoined":true,"createdAt":timestamp,"roomName":self.roomInfo!.roomName,"roomImage":self.roomInfo!.roomImage], forDocument: ref)
-        increaseMemberCount(batch: batch)
-        createMemberList(batch: batch)
-        batch.commit { err in
-            if let err = err{
-                print("false\(err)")
-                return
-            }else{
-                print("scucces")
-                self.headerView.joinButton.setTitle("ルームへ", for: .normal)
-                self.headerView.joinButton.setTitleColor(.black, for: .normal)
-                self.headerView.joinButton.backgroundColor = .systemBackground
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    func createRoomDetail(userImageUrl:String,batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let timestamp = Timestamp()
-        let docData = ["createdAt":timestamp,"userName":userNameTextField.text!,"userImage":userImageUrl,"documentID":passedDocumentID,"roomName":self.roomInfo!.roomName,"roomImage":self.roomInfo!.roomImage,"uid":uid,"moderator":self.roomInfo!.moderator,"isJoined":true] as [String:Any]
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
-
-        batch.setData(docData, forDocument: ref)
-        
-    }
-    
-    
-   
-    
-    
-    func joinRoomBatch(){
-        let batch = Firestore.firestore().batch()
-        createRoomDetail(userImageUrl: "", batch: batch)
-        increaseMemberCount(batch: batch)
-        createMemberList(batch: batch)
-        batch.commit { err in
-            if let err = err{
-                print("false\(err)")
-                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.dismissIndicator()
-                }
-                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                return
-            }else{
-                print("scucces")
-                self.headerView.joinButton.setTitle("ルームへ", for: .normal)
-                self.headerView.joinButton.setTitleColor(.black, for: .normal)
-                self.headerView.joinButton.backgroundColor = .systemBackground
-                self.dismissIndicator()
-                self.backView.isHidden = true
-                self.bluredView.isHidden = true
-                self.tabBarController?.tabBar.isHidden = false
-                self.userNameTextField.resignFirstResponder()
-            }
-        }
-    }
-    
-    
-    
-    
-    func createStrageWithBatch(){
-        guard let profileImage = profileImage.image?.jpegData(compressionQuality: 0.1) else {return}
-        let fileName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
-        storageRef.putData(profileImage, metadata: nil) { (metadata, err) in
-            
-            if let err = err{
-                print("Firestorageへの保存に失敗しました。\(err)")
-                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.dismissIndicator()
-                }
-                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                return
-            }else{
-                print("Firestorageへの保存に成功しました。")
-                storageRef.downloadURL { (url, err) in
-                    if let err = err {
-                        print("firestorageからのダウンロードに失敗しました。\(err)")
-                        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self.dismissIndicator()
-                        }
-                        self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                        return
-                    }
-                    guard let urlString = url?.absoluteString else{return}
-                    let batch = Firestore.firestore().batch()
-                    self.createRoomDetail(userImageUrl: urlString, batch: batch)
-                    self.increaseMemberCount(batch: batch)
-                    self.createMemberList(batch: batch)
-                    batch.commit { err in
-                        if let err = err{
-                            print("false\(err)")
-                            let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                                self.dismissIndicator()
-                            }
-                            self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                            return
-                        }else{
-                            print("scucces")
-                            self.headerView.joinButton.setTitle("ルームへ", for: .normal)
-                            self.headerView.joinButton.setTitleColor(.black, for: .normal)
-                            self.headerView.joinButton.backgroundColor = .systemBackground
-                            self.dismissIndicator()
-                            self.backView.isHidden = true
-                            self.bluredView.isHidden = true
-                            self.tabBarController?.tabBar.isHidden = false
-                            self.userNameTextField.resignFirstResponder()
-                            
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    @IBAction func completeButton(_ sender: Any) {
-        
-        startIndicator()
-        if profileImage.image == nil {
-            joinRoomBatch()
-        }else{
-            createStrageWithBatch()
-        }
-    }
-    
-    
     
     
 
@@ -761,72 +557,6 @@ class RoomDetailViewController: UIViewController {
     
 }
 
-
-extension RoomDetailViewController:UITextFieldDelegate{
-    
-    
-    @objc func keybordWillShow(_ notification: Notification) {
-        
-        guard let userInfo = notification.userInfo as? [String:Any] else {
-            return
-        }
-        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
-            return
-        }
-        
-        guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-           return
-         }
-        
-        UIView.animate(withDuration: duration) {
-            self.backView.frame.origin.y -= (rect.height-100)
-        }
-        
-        self.bottomConstraint.constant = rect.height-100
-        
-        
-    }
-    
-    
-    
-    @objc func keybordWillHide(_ notification: Notification) {
-        guard let userInfo = notification.userInfo as? [String:Any] else {
-            return
-        }
-        
-        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
-            return
-        }
-        
-        UIView.animate(withDuration: duration) {
-            self.backView.frame.origin.y = self.view.frame.height - self.backView.frame.height
-        }
-        
-        self.bottomConstraint.constant = 0
-        
-    }
-    
-    
-    
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        
-        if userNameTextField.text?.isEmpty == true {
-            completeButton.isEnabled = false
-            completeButton.backgroundColor = .lightGray
-        }else{
-            completeButton.isEnabled = true
-            completeButton.backgroundColor = .systemRed
-        }
-    }
-    
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
-}
 
 
 
@@ -1255,9 +985,151 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource,Ti
     
     
     
+}
+
+
+extension RoomDetailViewController:UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+            return PresentationController(presentedViewController: presented, presenting: presenting)
+        }
+}
+
+
+extension RoomDetailViewController:CreateProfileDelegate {
+    
+    func createMemberList(batch:WriteBatch){
+        let uid = Auth.auth().currentUser!.uid
+        let docData = ["uid":uid]
+        let ref =  Firestore.firestore().collection("rooms").document(passedDocumentID).collection("members").document(uid)
+        batch.setData(docData, forDocument: ref)
+    }
+    
+    
+    
+    func increaseMemberCount(batch:WriteBatch){
+        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("memberCount").document("count")
+        batch.setData(["memberCount": FieldValue.increment(1.0)], forDocument: ref, merge: true)
+    }
+    
+    
+    
+    
+    func creatProfileWhenHaveCreated(){
+        let batch = Firestore.firestore().batch()
+        let uid = Auth.auth().currentUser!.uid
+        let timestamp = Timestamp()
+        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
+
+        batch.updateData(["isJoined":true,"createdAt":timestamp,"roomName":self.roomInfo!.roomName,"roomImage":self.roomInfo!.roomImage], forDocument: ref)
+        increaseMemberCount(batch: batch)
+        createMemberList(batch: batch)
+        batch.commit { err in
+            if let err = err{
+                print("false\(err)")
+                return
+            }else{
+                print("scucces")
+                self.headerView.joinButton.setTitle("ルームへ", for: .normal)
+                self.headerView.joinButton.setTitleColor(.black, for: .normal)
+                self.headerView.joinButton.backgroundColor = .systemBackground
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    func createRoomDetail(userName:String,userImageUrl:String,batch:WriteBatch){
+        let uid = Auth.auth().currentUser!.uid
+        let timestamp = Timestamp()
+        let docData = ["createdAt":timestamp,"userName":userName,"userImage":userImageUrl,"documentID":passedDocumentID,"roomName":self.roomInfo!.roomName,"roomImage":self.roomInfo!.roomImage,"uid":uid,"moderator":self.roomInfo!.moderator,"isJoined":true] as [String:Any]
+        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
+
+        batch.setData(docData, forDocument: ref)
+        
+    }
+    
+    
+    
+    func joinRoomBatch(_ completed: @escaping() -> Void,userName:String){
+        let batch = Firestore.firestore().batch()
+        createRoomDetail(userName: userName, userImageUrl: "", batch: batch)
+        increaseMemberCount(batch: batch)
+        createMemberList(batch: batch)
+        batch.commit { err in
+            if let err = err{
+                print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                return
+            }else{
+                print("scucces")
+                self.headerView.joinButton.setTitle("ルームへ", for: .normal)
+                self.headerView.joinButton.setTitleColor(.black, for: .normal)
+                self.headerView.joinButton.backgroundColor = .systemBackground
+                self.dismissIndicator()
+                completed()
+            }
+        }
+    }
+    
+    
+    func createStrageWithBatch(_ completed: @escaping() -> Void,userName:String,profileImageView:UIImageView){
+        guard let profileImage = profileImageView.image?.jpegData(compressionQuality: 0.1) else {return}
+        let fileName = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
+        storageRef.putData(profileImage, metadata: nil) { (metadata, err) in
+            
+            if let err = err{
+                print("Firestorageへの保存に失敗しました。\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                return
+            }else{
+                print("Firestorageへの保存に成功しました。")
+                storageRef.downloadURL { (url, err) in
+                    if let err = err {
+                        print("firestorageからのダウンロードに失敗しました。\(err)")
+                        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self.dismissIndicator()
+                        }
+                        self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                        return
+                    }
+                    guard let urlString = url?.absoluteString else{return}
+                    let batch = Firestore.firestore().batch()
+                    self.createRoomDetail(userName: userName, userImageUrl: urlString, batch: batch)
+                    self.increaseMemberCount(batch: batch)
+                    self.createMemberList(batch: batch)
+                    batch.commit { err in
+                        if let err = err{
+                            print("false\(err)")
+                            let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self.dismissIndicator()
+                            }
+                            self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                            return
+                        }else{
+                            print("scucces")
+                            self.headerView.joinButton.setTitle("ルームへ", for: .normal)
+                            self.headerView.joinButton.setTitleColor(.black, for: .normal)
+                            self.headerView.joinButton.backgroundColor = .systemBackground
+                            self.dismissIndicator()
+                            completed()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     
     
 }
-
 
 

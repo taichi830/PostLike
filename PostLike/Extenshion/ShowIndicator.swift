@@ -15,7 +15,6 @@ extension UIViewController{
         indicator.center = self.view.center
         indicator.startAnimating()
         
-        
         if self.tabBarController?.view == nil {
             indicator.color = .white
             let backView = UIView(frame: self.view.frame)
@@ -31,7 +30,33 @@ extension UIViewController{
             clearView.addSubview(indicator)
             self.view.addSubview(clearView)
         }
-       
+    }
+    
+    
+    func modalIndicator(view:UIView){
+        
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.center = CGPoint(x: 30, y: 30)
+        indicator.startAnimating()
+        indicator.color = .white
+        
+        
+        let backView = UIView(frame: CGRect(x: 0, y: 200, width: 60, height: 60))
+        backView.center.x = view.center.x
+        backView.backgroundColor = .gray
+        backView.layer.cornerRadius = 5
+        backView.addSubview(indicator)
+        
+        
+        let clearView = UIView(frame: view.frame)
+        clearView.tag = 999999
+        clearView.backgroundColor = .clear
+        clearView.addSubview(backView)
+        
+        
+        view.addSubview(clearView)
+        
+        
     }
     
     
