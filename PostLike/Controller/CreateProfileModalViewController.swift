@@ -61,8 +61,9 @@ class CreateProfileModalViewController: UIViewController {
         pickerController.modalPresentationStyle = .fullScreen
         pickerController.UIDelegate = CustomUIDelegate()
         self.present(pickerController, animated: true, completion: nil)
-        
     }
+    
+    
     
     
     
@@ -77,17 +78,21 @@ class CreateProfileModalViewController: UIViewController {
                 self.dismiss(animated: true, completion: nil)
             }, userName: userNameTextField.text!, profileImageView: profileImageView)
         }
-        
-        
     }
     
     
     
     
     
+
 }
 
+
+
+
 extension CreateProfileModalViewController:UITextFieldDelegate{
+    
+    
     
     @objc func keybordWillShow(_ notification: Notification) {
         
