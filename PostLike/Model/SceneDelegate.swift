@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDynamicLinks
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -43,7 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     
-    func handleIncomingDynamiclink(_ dynamiclink: DynamicLink,window:UIWindow){
+    func handleIncomingDynamiclink(_ dynamiclink: DynamicLink,window: UIWindow){
         guard let url = dynamiclink.url else {
             return
         }
