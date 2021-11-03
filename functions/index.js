@@ -176,16 +176,16 @@ exports.sendPushNotification = functions.region("asia-northeast1").firestore.doc
   const data = snap.data();
   const giverName = data.userName;
   const roomName = data.roomName;
-  const category = data.category;
+  const type = data.type;
   const uid = context.params.userID;
-  console.log(uid,category);
+  console.log(uid,type);
   const userRef = await admin
       .firestore()
       .collection('users')
       .doc(uid);
     const userDoc = await userRef.get();
     const user = userDoc.data();
-      if (category == 'like'){
+      if (type == 'like'){
         const payload = {
         notification: {
           title: `${roomName}`,
@@ -194,7 +194,7 @@ exports.sendPushNotification = functions.region("asia-northeast1").firestore.doc
         }
       };
       admin.messaging().sendToDevice(user.fcmToken, payload);
-      }else if (category == 'comment'){
+      }else if (type == 'comment'){
         const payload = {
         notification: {
           title: `${roomName}`,

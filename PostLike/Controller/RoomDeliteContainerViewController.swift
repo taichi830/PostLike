@@ -7,11 +7,18 @@
 //
 
 import UIKit
+import Firebase
 
 class RoomDeliteContainerViewController: UIViewController {
 
+    
+    var passedRoomID = String()
+    var deleteRoomDelegate:DeleteRoomDelegate?
+    
     @IBOutlet weak var checkButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var clearView: UIView!
+    @IBOutlet weak var alertLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +27,20 @@ class RoomDeliteContainerViewController: UIViewController {
 
         checkButton.layer.borderWidth = 0.8
         checkButton.layer.borderColor = UIColor.systemGray5.cgColor
+        alertLabel.text = "・削除されたルームは検索結果に反映されません。\n\n・参加しているユーザーは投稿できなくなります。ルームの活動を維持したい場合は”ルームを退出する”を選んでください。\n\n・ルームを復元させることはできません。"
+        clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tappedBackView)))
+        
         
     }
+    
+    
+    
+    @objc func tappedBackView(_ sender:UITapGestureRecognizer){
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
     
     @IBAction func addCheck(_ sender: Any) {
         if deleteButton.isEnabled == false{
@@ -37,17 +56,30 @@ class RoomDeliteContainerViewController: UIViewController {
     }
     
     
+    
+    
+    
+    
+    
     @IBAction func deleteRoom(_ sender: Any) {
-        let parentVC = self.parent as! ProfileViewController
-        parentVC.deleteRoomAtContainerView()
+        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+            self.deleteRoomDelegate?.deleteRoomAtContainerView()
+        })
+        
     }
     
     
     
     @IBAction func cancelButton(_ sender: Any) {
-        let parentVC = self.parent as! ProfileViewController
-        parentVC.callAtDeleteContainerView()
+        dismiss(animated: true, completion: nil)
     }
+    
+    
+    
+    
+
+
+    
     
     
 

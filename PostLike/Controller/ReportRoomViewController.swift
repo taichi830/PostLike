@@ -45,7 +45,7 @@ class ReportRoomViewController: UIViewController {
                 return
             }
             print("fireStoreへの保存に成功しました。")
-            self.dismiss(animated: true, completion: nil)
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
             
         }
         

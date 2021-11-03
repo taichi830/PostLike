@@ -27,7 +27,7 @@ class Contents{
     let numberOfMember:Int
     let postCount:Int
     let isJoined:Bool
-    let category:String
+    let type:String
     let roomID:String
     let uid:String
     
@@ -51,7 +51,7 @@ class Contents{
         self.commentCount = dic["commentCount"] as? Int ?? Int()
         self.postCount = dic["postCount"] as? Int ?? Int()
         self.isJoined = dic["isJoined"] as? Bool ?? false
-        self.category = dic["category"] as? String ?? ""
+        self.type = dic["type"] as? String ?? ""
         self.roomID = dic["roomID"] as? String ?? ""
         self.uid = dic["uid"] as? String ?? ""
     }

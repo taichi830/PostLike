@@ -132,7 +132,7 @@ extension SetPassWordViewController: UITextFieldDelegate{
             completeButton.backgroundColor = .systemRed
             completeButton.isEnabled = true
         }else {
-            completeButton.backgroundColor = .lightGray
+            completeButton.backgroundColor = .systemGray4
             completeButton.isEnabled = false
         }
     }

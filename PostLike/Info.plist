@@ -47,7 +47,7 @@
 	<true/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-7583410620523969~2962055430</string>
-	<key>LSApplicationCategoryType</key>
+	<key>LSApplicationtypeType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

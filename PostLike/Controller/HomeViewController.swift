@@ -25,8 +25,6 @@ class HomeViewController: UIViewController{
     @IBOutlet weak var roomCollectionView: UICollectionView!
     @IBOutlet weak var timeLineTableView: UITableView!
     @IBOutlet weak var bluredView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var cancelView: UIView!
     @IBOutlet weak var topView: UIView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerSeparaterView: UIView!
@@ -80,9 +78,7 @@ class HomeViewController: UIViewController{
         
         fetchModeratorPosts()
         fetchFollowedRoom()
-        
-        stackView.layer.cornerRadius = 10
-        cancelView.layer.cornerRadius = 10
+    
     }
     
     
@@ -145,56 +141,6 @@ class HomeViewController: UIViewController{
     
     
     
-    @IBAction func reportContent(_ sender: Any) {
-        let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-        reportVC.passedDocumentID = self.reportDocumentID
-        reportVC.passedRoomID = self.reportRoomID
-        reportVC.passedUid = self.reportUid
-        reportVC.reportCategory = "post"
-        reportVC.titleTableViewDelegate = self
-        present(reportVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    
-    @IBAction func reportUser(_ sender: Any) {
-        let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-        reportVC.passedDocumentID = self.reportDocumentID
-        reportVC.passedRoomID = self.reportRoomID
-        reportVC.passedUid = self.reportUid
-        reportVC.reportCategory = "user"
-        reportVC.titleTableViewDelegate = self
-        present(reportVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @IBAction func cancelButton(_ sender: Any) {
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-    }
-    
-    
     
     
     
@@ -243,7 +189,7 @@ class HomeViewController: UIViewController{
                     self.reportedContentsArray.append(reportedContents)
                 }
                 let filteredArray = self.reportedContentsArray.filter {
-                    $0.category == "post"
+                    $0.type == "post"
                 }
                 for content in filteredArray {
                     self.timelinePosts.removeAll(where: {$0.documentID == content.documentID})
@@ -271,7 +217,7 @@ class HomeViewController: UIViewController{
                     self.reportedUsersArray.append(reportedUsers)
                 }
                 let filteredArray = self.reportedUsersArray.filter {
-                    $0.category == "user"
+                    $0.type == "user"
                 }
                 for content in filteredArray {
                     self.timelinePosts.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
@@ -448,6 +394,8 @@ class HomeViewController: UIViewController{
     
     
     
+    
+    
     func fetchMoreModeratorPosts(){
         fetchMoreTimelinePosts { (results) in
             let documentIDs = results.map { Contents -> String in
@@ -572,7 +520,7 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
 
 
 
-extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLineTableViewControllerDelegate{
+extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -838,25 +786,25 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
     
     
     @objc func pushedReportButton(_ sender:UIButton){
-        self.bluredView.isHidden = false
-        self.stackView.isHidden = false
-        self.cancelView.isHidden = false
-        tabBarController?.tabBar.isHidden = true
-        if let followContent = tableViewItems[sender.tag - 10000000000000] as? Room {
-            self.reportDocumentID = followContent.documentID
-            self.reportRoomID = followContent.roomID
-            self.reportUid = followContent.uid
+        let modalMenuVC = storyboard?.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+        modalMenuVC.modalPresentationStyle = .custom
+        modalMenuVC.transitioningDelegate = self
+        guard let followContent = tableViewItems[sender.tag - 10000000000000] as? Room else {
+            return
         }
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedbluredView(_:)))
-        bluredView.addGestureRecognizer(tapGesture)
+        modalMenuVC.passedDocumentID = followContent.documentID
+        modalMenuVC.passedRoomID = followContent.roomID
+        modalMenuVC.passedUid = followContent.uid
+        modalMenuVC.passedViewController = self
+        modalMenuVC.passedType = "post"
+        
+        present(modalMenuVC, animated: true, completion: nil)
     }
     
     
     
     @objc func tappedbluredView(_ sender: UITapGestureRecognizer){
-        stackView.isHidden = true
         bluredView.isHidden = true
-        cancelView.isHidden = true
         tabBarController?.tabBar.isHidden = false
     }
     
@@ -984,7 +932,6 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
             let likeRef = Firestore.firestore().collection("users").document(myuid).collection("likes").document(documentID)
             
             batch.setData(docData, forDocument: likeRef)
-            
         }
     }
     
@@ -999,7 +946,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
             let roomID = followContent.roomID
             let roomInfo = joinedRoomArray.filter{ $0.documentID == followContent.roomID }
             let documentID = "\(myUid)-\(postID)"
-            let docData = ["userName":roomInfo[0].userName,"userImage":roomInfo[0].userImage,"uid":myUid,"roomName":roomInfo[0].roomName,"createdAt":Timestamp(),"postID":postID,"roomID":roomID,"documentID":documentID,"category":"like"] as [String:Any]
+            let docData = ["userName":roomInfo[0].userName,"userImage":roomInfo[0].userImage,"uid":myUid,"roomName":roomInfo[0].roomName,"createdAt":Timestamp(),"postID":postID,"roomID":roomID,"documentID":documentID,"type":"like"] as [String:Any]
             let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
             if uid == myUid {
                 return
@@ -1072,11 +1019,12 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
         if let followContent = tableViewItems[sender.tag] as? Room {
             let uid = Auth.auth().currentUser!.uid
             let documentID = followContent.documentID
-            //            let roomID = followContent.roomID
             let likeRef = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
             batch.deleteDocument(likeRef)
         }
     }
+    
+    
     
     
     func deleteNotification(sender:UIButton,batch:WriteBatch){
@@ -1118,6 +1066,17 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
     
     
     
+
+}
+
+
+
+
+
+
+
+extension HomeViewController:TimeLineTableViewControllerDelegate{
+    
     func removeMutedContent(documentID:String) {
         self.tableViewItems.removeAll { Protocol  in
             let room = Protocol as? Room
@@ -1125,9 +1084,6 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
         }
         self.timeLineTableView.reloadData()
     }
-    
-    
-    
     
     func removeBlockedUserContents(uid:String,roomID:String) {
         self.tableViewItems.removeAll { Protocol  in
@@ -1137,9 +1093,27 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource,TimeLine
         self.timeLineTableView.reloadData()
     }
     
-    
-    
 }
+
+
+
+
+
+
+
+
+
+
+extension HomeViewController:UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+            return PresentModalViewController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+
+
+
 
 
 

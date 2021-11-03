@@ -77,9 +77,9 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
         
         roomName.text = notificationArray[indexPath.row].roomName
         
-        if notificationArray[indexPath.row].category == "like" {
+        if notificationArray[indexPath.row].type == "like" {
             notification.text = "\(notificationArray[indexPath.row].userName)さんがあなたの投稿にいいねをしました。"
-        }else if notificationArray[indexPath.row].category == "comment" {
+        }else if notificationArray[indexPath.row].type == "comment" {
             notification.text = "\(notificationArray[indexPath.row].userName)さんがあなたの投稿にコメントしました。"
         }
         

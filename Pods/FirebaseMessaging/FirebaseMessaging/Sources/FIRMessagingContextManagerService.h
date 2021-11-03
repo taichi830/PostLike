@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-FOUNDATION_EXPORT NSString *const kFIRMessagingContextManagerCategory;
+FOUNDATION_EXPORT NSString *const kFIRMessagingContextManagertype;
 FOUNDATION_EXPORT NSString *const kFIRMessagingContextManagerLocalTimeStart;
 FOUNDATION_EXPORT NSString *const kFIRMessagingContextManagerLocalTimeEnd;
 FOUNDATION_EXPORT NSString *const kFIRMessagingContextManagerBodyKey;

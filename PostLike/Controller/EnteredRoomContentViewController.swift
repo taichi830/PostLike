@@ -20,10 +20,8 @@ class EnteredRoomContentViewController: UIViewController{
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var bluredView: UIView!
     @IBOutlet weak var backView2: UIView!
-    @IBOutlet weak var cancelView: UIView!
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var collectionButton: UIButton!
-    @IBOutlet weak var stackView: UIStackView!
     
     
     
@@ -39,6 +37,7 @@ class EnteredRoomContentViewController: UIViewController{
     var passedProfileImage = String()
     var passedUserName = String()
     var passedModerator = String()
+    var passedRoomImage = UIImage()
     private var roomInfo:Room?
     private var profileInfo:Contents?
     private var scrollBeginingPoint:CGPoint?
@@ -83,9 +82,6 @@ class EnteredRoomContentViewController: UIViewController{
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
         contentsTableView.addGestureRecognizer(swipeGesture)
         
-        
-        cancelView.layer.cornerRadius = 10
-        stackView.layer.cornerRadius = 10
         
         startIndicator()
         
@@ -143,6 +139,26 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
+    @IBAction func menuButton(_ sender: Any) {
+        let modalMenuVC = storyboard?.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+        modalMenuVC.modalPresentationStyle = .custom
+        modalMenuVC.transitioningDelegate = self
+        modalMenuVC.passedRoomID = passedDocumentID
+        modalMenuVC.passedViewController = self
+        modalMenuVC.passedType = "room"
+        modalMenuVC.passedRoomImageUrl = roomInfo?.roomImage ?? ""
+        modalMenuVC.passedRoomName = roomInfo?.roomName ?? ""
+        modalMenuVC.passedRoomIntro = roomInfo?.roomIntro ?? ""
+        modalMenuVC.passedRoomImage = UIImage()
+        present(modalMenuVC, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+    
     @IBAction func toImageCollection(_ sender: Any) {
         let imageVC = storyboard?.instantiateViewController(withIdentifier: "images") as! RoomImageContentsViewController
         imageVC.passedRoomID = passedDocumentID
@@ -175,47 +191,11 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @IBAction func repotContent(_ sender: Any) {
-        let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-        reportVC.passedDocumentID = self.reportdocumentID
-        reportVC.passedRoomID = self.reportroomID
-        reportVC.passedUid = self.reportUid
-        reportVC.reportCategory = "post"
-        reportVC.titleTableViewDelegate = self
-        present(reportVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    @IBAction func reportAndBlockUser(_ sender: Any) {
-        let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-        reportVC.passedDocumentID = self.reportdocumentID
-        reportVC.passedRoomID = self.reportroomID
-        reportVC.passedUid = self.reportUid
-        reportVC.reportCategory = "user"
-        reportVC.titleTableViewDelegate = self
-        present(reportVC, animated: true, completion: nil)
-    }
     
     
     
     
     
-    
-    @IBAction func cancelButton(_ sender: Any) {
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-    }
     
     
     
@@ -311,7 +291,7 @@ class EnteredRoomContentViewController: UIViewController{
                     self.reportedContentsArray.append(reportedContents)
                 }
                 let filteredArray = self.reportedUsersArray.filter {
-                    $0.category == "post"
+                    $0.type == "post"
                 }
                 for content in filteredArray {
                     self.contentsArray.removeAll(where: {$0.documentID == content.documentID})
@@ -347,7 +327,7 @@ class EnteredRoomContentViewController: UIViewController{
                     self.reportedUsersArray.append(reportedUsers)
                 }
                 let filteredArray = self.reportedUsersArray.filter {
-                    $0.category == "user"
+                    $0.type == "user"
                 }
                 for content in filteredArray {
                     self.contentsArray.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
@@ -363,7 +343,6 @@ class EnteredRoomContentViewController: UIViewController{
                 }else{
                     completed()
                 }
-                
             }
     }
     }
@@ -497,8 +476,6 @@ class EnteredRoomContentViewController: UIViewController{
                         }
                     }
                 }
-                
-                
             }
         }
     }
@@ -696,24 +673,26 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     @objc func pushedReportButton(_ sender:UIButton){
-        bluredView.isHidden = false
-        stackView.isHidden = false
-        cancelView.isHidden = false
-        tabBarController?.tabBar.isHidden = true
-        self.reportdocumentID = contentsArray[sender.tag - 10000000000000].documentID
-        self.reportroomID = contentsArray[sender.tag - 10000000000000].roomID
-        self.reportUid = contentsArray[sender.tag - 10000000000000].uid
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedbluredView(_:)))
-        bluredView.addGestureRecognizer(tapGesture)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+        modalMenuVC.modalPresentationStyle = .custom
+        modalMenuVC.transitioningDelegate = self
+        
+        modalMenuVC.passedDocumentID = contentsArray[sender.tag - 10000000000000].documentID
+        modalMenuVC.passedRoomID = contentsArray[sender.tag - 10000000000000].roomID
+        modalMenuVC.passedUid = contentsArray[sender.tag - 10000000000000].uid
+        modalMenuVC.passedViewController = self
+        modalMenuVC.passedType = "post"
+        
+        present(modalMenuVC, animated: true, completion: nil)
     }
     
     
     
     
     @objc func tappedbluredView(_ sender: UITapGestureRecognizer){
-        stackView.isHidden = true
+        
         bluredView.isHidden = true
-        cancelView.isHidden = true
         tabBarController?.tabBar.isHidden = false
     }
     
@@ -778,7 +757,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         let myUid = Auth.auth().currentUser!.uid
         let postID = contentsArray[sender.tag].documentID
         let documentID = "\(myUid)-\(postID)"
-        let docData = ["userName":profileInfo!.userName,"userImage":profileInfo!.userImage,"uid":myUid,"roomName":self.roomInfo!.roomName,"createdAt":Timestamp(),"postID":postID,"roomID":contentsArray[sender.tag].roomID,"documentID":documentID,"category":"like"] as [String:Any]
+        let docData = ["userName":profileInfo!.userName,"userImage":profileInfo!.userImage,"uid":myUid,"roomName":self.roomInfo!.roomName,"createdAt":Timestamp(),"postID":postID,"roomID":contentsArray[sender.tag].roomID,"documentID":documentID,"type":"like"] as [String:Any]
         let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
         
         if uid == myUid {
@@ -963,6 +942,21 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
 }
+
+
+
+extension EnteredRoomContentViewController:UIViewControllerTransitioningDelegate{
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+            return PresentModalViewController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+
+
+
+
+
 
 extension EnteredRoomContentViewController:UIScrollViewDelegate,UIGestureRecognizerDelegate{
     

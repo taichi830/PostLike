@@ -65,7 +65,7 @@ extension ResetPasswordViewController: UITextFieldDelegate{
             doneButton.backgroundColor = .systemRed
             doneButton.isEnabled = true
         }else {
-            doneButton.backgroundColor = .lightGray
+            doneButton.backgroundColor = .systemGray4
             doneButton.isEnabled = false
         }
     }

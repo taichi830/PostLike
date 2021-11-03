@@ -17,7 +17,7 @@ class ReportViewController: UIViewController  {
     var passedDocumentID = String()
     var passedRoomID = String()
     var passedUid = String()
-    var reportCategory = String()
+    var reporttype = String()
     var titleTableViewDelegate: TimeLineTableViewControllerDelegate?
     
     
@@ -34,9 +34,9 @@ class ReportViewController: UIViewController  {
         reportButton.isEnabled = false
         reportButton.layer.cornerRadius = 23
         
-        if reportCategory == "post"{
+        if reporttype == "post"{
             topLabel.text = "投稿を報告・ミュート"
-        }else if reportCategory == "user" {
+        }else if reporttype == "user" {
             topLabel.text = "ユーザーを報告・ブロック"
         }
         
@@ -56,30 +56,30 @@ class ReportViewController: UIViewController  {
         let docData2 = ["documentID":"\(passedRoomID)-\(passedUid)","roomID":passedRoomID,"uid":passedUid,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
         
         
-        if reportCategory == "post"{
+        if reporttype == "post"{
             let reportPostRef = Firestore.firestore().collection("reportedPosts").document(passedDocumentID)
             let muteRef = Firestore.firestore().collection("users").document(uid).collection("reports").document(passedDocumentID)
             batch.setData(docData, forDocument: reportPostRef,merge: true)
-            batch.setData(["category":reportCategory,"documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
+            batch.setData(["type":reporttype,"documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
             batch.commit { err in
                 if err != nil {
                     return
                 }else{
-                    self.dismiss(animated: true) {
+                    self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
                         self.titleTableViewDelegate!.removeMutedContent(documentID: self.passedDocumentID)
                     }
                 }
             }
-        }else if reportCategory == "user"{
+        }else if reporttype == "user"{
             let reportUserRef = Firestore.firestore().collection("reportedUsers").document("\(passedRoomID)-\(passedUid)")
             let muteRef = Firestore.firestore().collection("users").document(uid).collection("reports").document("\(passedRoomID)-\(passedUid)")
             batch.setData(docData2, forDocument: reportUserRef,merge: true)
-            batch.setData(["category":reportCategory,"documentID":"\(passedRoomID)-\(passedUid)","roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
+            batch.setData(["type":reporttype,"documentID":"\(passedRoomID)-\(passedUid)","roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
             batch.commit { err in
                 if err != nil {
                     return
                 }else{
-                    self.dismiss(animated: true) {
+                    self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
                         self.titleTableViewDelegate!.removeBlockedUserContents(uid: self.passedUid, roomID: self.passedRoomID)
                     }
                 }

@@ -79,13 +79,16 @@
 		CEA19BED26D631C800283E91 /* ArrayChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* ArrayChunk.swift */; };
 		CEA19BEF26D7D0D500283E91 /* IntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* IntroView.xib */; };
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
+		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
+		CEA97FE7272907E100B51A96 /* UnderMenuPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
+		CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator.swift */; };
 		CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */; };
-		CEF363292725858B00D5D443 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363282725858B00D5D443 /* PresentationController.swift */; };
+		CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363282725858B00D5D443 /* PresentModalViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -157,6 +160,8 @@
 		CEA19BF026D7D70900283E91 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdTableViewCell.swift; sourceTree = "<group>"; };
 		CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NativeAdTableViewCell.xib; sourceTree = "<group>"; };
+		CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalMenuViewController.swift; sourceTree = "<group>"; };
+		CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderMenuPresentationController.swift; sourceTree = "<group>"; };
 		CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		CEAA5C812520D56700755F90 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
@@ -169,6 +174,7 @@
 		CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomEditViewController.swift; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = UserProfileHeaderView.xib; path = ../../../PostLike/PostLike/View/UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfileHeaderView.swift; path = ../../../PostLike/PostLike/Controller/UserProfileHeaderView.swift; sourceTree = "<group>"; };
+		CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModalViewController.swift; sourceTree = "<group>"; };
 		CED4902026ED024900582742 /* ShowIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowIndicator.swift; sourceTree = "<group>"; };
 		CED7147225CECE0A00390811 /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImageContentsViewController.swift; sourceTree = "<group>"; };
@@ -177,7 +183,7 @@
 		CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CEED29B5260E27BE00AFA2FB /* CreateHostProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHostProfileViewController.swift; sourceTree = "<group>"; };
 		CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileModalViewController.swift; sourceTree = "<group>"; };
-		CEF363282725858B00D5D443 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
+		CEF363282725858B00D5D443 /* PresentModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentModalViewController.swift; sourceTree = "<group>"; };
 		D2CB292E52BB16F49AE10808 /* Pods-PostLike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike.debug.xcconfig"; path = "Target Support Files/Pods-PostLike/Pods-PostLike.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -330,7 +336,10 @@
 				CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */,
 				CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */,
 				CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */,
-				CEF363282725858B00D5D443 /* PresentationController.swift */,
+				CEF363282725858B00D5D443 /* PresentModalViewController.swift */,
+				CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */,
+				CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */,
+				CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -536,6 +545,7 @@
 			files = (
 				CE012C0B26B6EFD4006CC20E /* Alert-extenshion.swift in Sources */,
 				CE77EF5F26E67EEF00154886 /* Contents.swift in Sources */,
+				CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */,
 				CE77EF6226E67EEF00154886 /* Room.swift in Sources */,
 				CE199F7926DE125E009F1B7E /* TermOfUseViewController.swift in Sources */,
 				CE012C0C26B6EFD4006CC20E /* FirstViewController.swift in Sources */,
@@ -557,18 +567,20 @@
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
 				CED4902126ED024900582742 /* ShowIndicator.swift in Sources */,
-				CEF363292725858B00D5D443 /* PresentationController.swift in Sources */,
+				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
 				CE012C1D26B6EFD4006CC20E /* EnteredRoomContentViewController.swift in Sources */,
 				CE012C1E26B6EFD4006CC20E /* CustomRefreshController.swift in Sources */,
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
 				CE77EF6026E67EEF00154886 /* User.swift in Sources */,
 				CE012C2126B6EFD4006CC20E /* EditProfileViewController.swift in Sources */,
+				CEA97FE7272907E100B51A96 /* UnderMenuPresentationController.swift in Sources */,
 				CE012C2326B6EFD4006CC20E /* MyprofileViewController.swift in Sources */,
 				CE012C2726B6EFD4006CC20E /* LoginViewController.swift in Sources */,
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,
 				CE012C2826B6EFD4006CC20E /* PostContentViewController.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmingEmailViewController.swift in Sources */,
+				CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
 				CE012C2F26B6EFD4006CC20E /* TabImage-extenshion.swift in Sources */,

@@ -15,6 +15,7 @@
   pod 'SDWebImage'
   pod 'DKImagePickerController' 
   pod 'InstantSearchClient'
+  pod 'Firebase/DynamicLinks'
   pod 'Firebase/AdMob'
   pod 'Google-Mobile-Ads-SDK'
 

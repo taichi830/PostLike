@@ -43,53 +43,60 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     
+    func handleIncomingDynamiclink(_ dynamiclink: DynamicLink,window:UIWindow){
+        guard let url = dynamiclink.url else {
+            return
+        }
+        guard (dynamiclink.matchType == .unique || dynamiclink.matchType == .default) else {
+            return
+        }
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),let queryItems = components.queryItems else {
+            return
+        }
+        if components.path == "/rooms" {
+            if let queryItem = queryItems.first(where: { $0.name == "roomID"}){
+                guard let roomID = queryItem.value else { return }
+                let storyboard = UIStoryboard(name: "Search", bundle: nil)
+                let roomDetailVC = storyboard.instantiateViewController(withIdentifier: "detailVC") as! RoomDetailViewController
+                roomDetailVC.passedDocumentID = roomID
+                let tabBarController = self.window?.rootViewController as? UITabBarController
+                let nav = tabBarController?.selectedViewController as? UINavigationController
+                nav?.pushViewController(roomDetailVC, animated: true)
+            }
+        }else{
+            self.window = window
+            window.makeKeyAndVisible()
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let initialVC = storyboard.instantiateViewController(identifier: "setPassWordVC")
+            let navigation = UINavigationController(rootViewController: initialVC)
+            navigation.navigationBar.isHidden = true
+            window.rootViewController = navigation
+        
+        }
+    }
+    
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         
-        guard let scene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: scene )
-        self.window = window
-        window.makeKeyAndVisible()
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let initialVC = storyboard.instantiateViewController(identifier: "setPassWordVC")
-        let navigation = UINavigationController(rootViewController: initialVC)
-        navigation.navigationBar.isHidden = true
-        window.rootViewController = navigation
+        guard let url = userActivity.webpageURL else {
+            return
+        }
+        DynamicLinks.dynamicLinks().handleUniversalLink(url) { dynamicLink, err in
+            if err != nil {
+                return
+            }else{
+                guard let scene = (scene as? UIWindowScene) else { return }
+                let window = UIWindow(windowScene: scene)
+                self.handleIncomingDynamiclink(dynamicLink!, window: window)
+            }
+        }
+        
 //        guard let url = userActivity.webpageURL else { return }
 //        let link = url.absoluteString
         
-//        if Auth.auth().isSignIn(withEmailLink: link) {
-//            //ローカルに保存していたメールアドレスを取得
-//            guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
-//                print("メールアドレスが存在しません")
-//                return
-//            }
-//            //ログイン処理
-//            Auth.auth().signIn(withEmail: email, link: link) { (auth, err) in
-//                if let err = err {
-//                    print("ログイン失敗")
-//                    print(err)
-//                    return
-//                }
-//                print("ログイン成功")
-//                let gender = UserDefaults.standard.value(forKey: "gender") as? String
-//                let birthDay = UserDefaults.standard.value(forKey: "birthDay") as? String
-//                if gender != nil {
-//                    let data = ["gender":gender!,"birthDay":birthDay!] as [String:Any]
-//                    Firestore.firestore().collection("users").document(auth!.user.uid).setData(data)
-//                }
-//
-//                guard let scene = (scene as? UIWindowScene) else { return }
-//                let window = UIWindow(windowScene: scene )
-//                self.window = window
-//                window.makeKeyAndVisible()
-//
-//                let storyboard = UIStoryboard(name: "BaseTabBar", bundle: nil)
-//                let vc = storyboard.instantiateViewController(identifier: "baseTab") as! UITabBarController
-//                vc.selectedIndex = 0
-//                window.rootViewController = vc
-//            }
-//        }
+
     }
+    
+    
     
     
     func sceneDidDisconnect(_ scene: UIScene) {

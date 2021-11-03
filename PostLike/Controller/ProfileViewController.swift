@@ -9,6 +9,20 @@
 import UIKit
 import Firebase
 
+
+protocol DeletePostDelegate {
+    func deletePostBatch(documentID:String)
+}
+protocol ExitRoomDelegate {
+    func exitRoomBatch()
+}
+protocol DeleteRoomDelegate {
+    func deleteRoomAtContainerView()
+}
+
+
+
+
 class ProfileViewController: UIViewController {
     
     
@@ -30,14 +44,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var headerView: UserProfileHeaderView!
     @IBOutlet weak var titleName: UILabel!
     @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var deleteRoomButton: UIButton!
     @IBOutlet weak var blurView: UIView!
-    @IBOutlet weak var menuView: UIView!
-    @IBOutlet weak var cancelView: UIView!
-    @IBOutlet weak var deleteContentButton: UIButton!
-    @IBOutlet weak var comfirmView: UIView!
-    @IBOutlet weak var comfirmLabel: UILabel!
-    @IBOutlet weak var deleteRoomContainerView: UIView!
     @IBOutlet weak var profileTableView: UITableView!
     
     
@@ -60,16 +67,13 @@ class ProfileViewController: UIViewController {
         self.profileTableView.refreshControl = refleshControl
         self.profileTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
         
-        menuView.layer.cornerRadius = 10
-        cancelView.layer.cornerRadius = 10
-        deleteContentButton.layer.cornerRadius = 10
-        
         fetchPostContents {
-//            self.profileTableView.reloadData()
         }
         
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
         profileTableView.addGestureRecognizer(swipeGesture)
+        
+        print(self)
         
         
     }
@@ -98,7 +102,6 @@ class ProfileViewController: UIViewController {
     @objc func updateContents(){
         self.likeContentsArray.removeAll()
         self.fetchPostContents {
-//            self.profileTableView.reloadData()
             self.profileTableView.refreshControl?.endRefreshing()
         }
         
@@ -130,9 +133,6 @@ class ProfileViewController: UIViewController {
             headerView.roomEditButton.layer.borderColor = UIColor.systemGray5.cgColor
             headerView.roomEditButton.layer.borderWidth = 1
             headerView.roomEditButton.addTarget(self, action: #selector(self.pushRoomEditButton), for: .touchUpInside)
-            
-            deleteRoomButton.setTitleColor(.black, for: .normal)
-            deleteRoomButton.isEnabled = true
         }else{
             headerView.profileEditButton.layer.cornerRadius = 2
             headerView.profileEditButton.layer.borderColor = UIColor.systemGray5.cgColor
@@ -141,8 +141,6 @@ class ProfileViewController: UIViewController {
             
             headerView.editButtonStackView.isHidden = true
             
-            deleteRoomButton.setTitleColor(.lightGray, for: .normal)
-            deleteRoomButton.isEnabled = false
         }
     }
     
@@ -176,12 +174,20 @@ class ProfileViewController: UIViewController {
     
     
     @IBAction func menuButton(_ sender: Any) {
-        blurView.isHidden = false
-        menuView.isHidden = false
-        cancelView.isHidden = false
-        tabBarController?.tabBar.isHidden = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
-        blurView.addGestureRecognizer(tapGesture)
+        let profileModalVC = storyboard?.instantiateViewController(withIdentifier: "profileModal") as! ProfileModalViewController
+        let uid = Auth.auth().currentUser!.uid
+        profileModalVC.modalPresentationStyle = .custom
+        profileModalVC.transitioningDelegate = self
+        profileModalVC.exitRoomDelegate = self
+        profileModalVC.passedModerator = passedModerator
+        profileModalVC.passedRoomID = passedDocumentID
+        profileModalVC.passedViewController = self
+        if passedModerator == uid {
+            profileModalVC.passedType = "moderator"
+        }else{
+            profileModalVC.passedType = "exit"
+        }
+        present(profileModalVC, animated: true, completion: nil)
     }
     
     
@@ -189,232 +195,12 @@ class ProfileViewController: UIViewController {
     
     @objc func tapped(_ sender:UITapGestureRecognizer){
         blurView.isHidden = true
-        menuView.isHidden = true
-        cancelView.isHidden = true
-        deleteContentButton.isHidden = true
-        comfirmView.isHidden = true
-        deleteRoomContainerView.isHidden = true
         tabBarController?.tabBar.isHidden = false
     }
     
+
     
     
-    
-    @IBAction func exitRoom(_ sender: Any) {
-        comfirmView.isHidden = false
-        menuView.isHidden = true
-        cancelView.isHidden = true
-        comfirmLabel.text = "このルームを退出しますか？"
-    }
-    
-    
-    
-    @IBAction func deleteRoom(_ sender: Any) {
-        deleteRoomContainerView.isHidden = false
-        menuView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = true
-    }
-    
-    
-    @IBAction func cancelButton(_ sender: Any) {
-        blurView.isHidden = true
-        menuView.isHidden = true
-        cancelView.isHidden = true
-        deleteContentButton.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-    }
-    
-    
-    
-    func callAtDeleteContainerView(){
-        blurView.isHidden = true
-        menuView.isHidden = true
-        cancelView.isHidden = true
-        deleteContentButton.isHidden = true
-        comfirmView.isHidden = true
-        deleteRoomContainerView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-    }
-    
-    
-    
-    func deleteRoom(batch:WriteBatch){
-        let ref = Firestore.firestore().collection("rooms").document(self.passedDocumentID)
-        batch.deleteDocument(ref)
-    }
-    
-    
-    
-    
-    func deleteMyprofile(batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
-        batch.updateData(["isJoined":false], forDocument: ref)
-    }
-    
-    
-    
-    
-    func deleteRoomAtContainerView(){
-        let batch = Firestore.firestore().batch()
-        deleteRoom(batch: batch)
-        deleteMyprofile(batch: batch)
-        batch.commit { err in
-            if let err = err {
-                print("false\(err)")
-                return
-            }else{
-                self.tabBarController?.tabBar.isHidden = false
-                self.navigationController?.popToRootViewController(animated: true)
-            }
-        }
-    }
-    
-    
-    
-    
-    @IBAction func deleteContent(_ sender: Any) {
-        comfirmView.isHidden = false
-        comfirmLabel.text = "投稿を削除してよろしいですか？"
-    }
-    
-    
-    
-    
-    
-    
-    //投稿削除時のバッチ処理
-    
-    func deleteMediaPosts(batch:WriteBatch){
-        let documentID = contentsArray[row].documentID
-        let ref =  Firestore.firestore().collection("rooms").document(passedDocumentID).collection("mediaPosts").document(documentID)
-        batch.deleteDocument(ref)
-    }
-    
-    
-    func deletePosts(batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let documentID = contentsArray[row].documentID
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").document(documentID)
-        batch.deleteDocument(ref)
-    }
-    
-    
-    func deleteModeratorPosts(batch:WriteBatch){
-        let documentID = contentsArray[row].documentID
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("moderatorPosts").document(documentID)
-        batch.deleteDocument(ref)
-    }
-    
-    func decreaseRoomPostCount(batch:WriteBatch){
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("roomPostCount").document("count")
-        batch.setData(["postCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
-    }
-    
-    
-    
-    func decreasePostCount(batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("profilePostCount").document("count")
-        batch.setData(["postCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //ルーム退出時のバッチ処理
-    
-    func exitRoom(batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(self.passedDocumentID)
-        batch.updateData(["isJoined":false], forDocument: ref)
-    }
-    
-    func decreaseMemberCount(batch:WriteBatch){
-        let ref = Firestore.firestore().collection("rooms").document(self.passedDocumentID).collection("memberCount").document("count")
-        batch.setData(["memberCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
-    }
-    
-    func deleteUidFromRoomMateList(batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("members").document(uid)
-        batch.deleteDocument(ref)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @IBAction func allowButton(_ sender: Any) {
-        let uid = Auth.auth().currentUser?.uid
-        let comfirmText = comfirmLabel.text
-        let batch = Firestore.firestore().batch()
-        if comfirmText == "投稿を削除してよろしいですか？"{
-            deletePosts(batch: batch)
-            decreasePostCount(batch: batch)
-            decreaseRoomPostCount(batch: batch)
-            if passedModerator == uid {
-                deleteModeratorPosts(batch: batch)
-            }
-            if contentsArray[row].mediaArray[0] != "" {
-                deleteMediaPosts(batch: batch)
-            }
-            batch.commit { err in
-                if let err = err {
-                    print("false\(err)")
-                    return
-                }else{
-                    self.contentsArray.remove(at: self.row)
-                    self.profileTableView.reloadData()
-                    self.blurView.isHidden = true
-                    self.deleteContentButton.isHidden = true
-                    self.cancelView.isHidden = true
-                    self.comfirmView.isHidden = true
-                    self.tabBarController?.tabBar.isHidden = false
-                }
-            }
-            
-        }else if comfirmText == "このルームを退出しますか？" {
-            exitRoom(batch: batch)
-            decreaseMemberCount(batch: batch)
-            deleteUidFromRoomMateList(batch: batch)
-            batch.commit { err in
-                if let err = err {
-                    print("false\(err)")
-                    return
-                }else{
-                    self.tabBarController?.tabBar.isHidden = false
-                    self.navigationController?.popToRootViewController(animated: true)
-                }
-            }
-        }else{
-            return
-        }
-    }
-    
-    
-    
-    
-    
-    
-    @IBAction func cancel(_ sender: Any) {
-        self.blurView.isHidden = true
-        self.deleteContentButton.isHidden = true
-        self.cancelView.isHidden = true
-        self.comfirmView.isHidden = true
-        self.tabBarController?.tabBar.isHidden = false
-    }
     
     
     
@@ -582,7 +368,22 @@ class ProfileViewController: UIViewController {
     }
     
     
+    
+    
+    
 }
+
+
+
+
+extension ProfileViewController:UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return PresentModalViewController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+
 
 
 
@@ -848,7 +649,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
         batch.deleteDocument(ref)
     }
     
-
+    
     
     
     func deleteLikeBatch(sender:UIButton){
@@ -909,13 +710,14 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     
     @objc func pushedReportButton(_ sender:UIButton){
-        row = sender.tag+10000000000000
-        blurView.isHidden = false
-        deleteContentButton.isHidden = false
-        cancelView.isHidden = false
-        tabBarController?.tabBar.isHidden = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
-        blurView.addGestureRecognizer(tapGesture)
+        self.row = sender.tag+10000000000000
+        let profileModalVC = storyboard?.instantiateViewController(withIdentifier: "profileModal") as! ProfileModalViewController
+        profileModalVC.modalPresentationStyle = .custom
+        profileModalVC.transitioningDelegate = self
+        profileModalVC.passedType = "delete"
+        profileModalVC.passedDocumentID = contentsArray[sender.tag+10000000000000].documentID
+        profileModalVC.deletePostDelegate = self
+        present(profileModalVC, animated: true, completion: nil)
         
     }
     
@@ -951,7 +753,6 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
-        
         showImageVC.passedMedia = contentsArray[tappedRow!].mediaArray
         showImageVC.passedUid = uid
         showImageVC.passedText = contentsArray[tappedRow!].text
@@ -961,6 +762,163 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
         present(showImageVC, animated: true, completion: nil)
     }
     
+    
+    
+    
+}
+
+
+
+
+extension ProfileViewController:DeletePostDelegate{
+    
+    
+    func deleteMediaPosts(batch:WriteBatch,documentID:String){
+        let documentID = contentsArray[row].documentID
+        let ref =  Firestore.firestore().collection("rooms").document(passedDocumentID).collection("mediaPosts").document(documentID)
+        batch.deleteDocument(ref)
+    }
+    
+    
+    func deletePosts(batch:WriteBatch,documentID:String){
+        let uid = Auth.auth().currentUser!.uid
+        let documentID = contentsArray[row].documentID
+        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").document(documentID)
+        batch.deleteDocument(ref)
+    }
+    
+    
+    func deleteModeratorPosts(batch:WriteBatch,documentID:String){
+        let documentID = contentsArray[row].documentID
+        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("moderatorPosts").document(documentID)
+        batch.deleteDocument(ref)
+    }
+    
+    func decreaseRoomPostCount(batch:WriteBatch){
+        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("roomPostCount").document("count")
+        batch.setData(["postCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
+    }
+    
+    
+    
+    func decreasePostCount(batch:WriteBatch){
+        let uid = Auth.auth().currentUser!.uid
+        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("profilePostCount").document("count")
+        batch.setData(["postCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
+    }
+    
+    
+    
+    func deletePostBatch(documentID:String){
+        let uid = Auth.auth().currentUser?.uid
+        let batch = Firestore.firestore().batch()
+        let mappedArray = contentsArray.filter {
+            $0.documentID == documentID
+        }
+        deletePosts(batch: batch,documentID:documentID)
+        decreasePostCount(batch: batch)
+        decreaseRoomPostCount(batch: batch)
+        if passedModerator == uid {
+            deleteModeratorPosts(batch: batch,documentID:documentID)
+        }
+        if mappedArray[0].mediaArray[0] != "" {
+            deleteMediaPosts(batch: batch,documentID:documentID)
+        }
+        batch.commit { err in
+            if let err = err {
+                print("false\(err)")
+                return
+            }else{
+                self.contentsArray.removeAll {
+                    $0.documentID == mappedArray[0].documentID
+                }
+                self.profileTableView.reloadData()
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+extension ProfileViewController:ExitRoomDelegate{
+    
+    func exitRoom(batch:WriteBatch){
+        let uid = Auth.auth().currentUser!.uid
+        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(self.passedDocumentID)
+        batch.updateData(["isJoined":false], forDocument: ref)
+    }
+    
+    func decreaseMemberCount(batch:WriteBatch){
+        let ref = Firestore.firestore().collection("rooms").document(self.passedDocumentID).collection("memberCount").document("count")
+        batch.setData(["memberCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
+    }
+    
+    func deleteUidFromRoomMateList(batch:WriteBatch){
+        let uid = Auth.auth().currentUser!.uid
+        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("members").document(uid)
+        batch.deleteDocument(ref)
+    }
+    
+    func exitRoomBatch(){
+        let batch = Firestore.firestore().batch()
+        exitRoom(batch: batch)
+        decreaseMemberCount(batch: batch)
+        deleteUidFromRoomMateList(batch: batch)
+        batch.commit { err in
+            if let err = err {
+                print("false\(err)")
+                return
+            }else{
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
+    
+    
+    
+}
+
+
+extension ProfileViewController:DeleteRoomDelegate{
+    
+    func deleteRoom(batch:WriteBatch){
+        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID)
+        batch.deleteDocument(ref)
+    }
+
+
+
+
+    func deleteMyprofile(batch:WriteBatch){
+        let uid = Auth.auth().currentUser!.uid
+        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
+        batch.updateData(["isJoined":false], forDocument: ref)
+    }
+
+
+
+
+
+
+
+    func deleteRoomAtContainerView(){
+        let batch = Firestore.firestore().batch()
+        deleteRoom(batch: batch)
+        deleteMyprofile(batch: batch)
+        batch.commit { err in
+            if let err = err {
+                print("false\(err)")
+                return
+            }else{
+                self.navigationController?.popToRootViewController(animated: true)
+                }
+            }
+        }
     
     
     

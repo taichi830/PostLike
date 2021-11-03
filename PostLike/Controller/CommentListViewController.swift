@@ -276,7 +276,7 @@ class CommentListViewController: UIViewController,UITextFieldDelegate,UITextView
         let uid = passedUid
         let myUid = Auth.auth().currentUser!.uid
         let postID = passedDocumentID
-        let docData = ["userName":user!.userName,"userImage":user!.userImage,"uid":myUid,"roomName":passedRoomName,"createdAt":Timestamp(),"postID":postID,"roomID":passedRoomID,"documentID":documentID,"category":"comment"] as [String:Any]
+        let docData = ["userName":user!.userName,"userImage":user!.userImage,"uid":myUid,"roomName":passedRoomName,"createdAt":Timestamp(),"postID":postID,"roomID":passedRoomID,"documentID":documentID,"type":"comment"] as [String:Any]
         let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
         
         if uid == myUid {

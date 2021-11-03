@@ -50,7 +50,7 @@ NSString *const kFIRMessagingContextManagerTitleKey =
     kFIRMessagingContextManagerNotificationKeyPrefix @"title";
 NSString *const kFIRMessagingContextManagerBadgeKey =
     kFIRMessagingContextManagerNotificationKeyPrefix @"badge";
-NSString *const kFIRMessagingContextManagerCategoryKey =
+NSString *const kFIRMessagingContextManagertypeKey =
     kFIRMessagingContextManagerNotificationKeyPrefix @"click_action";
 NSString *const kFIRMessagingContextManagerSoundKey =
     kFIRMessagingContextManagerNotificationKeyPrefix @"sound";
@@ -165,8 +165,8 @@ typedef NS_ENUM(NSUInteger, FIRMessagingContextManagerMessageType) {
       content.sound = apsDictionary[kFIRMessagingContextManagerSoundKey];
     }
 
-    if (apsDictionary[kFIRMessagingContextManagerCategoryKey]) {
-      content.categoryIdentifier = apsDictionary[kFIRMessagingContextManagerCategoryKey];
+    if (apsDictionary[kFIRMessagingContextManagertypeKey]) {
+        content.threadIdentifier = apsDictionary[kFIRMessagingContextManagertypeKey];
     }
 
     NSDictionary *userInfo = [self parseDataFromMessage:message];
@@ -229,8 +229,8 @@ typedef NS_ENUM(NSUInteger, FIRMessagingContextManagerMessageType) {
     notification.applicationIconBadgeNumber =
         [apsDictionary[kFIRMessagingContextManagerBadgeKey] integerValue];
   }
-  if (apsDictionary[kFIRMessagingContextManagerCategoryKey]) {
-    notification.category = apsDictionary[kFIRMessagingContextManagerCategoryKey];
+  if (apsDictionary[kFIRMessagingContextManagertypeKey]) {
+    notification.category = apsDictionary[kFIRMessagingContextManagertypeKey];
   }
 
   NSDictionary *userInfo = [self parseDataFromMessage:message];

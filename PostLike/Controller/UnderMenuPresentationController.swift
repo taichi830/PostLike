@@ -1,14 +1,14 @@
 //
-//  PresentationController.swift
+//  UnderMenuPresentationController.swift
 //  PostLike
 //
-//  Created by taichi on 2021/10/24.
+//  Created by taichi on 2021/10/27.
 //  Copyright © 2021 taichi. All rights reserved.
 //
 
 import UIKit
 
-class PresentationController: UIPresentationController, UIAdaptivePresentationControllerDelegate {
+class UnderMenuPresentationController: UIPresentationController , UIAdaptivePresentationControllerDelegate {
     
     var overlayView = UIView()
     
@@ -18,14 +18,14 @@ class PresentationController: UIPresentationController, UIAdaptivePresentationCo
             return
         }
         overlayView.frame = containerView.bounds
-        overlayView.gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(PresentationController.overlayViewDidTouch(_:)))]
+        overlayView.gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(PresentModalViewController.overlayViewDidTouch(_:)))]
         overlayView.backgroundColor = .black
         overlayView.alpha = 0.0
         containerView.insertSubview(overlayView, at: 0)
         
         // トランジションを実行
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: {[weak self] context in
-            self?.overlayView.alpha = 0.5
+            self?.overlayView.alpha = 0.2 
         }, completion:nil)
     }
     
@@ -43,7 +43,6 @@ class PresentationController: UIPresentationController, UIAdaptivePresentationCo
         }
     }
     
-    let margin = (x: CGFloat(0), y: CGFloat(286))
     // 子のコンテナサイズを返す
     override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
         return CGSize(width: parentSize.width, height: parentSize.height)
@@ -55,8 +54,8 @@ class PresentationController: UIPresentationController, UIAdaptivePresentationCo
         let containerBounds = containerView!.bounds
         let childContentSize = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerBounds.size)
         presentedViewFrame.size = childContentSize
-        presentedViewFrame.origin.x = margin.x
-        presentedViewFrame.origin.y = margin.y
+        presentedViewFrame.origin.x = 0
+        presentedViewFrame.origin.y = presentedView!.frame.height - 230
         
         return presentedViewFrame
     }

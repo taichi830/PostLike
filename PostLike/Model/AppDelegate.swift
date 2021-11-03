@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseMessaging
+import FirebaseDynamicLinks
 import GoogleMobileAds
 import UserNotifications
 
@@ -71,6 +72,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     
     
     
+    
+    
+    
+    
+    
     // MARK: UISceneSession Lifecycle
     
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -115,7 +121,10 @@ extension AppDelegate: MessagingDelegate {
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
     }
+    
+
 }
+
 
 
 
@@ -171,9 +180,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let vc = storyboard.instantiateViewController(identifier: "baseTab") as! UITabBarController
         vc.selectedIndex = 2
         window?.rootViewController = vc
-//        let storyboard = UIStoryboard(name: "Notification", bundle: nil)
-//        let vc = storyboard.instantiateViewController(identifier: "notification") as! NotificationViewController
-//        window?.rootViewController?.present(vc, animated: true, completion: nil)
+
         completionHandler()
     }
     

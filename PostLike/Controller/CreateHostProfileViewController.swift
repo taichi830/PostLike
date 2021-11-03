@@ -328,7 +328,7 @@ extension CreateHostProfileViewController:UITextFieldDelegate{
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if userNameTextField.text?.isEmpty == true {
             completeButton.isEnabled = false
-            completeButton.backgroundColor = .lightGray
+            completeButton.backgroundColor = .systemGray4
         }else{
             completeButton.isEnabled = true
             completeButton.backgroundColor = .systemRed

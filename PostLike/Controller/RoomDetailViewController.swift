@@ -23,9 +23,6 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var roomName: UILabel!
     @IBOutlet weak var bluredView: UIView!
     @IBOutlet weak var contentsTableView: UITableView!
-    @IBOutlet weak var backView2: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var cancelView: UIView!
     
     
     
@@ -59,15 +56,9 @@ class RoomDetailViewController: UIViewController {
         self.contentsTableView.delegate = self
         self.contentsTableView.dataSource = self
         self.contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
+
         
-       
-        
-        cancelView.layer.cornerRadius = 10
-        backView2.layer.cornerRadius = 10
-        stackView.layer.cornerRadius = 10
-        
-        
-        
+
         headerView.roomImage.layer.cornerRadius = 40
         headerView.roomImage.layer.borderColor = UIColor.systemGray6.cgColor
         headerView.roomImage.layer.borderWidth = 1
@@ -121,47 +112,23 @@ class RoomDetailViewController: UIViewController {
     
     
     @IBAction func reportButton(_ sender: Any) {
-        bluredView.isHidden = false
-        backView2.isHidden = false
-        cancelView.isHidden = false
-        tabBarController?.tabBar.isHidden = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedBluredView(_:)))
-        bluredView.addGestureRecognizer(tapGesture)
-    }
-    
-    
-    
-    @IBAction func reportPost(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let reportVC = storyboard.instantiateViewController(withIdentifier: "report") as! ReportViewController
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-        reportVC.passedDocumentID = self.reportDocumentID
-        reportVC.passedRoomID = self.reportRoomID
-        reportVC.passedUid = self.reportUid
-        reportVC.reportCategory = "post"
-        reportVC.titleTableViewDelegate = self
-        present(reportVC, animated: true, completion: nil)
+        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+        modalMenuVC.modalPresentationStyle = .custom
+        modalMenuVC.transitioningDelegate = self
+        modalMenuVC.passedRoomID = passedDocumentID
+        modalMenuVC.passedViewController = self
+        modalMenuVC.passedType = "room"
+        modalMenuVC.passedRoomImageUrl = roomInfo?.roomImage ?? ""
+        modalMenuVC.passedRoomName = roomInfo?.roomName ?? ""
+        modalMenuVC.passedRoomIntro = roomInfo?.roomIntro ?? ""
+        modalMenuVC.passedRoomImage = headerView.roomImage.image ?? UIImage()
+        present(modalMenuVC, animated: true, completion: nil)
     }
     
     
     
-    @IBAction func reportUser(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let reportVC = storyboard.instantiateViewController(withIdentifier: "report") as! ReportViewController
-        stackView.isHidden = true
-        bluredView.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-        reportVC.passedDocumentID = self.reportDocumentID
-        reportVC.passedRoomID = self.reportRoomID
-        reportVC.passedUid = self.reportUid
-        reportVC.reportCategory = "user"
-        reportVC.titleTableViewDelegate = self
-        present(reportVC, animated: true, completion: nil)
-    }
+    
     
     
     
@@ -171,36 +138,11 @@ class RoomDetailViewController: UIViewController {
     
     @objc func tappedBluredView(_ sender:UITapGestureRecognizer){
         bluredView.isHidden = true
-        backView2.isHidden = true
-        cancelView.isHidden = true
-        stackView.isHidden = true
         tabBarController?.tabBar.isHidden = false
     }
     
     
-    
-    
-    @IBAction func reportRoom(_ sender: Any) {
-        bluredView.isHidden = true
-        backView2.isHidden = true
-        cancelView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-        let reportRoomVC = storyboard?.instantiateViewController(identifier: "reportRoom") as! ReportRoomViewController
-        reportRoomVC.passedRoomID = passedDocumentID
-        present(reportRoomVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    @IBAction func cancelButton(_ sender: Any) {
-        bluredView.isHidden = true
-        backView2.isHidden = true
-        cancelView.isHidden = true
-        stackView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-    }
-    
+
     
     
     
@@ -213,7 +155,6 @@ class RoomDetailViewController: UIViewController {
             present(modalVC, animated: true, completion: nil)
         }else if sender.titleLabel?.text == "参加する" && self.joinedRoom?.documentID != "" && self.joinedRoom?.isJoined == false{
             creatProfileWhenHaveCreated()
-            
         }else if sender.titleLabel?.text == "ルームへ" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let enteredVC = storyboard.instantiateViewController(identifier: "enteredVC") as! EnteredRoomContentViewController
@@ -295,7 +236,7 @@ class RoomDetailViewController: UIViewController {
                     self.reportedContentsArray.append(reportedContents)
                 }
                 let filteredArray = self.reportedUsersArray.filter {
-                    $0.category == "post"
+                    $0.type == "post"
                 }
                 for content in filteredArray {
                     self.contentsArray.removeAll(where: {$0.documentID == content.documentID})
@@ -331,7 +272,7 @@ class RoomDetailViewController: UIViewController {
                     self.reportedUsersArray.append(reportedUsers)
                 }
                 let filteredArray = self.reportedUsersArray.filter {
-                    $0.category == "user"
+                    $0.type == "user"
                 }
                 for content in filteredArray {
                     self.contentsArray.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
@@ -506,7 +447,6 @@ class RoomDetailViewController: UIViewController {
             self.joinedRoom = followedRoom
             
             if self.joinedRoom?.documentID == self.passedDocumentID && self.joinedRoom?.isJoined == true {
-
                 self.headerView.joinButton.setTitle("ルームへ", for: .normal)
                 self.headerView.joinButton.setTitleColor(.black, for: .normal)
                 self.headerView.joinButton.backgroundColor = .systemBackground
@@ -770,20 +710,16 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource,Ti
     
     
     @objc func pushedReportButton(_ sender: UIButton){
-        stackView.isHidden = false
-        bluredView.isHidden = false
-        cancelView.isHidden = false
-        tabBarController?.tabBar.isHidden = false
-        bluredView.isHidden = false
-        stackView.isHidden = false
-        cancelView.isHidden = false
-        tabBarController?.tabBar.isHidden = true
-        self.reportDocumentID = contentsArray[sender.tag - 10000000000000].documentID
-        self.reportRoomID = contentsArray[sender.tag - 10000000000000].roomID
-        self.reportUid = contentsArray[sender.tag - 10000000000000].uid
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedBluredView(_:)))
-        bluredView.addGestureRecognizer(tapGesture)
-        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+        modalMenuVC.modalPresentationStyle = .custom
+        modalMenuVC.transitioningDelegate = self
+        modalMenuVC.passedDocumentID = contentsArray[sender.tag - 10000000000000].documentID
+        modalMenuVC.passedRoomID = contentsArray[sender.tag - 10000000000000].roomID
+        modalMenuVC.passedUid = contentsArray[sender.tag - 10000000000000].uid
+        modalMenuVC.passedViewController = self
+        modalMenuVC.passedType = "post"
+        present(modalMenuVC, animated: true, completion: nil)
     }
     
     
@@ -855,7 +791,7 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource,Ti
         let myuid = Auth.auth().currentUser!.uid
         let postID = contentsArray[sender.tag].documentID
         let documentID = "\(myuid)-\(postID)"
-        let docData = ["userName":joinedRoom!.userName,"userImage":joinedRoom!.userImage,"uid":myuid,"roomName":self.roomInfo!.roomName,"createdAt":Timestamp(),"postID":postID,"roomID":contentsArray[sender.tag].roomID,"documentID":documentID,"category":"like"] as [String:Any]
+        let docData = ["userName":joinedRoom!.userName,"userImage":joinedRoom!.userImage,"uid":myuid,"roomName":self.roomInfo!.roomName,"createdAt":Timestamp(),"postID":postID,"roomID":contentsArray[sender.tag].roomID,"documentID":documentID,"type":"like"] as [String:Any]
         let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
         
         if uid == myuid {
@@ -990,8 +926,10 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource,Ti
 
 extension RoomDetailViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-            return PresentationController(presentedViewController: presented, presenting: presenting)
-        }
+
+        return PresentModalViewController(presentedViewController: presented, presenting: presenting)
+
+    }
 }
 
 

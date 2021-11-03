@@ -19,9 +19,15 @@ class CreateProfileModalViewController: UIViewController {
     @IBOutlet weak var callAlubmButton: UIButton!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var personImageView: UIImageView!
+    @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var clearView: UIView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
     
     
     var createProfileDelegate: CreateProfileDelegate?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,9 +42,15 @@ class CreateProfileModalViewController: UIViewController {
         
         userNameTextField.delegate = self
         
+        backView.layer.cornerRadius = 10
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        
+        
+        self.clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.viewDidTouch)))
     }
     
     
@@ -81,6 +93,11 @@ class CreateProfileModalViewController: UIViewController {
     }
     
     
+    @objc func viewDidTouch(_ sender: UITapGestureRecognizer) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
     
     
     
@@ -91,7 +108,6 @@ class CreateProfileModalViewController: UIViewController {
 
 
 extension CreateProfileModalViewController:UITextFieldDelegate{
-    
     
     
     @objc func keybordWillShow(_ notification: Notification) {
@@ -107,8 +123,11 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
            return
          }
         
+        
         UIView.animate(withDuration: duration) {
-            self.view.frame.origin.y = 286 - (rect.height-100)
+            let y = self.backView.frame.origin.y
+            self.backView.frame.origin.y = y - (rect.height-50)
+            self.bottomConstraint.constant = rect.height - 50
         }
     }
     
@@ -124,7 +143,8 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
         }
         
         UIView.animate(withDuration: duration) {
-            self.view.frame.origin.y = 286
+            self.backView.frame.origin.y = 369
+            self.bottomConstraint.constant = 0
         }
     }
     
@@ -132,10 +152,9 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
     
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        
         if userNameTextField.text?.isEmpty == true {
             doneButton.isEnabled = false
-            doneButton.backgroundColor = .lightGray
+            doneButton.backgroundColor = .systemGray5
         }else{
             doneButton.isEnabled = true
             doneButton.backgroundColor = .systemRed
@@ -145,7 +164,7 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+        self.backView.endEditing(true)
     }
     
     
