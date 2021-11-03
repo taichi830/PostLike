@@ -107,14 +107,24 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
             if indexPath.row == 0 {
                 var components = URLComponents()
                 components.scheme = "https"
+                #if DEBUG
                 components.host = "postliketest.page.link"
+                #else
+                components.host = "postlike.page.link"
+                #endif
+                
                 components.path = "/rooms"
                 
                 let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedRoomID)
                 components.queryItems = [roomIDQueryItem]
                 
                 guard let link = components.url else {return}
+                #if DEBUG
                 let dynamicLinksDomainURIPrefix = "https://postliketest.page.link"
+                #else
+                let dynamicLinksDomainURIPrefix = "https://postlike.page.link"
+                #endif
+                
                 guard let shareLink = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else {return}
                 
                 if let bundleID = Bundle.main.bundleIdentifier {
