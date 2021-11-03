@@ -41,8 +41,9 @@ extension UIViewController{
         indicator.color = .white
         
         
-        let backView = UIView(frame: CGRect(x: 0, y: 200, width: 60, height: 60))
-        backView.center.x = view.center.x
+        let backView = UIView()
+        backView.frame.size = CGSize(width: 60, height: 60)
+        backView.center = view.center
         backView.backgroundColor = .gray
         backView.layer.cornerRadius = 5
         backView.addSubview(indicator)
