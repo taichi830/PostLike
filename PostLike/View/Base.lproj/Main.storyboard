@@ -949,9 +949,12 @@
                                         <color key="textColor" white="0.60183632779999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBY-lv-joV">
-                                        <rect key="frame" x="325" y="8" width="35" height="26"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBY-lv-joV">
+                                        <rect key="frame" x="319" y="8" width="40" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="BQF-Cz-T4M"/>
+                                            <constraint firstAttribute="width" constant="40" id="O2U-Fr-1E3"/>
+                                        </constraints>
                                         <color key="tintColor" systemColor="labelColor"/>
                                         <state key="normal" image="ellipsis" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
@@ -969,6 +972,8 @@
                                     <constraint firstAttribute="trailing" secondItem="XZz-El-ihX" secondAttribute="trailing" id="VUC-4z-5wk"/>
                                     <constraint firstAttribute="bottom" secondItem="XZz-El-ihX" secondAttribute="bottom" id="dFj-RH-bJj"/>
                                     <constraint firstAttribute="height" constant="150" id="dlf-pI-ldp"/>
+                                    <constraint firstAttribute="trailing" secondItem="NBY-lv-joV" secondAttribute="trailing" constant="16" id="dll-wP-5ng"/>
+                                    <constraint firstItem="NBY-lv-joV" firstAttribute="top" secondItem="wOX-Gb-d7a" secondAttribute="top" constant="8" id="t0L-lU-XDN"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" alpha="0.30000001192092896" contentMode="scaleToFill" id="7aW-J1-Ssb">
