@@ -19,6 +19,8 @@ class RoomDeliteContainerViewController: UIViewController {
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var clearView: UIView!
     @IBOutlet weak var alertLabel: UILabel!
+    @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var lightRedView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +29,11 @@ class RoomDeliteContainerViewController: UIViewController {
 
         checkButton.layer.borderWidth = 0.8
         checkButton.layer.borderColor = UIColor.systemGray5.cgColor
-        alertLabel.text = "・削除されたルームは検索結果に反映されません。\n\n・参加しているユーザーは投稿できなくなります。ルームの活動を維持したい場合は”ルームを退出する”を選んでください。\n\n・ルームを復元させることはできません。"
+        alertLabel.text = "・削除されたルームは検索結果に反映されなくなります。\n\n・参加しているユーザーは投稿できなくなります。ルームの活動を維持したい場合は”ルームを退出する”を選んでください。\n\n・ルームを復元させることはできません。"
         clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tappedBackView)))
         
+        backView.layer.cornerRadius = 10
+        lightRedView.layer.cornerRadius = 10
         
     }
     
