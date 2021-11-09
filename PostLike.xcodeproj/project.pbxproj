@@ -87,6 +87,7 @@
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator.swift */; };
+		CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */; };
 		CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */; };
 		CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363282725858B00D5D443 /* PresentModalViewController.swift */; };
 /* End PBXBuildFile section */
@@ -182,6 +183,7 @@
 		CEE6A42225C104AA00F6FE06 /* ContentsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContentsCollectionViewCell.xib; sourceTree = "<group>"; };
 		CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CEED29B5260E27BE00AFA2FB /* CreateHostProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHostProfileViewController.swift; sourceTree = "<group>"; };
+		CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRoomViewController.swift; sourceTree = "<group>"; };
 		CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileModalViewController.swift; sourceTree = "<group>"; };
 		CEF363282725858B00D5D443 /* PresentModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentModalViewController.swift; sourceTree = "<group>"; };
 		D2CB292E52BB16F49AE10808 /* Pods-PostLike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike.debug.xcconfig"; path = "Target Support Files/Pods-PostLike/Pods-PostLike.debug.xcconfig"; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */,
 				CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */,
 				CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */,
+				CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -597,6 +600,7 @@
 				CE012C3526B6EFD4006CC20E /* NotificationViewController.swift in Sources */,
 				CE012C3626B6EFD4006CC20E /* PlaceHolderTextView.swift in Sources */,
 				CE012C3726B6EFD4006CC20E /* PagingMenuViewController.swift in Sources */,
+				CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */,
 				CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */,
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
 				CE012C3C26B6EFD4006CC20E /* RoomDetailViewController.swift in Sources */,
