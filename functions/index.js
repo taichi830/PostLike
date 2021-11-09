@@ -233,3 +233,33 @@ exports.createFeeds = functions.region("asia-northeast1").firestore.document('ro
 
 
 });
+
+
+//１日一回、ルームごとのメンバー数と投稿数をコレクションに保存する
+exports.scheduledFunction = functions.region('asia-northeast1').pubsub.schedule('every 24 hours').onRun(async (context) => {
+  const memberCountCollectionGroup = await db.collectionGroup('memberCount').get();
+  const memberCountData =  memberCountCollectionGroup.docs.map(doc => {
+    return doc.data();
+  });
+  for(const chunkedMemberCountData of arrayChunk(memberCountData,500)){
+    const batch = db.batch();
+    chunkedMemberCountData.forEach(data => {
+      const roomRef = db.collection('rooms').doc(data.roomID);
+      batch.set(roomRef,{memberCount:data.memberCount},{ merge: true });
+    });
+    await batch.commit();
+  };
+
+  const roomPostCountCollectionGroup = await db.collectionGroup('roomPostCount').get();
+  const roomPostCountData = roomPostCountCollectionGroup.docs.map(doc => {
+    return doc.data();
+  });
+  for(const chunkedRoomPostCountData of arrayChunk(roomPostCountData,500)){
+    const batch = db.batch();
+    chunkedRoomPostCountData.forEach(data => {
+      const roomRef = db.collection('rooms').doc(data.roomID);
+      batch.set(roomRef,{postCount:data.postCount},{ merge: true });
+    });
+    await batch.commit();
+  };
+});
