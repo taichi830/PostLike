@@ -35,8 +35,6 @@ class RoomDetailTableViewController: UIViewController {
         super.viewDidLoad()
     
         roomImage.layer.cornerRadius = self.roomImage.frame.height/2
-//        roomImage.layer.borderWidth = 10
-//        roomImage.layer.borderColor = UIColor.systemGray6.cgColor
         
         plusButton.layer.cornerRadius = plusButton.frame.height/2
         plusButton.layer.borderWidth = 5
@@ -71,7 +69,7 @@ class RoomDetailTableViewController: UIViewController {
     
     
     @IBAction func cancelButton(_ sender: Any) {
-        navigationController?.popViewController(animated: false)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func toNextPage(_ sender: Any) {

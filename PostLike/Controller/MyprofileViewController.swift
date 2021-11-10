@@ -134,8 +134,8 @@ extension MyprofileViewController:UICollectionViewDelegate,UICollectionViewDataS
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 160, height: 190)
         layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+        layout.minimumInteritemSpacing = 20
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
         myRoomCollectionView.collectionViewLayout = layout
     }
     

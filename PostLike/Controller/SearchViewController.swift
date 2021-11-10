@@ -32,6 +32,11 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
     @IBOutlet weak var separateView: UIView!
     @IBOutlet weak var historyTableView: UITableView!
     @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var topCreateRoomButton: UIButton!
+    @IBOutlet weak var topView: UIView!
+    @IBOutlet weak var searchBackView: UIView!
+    @IBOutlet weak var topViewHeight: NSLayoutConstraint!
     
     
     
@@ -48,19 +53,20 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
         headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         resultTableView.tableHeaderView = headerView
         
-        separateView.isHidden = true
+        headerView.isHidden = true
         
         createButton.layer.cornerRadius = 15
         createButton.clipsToBounds = true
-        createButton.isHidden = true
         createButton.isEnabled = false
         
+        topCreateRoomButton.layer.cornerRadius = 15
+        topCreateRoomButton.clipsToBounds = true
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        
-        
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -77,27 +83,38 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
     
     
     @objc func keybordWillShow(_ notification: Notification) {
-        searchField.showsCancelButton = true
+        searchField.setShowsCancelButton(true, animated: true)
+        UIView.animate(withDuration: 0.2) {
+            self.containerView.alpha = 0
+            self.topViewHeight.constant = 0
+            self.view.layoutIfNeeded()
+        }
     }
     
-    @objc func keybordWillHide(_ notification: Notification) {
-        searchField.showsCancelButton = false
-    }
+    
+    
     
     
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchField.showsCancelButton = false
+        searchField.setShowsCancelButton(false, animated: true)
         searchField.resignFirstResponder()
         searchField.text = ""
-        alertLabel.isHidden = true
-        createButton.isHidden = true
-        createButton.isEnabled = false
-        separateView.isHidden = true
+        headerView.isHidden = true
         resultTableView.isHidden = true
         backView.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.containerView.alpha = 1
+            self.topViewHeight.constant = 50
+            self.view.layoutIfNeeded()
+        }
     }
+    
+
+    
+    
+    
     
     
     
@@ -105,19 +122,13 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
     func emptyCheckOfSearchField(searchText:String){
         if searchText == "" {
             headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-            alertLabel.isHidden = true
-            createButton.isHidden = true
-            createButton.isEnabled = false
-            separateView.isHidden = true
+            headerView.isHidden = true
             resultTableView.isHidden = true
             backView.isHidden = false
         }else{
             alertLabel.text = "\"\(searchText)\" のRoomが見つかりませんでした。"
             headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 138)
-            alertLabel.isHidden = false
-            createButton.isHidden = false
-            createButton.isEnabled = true
-            separateView.isHidden = false
+            headerView.isHidden = false
             resultTableView.isHidden = false
             backView.isHidden = true
         }
@@ -173,9 +184,12 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
         let searchText: String = (searchBar.text! as NSString).replacingCharacters(in: range, with: text)
         self.emptyCheckOfSearchField(searchText: searchText)
         self.timer?.invalidate()
-        self.timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.call), userInfo: nil, repeats: false)
+        self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.call), userInfo: nil, repeats: false)
         return true
     }
+    
+    
+    
     
     
     @objc func call(){
@@ -371,7 +385,6 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
             detailVC.passedDocumentID = historyArray[indexPath.row].documentID
             
         }else if cellIdentifier == "result"{
-
             detailVC.passedDocumentID = resultArray[indexPath.row].documentID
             createHistory(roomImageUrl: resultArray[indexPath.row].roomImage, roomName: resultArray[indexPath.row].roomName, documentID: resultArray[indexPath.row].documentID)
         }
@@ -430,6 +443,10 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
         }
     }
 }
+
+
+
+
 
 extension SearchViewController:UIScrollViewDelegate{
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

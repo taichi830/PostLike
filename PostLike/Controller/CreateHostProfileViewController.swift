@@ -38,8 +38,6 @@ class CreateHostProfileViewController: UIViewController {
         super.viewDidLoad()
         
         userImage.layer.cornerRadius = 50
-//        userImage.layer.borderWidth = 10
-//        userImage.layer.borderColor = UIColor.systemGray6.cgColor
         
         backView.layer.cornerRadius = 20
         backView.layer.borderWidth = 5
@@ -161,7 +159,7 @@ class CreateHostProfileViewController: UIViewController {
     func  createRoom(roomImageUrl:String,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let createdAt = Timestamp()
-        let docData = ["roomImage":roomImageUrl,"documentID":documentID,"moderator":uid,"roomIntro":passedRoomIntro,"roomName":passedRoomName,"createdAt":createdAt] as [String:Any]
+        let docData = ["roomImage":roomImageUrl,"documentID":documentID,"moderator":uid,"roomIntro":passedRoomIntro,"roomName":passedRoomName,"createdAt":createdAt,"memberCount":1,"postCount":0] as [String:Any]
         let ref = Firestore.firestore().collection("rooms").document(documentID)
         batch.setData(docData, forDocument: ref)
     }
@@ -255,9 +253,9 @@ class CreateHostProfileViewController: UIViewController {
                 }
             }
         }
-
-        
     }
+    
+    
     
     
     func batchWhenUserImageAndRoomImage(){

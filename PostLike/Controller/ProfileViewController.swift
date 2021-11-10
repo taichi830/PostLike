@@ -890,6 +890,16 @@ extension ProfileViewController:DeleteRoomDelegate{
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID)
         batch.deleteDocument(ref)
     }
+    
+    func deleteMemberCount(batch:WriteBatch){
+        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("memberCount").document("count")
+        batch.deleteDocument(ref)
+    }
+    
+    func deleteRoomPostCount(batch:WriteBatch){
+        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("roomPostCount").document("count")
+        batch.deleteDocument(ref)
+    }
 
 
 
@@ -910,6 +920,8 @@ extension ProfileViewController:DeleteRoomDelegate{
         let batch = Firestore.firestore().batch()
         deleteRoom(batch: batch)
         deleteMyprofile(batch: batch)
+        deleteMemberCount(batch: batch)
+        deleteRoomPostCount(batch: batch)
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
