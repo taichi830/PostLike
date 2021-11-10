@@ -968,8 +968,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="v8k-PQ-BQW">
-                                <rect key="frame" x="16" y="153" width="343" height="427"/>
+                                <rect key="frame" x="16" y="153" width="343" height="310"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="310" id="iJv-Ld-m0e"/>
+                                </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="62" id="Vbj-94-Pd2">
                                         <rect key="frame" x="0.0" y="24.333333969116211" width="343" height="62"/>
@@ -1016,7 +1019,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hxw-er-Uhm">
-                                <rect key="frame" x="16" y="594" width="343" height="45"/>
+                                <rect key="frame" x="16" y="563" width="343" height="45"/>
                                 <color key="backgroundColor" systemColor="systemGray4Color"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="j8h-t3-pwX"/>
@@ -1052,11 +1055,10 @@
                             <constraint firstItem="v8k-PQ-BQW" firstAttribute="top" secondItem="ZIO-lJ-arN" secondAttribute="bottom" constant="20" id="Fve-Sx-cHB"/>
                             <constraint firstItem="Vwx-vn-pIs" firstAttribute="trailing" secondItem="v8k-PQ-BQW" secondAttribute="trailing" constant="16" id="G2E-Fd-K4P"/>
                             <constraint firstItem="ZIO-lJ-arN" firstAttribute="top" secondItem="ZTP-0G-c2T" secondAttribute="bottom" constant="36" id="Ipn-6C-WGO"/>
-                            <constraint firstItem="hxw-er-Uhm" firstAttribute="top" secondItem="v8k-PQ-BQW" secondAttribute="bottom" constant="14" id="JAZ-n6-RGL"/>
+                            <constraint firstItem="hxw-er-Uhm" firstAttribute="top" secondItem="v8k-PQ-BQW" secondAttribute="bottom" constant="100" id="JAZ-n6-RGL"/>
                             <constraint firstItem="ZTP-0G-c2T" firstAttribute="top" secondItem="n6A-30-X5c" secondAttribute="top" constant="32" id="Nob-hH-7RC"/>
                             <constraint firstItem="ZTP-0G-c2T" firstAttribute="centerX" secondItem="n6A-30-X5c" secondAttribute="centerX" id="NuW-4Z-Avh"/>
                             <constraint firstItem="v8k-PQ-BQW" firstAttribute="leading" secondItem="Vwx-vn-pIs" secondAttribute="leading" constant="16" id="POL-Lb-mkU"/>
-                            <constraint firstItem="Vwx-vn-pIs" firstAttribute="bottom" secondItem="hxw-er-Uhm" secondAttribute="bottom" constant="139" id="X8Q-eP-40F"/>
                             <constraint firstItem="ZIO-lJ-arN" firstAttribute="top" secondItem="poi-Qs-QfJ" secondAttribute="bottom" constant="37" id="hAa-p1-9QQ"/>
                             <constraint firstItem="Vwx-vn-pIs" firstAttribute="trailing" secondItem="poi-Qs-QfJ" secondAttribute="trailing" constant="28" id="jmh-F1-q7U"/>
                             <constraint firstItem="Vwx-vn-pIs" firstAttribute="trailing" secondItem="hxw-er-Uhm" secondAttribute="trailing" constant="16" id="pR4-Kq-ChG"/>

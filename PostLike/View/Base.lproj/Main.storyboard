@@ -153,7 +153,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="報告する項目を選んでください。" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7V-Mx-B4d">
-                                <rect key="frame" x="20.333333333333343" y="99" width="334.33333333333326" height="34"/>
+                                <rect key="frame" x="20.666666666666657" y="99" width="334" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="tRS-fd-c4k"/>
                                 </constraints>
@@ -162,10 +162,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="LY9-Hr-G1z">
-                                <rect key="frame" x="16" y="153" width="343" height="422"/>
+                                <rect key="frame" x="16" y="153" width="343" height="310"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="422" id="oHC-hI-vZT"/>
+                                    <constraint firstAttribute="height" constant="310" id="oHC-hI-vZT"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="62" id="mPQ-tu-dDu">
@@ -212,20 +212,6 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u83-aA-DdH">
-                                <rect key="frame" x="16" y="589" width="343" height="45"/>
-                                <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="c7E-kN-A8L"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                <state key="normal" title="報告する">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="sendReport:" destination="T4t-9w-aNL" eventType="touchUpInside" id="ezu-BJ-YAD"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G71-Sw-Ska">
                                 <rect key="frame" x="313" y="33" width="34" height="29"/>
                                 <constraints>
@@ -241,16 +227,30 @@
                                     <action selector="backButton:" destination="T4t-9w-aNL" eventType="touchUpInside" id="swc-mT-V70"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u83-aA-DdH">
+                                <rect key="frame" x="16" y="563" width="343" height="45"/>
+                                <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="c7E-kN-A8L"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <state key="normal" title="報告する">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendReport:" destination="T4t-9w-aNL" eventType="touchUpInside" id="ezu-BJ-YAD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Jtf-lv-1Dn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="u83-aA-DdH" firstAttribute="top" secondItem="LY9-Hr-G1z" secondAttribute="bottom" constant="100" id="228-dQ-WLT"/>
                             <constraint firstItem="G71-Sw-Ska" firstAttribute="top" secondItem="sgr-OB-gEJ" secondAttribute="top" constant="33" id="9b5-BC-Pkb"/>
                             <constraint firstItem="f7V-Mx-B4d" firstAttribute="top" secondItem="xo4-65-hlN" secondAttribute="bottom" constant="36" id="DYE-dF-Ftf"/>
                             <constraint firstItem="xo4-65-hlN" firstAttribute="top" secondItem="sgr-OB-gEJ" secondAttribute="top" constant="32" id="G7A-bd-ROf"/>
                             <constraint firstItem="Jtf-lv-1Dn" firstAttribute="trailing" secondItem="u83-aA-DdH" secondAttribute="trailing" constant="16" id="GQr-2Y-EOb"/>
                             <constraint firstItem="LY9-Hr-G1z" firstAttribute="leading" secondItem="Jtf-lv-1Dn" secondAttribute="leading" constant="16" id="M9Y-IY-RcW"/>
-                            <constraint firstItem="u83-aA-DdH" firstAttribute="top" secondItem="LY9-Hr-G1z" secondAttribute="bottom" constant="14" id="O9F-bt-DeX"/>
                             <constraint firstItem="u83-aA-DdH" firstAttribute="leading" secondItem="Jtf-lv-1Dn" secondAttribute="leading" constant="16" id="TKS-fE-Gdj"/>
                             <constraint firstItem="f7V-Mx-B4d" firstAttribute="centerX" secondItem="sgr-OB-gEJ" secondAttribute="centerX" id="cSa-qn-EOg"/>
                             <constraint firstItem="xo4-65-hlN" firstAttribute="centerX" secondItem="sgr-OB-gEJ" secondAttribute="centerX" id="hKR-7U-ZLM"/>
@@ -380,7 +380,7 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="42"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="コメント" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Br-Wr-xIO">
-                                        <rect key="frame" x="157" y="0.0" width="61.333333333333343" height="42"/>
+                                        <rect key="frame" x="157" y="0.0" width="61" height="42"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="42" id="z5Y-TE-aNR"/>
                                         </constraints>
