@@ -1083,9 +1083,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="663"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="K1Z-a5-uPC">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="682"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="K1Z-a5-uPC">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="663"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="recommendRoom" rowHeight="86" id="4DK-af-tIK">
@@ -1151,6 +1150,12 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6UW-Tb-47N"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="K1Z-a5-uPC" firstAttribute="trailing" secondItem="6UW-Tb-47N" secondAttribute="trailing" id="Ap5-qy-ztT"/>
+                            <constraint firstItem="K1Z-a5-uPC" firstAttribute="top" secondItem="Jty-C3-dbU" secondAttribute="top" id="RGt-kc-dBO"/>
+                            <constraint firstItem="K1Z-a5-uPC" firstAttribute="leading" secondItem="6UW-Tb-47N" secondAttribute="leading" id="T7E-l6-xD0"/>
+                            <constraint firstItem="K1Z-a5-uPC" firstAttribute="bottom" secondItem="6UW-Tb-47N" secondAttribute="bottom" id="ZnP-1n-JTd"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="recommendRoomTableView" destination="K1Z-a5-uPC" id="hOf-cK-b9H"/>
@@ -1158,7 +1163,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Glb-Zm-sWF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5730.3999999999996" y="-475.86206896551727"/>
+            <point key="canvasLocation" x="5730.3999999999996" y="-476.23152709359607"/>
         </scene>
     </scenes>
     <resources>
