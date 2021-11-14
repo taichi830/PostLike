@@ -988,10 +988,10 @@ extension EnteredRoomContentViewController:UIScrollViewDelegate,UIGestureRecogni
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y <= 0 {
-            self.headerViewHeight.constant = -(scrollView.contentOffset.y - 210)
+            self.headerViewHeight.constant = -(scrollView.contentOffset.y - 190)
             self.headerViewTopConstraint.constant = 0
         }else{
-            self.headerViewHeight.constant = 210
+            self.headerViewHeight.constant = 190
             self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
         }
         

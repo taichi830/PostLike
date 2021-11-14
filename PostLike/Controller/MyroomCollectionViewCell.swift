@@ -14,10 +14,24 @@ class MyroomCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var personImage: UIImageView!
     @IBOutlet weak var roomName: UILabel!
     @IBOutlet weak var roomImage: UIImageView!
+    @IBOutlet weak var roomNameBackView: UIView!
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
+    
+        roomNameBackView.clipsToBounds = true
+        roomNameBackView.layer.cornerRadius = 8
+
+        roomImage.clipsToBounds = true
+        roomImage.layer.cornerRadius = 8
+        
+        self.contentView.clipsToBounds = false
+        self.contentView.layer.shadowRadius = 5
+        self.contentView.layer.shadowOpacity = 0.1
+        self.contentView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.contentView.layer.shadowColor = UIColor.black.cgColor
+        
         
     }
 
