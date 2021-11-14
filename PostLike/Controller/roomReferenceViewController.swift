@@ -63,7 +63,7 @@ class RoomRefernceViewController: UIViewController,UITableViewDelegate,UITableVi
             personImage.image = UIImage(systemName: "person.3.fill")
         }
         
-        roomImage.layer.cornerRadius = 30
+        roomImage.layer.cornerRadius = roomImage.frame.height/2
         roomImage.layer.borderColor = UIColor.systemGray6.cgColor
         roomImage.layer.borderWidth = 1
         roomName.text = passedFollwedRoomArray[indexPath.row].roomName
