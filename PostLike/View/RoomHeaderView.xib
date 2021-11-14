@@ -22,11 +22,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="310"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="297"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ovg-fR-STo">
-                    <rect key="frame" x="0.0" y="203" width="414" height="107"/>
+                    <rect key="frame" x="0.0" y="190" width="414" height="107"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-DG-Twg">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="107"/>
@@ -38,7 +38,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello World" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7xg-vs-MTE">
-                                        <rect key="frame" x="22" y="17" width="370" height="27"/>
+                                        <rect key="frame" x="22" y="23" width="370" height="27"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="27" id="DwB-Is-sgC"/>
                                         </constraints>
@@ -80,7 +80,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="メンバー0人" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXj-fe-bdn">
-                                        <rect key="frame" x="22" y="57" width="166" height="22"/>
+                                        <rect key="frame" x="22" y="64" width="166" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <nil key="textColor"/>
@@ -93,7 +93,7 @@
                                     <constraint firstAttribute="bottom" secondItem="QJq-MM-LPC" secondAttribute="bottom" constant="17" id="9cH-ED-9c0"/>
                                     <constraint firstItem="7xg-vs-MTE" firstAttribute="leading" secondItem="hiv-Gc-Vhf" secondAttribute="leading" constant="22" id="SqB-Yl-Toh"/>
                                     <constraint firstAttribute="trailing" secondItem="7xg-vs-MTE" secondAttribute="trailing" constant="22" id="buF-ea-e6b"/>
-                                    <constraint firstItem="7xg-vs-MTE" firstAttribute="top" secondItem="hiv-Gc-Vhf" secondAttribute="top" constant="17" id="oI6-Bc-364"/>
+                                    <constraint firstItem="7xg-vs-MTE" firstAttribute="top" secondItem="hiv-Gc-Vhf" secondAttribute="top" constant="23" id="oI6-Bc-364"/>
                                 </constraints>
                             </view>
                             <blurEffect style="systemMaterialLight"/>
@@ -113,7 +113,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wix-Xb-fgj">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="203"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="190"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
@@ -131,7 +131,7 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="53.623188405797109" y="-106.47321428571428"/>
+            <point key="canvasLocation" x="53.623188405797109" y="-101.78571428571428"/>
         </view>
     </objects>
     <resources>
