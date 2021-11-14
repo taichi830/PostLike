@@ -592,7 +592,6 @@
         <!--Profile Modal View Controller-->
         <scene sceneID="d9Z-ag-UN2">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YjH-at-8EW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="profileModal" useStoryboardIdentifierAsRestorationIdentifier="YES" id="T6C-50-D6F" customClass="ProfileModalViewController" customModule="PostLike" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="T86-za-oSf">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
@@ -664,6 +663,7 @@
                         <outlet property="menuTableView" destination="CIa-gl-rwb" id="YLC-my-Dy4"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YjH-at-8EW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="9658.8785046728972" y="-973.21814254859623"/>
         </scene>
