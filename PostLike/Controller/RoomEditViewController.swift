@@ -123,6 +123,9 @@ class RoomEditViewController: UIViewController {
     }
     
     
+    
+    
+    
     func updateRoomInfo(roomImageUrl:String,batch:WriteBatch){
         let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID)
@@ -130,11 +133,33 @@ class RoomEditViewController: UIViewController {
     }
     
     
+    
+    
+    
+    
     func updateMyRoomInfo(roomImageUrl:String,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
         batch.updateData(docData, forDocument: ref)
+    }
+    
+    
+    
+    
+    
+    func deleteStrage(){
+        let storage = Storage.storage()
+        let imageRef = NSString(string: roomIntro!.roomImage)
+        let desertRef = storage.reference(forURL: imageRef as String)
+        desertRef.delete { err in
+            if err != nil {
+                print("false")
+                return
+            }else{
+                print("success")
+            }
+        }
     }
     
     
@@ -177,7 +202,9 @@ class RoomEditViewController: UIViewController {
                             }
                             self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                         }else{
-                            self.dismiss(animated: true, completion: nil)
+                            self.dismiss(animated: true) {
+                                self.deleteStrage()
+                            }
                         }
                     }
                 }
