@@ -21,7 +21,6 @@ class EnteredRoomContentViewController: UIViewController{
     @IBOutlet weak var headerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var roomImageView: UIImageView!
     @IBOutlet weak var topBlurEffect: UIVisualEffectView!
-    
     @IBOutlet weak var topRoomNameLabel: UILabel!
     
     
@@ -988,10 +987,10 @@ extension EnteredRoomContentViewController:UIScrollViewDelegate,UIGestureRecogni
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y <= 0 {
-            self.headerViewHeight.constant = -(scrollView.contentOffset.y - 190)
+            self.headerViewHeight.constant = -(scrollView.contentOffset.y - 180)
             self.headerViewTopConstraint.constant = 0
         }else{
-            self.headerViewHeight.constant = 190
+            self.headerViewHeight.constant = 180
             self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
         }
         

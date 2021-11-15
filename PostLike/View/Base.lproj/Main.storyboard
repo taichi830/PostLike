@@ -67,7 +67,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K5r-nt-8re">
-                                <rect key="frame" x="0.0" y="89" width="375" height="190"/>
+                                <rect key="frame" x="0.0" y="89" width="375" height="155"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="10" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ZE7-2b-TAL">
@@ -92,15 +92,8 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="モデレーターの投稿" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xF6-Ed-uxJ">
-                                        <rect key="frame" x="15" y="160" width="138" height="18"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UqH-Hs-sFo">
-                                        <rect key="frame" x="0.0" y="189" width="375" height="1"/>
+                                        <rect key="frame" x="0.0" y="154" width="375" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                                     </view>
@@ -860,7 +853,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HAR-eH-HaE" customClass="RoomHeaderView" customModule="PostLike" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="297"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="287"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
@@ -879,15 +872,15 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2QZ-qg-q96">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="190"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZEU-yY-gWX">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="190"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="190" id="9jt-zF-dFn"/>
+                                    <constraint firstAttribute="height" constant="180" id="9jt-zF-dFn"/>
                                     <constraint firstItem="ZEU-yY-gWX" firstAttribute="leading" secondItem="2QZ-qg-q96" secondAttribute="leading" id="BBU-ly-bEi"/>
                                     <constraint firstAttribute="trailing" secondItem="ZEU-yY-gWX" secondAttribute="trailing" id="MTL-NY-dJK"/>
                                     <constraint firstItem="ZEU-yY-gWX" firstAttribute="top" secondItem="2QZ-qg-q96" secondAttribute="top" id="Tfd-tl-VwJ"/>
@@ -897,9 +890,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lVb-mQ-RRP">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                 <subviews>
-                                    <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zCb-ew-qqO">
+                                    <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCb-ew-qqO">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="goD-Ad-OAr">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -914,7 +906,7 @@
                                         </view>
                                         <blurEffect style="systemMaterialLight"/>
                                     </visualEffectView>
-                                    <view alpha="0.29999999999999999" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RTo-B8-Ljb">
+                                    <view alpha="0.40000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RTo-B8-Ljb">
                                         <rect key="frame" x="17" y="50" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -932,7 +924,7 @@
                                             <action selector="backButton:" destination="iVt-jJ-wNd" eventType="touchUpInside" id="Owe-nN-sAX"/>
                                         </connections>
                                     </button>
-                                    <view alpha="0.29999999999999999" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eTv-D9-LAN">
+                                    <view alpha="0.40000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eTv-D9-LAN">
                                         <rect key="frame" x="328" y="50" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -951,6 +943,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="zCb-ew-qqO" firstAttribute="leading" secondItem="lVb-mQ-RRP" secondAttribute="leading" id="3gi-NS-7Fx"/>
+                                    <constraint firstAttribute="bottom" secondItem="zCb-ew-qqO" secondAttribute="bottom" id="8Tf-wK-vmz"/>
+                                    <constraint firstAttribute="trailing" secondItem="zCb-ew-qqO" secondAttribute="trailing" id="Fu7-OM-Yd8"/>
+                                    <constraint firstItem="zCb-ew-qqO" firstAttribute="top" secondItem="lVb-mQ-RRP" secondAttribute="top" id="Sc3-3t-OMD"/>
                                     <constraint firstAttribute="height" constant="90" id="hJQ-sU-54f"/>
                                 </constraints>
                             </view>
