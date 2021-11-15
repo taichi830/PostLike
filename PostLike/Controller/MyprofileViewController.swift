@@ -133,7 +133,7 @@ extension MyprofileViewController:UICollectionViewDelegate,UICollectionViewDataS
         //セルの大きさと間隔
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: ((self.view.frame.width) - 55)/2, height: 145)
-        layout.minimumLineSpacing = 15
+        layout.minimumLineSpacing = 20
         layout.minimumInteritemSpacing = 15
         layout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 10, right: 20)
         myRoomCollectionView.collectionViewLayout = layout
