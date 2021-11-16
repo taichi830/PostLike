@@ -76,19 +76,7 @@ class RoomEditViewController: UIViewController {
     }
     
     
-    
-    
-    
-    
-//    func setUpRoomProfile(){
-//        roomImage.layer.cornerRadius = 50
-//        if passedRoomImage != "" {
-//            roomImage.sd_setImage(with: URL(string: passedRoomImage), completed: nil)
-//            personsImage.image = UIImage()
-//        }
-//    }
-    
-    
+
     
     
     
@@ -202,7 +190,9 @@ class RoomEditViewController: UIViewController {
                             self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                         }else{
                             self.dismiss(animated: true) {
-                                self.deleteStrage()
+                                if self.roomIntro!.roomImage != "" {
+                                    self.deleteStrage()
+                                }
                             }
                         }
                     }

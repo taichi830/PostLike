@@ -115,7 +115,6 @@ class EditProfileViewController: UIViewController {
     
     func deleteStrage(){
         let storage = Storage.storage()
-        print(passedUserImage)
         let imageRef = NSString(string: passedUserImage)
         let desertRef = storage.reference(forURL: imageRef as String)
         desertRef.delete { err in
@@ -149,7 +148,9 @@ class EditProfileViewController: UIViewController {
             }
             print("firestoreへの保存に成功しました。")
             self.dismiss(animated: true) {
-                self.deleteStrage()
+                if self.passedUserImage != "" {
+                    self.deleteStrage()
+                }
             }
         }
     }
