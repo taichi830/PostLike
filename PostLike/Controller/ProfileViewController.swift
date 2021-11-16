@@ -874,7 +874,10 @@ extension ProfileViewController:DeletePostDelegate{
                     $0.documentID == mappedArray[0].documentID
                 }
                 self.profileTableView.reloadData()
-                self.deleteStrageFile(imageUrl: imageUrl)
+                if imageUrl[0] != "" {
+                    self.deleteStrageFile(imageUrl: imageUrl)
+                }
+                
             }
         }
     }
