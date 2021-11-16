@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dar-mV-nqj">
-                                <rect key="frame" x="0.0" y="49" width="375" height="45"/>
+                                <rect key="frame" x="0.0" y="54" width="375" height="45"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="お知らせ" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N8N-Bk-BKb">
                                         <rect key="frame" x="19.999999999999993" y="0.0" width="101.33333333333331" height="45"/>
@@ -43,7 +43,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3Zp-NN-bJS">
-                                <rect key="frame" x="0.0" y="94" width="375" height="684"/>
+                                <rect key="frame" x="0.0" y="99" width="375" height="679"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="96" id="UZs-2W-atH">
@@ -137,7 +137,7 @@
                         <constraints>
                             <constraint firstItem="3Zp-NN-bJS" firstAttribute="top" secondItem="Dar-mV-nqj" secondAttribute="bottom" id="E43-rQ-rk1"/>
                             <constraint firstItem="3Zp-NN-bJS" firstAttribute="trailing" secondItem="sSu-1R-mAO" secondAttribute="trailing" id="GzV-kZ-7qR"/>
-                            <constraint firstItem="Dar-mV-nqj" firstAttribute="top" secondItem="sSu-1R-mAO" secondAttribute="top" constant="5" id="Jjl-Hs-YMd"/>
+                            <constraint firstItem="Dar-mV-nqj" firstAttribute="top" secondItem="sSu-1R-mAO" secondAttribute="top" constant="10" id="Jjl-Hs-YMd"/>
                             <constraint firstItem="3Zp-NN-bJS" firstAttribute="leading" secondItem="sSu-1R-mAO" secondAttribute="leading" id="NqP-Xf-BiO"/>
                             <constraint firstItem="Dar-mV-nqj" firstAttribute="leading" secondItem="sSu-1R-mAO" secondAttribute="leading" id="WMq-TA-Hqd"/>
                             <constraint firstItem="Dar-mV-nqj" firstAttribute="trailing" secondItem="sSu-1R-mAO" secondAttribute="trailing" id="bf4-Ea-mWR"/>
