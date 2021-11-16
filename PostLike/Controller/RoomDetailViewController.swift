@@ -27,12 +27,10 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var roomImageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var roomImageViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var topBlurEffectView: UIVisualEffectView!
-    
     @IBOutlet weak var headerView: SearchResultHeaderView!
-    
     @IBOutlet weak var backButtonBackView: UIView!
-    
     @IBOutlet weak var dotButtonBackView: UIView!
+    @IBOutlet weak var effectViewHeight: NSLayoutConstraint!
     
     var passedRoomName = String()
     var passedRoomImage = String()
@@ -79,6 +77,8 @@ class RoomDetailViewController: UIViewController {
         
         
         fetchRoomDetail()
+        
+        
     }
     
     
@@ -91,12 +91,16 @@ class RoomDetailViewController: UIViewController {
         fetchMemberCount()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        effectViewHeight.constant = self.view.safeAreaInsets.top + 46
+    }
+    
     
     
     
     
     func sizefit(){
-//        self.contentsTableView.tableHeaderView = headerView
         if let tableHeaderView = headerView {
             tableHeaderView.setNeedsLayout()
             tableHeaderView.layoutIfNeeded()

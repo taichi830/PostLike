@@ -35,13 +35,13 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xcr-fW-NET">
-                                                    <rect key="frame" x="0.0" y="0.0" width="180" height="115"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="180" height="120"/>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zou-ZG-rrT">
-                                                    <rect key="frame" x="0.0" y="115" width="180" height="55"/>
+                                                    <rect key="frame" x="0.0" y="120" width="180" height="50"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="roomName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XAe-FE-huB">
-                                                            <rect key="frame" x="7" y="0.0" width="173" height="55"/>
+                                                            <rect key="frame" x="7" y="0.0" width="173" height="50"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -51,7 +51,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="XAe-FE-huB" secondAttribute="bottom" id="4rz-bh-tLL"/>
                                                         <constraint firstItem="XAe-FE-huB" firstAttribute="top" secondItem="zou-ZG-rrT" secondAttribute="top" id="IiB-Re-nf6"/>
-                                                        <constraint firstAttribute="height" constant="55" id="N45-6C-fD3"/>
+                                                        <constraint firstAttribute="height" constant="50" id="N45-6C-fD3"/>
                                                         <constraint firstAttribute="trailing" secondItem="XAe-FE-huB" secondAttribute="trailing" id="QnN-Cr-tLw"/>
                                                         <constraint firstItem="XAe-FE-huB" firstAttribute="leading" secondItem="zou-ZG-rrT" secondAttribute="leading" constant="7" id="dSd-Zs-ab9"/>
                                                     </constraints>
@@ -60,7 +60,6 @@
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="xcr-fW-NET" secondAttribute="trailing" id="BC6-gB-L6W"/>
                                                 <constraint firstAttribute="bottom" secondItem="zou-ZG-rrT" secondAttribute="bottom" id="DVv-hH-xCe"/>
-                                                <constraint firstItem="zou-ZG-rrT" firstAttribute="top" secondItem="xcr-fW-NET" secondAttribute="bottom" id="dvt-G9-jYI"/>
                                                 <constraint firstItem="zou-ZG-rrT" firstAttribute="leading" secondItem="r9e-Zy-fmr" secondAttribute="leading" id="gqQ-t7-MsW"/>
                                                 <constraint firstItem="xcr-fW-NET" firstAttribute="leading" secondItem="r9e-Zy-fmr" secondAttribute="leading" id="kKc-qv-25l"/>
                                                 <constraint firstItem="xcr-fW-NET" firstAttribute="top" secondItem="r9e-Zy-fmr" secondAttribute="top" id="luw-YN-Aoa"/>
