@@ -49,6 +49,7 @@ class EnteredRoomContentViewController: UIViewController{
     private var reportroomID = String()
     private var reportUid = String()
     private var memberCount:Room?
+    private var indicator = UIActivityIndicatorView()
     
     
     
@@ -72,6 +73,12 @@ class EnteredRoomContentViewController: UIViewController{
         
         
         let refleshControl = CustomRefreshControl()
+        indicator.center = roomImageView.center
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.hidesWhenStopped = true
+        roomImageView.addSubview(indicator)
+        
         self.contentsTableView.refreshControl = refleshControl
         self.contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
         
@@ -174,9 +181,11 @@ class EnteredRoomContentViewController: UIViewController{
         
         roomExistCheck()
         fetchProfileInfo()
+        indicator.startAnimating()
         self.likeContentsArray.removeAll()
         fetchContents {
             self.contentsTableView.refreshControl?.endRefreshing()
+            self.indicator.stopAnimating()
             self.contentsTableView.reloadData()
         }
     }
@@ -1000,13 +1009,6 @@ extension EnteredRoomContentViewController:UIScrollViewDelegate,UIGestureRecogni
         
         //下にスクロールに合わせて徐々にblurをかける
         topBlurEffect.alpha = -0.7 + (scrollView.contentOffset.y - 50)/50
-        
-        
-    }
-    
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        scrollBeginingPoint = self.contentsTableView.contentOffset
         
         
     }
