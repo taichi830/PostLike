@@ -464,18 +464,7 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
         
         let cell = roomCollectionView.dequeueReusableCell(withReuseIdentifier: "myroomCell", for: indexPath) as! MyroomCollectionViewCell
         
-        
-
         cell.clipsToBounds = false
-//        cell.layer.cornerRadius = 8
-//        cell.layer.borderWidth = 1
-//        cell.layer.borderColor = UIColor.systemGray6.cgColor
-        
-//        cell.layer.masksToBounds = false
-//        cell.layer.shadowRadius = 8
-//        cell.layer.shadowOpacity = 0.3
-//        cell.layer.shadowOffset = CGSize(width: 1, height: 1)
-//        cell.layer.shadowColor = UIColor.black.cgColor
         
         if self.joinedRoomArray.count != 0 {
             
