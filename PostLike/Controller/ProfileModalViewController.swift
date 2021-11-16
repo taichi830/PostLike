@@ -114,7 +114,6 @@ class ProfileModalViewController: UIViewController, UITableViewDelegate, UITable
                 dismiss(animated: true, completion: nil)
             }else if indexPath.row == 1 {
                 let deleteAlertVC = storyboard?.instantiateViewController(withIdentifier: "deleteAlert") as! RoomDeliteContainerViewController
-//                let profileVC = storyboard?.instantiateViewController(withIdentifier: "myproVC") as! ProfileViewController
                 deleteAlertVC.modalPresentationStyle = .custom
                 deleteAlertVC.transitioningDelegate = passedViewController as? UIViewControllerTransitioningDelegate
                 deleteAlertVC.passedRoomID = passedRoomID
