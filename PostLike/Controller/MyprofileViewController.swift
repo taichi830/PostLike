@@ -132,10 +132,10 @@ extension MyprofileViewController:UICollectionViewDelegate,UICollectionViewDataS
     func collectionItenSize(){
         //セルの大きさと間隔
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: ((self.view.frame.width) - 55)/2, height: 145)
+        layout.itemSize = CGSize(width: ((self.view.frame.width) - 55)/2, height: 150)
         layout.minimumLineSpacing = 20
         layout.minimumInteritemSpacing = 15
-        layout.sectionInset = UIEdgeInsets(top: 30, left: 20, bottom: 10, right: 20)
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
         myRoomCollectionView.collectionViewLayout = layout
     }
     

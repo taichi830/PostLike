@@ -19,7 +19,7 @@ class RoomEditViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var personsImage: UIImageView!
+    @IBOutlet weak var callAlubmButtonBackView: UIView!
     
     
     var passedRoomName = String()
@@ -30,6 +30,8 @@ class RoomEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        callAlubmButtonBackView.layer.cornerRadius = 5
         
         roomTextField.delegate = self
         roomTextField.layer.cornerRadius = 5
@@ -43,7 +45,6 @@ class RoomEditViewController: UIViewController {
         
         completeButton.layer.cornerRadius = 23
         
-        roomImage.layer.cornerRadius = 50
         
         
         fetchRoomIntro()
@@ -69,7 +70,6 @@ class RoomEditViewController: UIViewController {
                 self.roomTextField.text = roomIntro.roomName
                 if roomIntro.roomImage != "" {
                     self.roomImage.sd_setImage(with: URL(string: roomIntro.roomImage), completed: nil)
-                    self.personsImage.image = UIImage()
                 }
             }
         }
@@ -112,7 +112,6 @@ class RoomEditViewController: UIViewController {
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
                     self.roomImage.image = image
-                    self.personsImage.image = UIImage()
                     self.updatedRoomImage = image!
                 })
             }

@@ -65,11 +65,6 @@ class RoomDetailViewController: UIViewController {
         
         backButtonBackView.layer.cornerRadius = 15
         dotButtonBackView.layer.cornerRadius = 15
-//        self.contentsTableView.tableHeaderView = headerView
-
-//        headerView.roomImage.layer.cornerRadius = 40
-//        headerView.roomImage.layer.borderColor = UIColor.systemGray6.cgColor
-//        headerView.roomImage.layer.borderWidth = 1
         
         
         headerView.joinButton.clipsToBounds = true
@@ -77,6 +72,9 @@ class RoomDetailViewController: UIViewController {
         headerView.joinButton.layer.borderWidth = 1
         headerView.joinButton.layer.borderColor = UIColor.systemGray5.cgColor
         headerView.joinButton.addTarget(self, action: #selector(pushedJoinButton(_:)), for: .touchUpInside)
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
+        contentsTableView.addGestureRecognizer(swipeGesture)
         
         
         
@@ -137,6 +135,9 @@ class RoomDetailViewController: UIViewController {
     
     
     
+    @objc func swiped(_ sender:UISwipeGestureRecognizer){
+        navigationController?.popViewController(animated: true)
+    }
     
     
     
