@@ -96,7 +96,7 @@
                                     <constraint firstItem="7xg-vs-MTE" firstAttribute="top" secondItem="hiv-Gc-Vhf" secondAttribute="top" constant="23" id="oI6-Bc-364"/>
                                 </constraints>
                             </view>
-                            <blurEffect style="systemMaterialLight"/>
+                            <blurEffect style="systemThickMaterialLight"/>
                         </visualEffectView>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
