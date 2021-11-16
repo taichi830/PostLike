@@ -23,6 +23,8 @@ class EnteredRoomContentViewController: UIViewController{
     @IBOutlet weak var topBlurEffect: UIVisualEffectView!
     @IBOutlet weak var topRoomNameLabel: UILabel!
     
+    @IBOutlet weak var effectViewHeight: NSLayoutConstraint!
+    
     
     
     private var contentsArray = [Contents]()
@@ -111,12 +113,14 @@ class EnteredRoomContentViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
         fetchProfileInfo()
         roomExistCheck()
-        
-        
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        effectViewHeight.constant = self.view.safeAreaInsets.top + 46
     }
     
     
