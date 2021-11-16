@@ -887,31 +887,6 @@
                                     <constraint firstAttribute="bottom" secondItem="ZEU-yY-gWX" secondAttribute="bottom" id="X2M-6Y-7ZQ"/>
                                 </constraints>
                             </view>
-                            <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCb-ew-qqO">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="goD-Ad-OAr">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crm-2C-a1X">
-                                            <rect key="frame" x="167" y="52" width="41.333333333333343" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="g1W-hC-riY"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="crm-2C-a1X" secondAttribute="bottom" constant="8" id="eGb-Yo-4Fq"/>
-                                        <constraint firstItem="crm-2C-a1X" firstAttribute="centerX" secondItem="goD-Ad-OAr" secondAttribute="centerX" id="sCO-QT-Rbl"/>
-                                    </constraints>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="90" id="WZw-oZ-ysQ"/>
-                                </constraints>
-                                <blurEffect style="systemMaterialLight"/>
-                            </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lVb-mQ-RRP">
                                 <rect key="frame" x="0.0" y="44" width="375" height="46"/>
                                 <subviews>
@@ -955,6 +930,31 @@
                                     <constraint firstAttribute="height" constant="46" id="w3Y-tb-Ql7"/>
                                 </constraints>
                             </view>
+                            <visualEffectView opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCb-ew-qqO">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="goD-Ad-OAr">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crm-2C-a1X">
+                                            <rect key="frame" x="167" y="52" width="41.333333333333343" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="g1W-hC-riY"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="crm-2C-a1X" secondAttribute="bottom" constant="8" id="eGb-Yo-4Fq"/>
+                                        <constraint firstItem="crm-2C-a1X" firstAttribute="centerX" secondItem="goD-Ad-OAr" secondAttribute="centerX" id="sCO-QT-Rbl"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="WZw-oZ-ysQ"/>
+                                </constraints>
+                                <blurEffect style="systemMaterialLight"/>
+                            </visualEffectView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wKs-VF-4li"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
