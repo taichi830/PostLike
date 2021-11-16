@@ -55,7 +55,6 @@
 		CE012C4B26B6EFD4006CC20E /* ContentsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE6A42225C104AA00F6FE06 /* ContentsCollectionViewCell.xib */; };
 		CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0BE2692659F7E900A419BE /* First.storyboard */; };
 		CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E5572642B00600A2765C /* Profile.storyboard */; };
-		CE012C5026B6EFD4006CC20E /* ProfileCollectionViewCell2.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE56E9E025CE520100B4133E /* ProfileCollectionViewCell2.xib */; };
 		CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5C11FE25E371B100AAF0C0 /* CommentTableViewCell.xib */; };
 		CE012C5226B6EFD4006CC20E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE18882C25205A24001C687C /* Main.storyboard */; };
 		CE012C5326B6EFD4006CC20E /* MyroomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3D126C25BDC95800BEFAC6 /* MyroomCollectionViewCell.xib */; };
@@ -76,8 +75,9 @@
 		CE77EF6426E67EEF00154886 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5D26E67EEF00154886 /* AppDelegate.swift */; };
 		CE77EF6526E67EEF00154886 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5E26E67EEF00154886 /* SceneDelegate.swift */; };
 		CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */; };
+		CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */; };
 		CEA19BED26D631C800283E91 /* ArrayChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* ArrayChunk.swift */; };
-		CEA19BEF26D7D0D500283E91 /* IntroView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* IntroView.xib */; };
+		CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */; };
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
 		CEA97FE7272907E100B51A96 /* UnderMenuPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */; };
@@ -134,7 +134,6 @@
 		CE547B1725F7B9540060D1D0 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		CE5648BB25DA2FE900BE3FEE /* ShowImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageViewController.swift; sourceTree = "<group>"; };
 		CE56E9DF25CE520100B4133E /* ProfileCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell2.swift; sourceTree = "<group>"; };
-		CE56E9E025CE520100B4133E /* ProfileCollectionViewCell2.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileCollectionViewCell2.xib; sourceTree = "<group>"; };
 		CE56EF7E25B1881F0057716C /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE56EF8625B332780057716C /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		CE56EF8725B332780057716C /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
@@ -155,9 +154,10 @@
 		CE77EF5D26E67EEF00154886 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE77EF5E26E67EEF00154886 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomHeaderView.swift; sourceTree = "<group>"; };
 		CE967139265AAE1700E7820F /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		CEA19BEC26D631C800283E91 /* ArrayChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayChunk.swift; sourceTree = "<group>"; };
-		CEA19BEE26D7D0D500283E91 /* IntroView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntroView.xib; sourceTree = "<group>"; };
+		CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomHeaderView.xib; sourceTree = "<group>"; };
 		CEA19BF026D7D70900283E91 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdTableViewCell.swift; sourceTree = "<group>"; };
 		CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NativeAdTableViewCell.xib; sourceTree = "<group>"; };
@@ -343,6 +343,7 @@
 				CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */,
 				CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */,
 				CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */,
+				CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -362,10 +363,9 @@
 				CE3D126C25BDC95800BEFAC6 /* MyroomCollectionViewCell.xib */,
 				CEE6A42225C104AA00F6FE06 /* ContentsCollectionViewCell.xib */,
 				CE5C11FE25E371B100AAF0C0 /* CommentTableViewCell.xib */,
-				CE56E9E025CE520100B4133E /* ProfileCollectionViewCell2.xib */,
 				CE45BEE82679A94C00564F3F /* SearchResultHeaderView.xib */,
 				CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */,
-				CEA19BEE26D7D0D500283E91 /* IntroView.xib */,
+				CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */,
 				CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */,
 			);
 			path = View;
@@ -448,12 +448,11 @@
 				CE012C4826B6EFD4006CC20E /* NativeAdTableViewCell.xib in Resources */,
 				CE199F7726DE11D9009F1B7E /* termOfUse.html in Resources */,
 				CE012C4926B6EFD4006CC20E /* Login.storyboard in Resources */,
-				CEA19BEF26D7D0D500283E91 /* IntroView.xib in Resources */,
+				CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */,
 				CE012C4A26B6EFD4006CC20E /* SearchResultHeaderView.xib in Resources */,
 				CE012C4B26B6EFD4006CC20E /* ContentsCollectionViewCell.xib in Resources */,
 				CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */,
 				CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */,
-				CE012C5026B6EFD4006CC20E /* ProfileCollectionViewCell2.xib in Resources */,
 				CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */,
 				CE012C5226B6EFD4006CC20E /* Main.storyboard in Resources */,
 				CE012C5326B6EFD4006CC20E /* MyroomCollectionViewCell.xib in Resources */,
@@ -569,6 +568,7 @@
 				CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
+				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
 				CED4902126ED024900582742 /* ShowIndicator.swift in Sources */,
 				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
 				CE012C1D26B6EFD4006CC20E /* EnteredRoomContentViewController.swift in Sources */,
