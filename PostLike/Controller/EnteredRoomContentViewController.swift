@@ -13,17 +13,17 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var memberCountLabel: UILabel!
-    @IBOutlet weak var roomTitle: UILabel!
     @IBOutlet weak var contentsTableView: UITableView!
-    @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var bluredView: UIView!
-    @IBOutlet weak var backView2: UIView!
-    @IBOutlet weak var createButton: UIButton!
-    @IBOutlet weak var collectionButton: UIButton!
+    @IBOutlet weak var backButtonBackButton: UIView!
+    @IBOutlet weak var dotsButtonBackView: UIView!
+    @IBOutlet weak var headerView: RoomHeaderView!
+    @IBOutlet weak var headerViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var headerViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var roomImageView: UIImageView!
+    @IBOutlet weak var topBlurEffect: UIVisualEffectView!
+    @IBOutlet weak var topRoomNameLabel: UILabel!
     
-    
+    @IBOutlet weak var effectViewHeight: NSLayoutConstraint!
     
     
     
@@ -49,6 +49,7 @@ class EnteredRoomContentViewController: UIViewController{
     private var reportroomID = String()
     private var reportUid = String()
     private var memberCount:Room?
+    private var indicator = UIActivityIndicatorView()
     
     
     
@@ -62,18 +63,22 @@ class EnteredRoomContentViewController: UIViewController{
         contentsTableView.dataSource = self
         
         
-        let tapGesure:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapMyprofile(_:)))
-        self.profileImage.addGestureRecognizer(tapGesure)
-        tapGesure.delegate = self
-        profileImage.layer.cornerRadius = 15
         
         
-        self.contentsTableView.tableHeaderView =  self.backView2
+        
+        
+        self.contentsTableView.tableHeaderView =  headerView
         contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
-        
+        contentsTableView.contentInsetAdjustmentBehavior = .never
         
         
         let refleshControl = CustomRefreshControl()
+        indicator.center = roomImageView.center
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.hidesWhenStopped = true
+        roomImageView.addSubview(indicator)
+        
         self.contentsTableView.refreshControl = refleshControl
         self.contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
         
@@ -90,7 +95,21 @@ class EnteredRoomContentViewController: UIViewController{
             self.contentsTableView.reloadData()
         }
         
+        backButtonBackButton.clipsToBounds = true
+        backButtonBackButton.layer.cornerRadius = backButtonBackButton.frame.height/2
+        dotsButtonBackView.clipsToBounds = true
+        dotsButtonBackView.layer.cornerRadius = dotsButtonBackView.frame.height/2
         
+        
+        headerView.imageCollectionButton.addTarget(self, action: #selector(tappedImageCollectionButton(_:)), for: .touchUpInside)
+        
+        headerView.postButton.addTarget(self, action: #selector(tappedPostButton(_:)), for: .touchUpInside)
+        
+        
+        let tapGesure:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapMyprofile(_:)))
+        headerView.myProfileImageView.isUserInteractionEnabled = true
+        headerView.myProfileImageView.addGestureRecognizer(tapGesure)
+        tapGesure.delegate = self
         
         
         
@@ -101,13 +120,52 @@ class EnteredRoomContentViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
         fetchProfileInfo()
         roomExistCheck()
-        
-        
     }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        effectViewHeight.constant = self.view.safeAreaInsets.top + 46
+    }
+    
+    
+    
+    @objc func tappedImageCollectionButton(_ sender:UIButton){
+        let imageVC = storyboard?.instantiateViewController(withIdentifier: "images") as! RoomImageContentsViewController
+        imageVC.passedRoomID = passedDocumentID
+        imageVC.passedRoomName = passedTitle
+        navigationController?.pushViewController(imageVC, animated: true)
+    }
+    
+    
+    
+    
+    
+    @objc func tappedPostButton(_ sender:UIButton){
+        let postVC = storyboard?.instantiateViewController(withIdentifier: "postVC") as! PostContentViewController
+        postVC.roomTitle = self.headerView.roomNameLabel.text!
+        postVC.passedDocumentID = self.roomInfo!.documentID
+        postVC.passedDocumentID = self.roomInfo!.documentID
+        postVC.passedUserImageUrl = self.profileInfo!.userImage
+        postVC.passedUserName = self.profileInfo!.userName
+        postVC.passedHostUid = self.profileInfo!.moderator
+        present(postVC, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    @objc func tapMyprofile(_ sender: UITapGestureRecognizer){
+        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+        let myproVC = storyboard.instantiateViewController(withIdentifier: "myproVC") as! ProfileViewController
+        myproVC.passedDocumentID = passedDocumentID
+        myproVC.passedModerator = passedModerator
+        navigationController?.pushViewController(myproVC, animated: true)
+    }
+    
     
     
     
@@ -123,9 +181,11 @@ class EnteredRoomContentViewController: UIViewController{
         
         roomExistCheck()
         fetchProfileInfo()
+        indicator.startAnimating()
         self.likeContentsArray.removeAll()
         fetchContents {
             self.contentsTableView.refreshControl?.endRefreshing()
+            self.indicator.stopAnimating()
             self.contentsTableView.reloadData()
         }
     }
@@ -159,35 +219,6 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @IBAction func toImageCollection(_ sender: Any) {
-        let imageVC = storyboard?.instantiateViewController(withIdentifier: "images") as! RoomImageContentsViewController
-        imageVC.passedRoomID = passedDocumentID
-        imageVC.passedRoomName = passedTitle
-        navigationController?.pushViewController(imageVC, animated: true)
-    }
-    
-    
-    
-    @IBAction func postButton(_ sender: Any) {
-        let postVC = storyboard?.instantiateViewController(withIdentifier: "postVC") as! PostContentViewController
-        postVC.roomTitle = roomTitle.text!
-        postVC.passedDocumentID = self.roomInfo!.documentID
-        postVC.passedDocumentID = self.roomInfo!.documentID
-        postVC.passedUserImageUrl = self.profileInfo!.userImage
-        postVC.passedUserName = self.profileInfo!.userName
-        postVC.passedHostUid = self.profileInfo!.moderator
-        present(postVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    @objc func tapMyprofile(_ sender: UITapGestureRecognizer){
-        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let myproVC = storyboard.instantiateViewController(withIdentifier: "myproVC") as! ProfileViewController
-        myproVC.passedDocumentID = passedDocumentID
-        myproVC.passedModerator = passedModerator
-        navigationController?.pushViewController(myproVC, animated: true)
-    }
     
     
     
@@ -200,7 +231,12 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-
+    
+    
+    
+    
+    
+    
     
     
     func fetchProfileInfo(){
@@ -215,15 +251,15 @@ class EnteredRoomContentViewController: UIViewController{
             let profileInfo = Contents(dic: dic)
             self.profileInfo = profileInfo
             if  self.profileInfo?.isJoined == false {
-                self.createButton.isEnabled = false
-                self.createButton.tintColor = .lightGray
-                self.profileImage.isUserInteractionEnabled = false
-                self.memberCountLabel.text = "このルームから退出しました"
+                self.headerView.postButton.isEnabled = false
+                self.headerView.postButton.tintColor = .lightGray
+                self.headerView.myProfileImageView.isUserInteractionEnabled = false
+                self.headerView.memberLabel.text = "このルームから退出しました"
             }else{
                 if self.profileInfo?.userImage == "" {
-                    self.profileImage.image = UIImage(systemName: "person.fill")
+                    self.headerView.myProfileImageView.image = UIImage(systemName: "person.fill")
                 }else{
-                    self.profileImage.sd_setImage(with: URL(string: self.profileInfo!.userImage), completed: nil)
+                    self.headerView.myProfileImageView.sd_setImage(with: URL(string: self.profileInfo!.userImage), completed: nil)
                 }
             }
         }
@@ -240,17 +276,25 @@ class EnteredRoomContentViewController: UIViewController{
                 return
             }
             if snapShot?.exists == nil {
-                self.createButton.isEnabled = false
-                self.createButton.tintColor = .lightGray
-                self.profileImage.isUserInteractionEnabled = false
-                self.memberCountLabel.text = "このルームは削除されました"
+                self.headerView.postButton.isEnabled = false
+                self.headerView.postButton.tintColor = .lightGray
+                self.headerView.myProfileImageView.isUserInteractionEnabled = false
+                self.headerView.memberLabel.text = "このルームは削除されました"
             }else{
                 guard let snapShot = snapShot,let dic = snapShot.data() else {return}
                 let roomInfo = Room.init(dic: dic)
                 self.roomInfo = roomInfo
-                self.roomTitle.text = self.roomInfo!.roomName
-                self.roomTitle.adjustsFontSizeToFitWidth = true
-                self.roomTitle.minimumScaleFactor = 0.8
+                
+                self.headerView.roomNameLabel.text = self.roomInfo!.roomName
+                self.headerView.roomNameLabel.adjustsFontSizeToFitWidth = true
+                self.headerView.roomNameLabel.minimumScaleFactor = 0.8
+                
+                self.topRoomNameLabel.text = self.roomInfo!.roomName
+                self.topRoomNameLabel.adjustsFontSizeToFitWidth = true
+                self.topRoomNameLabel.minimumScaleFactor = 0.8
+                
+                self.headerView.bluredImageView.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
+                self.roomImageView.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
                 self.fetchMemberCount()
             }
         }
@@ -272,7 +316,7 @@ class EnteredRoomContentViewController: UIViewController{
                 guard let snap = snapShot,let dic = snap.data() else {return}
                 let memberCount = Room.init(dic: dic)
                 self.memberCount = memberCount
-                self.memberCountLabel.text = "メンバー \(String(describing: self.memberCount!.numberOfMember))人"
+                self.headerView.memberLabel.text = "メンバー \(String(describing: self.memberCount!.numberOfMember))人"
             }
         }
     }
@@ -344,7 +388,7 @@ class EnteredRoomContentViewController: UIViewController{
                     completed()
                 }
             }
-    }
+        }
     }
     
     
@@ -374,7 +418,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-
+    
     
     
     
@@ -690,12 +734,6 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-    @objc func tappedbluredView(_ sender: UITapGestureRecognizer){
-        
-        bluredView.isHidden = true
-        tabBarController?.tabBar.isHidden = false
-    }
-    
     
     
     @objc func tappedPhoto(_ sender: UITapGestureRecognizer){
@@ -840,7 +878,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     }
     
     
-
+    
     
     
     
@@ -908,8 +946,8 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         cLVC.passedComment = contentsArray[-sender.tag].text
         cLVC.passedDate = contentsArray[-sender.tag].createdAt
         cLVC.passedMediaArray = contentsArray[-sender.tag].mediaArray
-        cLVC.passedMyImage = profileImage.image!
-        cLVC.passedRoomName = roomTitle.text!
+        cLVC.passedMyImage = self.headerView.myProfileImageView.image!
+        cLVC.passedRoomName = self.headerView.roomNameLabel.text!
         cLVC.passedDocumentID = contentsArray[-sender.tag].documentID
         cLVC.passedRoomID = contentsArray[-sender.tag].roomID
         cLVC.passedUid = contentsArray[-sender.tag].uid
@@ -917,10 +955,10 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         present(cLVC, animated: true, completion: nil)
     }
     
-
     
     
-
+    
+    
     func removeMutedContent(documentID:String) {
         self.contentsArray.removeAll {
             return ($0.documentID  == documentID )
@@ -947,7 +985,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
 
 extension EnteredRoomContentViewController:UIViewControllerTransitioningDelegate{
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-            return PresentModalViewController(presentedViewController: presented, presenting: presenting)
+        return PresentModalViewController(presentedViewController: presented, presenting: presenting)
     }
 }
 
@@ -961,21 +999,20 @@ extension EnteredRoomContentViewController:UIViewControllerTransitioningDelegate
 extension EnteredRoomContentViewController:UIScrollViewDelegate,UIGestureRecognizerDelegate{
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        currentScrollPoint = self.contentsTableView.contentOffset
-        if currentScrollPoint?.y ?? 0 > scrollBeginingPoint?.y ?? 0 {
-            topView.frame.origin.y = self.view.safeAreaInsets.top - self.contentsTableView.contentOffset.y
+        if scrollView.contentOffset.y <= 0 {
+            self.headerViewHeight.constant = -(scrollView.contentOffset.y - 180)
+            self.headerViewTopConstraint.constant = 0
         }else{
-            UIView.animate(withDuration: 0.4) {
-                self.topView.frame.origin.y = self.view.safeAreaInsets.top
-            }
+            self.headerViewHeight.constant = 180
+            self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
         }
-    }
-    
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        scrollBeginingPoint = self.contentsTableView.contentOffset
+        
+        //下にスクロールに合わせて徐々にblurをかける
+        topBlurEffect.alpha = -0.7 + (scrollView.contentOffset.y - 50)/50
+        
         
     }
+    
     
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {

@@ -19,7 +19,7 @@ class RoomEditViewController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var personsImage: UIImageView!
+    @IBOutlet weak var callAlubmButtonBackView: UIView!
     
     
     var passedRoomName = String()
@@ -30,6 +30,8 @@ class RoomEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        callAlubmButtonBackView.layer.cornerRadius = 5
         
         roomTextField.delegate = self
         roomTextField.layer.cornerRadius = 5
@@ -43,7 +45,6 @@ class RoomEditViewController: UIViewController {
         
         completeButton.layer.cornerRadius = 23
         
-        roomImage.layer.cornerRadius = 50
         
         
         fetchRoomIntro()
@@ -69,26 +70,13 @@ class RoomEditViewController: UIViewController {
                 self.roomTextField.text = roomIntro.roomName
                 if roomIntro.roomImage != "" {
                     self.roomImage.sd_setImage(with: URL(string: roomIntro.roomImage), completed: nil)
-                    self.personsImage.image = UIImage()
                 }
             }
         }
     }
     
     
-    
-    
-    
-    
-//    func setUpRoomProfile(){
-//        roomImage.layer.cornerRadius = 50
-//        if passedRoomImage != "" {
-//            roomImage.sd_setImage(with: URL(string: passedRoomImage), completed: nil)
-//            personsImage.image = UIImage()
-//        }
-//    }
-    
-    
+
     
     
     
@@ -112,7 +100,6 @@ class RoomEditViewController: UIViewController {
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
                     self.roomImage.image = image
-                    self.personsImage.image = UIImage()
                     self.updatedRoomImage = image!
                 })
             }
@@ -123,6 +110,9 @@ class RoomEditViewController: UIViewController {
     }
     
     
+    
+    
+    
     func updateRoomInfo(roomImageUrl:String,batch:WriteBatch){
         let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID)
@@ -130,11 +120,33 @@ class RoomEditViewController: UIViewController {
     }
     
     
+    
+    
+    
+    
     func updateMyRoomInfo(roomImageUrl:String,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
         batch.updateData(docData, forDocument: ref)
+    }
+    
+    
+    
+    
+    
+    func deleteStrage(){
+        let storage = Storage.storage()
+        let imageRef = NSString(string: roomIntro!.roomImage)
+        let desertRef = storage.reference(forURL: imageRef as String)
+        desertRef.delete { err in
+            if err != nil {
+                print("false")
+                return
+            }else{
+                print("success")
+            }
+        }
     }
     
     
@@ -177,7 +189,11 @@ class RoomEditViewController: UIViewController {
                             }
                             self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                         }else{
-                            self.dismiss(animated: true, completion: nil)
+                            self.dismiss(animated: true) {
+                                if self.roomIntro!.roomImage != "" {
+                                    self.deleteStrage()
+                                }
+                            }
                         }
                     }
                 }
