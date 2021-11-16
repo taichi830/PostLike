@@ -307,7 +307,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
                 historyImage.backgroundColor = .systemGray5
                 personsImage.image =  UIImage(systemName: "person.3.fill")
             }
-            historyImage.layer.cornerRadius = 30
+            historyImage.layer.cornerRadius = historyImage.frame.height/2
             historyImage.layer.borderWidth = 1
             historyImage.layer.borderColor = UIColor.systemGray5.cgColor
             
@@ -342,7 +342,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
             }
             roomImage.layer.borderWidth = 1
             roomImage.layer.borderColor = UIColor.systemGray5.cgColor
-            roomImage.layer.cornerRadius = 30
+            roomImage.layer.cornerRadius = roomImage.frame.height/2
             
             if resultArray.isEmpty == true {
                 headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)

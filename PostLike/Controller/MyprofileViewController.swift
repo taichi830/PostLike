@@ -132,10 +132,10 @@ extension MyprofileViewController:UICollectionViewDelegate,UICollectionViewDataS
     func collectionItenSize(){
         //セルの大きさと間隔
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 160, height: 190)
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 20
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+        layout.itemSize = CGSize(width: ((self.view.frame.width) - 55)/2, height: 150)
+        layout.minimumLineSpacing = 20
+        layout.minimumInteritemSpacing = 15
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
         myRoomCollectionView.collectionViewLayout = layout
     }
     
@@ -145,24 +145,29 @@ extension MyprofileViewController:UICollectionViewDelegate,UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = myRoomCollectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        let roomImage = cell.viewWithTag(1) as! UIImageView
+        let cell = myRoomCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor = UIColor.systemGray5.cgColor
+        cell.layer.cornerRadius = 10
+        
+        
         let roomName = cell.viewWithTag(2) as! UILabel
-        let personImage = cell.viewWithTag(3) as! UIImageView
+        let roomImageView = cell.viewWithTag(5) as! UIImageView
         
-        roomImage.clipsToBounds = true
-        roomImage.layer.cornerRadius = 80
-        roomImage.layer.borderWidth = 1
-        roomImage.layer.borderColor = UIColor.systemGray5.cgColor
+//        userImage.clipsToBounds = true
+//        userImage.layer.cornerRadius = userImage.frame.height/2
+//        userImage.layer.borderWidth = 1
+//        userImage.layer.borderColor = UIColor.systemGray5.cgColor
         
-        if profileRoomArray[indexPath.row].roomImage == "" {
-            personImage.image = UIImage(systemName: "person.3.fill")
-            roomImage.backgroundColor = .systemGray4
-            roomImage.image = UIImage()
-        }else{
-            roomImage.sd_setImage(with: URL(string: self.profileRoomArray[indexPath.row].roomImage), completed: nil)
-            personImage.image = UIImage()
-        }
+//        if profileRoomArray[indexPath.row].userImage == "" {
+////            personImage.image = UIImage(systemName: "person.3.fill")
+//            userImage.backgroundColor = .systemGray4
+//            userImage.image = UIImage()
+//        }else{
+//            userImage.sd_setImage(with: URL(string: self.profileRoomArray[indexPath.row].userImage), completed: nil)
+////            personImage.image = UIImage()
+//        }
         
         let text:String = " \(profileRoomArray[indexPath.row].roomName)"
         let font:UIFont = .systemFont(ofSize: 17, weight: .semibold)
@@ -190,6 +195,16 @@ extension MyprofileViewController:UICollectionViewDelegate,UICollectionViewDataS
         }else{
             roomName.text = profileRoomArray[indexPath.row].roomName
         }
+        
+        
+//        userName.text = profileRoomArray[indexPath.row].userName
+//
+        roomImageView.sd_setImage(with: URL(string: profileRoomArray[indexPath.row].roomImage), completed: nil)
+        
+//        backView.layer.cornerRadius = 5
+//        backView.layer.borderWidth = 1
+//        backView.layer.borderColor = UIColor.systemGray6.cgColor
+        
         
         return cell
         

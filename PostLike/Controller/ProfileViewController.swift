@@ -11,7 +11,7 @@ import Firebase
 
 
 protocol DeletePostDelegate {
-    func deletePostBatch(documentID:String)
+    func deletePostBatch(documentID:String,imageUrl:[String])
 }
 protocol ExitRoomDelegate {
     func exitRoomBatch()
@@ -716,6 +716,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
         profileModalVC.transitioningDelegate = self
         profileModalVC.passedType = "delete"
         profileModalVC.passedDocumentID = contentsArray[sender.tag+10000000000000].documentID
+        profileModalVC.passedImageUrl = contentsArray[sender.tag+10000000000000].mediaArray
         profileModalVC.deletePostDelegate = self
         present(profileModalVC, animated: true, completion: nil)
         
@@ -806,10 +807,50 @@ extension ProfileViewController:DeletePostDelegate{
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("profilePostCount").document("count")
         batch.setData(["postCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
     }
+
+    
+    func deleteStrageFile(imageUrl:Array<String>){
+        let storage = Storage.storage()
+        if imageUrl.count == 1{
+            let imageRef = NSString(string: imageUrl[0])
+            let desertRef = storage.reference(forURL: imageRef as String)
+            desertRef.delete { err in
+                if err != nil {
+                    print("false")
+                    return
+                }else{
+                    print("success")
+                }
+            }
+        }else if imageUrl.count == 2 {
+            let imageRef = NSString(string: imageUrl[0])
+            let desertRef = storage.reference(forURL: imageRef as String)
+            desertRef.delete { err in
+                if err != nil {
+                    print("false")
+                    return
+                }else{
+                    print("success")
+                }
+            }
+            let imageRef2 = NSString(string: imageUrl[1])
+            let desertRef2 = storage.reference(forURL: imageRef2 as String)
+            desertRef2.delete { err in
+                if err != nil {
+                    print("false")
+                    return
+                }else{
+                    print("success")
+                }
+            }
+        }
+        
+        
+    }
     
     
     
-    func deletePostBatch(documentID:String){
+    func deletePostBatch(documentID:String,imageUrl:[String]){
         let uid = Auth.auth().currentUser?.uid
         let batch = Firestore.firestore().batch()
         let mappedArray = contentsArray.filter {
@@ -833,6 +874,10 @@ extension ProfileViewController:DeletePostDelegate{
                     $0.documentID == mappedArray[0].documentID
                 }
                 self.profileTableView.reloadData()
+                if imageUrl[0] != "" {
+                    self.deleteStrageFile(imageUrl: imageUrl)
+                }
+                
             }
         }
     }
@@ -909,8 +954,6 @@ extension ProfileViewController:DeleteRoomDelegate{
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
         batch.updateData(["isJoined":false], forDocument: ref)
     }
-
-
 
 
 

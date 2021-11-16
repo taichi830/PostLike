@@ -21,12 +21,16 @@ class RoomDetailViewController: UIViewController {
     
     
     @IBOutlet weak var roomName: UILabel!
-    @IBOutlet weak var bluredView: UIView!
     @IBOutlet weak var contentsTableView: UITableView!
     
-    
-    
-    
+    @IBOutlet weak var roomImageView: UIImageView!
+    @IBOutlet weak var roomImageViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var roomImageViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topBlurEffectView: UIVisualEffectView!
+    @IBOutlet weak var headerView: SearchResultHeaderView!
+    @IBOutlet weak var backButtonBackView: UIView!
+    @IBOutlet weak var dotButtonBackView: UIView!
+    @IBOutlet weak var effectViewHeight: NSLayoutConstraint!
     
     var passedRoomName = String()
     var passedRoomImage = String()
@@ -44,7 +48,6 @@ class RoomDetailViewController: UIViewController {
     var roomInfo:Room?
     var likeContentsArray = [Contents]()
     var memberCount:Room?
-    let headerView:SearchResultHeaderView = SearchResultHeaderView()
     var lastDocument:QueryDocumentSnapshot?
     
     
@@ -56,23 +59,26 @@ class RoomDetailViewController: UIViewController {
         self.contentsTableView.delegate = self
         self.contentsTableView.dataSource = self
         self.contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
-
+        self.contentsTableView.contentInsetAdjustmentBehavior = .never
         
-
-        headerView.roomImage.layer.cornerRadius = 40
-        headerView.roomImage.layer.borderColor = UIColor.systemGray6.cgColor
-        headerView.roomImage.layer.borderWidth = 1
+        backButtonBackView.layer.cornerRadius = 15
+        dotButtonBackView.layer.cornerRadius = 15
         
         
         headerView.joinButton.clipsToBounds = true
-        headerView.joinButton.layer.cornerRadius = 20
+        headerView.joinButton.layer.cornerRadius = 18
         headerView.joinButton.layer.borderWidth = 1
         headerView.joinButton.layer.borderColor = UIColor.systemGray5.cgColor
         headerView.joinButton.addTarget(self, action: #selector(pushedJoinButton(_:)), for: .touchUpInside)
         
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
+        contentsTableView.addGestureRecognizer(swipeGesture)
+        
         
         
         fetchRoomDetail()
+        
+        
     }
     
     
@@ -85,13 +91,17 @@ class RoomDetailViewController: UIViewController {
         fetchMemberCount()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        effectViewHeight.constant = self.view.safeAreaInsets.top + 46
+    }
+    
     
     
     
     
     func sizefit(){
-        self.contentsTableView.tableHeaderView = headerView
-        if let tableHeaderView = self.contentsTableView.tableHeaderView {
+        if let tableHeaderView = headerView {
             tableHeaderView.setNeedsLayout()
             tableHeaderView.layoutIfNeeded()
             let size = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
@@ -129,6 +139,9 @@ class RoomDetailViewController: UIViewController {
     
     
     
+    @objc func swiped(_ sender:UISwipeGestureRecognizer){
+        navigationController?.popViewController(animated: true)
+    }
     
     
     
@@ -137,7 +150,6 @@ class RoomDetailViewController: UIViewController {
     
     
     @objc func tappedBluredView(_ sender:UITapGestureRecognizer){
-        bluredView.isHidden = true
         tabBarController?.tabBar.isHidden = false
     }
     
@@ -169,7 +181,6 @@ class RoomDetailViewController: UIViewController {
     
     
     @objc func tappedbluredView(_ sender: UITapGestureRecognizer){
-        bluredView.isHidden = true
         tabBarController?.tabBar.isHidden = false
     }
     
@@ -200,18 +211,20 @@ class RoomDetailViewController: UIViewController {
                 let dic = snapShot!.data()
                 let roomInfo = Room.init(dic: dic!)
                 self.roomInfo = roomInfo
-                if self.roomInfo?.roomImage != "" {
-                    self.headerView.roomImage.sd_setImage(with: URL(string: self.roomInfo?.roomImage ?? ""), completed: nil)
-                    self.headerView.personsImage.image = UIImage()
-                }
+                
                 self.roomName.text = self.roomInfo?.roomName
                 self.roomName.adjustsFontSizeToFitWidth = true
                 self.roomName.minimumScaleFactor = 0.9
                 self.headerView.roomName.text = self.roomInfo?.roomName
                 self.headerView.roomIntro.text = self.roomInfo?.roomIntro
                 self.headerView.roomName.adjustsFontSizeToFitWidth = true
-                self.headerView.roomName.minimumScaleFactor = 0.8
+                self.headerView.roomName.minimumScaleFactor = 0.7
                 self.sizefit()
+                if self.roomInfo?.roomImage != "" {
+                    self.roomImageView.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
+                    self.headerView.roomImage.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
+                    self.headerView.personsImage.image = UIImage()
+                }
                 self.fetchContents {
                     self.contentsTableView.reloadData()
                 }
@@ -1069,5 +1082,23 @@ extension RoomDetailViewController:CreateProfileDelegate {
     
     
 }
+
+extension RoomDetailViewController:UIScrollViewDelegate{
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y <= 0 {
+            self.roomImageViewHeight.constant = -(scrollView.contentOffset.y - 180)
+            self.roomImageViewTopConstraint.constant = 0
+        }else{
+            self.roomImageViewHeight.constant = 180
+            self.roomImageViewTopConstraint.constant = -scrollView.contentOffset.y
+        }
+        
+        //下にスクロールに合わせて徐々にblurをかける
+        topBlurEffectView.alpha = -0.7 + (scrollView.contentOffset.y - 50)/50
+        
+        
+    }
+}
+
 
 

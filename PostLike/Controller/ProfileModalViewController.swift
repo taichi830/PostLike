@@ -23,6 +23,7 @@ class ProfileModalViewController: UIViewController, UITableViewDelegate, UITable
     var passedType = String()
     var passedDocumentID = String()
     var passedRoomID = String()
+    var passedImageUrl = [String]()
     var deletePostDelegate:DeletePostDelegate?
     var exitRoomDelegate:ExitRoomDelegate?
     var passedModerator = String()
@@ -102,7 +103,7 @@ class ProfileModalViewController: UIViewController, UITableViewDelegate, UITable
         case "delete":
             if indexPath.row == 0 {
                 dismiss(animated: true) {
-                    self.deletePostDelegate!.deletePostBatch(documentID: self.passedDocumentID)
+                    self.deletePostDelegate!.deletePostBatch(documentID: self.passedDocumentID, imageUrl: self.passedImageUrl)
                 }
             }else if indexPath.row == 1 {
                 dismiss(animated: true, completion: nil)
@@ -113,7 +114,6 @@ class ProfileModalViewController: UIViewController, UITableViewDelegate, UITable
                 dismiss(animated: true, completion: nil)
             }else if indexPath.row == 1 {
                 let deleteAlertVC = storyboard?.instantiateViewController(withIdentifier: "deleteAlert") as! RoomDeliteContainerViewController
-//                let profileVC = storyboard?.instantiateViewController(withIdentifier: "myproVC") as! ProfileViewController
                 deleteAlertVC.modalPresentationStyle = .custom
                 deleteAlertVC.transitioningDelegate = passedViewController as? UIViewControllerTransitioningDelegate
                 deleteAlertVC.passedRoomID = passedRoomID

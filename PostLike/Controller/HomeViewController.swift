@@ -58,7 +58,7 @@ class HomeViewController: UIViewController{
         roomCollectionView.dataSource = self
         let nib = UINib(nibName: "MyroomCollectionViewCell", bundle: .main)
         roomCollectionView.register(nib, forCellWithReuseIdentifier: "myroomCell")
-        roomCollectionView.frame = CGRect(x: 0, y: 5, width: self.view.frame.width, height: 97)
+        roomCollectionView.frame = CGRect(x: 0, y: 5, width: self.view.frame.width, height: 130)
         
         headerSeparaterView.frame.size.width = self.view.frame.width
         collectionItemSize()
@@ -274,7 +274,7 @@ class HomeViewController: UIViewController{
                 self.timelinePosts.append(followedContent)
             }
             if self.joinedRoomArray.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y - 70, width: self.view.frame.width, height: 30)
+                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.width, height: 30)
                 self.label.text = "ルームを作成、探して参加しよう！"
                 self.label.textAlignment = .center
                 self.label.textColor = .lightGray
@@ -283,7 +283,7 @@ class HomeViewController: UIViewController{
                 completionClosure([])
                 
             } else if self.timelinePosts.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y - 70, width: self.view.frame.size.width, height: 20)
+                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
                 self.label.text = "投稿がまだありません"
                 self.label.textAlignment = .center
                 self.label.textColor = .lightGray
@@ -439,10 +439,9 @@ class HomeViewController: UIViewController{
 extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSource{
     
     func collectionItemSize(){
-        
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width:80, height: 97)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 17, bottom: 0, right: 15)
+        layout.itemSize = CGSize(width:130, height: 120)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         roomCollectionView.collectionViewLayout = layout
         layout.scrollDirection = .horizontal
         roomCollectionView.isPagingEnabled = false
@@ -465,12 +464,7 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
         
         let cell = roomCollectionView.dequeueReusableCell(withReuseIdentifier: "myroomCell", for: indexPath) as! MyroomCollectionViewCell
         
-        
-        cell.roomImage.layer.cornerRadius = cell.roomImage.frame.height/2
-        cell.roomImage.clipsToBounds = true
-        cell.roomImage.layer.borderColor = UIColor.systemGray6.cgColor
-        cell.roomImage.layer.borderWidth = 1
-        
+        cell.clipsToBounds = false
         
         if self.joinedRoomArray.count != 0 {
             

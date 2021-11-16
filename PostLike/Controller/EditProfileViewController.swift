@@ -110,6 +110,53 @@ class EditProfileViewController: UIViewController {
     }
     
     
+    
+    
+    
+    func deleteStrage(){
+        let storage = Storage.storage()
+        let imageRef = NSString(string: passedUserImage)
+        let desertRef = storage.reference(forURL: imageRef as String)
+        desertRef.delete { err in
+            if err != nil {
+                print("false")
+                return
+            }else{
+                print("success")
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    func updateProfile(userImageUrl:String){
+        let docData = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
+        let uid = Auth.auth().currentUser!.uid
+        
+        Firestore.firestore().collection("users").document(uid).collection("rooms").document(self.passedDocumentID).setData(docData, merge: true){(err) in
+            
+            if let err = err {
+                print("firestoreへの保存に失敗しました。\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                return
+            }
+            print("firestoreへの保存に成功しました。")
+            self.dismiss(animated: true) {
+                if self.passedUserImage != "" {
+                    self.deleteStrage()
+                }
+            }
+        }
+    }
+    
+    
+    
     func createUserStrage(){
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
@@ -135,7 +182,6 @@ class EditProfileViewController: UIViewController {
                     }
                     guard let urlString = url?.absoluteString else{return}
                     self.updateProfile(userImageUrl: urlString)
-                    
                 }
             }
         }
@@ -145,24 +191,6 @@ class EditProfileViewController: UIViewController {
     
     
     
-    func updateProfile(userImageUrl:String){
-        let docData = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
-        let uid = Auth.auth().currentUser!.uid
-        
-        Firestore.firestore().collection("users").document(uid).collection("rooms").document(self.passedDocumentID).setData(docData, merge: true){(err) in
-            
-            if let err = err {
-                print("firestoreへの保存に失敗しました。\(err)")
-                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.dismissIndicator()
-                }
-                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                return
-            }
-            print("firestoreへの保存に成功しました。")
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
     
     
     
