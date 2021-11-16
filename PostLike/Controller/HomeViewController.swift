@@ -274,7 +274,7 @@ class HomeViewController: UIViewController{
                 self.timelinePosts.append(followedContent)
             }
             if self.joinedRoomArray.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y - 70, width: self.view.frame.width, height: 30)
+                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.width, height: 30)
                 self.label.text = "ルームを作成、探して参加しよう！"
                 self.label.textAlignment = .center
                 self.label.textColor = .lightGray
@@ -283,7 +283,7 @@ class HomeViewController: UIViewController{
                 completionClosure([])
                 
             } else if self.timelinePosts.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y - 70, width: self.view.frame.size.width, height: 20)
+                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
                 self.label.text = "投稿がまだありません"
                 self.label.textAlignment = .center
                 self.label.textColor = .lightGray
