@@ -158,7 +158,7 @@ class RoomEditViewController: UIViewController {
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("room_images").child(fileName)
         
-        guard let updateImage = updatedRoomImage.jpegData(compressionQuality: 0.1) else {return}
+        guard let updateImage = updatedRoomImage.jpegData(compressionQuality: 0.4) else {return}
         storageRef.putData(updateImage, metadata: nil) { (metadata, error) in
             if let error = error{
                 print("Firestorageへの保存に失敗しました。\(error)")

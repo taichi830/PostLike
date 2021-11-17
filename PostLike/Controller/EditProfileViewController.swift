@@ -160,7 +160,7 @@ class EditProfileViewController: UIViewController {
     func createUserStrage(){
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
-        guard let updateImage = updatedUserImage.jpegData(compressionQuality: 0.1) else {return}
+        guard let updateImage = updatedUserImage.jpegData(compressionQuality: 0.2) else {return}
         storageRef.putData(updateImage, metadata: nil) { (metadata, error) in
             if let error = error{
                 print("Firestorageへの保存に失敗しました。\(error)")
