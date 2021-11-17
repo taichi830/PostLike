@@ -86,7 +86,7 @@ class CreateHostProfileViewController: UIViewController {
     
     
     func createRoomImageToStrage(_ completed: @escaping(_ url:String) -> Void){
-        guard let profileImage = passedRoomImage.jpegData(compressionQuality: 0.2) else {return}
+        guard let profileImage = passedRoomImage.jpegData(compressionQuality: 0.4) else {return}
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("room_images").child(fileName)
         
@@ -114,7 +114,7 @@ class CreateHostProfileViewController: UIViewController {
     
     
     func createUserImageToStrage(_ completed: @escaping(_ url:String) -> Void){
-        guard let profileImage = userImage.image!.jpegData(compressionQuality: 0.2) else {return}
+        guard let profileImage = userImage.image!.jpegData(compressionQuality: 0.1) else {return}
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
         
