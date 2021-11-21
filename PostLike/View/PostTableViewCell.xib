@@ -43,6 +43,9 @@
                                 <state key="normal" image="ellipsis" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium" weight="thin"/>
                                 </state>
+                                <connections>
+                                    <action selector="pushReportButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="111-gU-lP7"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cup-ah-Bil">
                                 <rect key="frame" x="44" y="20" width="254" height="13.5"/>
@@ -124,6 +127,9 @@
                                 <state key="normal" image="heart" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default" weight="regular"/>
                                 </state>
+                                <connections>
+                                    <action selector="pushLikeButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="xFh-Br-1fI"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qB-Y5-5T2">
                                 <rect key="frame" x="22" y="0.0" width="8.5" height="16"/>
@@ -161,6 +167,9 @@
                                 <state key="normal" image="message" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default" weight="regular"/>
                                 </state>
+                                <connections>
+                                    <action selector="pushCommentButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="eTI-HG-8Lf"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -206,23 +215,23 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="MyPostImage" destination="Qeo-Ya-wHq" id="9Fo-no-UtS"/>
                 <outlet property="commentButton" destination="FJa-9Y-Jcr" id="L8b-M9-Jqf"/>
                 <outlet property="commentCountLabel" destination="KTL-Gb-JUs" id="UJU-iK-tfP"/>
                 <outlet property="createdAt" destination="cup-ah-Bil" id="186-fG-g7S"/>
                 <outlet property="likeButton" destination="HbS-h9-f2y" id="4Mj-IG-VNr"/>
                 <outlet property="likeCountLabel" destination="5qB-Y5-5T2" id="DQd-Dd-CGg"/>
-                <outlet property="myPostImage2" destination="DCh-UL-mLg" id="jxn-1f-mRo"/>
-                <outlet property="personImage" destination="zCs-NX-mHa" id="q3t-ls-b3D"/>
+                <outlet property="personImageView" destination="zCs-NX-mHa" id="q3t-ls-b3D"/>
                 <outlet property="postCommentHeight" destination="yS4-Jj-i1Y" id="Dzx-SL-Yvv"/>
-                <outlet property="postCommentLabel" destination="HaT-Nv-53Q" id="ZDI-dz-9ex"/>
-                <outlet property="postProfileImage" destination="xvn-kZ-v3x" id="jiR-rx-BBk"/>
-                <outlet property="postProfileName" destination="Tj0-IA-fcS" id="QDo-k9-enh"/>
+                <outlet property="postImageView" destination="Qeo-Ya-wHq" id="FoL-Ew-FmS"/>
+                <outlet property="postImageView2" destination="DCh-UL-mLg" id="hbO-hL-9QJ"/>
+                <outlet property="postTextLabel" destination="HaT-Nv-53Q" id="vDA-Xu-y5P"/>
                 <outlet property="reportButton" destination="CXR-aB-Hqf" id="cvf-hA-6CI"/>
                 <outlet property="roomNameLabel" destination="RSZ-u1-Tee" id="VHx-Fo-jBw"/>
-                <outlet property="singlePostImage" destination="MLp-68-EXv" id="iun-al-lYo"/>
+                <outlet property="singlePostImageView" destination="MLp-68-EXv" id="iun-al-lYo"/>
                 <outlet property="underHeight" destination="Ipj-um-vcI" id="6rx-6H-7ga"/>
                 <outlet property="underView" destination="dzU-D5-2Hu" id="Mkb-NN-QuO"/>
+                <outlet property="userImageView" destination="xvn-kZ-v3x" id="jiR-rx-BBk"/>
+                <outlet property="userNameLabel" destination="Tj0-IA-fcS" id="QDo-k9-enh"/>
             </connections>
             <point key="canvasLocation" x="-41.304347826086961" y="74.665178571428569"/>
         </tableViewCell>
