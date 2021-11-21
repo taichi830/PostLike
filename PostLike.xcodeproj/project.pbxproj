@@ -11,40 +11,35 @@
 		CE012C0B26B6EFD4006CC20E /* Alert-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBA3B3A26A4698B00159B12 /* Alert-extenshion.swift */; };
 		CE012C0C26B6EFD4006CC20E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB53ADA26539B010099E606 /* FirstViewController.swift */; };
 		CE012C0D26B6EFD4006CC20E /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE12E55126423CB800A2765C /* BaseTabBarController.swift */; };
-		CE012C0E26B6EFD4006CC20E /* roomReferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC58E1D260C6C27005AF7A7 /* roomReferenceViewController.swift */; };
-		CE012C1026B6EFD4006CC20E /* RoomDeliteContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B637A2670977200BC356F /* RoomDeliteContainerViewController.swift */; };
-		CE012C1326B6EFD4006CC20E /* MyroomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D126B25BDC95800BEFAC6 /* MyroomCollectionViewCell.swift */; };
-		CE012C1426B6EFD4006CC20E /* CommentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE488A5C25DEC6A1005012FF /* CommentListViewController.swift */; };
+		CE012C0E26B6EFD4006CC20E /* RoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */; };
+		CE012C1026B6EFD4006CC20E /* DeleteRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4B637A2670977200BC356F /* DeleteRoomViewController.swift */; };
+		CE012C1326B6EFD4006CC20E /* RoomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */; };
+		CE012C1426B6EFD4006CC20E /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE488A5C25DEC6A1005012FF /* CommentViewController.swift */; };
 		CE012C1526B6EFD4006CC20E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */; };
-		CE012C1626B6EFD4006CC20E /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED7147225CECE0A00390811 /* ContentViewController.swift */; };
 		CE012C1726B6EFD4006CC20E /* SearchResultHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE45BEEF267AFD6F00564F3F /* SearchResultHeaderView.swift */; };
-		CE012C1826B6EFD4006CC20E /* ContentsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A42125C104AA00F6FE06 /* ContentsCollectionViewCell.swift */; };
-		CE012C1926B6EFD4006CC20E /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE56EF7E25B1881F0057716C /* ProfileCollectionViewCell.swift */; };
+		CE012C1826B6EFD4006CC20E /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE6A42125C104AA00F6FE06 /* ImageCollectionViewCell.swift */; };
 		CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE65D28E265CE22500811EA0 /* ReportViewController.swift */; };
 		CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */; };
 		CE012C1D26B6EFD4006CC20E /* EnteredRoomContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5DA40B25924889005CF79D /* EnteredRoomContentViewController.swift */; };
 		CE012C1E26B6EFD4006CC20E /* CustomRefreshController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */; };
 		CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */; };
 		CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE262B992568C0CA009B7F5D /* SearchViewController.swift */; };
-		CE012C2126B6EFD4006CC20E /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D4FD325CA568600ED17A8 /* EditProfileViewController.swift */; };
-		CE012C2326B6EFD4006CC20E /* MyprofileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A66CB25527D580044B91C /* MyprofileViewController.swift */; };
+		CE012C2126B6EFD4006CC20E /* ProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5D4FD325CA568600ED17A8 /* ProfileEditViewController.swift */; };
+		CE012C2326B6EFD4006CC20E /* JoinedRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A66CB25527D580044B91C /* JoinedRoomViewController.swift */; };
 		CE012C2726B6EFD4006CC20E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA5C812520D56700755F90 /* LoginViewController.swift */; };
-		CE012C2826B6EFD4006CC20E /* PostContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE249CAC25989C4E003C87A0 /* PostContentViewController.swift */; };
+		CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE249CAC25989C4E003C87A0 /* PostViewController.swift */; };
 		CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */; };
 		CE012C2F26B6EFD4006CC20E /* TabImage-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BA5826637D1B001EC04B /* TabImage-extenshion.swift */; };
 		CE012C3026B6EFD4006CC20E /* ReportRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE65D290265E394100811EA0 /* ReportRoomViewController.swift */; };
 		CE012C3126B6EFD4006CC20E /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5C11FD25E371B100AAF0C0 /* CommentTableViewCell.swift */; };
 		CE012C3226B6EFD4006CC20E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE262B9725678434009B7F5D /* HomeViewController.swift */; };
-		CE012C3326B6EFD4006CC20E /* RoomDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52CD41256E34970032D661 /* RoomDetailTableViewController.swift */; };
+		CE012C3326B6EFD4006CC20E /* CreateRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52CD41256E34970032D661 /* CreateRoomViewController.swift */; };
 		CE012C3426B6EFD4006CC20E /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE56EF8625B332780057716C /* PostTableViewCell.swift */; };
 		CE012C3526B6EFD4006CC20E /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE547B1725F7B9540060D1D0 /* NotificationViewController.swift */; };
-		CE012C3626B6EFD4006CC20E /* PlaceHolderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC54980261D94000066F381 /* PlaceHolderTextView.swift */; };
-		CE012C3726B6EFD4006CC20E /* PagingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE355BFD2556ED7D006EF920 /* PagingMenuViewController.swift */; };
 		CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5648BB25DA2FE900BE3FEE /* ShowImageViewController.swift */; };
 		CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */; };
 		CE012C3C26B6EFD4006CC20E /* RoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE409DA8256D57B9002ED7E8 /* RoomDetailViewController.swift */; };
-		CE012C3D26B6EFD4006CC20E /* ProfileCollectionViewCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE56E9DF25CE520100B4133E /* ProfileCollectionViewCell2.swift */; };
-		CE012C3E26B6EFD4006CC20E /* CreateHostProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEED29B5260E27BE00AFA2FB /* CreateHostProfileViewController.swift */; };
+		CE012C3E26B6EFD4006CC20E /* CreateModeratorProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEED29B5260E27BE00AFA2FB /* CreateModeratorProfileViewController.swift */; };
 		CE012C4326B6EFD4006CC20E /* BaseTabBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E54F26423A1D00A2765C /* BaseTabBar.storyboard */; };
 		CE012C4526B6EFD4006CC20E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E5532642967D00A2765C /* Search.storyboard */; };
 		CE012C4626B6EFD4006CC20E /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE56EF8725B332780057716C /* PostTableViewCell.xib */; };
@@ -52,19 +47,19 @@
 		CE012C4826B6EFD4006CC20E /* NativeAdTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */; };
 		CE012C4926B6EFD4006CC20E /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE967139265AAE1700E7820F /* Login.storyboard */; };
 		CE012C4A26B6EFD4006CC20E /* SearchResultHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE45BEE82679A94C00564F3F /* SearchResultHeaderView.xib */; };
-		CE012C4B26B6EFD4006CC20E /* ContentsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE6A42225C104AA00F6FE06 /* ContentsCollectionViewCell.xib */; };
+		CE012C4B26B6EFD4006CC20E /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE6A42225C104AA00F6FE06 /* ImageCollectionViewCell.xib */; };
 		CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0BE2692659F7E900A419BE /* First.storyboard */; };
 		CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E5572642B00600A2765C /* Profile.storyboard */; };
 		CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5C11FE25E371B100AAF0C0 /* CommentTableViewCell.xib */; };
 		CE012C5226B6EFD4006CC20E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE18882C25205A24001C687C /* Main.storyboard */; };
-		CE012C5326B6EFD4006CC20E /* MyroomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3D126C25BDC95800BEFAC6 /* MyroomCollectionViewCell.xib */; };
+		CE012C5326B6EFD4006CC20E /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */; };
 		CE012C5526B6EFD4006CC20E /* Notification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E5552642AF6000A2765C /* Notification.storyboard */; };
 		CE199F7526DD159B009F1B7E /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = CE199F7426DCDC59009F1B7E /* index.html */; };
 		CE199F7726DE11D9009F1B7E /* termOfUse.html in Resources */ = {isa = PBXBuildFile; fileRef = CE199F7626DE11D9009F1B7E /* termOfUse.html */; };
 		CE199F7926DE125E009F1B7E /* TermOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE199F7826DE125E009F1B7E /* TermOfUseViewController.swift */; };
 		CE199F7C26E1C8DD009F1B7E /* GoogleService-Info.Develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE199F7B26E1C8DD009F1B7E /* GoogleService-Info.Develop.plist */; };
 		CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */; };
-		CE441D4A26DA8AB5006C6270 /* ComfirmingEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE441D4926DA8AB5006C6270 /* ComfirmingEmailViewController.swift */; };
+		CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */; };
 		CE5D0C23270715100019F9D5 /* GoogleService-Info.Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0C22270715100019F9D5 /* GoogleService-Info.Release.plist */; };
 		CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */; };
 		CE77EF5F26E67EEF00154886 /* Contents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5826E67EEF00154886 /* Contents.swift */; };
@@ -116,32 +111,29 @@
 		CE199F7826DE125E009F1B7E /* TermOfUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermOfUseViewController.swift; sourceTree = "<group>"; };
 		CE199F7B26E1C8DD009F1B7E /* GoogleService-Info.Develop.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.Develop.plist"; sourceTree = "<group>"; };
 		CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPassWordViewController.swift; sourceTree = "<group>"; };
-		CE249CAC25989C4E003C87A0 /* PostContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentViewController.swift; sourceTree = "<group>"; };
+		CE249CAC25989C4E003C87A0 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		CE262B9725678434009B7F5D /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CE262B992568C0CA009B7F5D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		CE33BA5826637D1B001EC04B /* TabImage-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-extenshion.swift"; sourceTree = "<group>"; };
-		CE355BFD2556ED7D006EF920 /* PagingMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingMenuViewController.swift; sourceTree = "<group>"; };
-		CE3D126B25BDC95800BEFAC6 /* MyroomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyroomCollectionViewCell.swift; sourceTree = "<group>"; };
-		CE3D126C25BDC95800BEFAC6 /* MyroomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyroomCollectionViewCell.xib; sourceTree = "<group>"; };
+		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
 		CE409DA8256D57B9002ED7E8 /* RoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewController.swift; sourceTree = "<group>"; };
-		CE441D4926DA8AB5006C6270 /* ComfirmingEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComfirmingEmailViewController.swift; sourceTree = "<group>"; };
+		CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComfirmEmailViewController.swift; sourceTree = "<group>"; };
 		CE45BEE82679A94C00564F3F /* SearchResultHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultHeaderView.xib; sourceTree = "<group>"; };
 		CE45BEEF267AFD6F00564F3F /* SearchResultHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultHeaderView.swift; sourceTree = "<group>"; };
-		CE488A5C25DEC6A1005012FF /* CommentListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListViewController.swift; sourceTree = "<group>"; };
-		CE4B637A2670977200BC356F /* RoomDeliteContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDeliteContainerViewController.swift; sourceTree = "<group>"; };
+		CE488A5C25DEC6A1005012FF /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
+		CE4B637A2670977200BC356F /* DeleteRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRoomViewController.swift; sourceTree = "<group>"; };
 		CE4F960826CCD25B00213900 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
-		CE52CD41256E34970032D661 /* RoomDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailTableViewController.swift; sourceTree = "<group>"; };
+		CE52CD41256E34970032D661 /* CreateRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomViewController.swift; sourceTree = "<group>"; };
 		CE547B1725F7B9540060D1D0 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		CE5648BB25DA2FE900BE3FEE /* ShowImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageViewController.swift; sourceTree = "<group>"; };
-		CE56E9DF25CE520100B4133E /* ProfileCollectionViewCell2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell2.swift; sourceTree = "<group>"; };
-		CE56EF7E25B1881F0057716C /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE56EF8625B332780057716C /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		CE56EF8725B332780057716C /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
-		CE5A66CB25527D580044B91C /* MyprofileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyprofileViewController.swift; sourceTree = "<group>"; };
+		CE5A66CB25527D580044B91C /* JoinedRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedRoomViewController.swift; sourceTree = "<group>"; };
 		CE5C11FD25E371B100AAF0C0 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		CE5C11FE25E371B100AAF0C0 /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
 		CE5D0C22270715100019F9D5 /* GoogleService-Info.Release.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.Release.plist"; sourceTree = "<group>"; };
-		CE5D4FD325CA568600ED17A8 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		CE5D4FD325CA568600ED17A8 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
 		CE5DA40B25924889005CF79D /* EnteredRoomContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnteredRoomContentViewController.swift; sourceTree = "<group>"; };
 		CE65D28E265CE22500811EA0 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		CE65D290265E394100811EA0 /* ReportRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRoomViewController.swift; sourceTree = "<group>"; };
@@ -170,19 +162,17 @@
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRefreshController.swift; sourceTree = "<group>"; };
 		CEBA3B3A26A4698B00159B12 /* Alert-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert-extenshion.swift"; sourceTree = "<group>"; };
-		CEC54980261D94000066F381 /* PlaceHolderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderTextView.swift; sourceTree = "<group>"; };
-		CEC58E1D260C6C27005AF7A7 /* roomReferenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = roomReferenceViewController.swift; sourceTree = "<group>"; };
+		CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
 		CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomEditViewController.swift; sourceTree = "<group>"; };
-		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = UserProfileHeaderView.xib; path = ../../../PostLike/PostLike/View/UserProfileHeaderView.xib; sourceTree = "<group>"; };
-		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserProfileHeaderView.swift; path = ../../../PostLike/PostLike/Controller/UserProfileHeaderView.swift; sourceTree = "<group>"; };
+		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
+		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
 		CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModalViewController.swift; sourceTree = "<group>"; };
 		CED4902026ED024900582742 /* ShowIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowIndicator.swift; sourceTree = "<group>"; };
-		CED7147225CECE0A00390811 /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImageContentsViewController.swift; sourceTree = "<group>"; };
-		CEE6A42125C104AA00F6FE06 /* ContentsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentsCollectionViewCell.swift; sourceTree = "<group>"; };
-		CEE6A42225C104AA00F6FE06 /* ContentsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContentsCollectionViewCell.xib; sourceTree = "<group>"; };
+		CEE6A42125C104AA00F6FE06 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CEE6A42225C104AA00F6FE06 /* ImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionViewCell.xib; sourceTree = "<group>"; };
 		CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		CEED29B5260E27BE00AFA2FB /* CreateHostProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHostProfileViewController.swift; sourceTree = "<group>"; };
+		CEED29B5260E27BE00AFA2FB /* CreateModeratorProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateModeratorProfileViewController.swift; sourceTree = "<group>"; };
 		CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRoomViewController.swift; sourceTree = "<group>"; };
 		CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileModalViewController.swift; sourceTree = "<group>"; };
 		CEF363282725858B00D5D443 /* PresentModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentModalViewController.swift; sourceTree = "<group>"; };
@@ -253,6 +243,7 @@
 		CE18882525205A24001C687C /* PostLike */ = {
 			isa = PBXGroup;
 			children = (
+				CE8C5A5E274A31AD00A49E56 /* Storyboard */,
 				CE012C5D26B6F196006CC20E /* Configs */,
 				CE33BA5726637CDA001EC04B /* Extenshion */,
 				CE77EF5726E67EEF00154886 /* Model */,
@@ -260,6 +251,8 @@
 				CEAA5C7D2520D34500755F90 /* Controller */,
 				CEAE5951271C1E41009CD18D /* HTML Files */,
 				CE18882F25205A25001C687C /* Assets.xcassets */,
+				CE77EF5D26E67EEF00154886 /* AppDelegate.swift */,
+				CE77EF5E26E67EEF00154886 /* SceneDelegate.swift */,
 				CE12E54E264186E700A2765C /* postLike.entitlements */,
 				CE18883425205A25001C687C /* Info.plist */,
 			);
@@ -273,6 +266,9 @@
 				CE33BA5826637D1B001EC04B /* TabImage-extenshion.swift */,
 				CEA19BEC26D631C800283E91 /* ArrayChunk.swift */,
 				CED4902026ED024900582742 /* ShowIndicator.swift */,
+				CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */,
+				CEF363282725858B00D5D443 /* PresentModalViewController.swift */,
+				CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -285,65 +281,116 @@
 				CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */,
 				CE77EF5B26E67EEF00154886 /* Room.swift */,
 				CE77EF5C26E67EEF00154886 /* Response.swift */,
-				CE77EF5D26E67EEF00154886 /* AppDelegate.swift */,
-				CE77EF5E26E67EEF00154886 /* SceneDelegate.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		CE8C5A58274A2B5500A49E56 /* First */ = {
+			isa = PBXGroup;
+			children = (
+				CEB53ADA26539B010099E606 /* FirstViewController.swift */,
+			);
+			path = First;
+			sourceTree = "<group>";
+		};
+		CE8C5A59274A2B6000A49E56 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */,
+				CEAA5C812520D56700755F90 /* LoginViewController.swift */,
+				CE199F7826DE125E009F1B7E /* TermOfUseViewController.swift */,
+				CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */,
+				CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */,
+				CEA19BF026D7D70900283E91 /* InitialViewController.swift */,
+				CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */,
+				CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		CE8C5A5A274A2B6800A49E56 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				CE262B9725678434009B7F5D /* HomeViewController.swift */,
+				CE5DA40B25924889005CF79D /* EnteredRoomContentViewController.swift */,
+				CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */,
+				CE488A5C25DEC6A1005012FF /* CommentViewController.swift */,
+				CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */,
+				CE65D28E265CE22500811EA0 /* ReportViewController.swift */,
+				CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */,
+				CE5648BB25DA2FE900BE3FEE /* ShowImageViewController.swift */,
+				CE249CAC25989C4E003C87A0 /* PostViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		CE8C5A5B274A2B7100A49E56 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				CE262B992568C0CA009B7F5D /* SearchViewController.swift */,
+				CE409DA8256D57B9002ED7E8 /* RoomDetailViewController.swift */,
+				CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */,
+				CE52CD41256E34970032D661 /* CreateRoomViewController.swift */,
+				CEED29B5260E27BE00AFA2FB /* CreateModeratorProfileViewController.swift */,
+				CE65D290265E394100811EA0 /* ReportRoomViewController.swift */,
+				CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		CE8C5A5C274A2B7A00A49E56 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				CE547B1725F7B9540060D1D0 /* NotificationViewController.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		CE8C5A5D274A2B8800A49E56 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				CE5A66CB25527D580044B91C /* JoinedRoomViewController.swift */,
+				CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */,
+				CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */,
+				CE5D4FD325CA568600ED17A8 /* ProfileEditViewController.swift */,
+				CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */,
+				CE4B637A2670977200BC356F /* DeleteRoomViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		CE8C5A5E274A31AD00A49E56 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				CE12E54F26423A1D00A2765C /* BaseTabBar.storyboard */,
+				CE0BE2692659F7E900A419BE /* First.storyboard */,
+				CE967139265AAE1700E7820F /* Login.storyboard */,
+				CE18882C25205A24001C687C /* Main.storyboard */,
+				CE12E5532642967D00A2765C /* Search.storyboard */,
+				CE12E5552642AF6000A2765C /* Notification.storyboard */,
+				CE12E5572642B00600A2765C /* Profile.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		CE8C5A5F274A321500A49E56 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				CE12E55126423CB800A2765C /* BaseTabBarController.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 		CEAA5C7D2520D34500755F90 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */,
-				CEAA5C812520D56700755F90 /* LoginViewController.swift */,
-				CE5A66CB25527D580044B91C /* MyprofileViewController.swift */,
-				CE355BFD2556ED7D006EF920 /* PagingMenuViewController.swift */,
-				CE262B9725678434009B7F5D /* HomeViewController.swift */,
-				CE262B992568C0CA009B7F5D /* SearchViewController.swift */,
-				CE52CD41256E34970032D661 /* RoomDetailTableViewController.swift */,
-				CE409DA8256D57B9002ED7E8 /* RoomDetailViewController.swift */,
-				CE5DA40B25924889005CF79D /* EnteredRoomContentViewController.swift */,
-				CE249CAC25989C4E003C87A0 /* PostContentViewController.swift */,
-				CE56EF7E25B1881F0057716C /* ProfileCollectionViewCell.swift */,
-				CE56EF8625B332780057716C /* PostTableViewCell.swift */,
-				CEE6A42125C104AA00F6FE06 /* ContentsCollectionViewCell.swift */,
-				CE3D126B25BDC95800BEFAC6 /* MyroomCollectionViewCell.swift */,
-				CE5D4FD325CA568600ED17A8 /* EditProfileViewController.swift */,
-				CE56E9DF25CE520100B4133E /* ProfileCollectionViewCell2.swift */,
-				CED7147225CECE0A00390811 /* ContentViewController.swift */,
-				CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */,
-				CE5648BB25DA2FE900BE3FEE /* ShowImageViewController.swift */,
-				CE488A5C25DEC6A1005012FF /* CommentListViewController.swift */,
-				CE5C11FD25E371B100AAF0C0 /* CommentTableViewCell.swift */,
-				CE547B1725F7B9540060D1D0 /* NotificationViewController.swift */,
-				CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */,
-				CEC58E1D260C6C27005AF7A7 /* roomReferenceViewController.swift */,
-				CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */,
-				CEED29B5260E27BE00AFA2FB /* CreateHostProfileViewController.swift */,
-				CEC54980261D94000066F381 /* PlaceHolderTextView.swift */,
-				CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */,
-				CE12E55126423CB800A2765C /* BaseTabBarController.swift */,
-				CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */,
-				CEB53ADA26539B010099E606 /* FirstViewController.swift */,
-				CE65D28E265CE22500811EA0 /* ReportViewController.swift */,
-				CE65D290265E394100811EA0 /* ReportRoomViewController.swift */,
-				CE4B637A2670977200BC356F /* RoomDeliteContainerViewController.swift */,
-				CE45BEEF267AFD6F00564F3F /* SearchResultHeaderView.swift */,
-				CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */,
-				CEA19BF026D7D70900283E91 /* InitialViewController.swift */,
-				CE441D4926DA8AB5006C6270 /* ComfirmingEmailViewController.swift */,
-				CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */,
-				CE199F7826DE125E009F1B7E /* TermOfUseViewController.swift */,
-				CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */,
-				CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */,
-				CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */,
-				CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */,
-				CEF363282725858B00D5D443 /* PresentModalViewController.swift */,
-				CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */,
-				CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */,
-				CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */,
-				CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */,
-				CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */,
+				CE8C5A5F274A321500A49E56 /* TabBar */,
+				CE8C5A5D274A2B8800A49E56 /* Profile */,
+				CE8C5A5C274A2B7A00A49E56 /* Notification */,
+				CE8C5A5B274A2B7100A49E56 /* Search */,
+				CE8C5A5A274A2B6800A49E56 /* Home */,
+				CE8C5A59274A2B6000A49E56 /* Login */,
+				CE8C5A58274A2B5500A49E56 /* First */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -351,22 +398,24 @@
 		CEAA5C7E2520D34E00755F90 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CE0BE2692659F7E900A419BE /* First.storyboard */,
-				CE967139265AAE1700E7820F /* Login.storyboard */,
-				CE12E54F26423A1D00A2765C /* BaseTabBar.storyboard */,
-				CE18882C25205A24001C687C /* Main.storyboard */,
-				CE12E5532642967D00A2765C /* Search.storyboard */,
-				CE12E5552642AF6000A2765C /* Notification.storyboard */,
-				CE12E5572642B00600A2765C /* Profile.storyboard */,
 				CE56EF8725B332780057716C /* PostTableViewCell.xib */,
-				CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */,
-				CE3D126C25BDC95800BEFAC6 /* MyroomCollectionViewCell.xib */,
-				CEE6A42225C104AA00F6FE06 /* ContentsCollectionViewCell.xib */,
+				CE56EF8625B332780057716C /* PostTableViewCell.swift */,
 				CE5C11FE25E371B100AAF0C0 /* CommentTableViewCell.xib */,
+				CE5C11FD25E371B100AAF0C0 /* CommentTableViewCell.swift */,
+				CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */,
+				CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */,
+				CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */,
+				CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */,
+				CEE6A42225C104AA00F6FE06 /* ImageCollectionViewCell.xib */,
+				CEE6A42125C104AA00F6FE06 /* ImageCollectionViewCell.swift */,
 				CE45BEE82679A94C00564F3F /* SearchResultHeaderView.xib */,
+				CE45BEEF267AFD6F00564F3F /* SearchResultHeaderView.swift */,
 				CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */,
+				CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */,
 				CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */,
+				CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */,
 				CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */,
+				CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -450,12 +499,12 @@
 				CE012C4926B6EFD4006CC20E /* Login.storyboard in Resources */,
 				CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */,
 				CE012C4A26B6EFD4006CC20E /* SearchResultHeaderView.xib in Resources */,
-				CE012C4B26B6EFD4006CC20E /* ContentsCollectionViewCell.xib in Resources */,
+				CE012C4B26B6EFD4006CC20E /* ImageCollectionViewCell.xib in Resources */,
 				CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */,
 				CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */,
 				CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */,
 				CE012C5226B6EFD4006CC20E /* Main.storyboard in Resources */,
-				CE012C5326B6EFD4006CC20E /* MyroomCollectionViewCell.xib in Resources */,
+				CE012C5326B6EFD4006CC20E /* RoomCollectionViewCell.xib in Resources */,
 				CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */,
 				CE199F7C26E1C8DD009F1B7E /* GoogleService-Info.Develop.plist in Resources */,
 				CE012C5526B6EFD4006CC20E /* Notification.storyboard in Resources */,
@@ -553,18 +602,16 @@
 				CE012C0C26B6EFD4006CC20E /* FirstViewController.swift in Sources */,
 				CE012C0D26B6EFD4006CC20E /* BaseTabBarController.swift in Sources */,
 				CE77EF6326E67EEF00154886 /* Response.swift in Sources */,
-				CE012C0E26B6EFD4006CC20E /* roomReferenceViewController.swift in Sources */,
-				CE012C1026B6EFD4006CC20E /* RoomDeliteContainerViewController.swift in Sources */,
-				CE012C1326B6EFD4006CC20E /* MyroomCollectionViewCell.swift in Sources */,
-				CE012C1426B6EFD4006CC20E /* CommentListViewController.swift in Sources */,
+				CE012C0E26B6EFD4006CC20E /* RoomListViewController.swift in Sources */,
+				CE012C1026B6EFD4006CC20E /* DeleteRoomViewController.swift in Sources */,
+				CE012C1326B6EFD4006CC20E /* RoomCollectionViewCell.swift in Sources */,
+				CE012C1426B6EFD4006CC20E /* CommentViewController.swift in Sources */,
 				CE012C1526B6EFD4006CC20E /* ProfileViewController.swift in Sources */,
 				CEA19BED26D631C800283E91 /* ArrayChunk.swift in Sources */,
 				CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */,
-				CE012C1626B6EFD4006CC20E /* ContentViewController.swift in Sources */,
 				CE012C1726B6EFD4006CC20E /* SearchResultHeaderView.swift in Sources */,
 				CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */,
-				CE012C1826B6EFD4006CC20E /* ContentsCollectionViewCell.swift in Sources */,
-				CE012C1926B6EFD4006CC20E /* ProfileCollectionViewCell.swift in Sources */,
+				CE012C1826B6EFD4006CC20E /* ImageCollectionViewCell.swift in Sources */,
 				CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
@@ -576,13 +623,13 @@
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
 				CE77EF6026E67EEF00154886 /* User.swift in Sources */,
-				CE012C2126B6EFD4006CC20E /* EditProfileViewController.swift in Sources */,
+				CE012C2126B6EFD4006CC20E /* ProfileEditViewController.swift in Sources */,
 				CEA97FE7272907E100B51A96 /* UnderMenuPresentationController.swift in Sources */,
-				CE012C2326B6EFD4006CC20E /* MyprofileViewController.swift in Sources */,
+				CE012C2326B6EFD4006CC20E /* JoinedRoomViewController.swift in Sources */,
 				CE012C2726B6EFD4006CC20E /* LoginViewController.swift in Sources */,
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,
-				CE012C2826B6EFD4006CC20E /* PostContentViewController.swift in Sources */,
-				CE441D4A26DA8AB5006C6270 /* ComfirmingEmailViewController.swift in Sources */,
+				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
+				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
 				CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
@@ -593,19 +640,16 @@
 				CE77EF6126E67EEF00154886 /* DKImagePicker.swift in Sources */,
 				CE77EF6426E67EEF00154886 /* AppDelegate.swift in Sources */,
 				CE012C3226B6EFD4006CC20E /* HomeViewController.swift in Sources */,
-				CE012C3326B6EFD4006CC20E /* RoomDetailTableViewController.swift in Sources */,
+				CE012C3326B6EFD4006CC20E /* CreateRoomViewController.swift in Sources */,
 				CE77EF6526E67EEF00154886 /* SceneDelegate.swift in Sources */,
 				CE012C3426B6EFD4006CC20E /* PostTableViewCell.swift in Sources */,
 				CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */,
 				CE012C3526B6EFD4006CC20E /* NotificationViewController.swift in Sources */,
-				CE012C3626B6EFD4006CC20E /* PlaceHolderTextView.swift in Sources */,
-				CE012C3726B6EFD4006CC20E /* PagingMenuViewController.swift in Sources */,
 				CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */,
 				CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */,
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
 				CE012C3C26B6EFD4006CC20E /* RoomDetailViewController.swift in Sources */,
-				CE012C3D26B6EFD4006CC20E /* ProfileCollectionViewCell2.swift in Sources */,
-				CE012C3E26B6EFD4006CC20E /* CreateHostProfileViewController.swift in Sources */,
+				CE012C3E26B6EFD4006CC20E /* CreateModeratorProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
