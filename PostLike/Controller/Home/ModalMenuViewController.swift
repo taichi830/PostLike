@@ -129,16 +129,16 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
                 
                 if let bundleID = Bundle.main.bundleIdentifier {
                     shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
-                    shareLink.iOSParameters?.appStoreID = "1584149456"
-                    
-                    shareLink.androidParameters = .none
-                    shareLink.androidParameters?.minimumVersion = .zero
-                    
-                    shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-                    shareLink.socialMetaTagParameters?.title = passedRoomName
-                    shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
-                    shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
                 }
+                shareLink.iOSParameters?.appStoreID = "1584149456"
+                
+                shareLink.androidParameters = .none
+                shareLink.androidParameters?.minimumVersion = .zero
+                
+                shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
+                shareLink.socialMetaTagParameters?.title = passedRoomName
+                shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
+                shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
                 shareLink.shorten { url, warnings, err in
                     if err != nil {
                         return
@@ -149,7 +149,7 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
                             }
                         }
                         guard let url = url else {return}
-                        let activityItems: [Any] = [url,ShareActivitySource(url, self.passedRoomName, self.passedRoomImage)]
+                        let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomName, roomImage: self.passedRoomImage)]
                         let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
                         self.present(activityViewController, animated: true, completion: nil)
                     }
@@ -171,6 +171,9 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
     
 }
 
+
+
+
 extension ModalMenuViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         
@@ -191,7 +194,7 @@ class ShareActivitySource:NSObject, UIActivityItemSource{
     
     private let linkMetadata:LPLinkMetadata
     
-    init(_ url: URL,_ roomName:String,_ roomImage:UIImage) {
+    init(url: URL,roomName:String,roomImage:UIImage) {
         linkMetadata = LPLinkMetadata()
         super.init()
         

@@ -114,7 +114,7 @@ class HomeViewController: UIViewController{
     private func setupCollectionView(){
         roomCollectionView.delegate = self
         roomCollectionView.dataSource = self
-        let nib = UINib(nibName: "MyroomCollectionViewCell", bundle: .main)
+        let nib = UINib(nibName: "RoomCollectionViewCell", bundle: .main)
         roomCollectionView.register(nib, forCellWithReuseIdentifier: "myroomCell")
         roomCollectionView.frame = CGRect(x: 0, y: 5, width: self.view.frame.width, height: 130)
         headerSeparaterView.frame.size.width = self.view.frame.width
