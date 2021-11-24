@@ -243,9 +243,9 @@
 		CE18882525205A24001C687C /* PostLike */ = {
 			isa = PBXGroup;
 			children = (
-				CE8C5A5E274A31AD00A49E56 /* Storyboard */,
 				CE012C5D26B6F196006CC20E /* Configs */,
 				CE33BA5726637CDA001EC04B /* Extenshion */,
+				CE8C5A5E274A31AD00A49E56 /* Storyboard */,
 				CE77EF5726E67EEF00154886 /* Model */,
 				CEAA5C7E2520D34E00755F90 /* View */,
 				CEAA5C7D2520D34500755F90 /* Controller */,
