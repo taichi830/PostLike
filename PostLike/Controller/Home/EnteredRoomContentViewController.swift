@@ -205,34 +205,12 @@ class EnteredRoomContentViewController: UIViewController{
         modalMenuVC.passedRoomImageUrl = roomInfo?.roomImage ?? ""
         modalMenuVC.passedRoomName = roomInfo?.roomName ?? ""
         modalMenuVC.passedRoomIntro = roomInfo?.roomIntro ?? ""
-        modalMenuVC.passedRoomImage = UIImage()
+        modalMenuVC.passedRoomImage = roomImageView.image ?? UIImage()
         present(modalMenuVC, animated: true, completion: nil)
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
     
     
     private func fetchProfileInfo(){
