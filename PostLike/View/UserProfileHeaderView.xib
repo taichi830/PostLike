@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserProfileHeaderView" customModule="PostLike_" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserProfileHeaderView" customModule="PostLike" customModuleProvider="target">
             <connections>
                 <outlet property="editButtonStackView" destination="k5e-a8-K5G" id="sf3-Rs-d4r"/>
                 <outlet property="hostProfileEditButton" destination="a4i-jL-im8" id="iUM-Jn-GAD"/>
@@ -23,7 +23,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="281"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="286"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RFE-HU-B3Y">
@@ -155,7 +155,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DBf-yW-AfC">
-                    <rect key="frame" x="0.0" y="271" width="375" height="10"/>
+                    <rect key="frame" x="0.0" y="276" width="375" height="10"/>
                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="10" id="Zex-5b-6Yd"/>
@@ -167,12 +167,12 @@
             <constraints>
                 <constraint firstItem="1Ba-1l-e9g" firstAttribute="top" secondItem="KpH-x9-jLp" secondAttribute="bottom" constant="13" id="0Tm-u1-yuB"/>
                 <constraint firstItem="KpH-x9-jLp" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="19f-ga-mqv"/>
-                <constraint firstItem="DBf-yW-AfC" firstAttribute="top" secondItem="blj-bO-i7Z" secondAttribute="bottom" constant="15" id="5dr-ys-9lf"/>
                 <constraint firstItem="1Ba-1l-e9g" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="EyA-cR-GUV"/>
                 <constraint firstItem="blj-bO-i7Z" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="NiD-rA-vfV"/>
                 <constraint firstItem="KpH-x9-jLp" firstAttribute="top" secondItem="RFE-HU-B3Y" secondAttribute="bottom" constant="10" id="Ohe-UQ-5db"/>
                 <constraint firstItem="RFE-HU-B3Y" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="PRM-JZ-TlE"/>
                 <constraint firstItem="DBf-yW-AfC" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="PuZ-Xg-DkH"/>
+                <constraint firstItem="DBf-yW-AfC" firstAttribute="top" secondItem="blj-bO-i7Z" secondAttribute="bottom" constant="20" id="bCu-Ru-zeH"/>
                 <constraint firstItem="DBf-yW-AfC" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="cZB-RZ-Csn"/>
                 <constraint firstItem="blj-bO-i7Z" firstAttribute="top" secondItem="1Ba-1l-e9g" secondAttribute="bottom" constant="10" id="p80-kY-c5I"/>
                 <constraint firstItem="blj-bO-i7Z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="qMA-K9-wvH"/>
@@ -182,7 +182,7 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="113.768115942029" y="-66.294642857142861"/>
+            <point key="canvasLocation" x="113.768115942029" y="-64.955357142857139"/>
         </view>
     </objects>
     <resources>

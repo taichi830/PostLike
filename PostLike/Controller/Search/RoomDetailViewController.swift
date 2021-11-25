@@ -220,7 +220,6 @@ class RoomDetailViewController: UIViewController {
                 if self.roomInfo?.roomImage != "" {
                     self.roomImageView.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
                     self.headerView.roomImage.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
-                    self.headerView.personsImage.image = UIImage()
                 }
                 self.fetchContents {
                     self.contentsTableView.reloadData()
