@@ -11,7 +11,6 @@ import UIKit
 class SearchResultHeaderView: UIView {
     
     @IBOutlet weak var roomImage: UIImageView!
-    @IBOutlet weak var personsImage: UIImageView!
     @IBOutlet weak var joinButton: UIButton!
     @IBOutlet weak var roomName: UILabel!
     @IBOutlet weak var roomIntro: UILabel!

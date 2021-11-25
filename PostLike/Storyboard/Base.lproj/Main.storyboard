@@ -860,7 +860,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HAR-eH-HaE" customClass="RoomHeaderView" customModule="PostLike" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="287"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>

@@ -195,7 +195,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oHw-dH-dn9" customClass="UserProfileHeaderView" customModule="PostLike" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="81" width="428" height="281"/>
+                                <rect key="frame" x="0.0" y="81" width="428" height="286"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
