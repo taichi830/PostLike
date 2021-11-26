@@ -12,10 +12,10 @@ class PostTableViewCell: UITableViewCell{
     
     
     
+    @IBOutlet weak var postTextView: LinkTextView!
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var personImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var postTextLabel: UILabel!
     @IBOutlet weak var reportButton: UIButton!
     @IBOutlet weak var singlePostImageView: UIImageView!
     @IBOutlet weak var postImageView: UIImageView!
@@ -88,8 +88,9 @@ class PostTableViewCell: UITableViewCell{
         userNameLabel.text = contents.userName
         
         //投稿文をセット
-        postTextLabel.text = contents.text
-        
+        postTextView.setText(text: contents.text, urls: contents.text.urlsFromRegexs)
+        postTextView.textContainerInset = .zero
+
         //投稿画像をセット
         if contents.mediaArray[0] == "" {
             underHeight.constant = 0
@@ -150,6 +151,9 @@ class PostTableViewCell: UITableViewCell{
         
         
     }
+    
+   
+    
     
     
     
