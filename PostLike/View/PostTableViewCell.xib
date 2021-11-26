@@ -68,15 +68,6 @@
                             <constraint firstAttribute="height" constant="36" id="gTS-iC-2vo"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HaT-Nv-53Q">
-                        <rect key="frame" x="20" y="66" width="335" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="yS4-Jj-i1Y"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzU-D5-2Hu">
                         <rect key="frame" x="19" y="96" width="337" height="185"/>
                         <subviews>
@@ -192,18 +183,28 @@
                             <constraint firstAttribute="bottom" secondItem="HbS-h9-f2y" secondAttribute="bottom" id="tO0-Bx-THe"/>
                         </constraints>
                     </view>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sze-mn-Ula" customClass="LinkTextView" customModule="PostLike" customModuleProvider="target">
+                        <rect key="frame" x="20" y="66" width="335" height="20"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="UTA-d1-rPO"/>
+                        </constraints>
+                        <color key="textColor" systemColor="labelColor"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
                 </subviews>
                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 <constraints>
-                    <constraint firstItem="HaT-Nv-53Q" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="bottom" constant="10" id="1nM-lc-Pih"/>
+                    <constraint firstItem="Sze-mn-Ula" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="bottom" constant="10" id="0U2-32-loW"/>
                     <constraint firstAttribute="trailing" secondItem="BDF-Fr-x3p" secondAttribute="trailing" id="3DW-96-nhi"/>
-                    <constraint firstAttribute="trailing" secondItem="HaT-Nv-53Q" secondAttribute="trailing" constant="20" id="3wa-Gp-gMD"/>
-                    <constraint firstItem="dzU-D5-2Hu" firstAttribute="top" secondItem="HaT-Nv-53Q" secondAttribute="bottom" constant="10" id="4IU-7F-mGW"/>
                     <constraint firstItem="bm6-fz-dga" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="7mF-HS-F9O"/>
                     <constraint firstItem="BDF-Fr-x3p" firstAttribute="top" secondItem="RPc-ga-pWI" secondAttribute="bottom" constant="20" id="9q4-al-3ly"/>
                     <constraint firstAttribute="trailing" secondItem="RPc-ga-pWI" secondAttribute="trailing" constant="23" id="ESm-5Q-SUV"/>
+                    <constraint firstItem="Sze-mn-Ula" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="F3J-aq-8f9"/>
                     <constraint firstItem="BDF-Fr-x3p" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="M5M-kh-bmS"/>
-                    <constraint firstItem="HaT-Nv-53Q" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="buq-FA-ij2"/>
+                    <constraint firstItem="dzU-D5-2Hu" firstAttribute="top" secondItem="Sze-mn-Ula" secondAttribute="bottom" constant="10" id="TWJ-cB-Pde"/>
+                    <constraint firstAttribute="trailing" secondItem="Sze-mn-Ula" secondAttribute="trailing" constant="20" id="dPm-Ip-IaV"/>
                     <constraint firstAttribute="bottom" secondItem="BDF-Fr-x3p" secondAttribute="bottom" id="f4D-nq-FSP"/>
                     <constraint firstItem="RPc-ga-pWI" firstAttribute="top" secondItem="dzU-D5-2Hu" secondAttribute="bottom" constant="14" id="rkF-RE-tWU"/>
                     <constraint firstAttribute="trailing" secondItem="dzU-D5-2Hu" secondAttribute="trailing" constant="19" id="s8W-zF-uim"/>
@@ -221,10 +222,10 @@
                 <outlet property="likeButton" destination="HbS-h9-f2y" id="4Mj-IG-VNr"/>
                 <outlet property="likeCountLabel" destination="5qB-Y5-5T2" id="DQd-Dd-CGg"/>
                 <outlet property="personImageView" destination="zCs-NX-mHa" id="q3t-ls-b3D"/>
-                <outlet property="postCommentHeight" destination="yS4-Jj-i1Y" id="Dzx-SL-Yvv"/>
+                <outlet property="postCommentHeight" destination="UTA-d1-rPO" id="RwS-9o-Obq"/>
                 <outlet property="postImageView" destination="Qeo-Ya-wHq" id="FoL-Ew-FmS"/>
                 <outlet property="postImageView2" destination="DCh-UL-mLg" id="hbO-hL-9QJ"/>
-                <outlet property="postTextLabel" destination="HaT-Nv-53Q" id="vDA-Xu-y5P"/>
+                <outlet property="postTextView" destination="Sze-mn-Ula" id="5A5-gJ-BgX"/>
                 <outlet property="reportButton" destination="CXR-aB-Hqf" id="cvf-hA-6CI"/>
                 <outlet property="roomNameLabel" destination="RSZ-u1-Tee" id="VHx-Fo-jBw"/>
                 <outlet property="singlePostImageView" destination="MLp-68-EXv" id="iun-al-lYo"/>
@@ -233,7 +234,7 @@
                 <outlet property="userImageView" destination="xvn-kZ-v3x" id="jiR-rx-BBk"/>
                 <outlet property="userNameLabel" destination="Tj0-IA-fcS" id="QDo-k9-enh"/>
             </connections>
-            <point key="canvasLocation" x="-41.304347826086961" y="74.665178571428569"/>
+            <point key="canvasLocation" x="-41.304347826086961" y="74.330357142857139"/>
         </tableViewCell>
     </objects>
     <resources>
@@ -241,6 +242,9 @@
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
