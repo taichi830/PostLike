@@ -29,7 +29,7 @@
                     </constraints>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MQL-M7-vgU">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="290"/>
+                    <rect key="frame" x="0.0" y="180" width="414" height="110"/>
                     <color key="backgroundColor" systemColor="systemGray5Color"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hU-9f-7ba">
@@ -114,9 +114,9 @@
                 <constraint firstItem="CFo-h5-M9j" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Wfr-CO-aYl"/>
                 <constraint firstItem="8hU-9f-7ba" firstAttribute="bottom" secondItem="jX1-d7-Bgt" secondAttribute="bottom" id="dOL-Eh-54G"/>
                 <constraint firstItem="MQL-M7-vgU" firstAttribute="leading" secondItem="jX1-d7-Bgt" secondAttribute="leading" id="gdx-i8-SSH"/>
-                <constraint firstItem="MQL-M7-vgU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="gmZ-jh-CLb"/>
                 <constraint firstItem="CFo-h5-M9j" firstAttribute="leading" secondItem="jX1-d7-Bgt" secondAttribute="leading" id="lJp-Ka-tMw"/>
                 <constraint firstItem="8hU-9f-7ba" firstAttribute="leading" secondItem="jX1-d7-Bgt" secondAttribute="leading" id="nnQ-bK-KnH"/>
+                <constraint firstItem="MQL-M7-vgU" firstAttribute="top" secondItem="CFo-h5-M9j" secondAttribute="bottom" id="uG3-rZ-jJG"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
