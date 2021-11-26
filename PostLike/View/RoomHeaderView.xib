@@ -32,7 +32,7 @@
                     </constraints>
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ugh-DG-Twg">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="280"/>
+                    <rect key="frame" x="0.0" y="180" width="414" height="100"/>
                 </imageView>
                 <visualEffectView opaque="NO" contentMode="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="Jtn-zs-bF6">
                     <rect key="frame" x="0.0" y="180" width="414" height="100"/>
@@ -111,11 +111,11 @@
                 <constraint firstAttribute="bottom" secondItem="Ugh-DG-Twg" secondAttribute="bottom" id="0RH-9f-eXk"/>
                 <constraint firstItem="Wix-Xb-fgj" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="6qT-FH-j46"/>
                 <constraint firstItem="Jtn-zs-bF6" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="Azh-Q1-5oU"/>
-                <constraint firstItem="Ugh-DG-Twg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="CDZ-hl-YrH"/>
                 <constraint firstItem="Ugh-DG-Twg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Hop-Uh-6zf"/>
                 <constraint firstItem="Jtn-zs-bF6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="QNg-qK-Gb8"/>
                 <constraint firstItem="Jtn-zs-bF6" firstAttribute="top" secondItem="Wix-Xb-fgj" secondAttribute="bottom" id="WWT-p0-CNQ"/>
                 <constraint firstItem="Ugh-DG-Twg" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="axl-5J-xGD"/>
+                <constraint firstItem="Ugh-DG-Twg" firstAttribute="top" secondItem="Wix-Xb-fgj" secondAttribute="bottom" id="oDm-Jt-X2D"/>
                 <constraint firstItem="Wix-Xb-fgj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="oma-5e-yX7"/>
                 <constraint firstItem="Wix-Xb-fgj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="r7Z-FV-CW8"/>
                 <constraint firstItem="Jtn-zs-bF6" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="ubC-Lq-SIZ"/>
@@ -123,7 +123,7 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="53.623188405797109" y="-99.441964285714278"/>
+            <point key="canvasLocation" x="53.623188405797109" y="-99.776785714285708"/>
         </view>
     </objects>
     <resources>
