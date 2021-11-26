@@ -13,7 +13,7 @@ class LinkTextView: UITextView{
     func setText(text: String, urls: [String]) {
         self.text = text
         let style = NSMutableParagraphStyle()
-        style.lineSpacing = 1
+//        style.lineSpacing = 1
         let attributes = [NSAttributedString.Key.paragraphStyle : style,.font:UIFont.systemFont(ofSize: 16)]
         let attributeString = NSMutableAttributedString(string:self.text,
                                                         attributes: attributes)
@@ -26,3 +26,4 @@ class LinkTextView: UITextView{
     }
     
 }
+
