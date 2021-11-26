@@ -13,7 +13,8 @@ import Firebase
 class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
     
-    @IBOutlet weak var textView: UITextView!
+    
+    @IBOutlet weak var textView: LinkTextView!
     @IBOutlet weak var photoTableView: UITableView!
     @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var postButton: UIButton!
@@ -381,6 +382,15 @@ extension PostViewController: UITextViewDelegate{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.photoTableView.endEditing(true)
     }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.markedTextRange == nil{
+            self.textView.setText(text: textView.text, urls: textView.text.urlsFromRegexs)
+        }
+        
+    }
+    
+    
     
 }
 
