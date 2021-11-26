@@ -78,6 +78,8 @@
 		CEA97FE7272907E100B51A96 /* UnderMenuPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
+		CEBD5B32274F6CAC00E2FB83 /* String-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */; };
+		CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */; };
@@ -162,6 +164,8 @@
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRefreshController.swift; sourceTree = "<group>"; };
 		CEBA3B3A26A4698B00159B12 /* Alert-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert-extenshion.swift"; sourceTree = "<group>"; };
+		CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String-extenshion.swift"; sourceTree = "<group>"; };
+		CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
 		CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
 		CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomEditViewController.swift; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
@@ -269,6 +273,8 @@
 				CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */,
 				CEF363282725858B00D5D443 /* PresentModalViewController.swift */,
 				CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */,
+				CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */,
+				CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -615,6 +621,7 @@
 				CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
+				CEBD5B32274F6CAC00E2FB83 /* String-extenshion.swift in Sources */,
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
 				CED4902126ED024900582742 /* ShowIndicator.swift in Sources */,
 				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
@@ -633,6 +640,7 @@
 				CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
+				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,
 				CE012C2F26B6EFD4006CC20E /* TabImage-extenshion.swift in Sources */,
 				CE012C3026B6EFD4006CC20E /* ReportRoomViewController.swift in Sources */,
 				CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */,
