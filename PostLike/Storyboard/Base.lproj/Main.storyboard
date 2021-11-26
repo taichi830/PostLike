@@ -1056,7 +1056,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2n-iE-Oi7">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2n-iE-Oi7" customClass="LinkTextView" customModule="PostLike" customModuleProvider="target">
                                         <rect key="frame" x="11" y="45" width="356" height="37"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="Aah-aa-O8P"/>
@@ -1064,6 +1064,7 @@
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                     </textView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="VZD-PB-2tO">
                                         <rect key="frame" x="19" y="18" width="20" height="17"/>
@@ -1205,7 +1206,7 @@
                         <outlet property="postTitleLabel" destination="NhC-QY-FfH" id="4YV-4R-TMe"/>
                         <outlet property="profileImage" destination="CUX-4J-zRN" id="rJ0-mn-Tva"/>
                         <outlet property="profileName" destination="wHH-P0-tv0" id="LBY-Q5-Kw8"/>
-                        <outlet property="textView" destination="a2n-iE-Oi7" id="u62-UY-C8q"/>
+                        <outlet property="textView" destination="a2n-iE-Oi7" id="CAG-AW-hid"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="whu-ik-S9Y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
