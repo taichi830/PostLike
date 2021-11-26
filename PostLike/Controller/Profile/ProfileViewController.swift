@@ -532,15 +532,15 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
 
 extension ProfileViewController:TableViewCellDelegate{
     func reportButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+        let modalMenuVC = storyboard?.instantiateViewController(withIdentifier: "profileModal") as! ProfileModalViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
         modalMenuVC.passedDocumentID = contentsArray[row].documentID
         modalMenuVC.passedRoomID = contentsArray[row].roomID
-        modalMenuVC.passedUid = contentsArray[row].uid
+        modalMenuVC.passedImageUrl = contentsArray[row].mediaArray
         modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = "post"
+        modalMenuVC.deletePostDelegate = self
+        modalMenuVC.passedType = "delete"
         present(modalMenuVC, animated: true, completion: nil)
     }
     
