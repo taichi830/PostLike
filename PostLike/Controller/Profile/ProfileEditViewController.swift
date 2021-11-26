@@ -49,7 +49,7 @@ class ProfileEditViewController: UIViewController {
         userNameEditLabel.layer.borderColor = UIColor.systemGray5.cgColor
         
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
     
@@ -210,10 +210,6 @@ extension ProfileEditViewController:UITextFieldDelegate{
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        
-    }
     
     
     @objc func keybordWillShow(_ notification: Notification) {
@@ -239,9 +235,6 @@ extension ProfileEditViewController:UITextFieldDelegate{
         
     }
     
-    @objc func keybordWillHide(_ notification: Notification) {
-        
-    }
     
     
     
