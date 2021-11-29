@@ -10,11 +10,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="332" id="KGk-i7-Jjw" customClass="PostTableViewCell" customModule="PostLike" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="332"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="312" id="KGk-i7-Jjw" customClass="PostTableViewCell" customModule="PostLike" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="312"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="332"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="312"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bm6-fz-dga">
@@ -34,11 +34,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CXR-aB-Hqf">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CXR-aB-Hqf">
                                 <rect key="frame" x="303" y="8" width="30" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="cKn-s6-PJe"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="0.60183632779999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="ellipsis" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium" weight="thin"/>
@@ -62,14 +60,11 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="CXR-aB-Hqf" secondAttribute="bottom" constant="6" id="3Ue-x4-foi"/>
-                            <constraint firstAttribute="trailing" secondItem="CXR-aB-Hqf" secondAttribute="trailing" id="IzA-2p-czd"/>
-                            <constraint firstItem="CXR-aB-Hqf" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="top" constant="8" id="Ow2-gI-4kB"/>
-                            <constraint firstAttribute="height" constant="36" id="gTS-iC-2vo"/>
+                            <constraint firstAttribute="height" constant="36" id="djK-Uf-qdh"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzU-D5-2Hu">
-                        <rect key="frame" x="19" y="96" width="337" height="185"/>
+                        <rect key="frame" x="19" y="76" width="337" height="185"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MLp-68-EXv">
                                 <rect key="frame" x="0.0" y="0.0" width="337" height="185"/>
@@ -99,14 +94,14 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BDF-Fr-x3p">
-                        <rect key="frame" x="0.0" y="331" width="375" height="1"/>
+                        <rect key="frame" x="0.0" y="311" width="375" height="1"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="JET-LQ-hSK"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RPc-ga-pWI">
-                        <rect key="frame" x="23" y="295" width="329" height="16"/>
+                        <rect key="frame" x="23" y="275" width="329" height="16"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HbS-h9-f2y">
                                 <rect key="frame" x="0.0" y="0.0" width="19" height="16"/>
@@ -184,33 +179,29 @@
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sze-mn-Ula" customClass="LinkTextView" customModule="PostLike" customModuleProvider="target">
-                        <rect key="frame" x="20" y="66" width="335" height="20"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="UTA-d1-rPO"/>
-                        </constraints>
+                        <rect key="frame" x="20" y="56" width="335" height="20"/>
                         <color key="textColor" systemColor="labelColor"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                 </subviews>
                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 <constraints>
-                    <constraint firstItem="Sze-mn-Ula" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="bottom" constant="10" id="0U2-32-loW"/>
                     <constraint firstAttribute="trailing" secondItem="BDF-Fr-x3p" secondAttribute="trailing" id="3DW-96-nhi"/>
-                    <constraint firstItem="bm6-fz-dga" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="7mF-HS-F9O"/>
+                    <constraint firstItem="bm6-fz-dga" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="21" id="93M-Lh-8PF"/>
                     <constraint firstItem="BDF-Fr-x3p" firstAttribute="top" secondItem="RPc-ga-pWI" secondAttribute="bottom" constant="20" id="9q4-al-3ly"/>
+                    <constraint firstAttribute="trailing" secondItem="Sze-mn-Ula" secondAttribute="trailing" constant="20" id="EC7-wz-jdr"/>
                     <constraint firstAttribute="trailing" secondItem="RPc-ga-pWI" secondAttribute="trailing" constant="23" id="ESm-5Q-SUV"/>
-                    <constraint firstItem="Sze-mn-Ula" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="F3J-aq-8f9"/>
                     <constraint firstItem="BDF-Fr-x3p" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="M5M-kh-bmS"/>
-                    <constraint firstItem="dzU-D5-2Hu" firstAttribute="top" secondItem="Sze-mn-Ula" secondAttribute="bottom" constant="10" id="TWJ-cB-Pde"/>
-                    <constraint firstAttribute="trailing" secondItem="Sze-mn-Ula" secondAttribute="trailing" constant="20" id="dPm-Ip-IaV"/>
+                    <constraint firstItem="dzU-D5-2Hu" firstAttribute="top" secondItem="Sze-mn-Ula" secondAttribute="bottom" id="O8p-R9-vqm"/>
+                    <constraint firstItem="Sze-mn-Ula" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="RqK-E6-iKf"/>
+                    <constraint firstAttribute="trailing" secondItem="bm6-fz-dga" secondAttribute="trailing" constant="21" id="YWN-m6-UTQ"/>
                     <constraint firstAttribute="bottom" secondItem="BDF-Fr-x3p" secondAttribute="bottom" id="f4D-nq-FSP"/>
+                    <constraint firstItem="Sze-mn-Ula" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="bottom" id="hRa-cS-nW8"/>
                     <constraint firstItem="RPc-ga-pWI" firstAttribute="top" secondItem="dzU-D5-2Hu" secondAttribute="bottom" constant="14" id="rkF-RE-tWU"/>
                     <constraint firstAttribute="trailing" secondItem="dzU-D5-2Hu" secondAttribute="trailing" constant="19" id="s8W-zF-uim"/>
+                    <constraint firstItem="bm6-fz-dga" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="w2I-IU-Ude"/>
                     <constraint firstItem="RPc-ga-pWI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="23" id="xel-6D-jiv"/>
-                    <constraint firstItem="bm6-fz-dga" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="21" id="xn3-LJ-o8B"/>
-                    <constraint firstAttribute="trailing" secondItem="bm6-fz-dga" secondAttribute="trailing" constant="21" id="y4d-UM-X53"/>
                     <constraint firstItem="dzU-D5-2Hu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="19" id="yev-bG-Y5K"/>
                 </constraints>
             </tableViewCellContentView>
@@ -222,10 +213,9 @@
                 <outlet property="likeButton" destination="HbS-h9-f2y" id="4Mj-IG-VNr"/>
                 <outlet property="likeCountLabel" destination="5qB-Y5-5T2" id="DQd-Dd-CGg"/>
                 <outlet property="personImageView" destination="zCs-NX-mHa" id="q3t-ls-b3D"/>
-                <outlet property="postCommentHeight" destination="UTA-d1-rPO" id="RwS-9o-Obq"/>
                 <outlet property="postImageView" destination="Qeo-Ya-wHq" id="FoL-Ew-FmS"/>
                 <outlet property="postImageView2" destination="DCh-UL-mLg" id="hbO-hL-9QJ"/>
-                <outlet property="postTextView" destination="Sze-mn-Ula" id="5A5-gJ-BgX"/>
+                <outlet property="postTextView" destination="Sze-mn-Ula" id="6LE-Fg-d56"/>
                 <outlet property="reportButton" destination="CXR-aB-Hqf" id="cvf-hA-6CI"/>
                 <outlet property="roomNameLabel" destination="RSZ-u1-Tee" id="VHx-Fo-jBw"/>
                 <outlet property="singlePostImageView" destination="MLp-68-EXv" id="iun-al-lYo"/>
@@ -234,7 +224,7 @@
                 <outlet property="userImageView" destination="xvn-kZ-v3x" id="jiR-rx-BBk"/>
                 <outlet property="userNameLabel" destination="Tj0-IA-fcS" id="QDo-k9-enh"/>
             </connections>
-            <point key="canvasLocation" x="-41.304347826086961" y="74.330357142857139"/>
+            <point key="canvasLocation" x="-41.304347826086961" y="67.633928571428569"/>
         </tableViewCell>
     </objects>
     <resources>

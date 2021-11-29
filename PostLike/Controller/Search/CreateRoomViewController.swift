@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseFirestore
 import DKImagePickerController
 
 class CreateRoomViewController: UIViewController {

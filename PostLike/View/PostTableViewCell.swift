@@ -28,8 +28,7 @@ class PostTableViewCell: UITableViewCell{
     @IBOutlet weak var createdAt: UILabel!
     @IBOutlet weak var underHeight: NSLayoutConstraint!
     @IBOutlet weak var roomNameLabel: UILabel!
-    @IBOutlet weak var postCommentHeight: NSLayoutConstraint!
-    
+
     
     weak var tableViewCellDelegate:TableViewCellDelegate?
     
@@ -87,10 +86,19 @@ class PostTableViewCell: UITableViewCell{
         //ユーザーネームをセット
         userNameLabel.text = contents.userName
         
-        //投稿文をセット
+        
+//        投稿文をセット
         postTextView.setText(text: contents.text, urls: contents.text.urlsFromRegexs)
-        postTextView.textContainerInset = .zero
-
+        if contents.text == "" {
+            postTextView.textContainerInset = .zero
+        }else{
+            postTextView.textContainerInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        }
+        
+        
+        
+        
+        
         //投稿画像をセット
         if contents.mediaArray[0] == "" {
             underHeight.constant = 0
@@ -145,6 +153,22 @@ class PostTableViewCell: UITableViewCell{
         
         //コメント数をセット
         commentCountLabel.text = contents.commentCount.description
+        
+        
+        
+        //投稿から何日経ったかを算出
+        let now = Date()
+        let createdAt = contents.createdAt.dateValue()
+        let diff = Calendar.current.dateComponents([.day,.hour,.minute,.second], from: createdAt, to: now)
+        if diff.day == 0 && diff.hour == 0 && diff.minute == 0 && diff.second != 0 {
+            self.createdAt.text = "\(diff.second ?? 0)秒前"
+        }else if diff.day == 0 && diff.hour == 0 && diff.minute != 0 {
+            self.createdAt.text = "\(diff.minute ?? 0)分前"
+        }else if diff.day == 0 && diff.hour != 0{
+            self.createdAt.text = "\(diff.hour ?? 0)時間前"
+        }else if diff.day != 0 {
+            self.createdAt.text = "\(diff.day ?? 0)日前"
+        }
         
         
         
