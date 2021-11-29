@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
+import GoogleMobileAds
 
 
 typealias ComplitionClosure = ((_ result:Array<Contents>) -> Void)
@@ -509,6 +511,19 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
             let cell = timeLineTableView.dequeueReusableCell(withIdentifier: "postTable", for: indexPath) as! PostTableViewCell
             cell.tableViewCellDelegate = self
             cell.setContent(contents: timeLineContent, likeContensArray: likeContentsArray)
+            
+            let now = Date()
+            let createdAt = timeLineContent.createdAt.dateValue()
+            let diff = Calendar.current.dateComponents([.day,.hour,.minute,.second], from: createdAt, to: now)
+            if diff.day == 0 && diff.hour == 0 && diff.minute == 0 && diff.second != 0 {
+                cell.createdAt.text = "moderator・\(diff.second ?? 0)秒前"
+            }else if diff.day == 0 && diff.hour == 0 && diff.minute != 0 {
+                cell.createdAt.text = "moderator・\(diff.minute ?? 0)分前"
+            }else if diff.day == 0 && diff.hour != 0{
+                cell.createdAt.text = "moderator・\(diff.hour ?? 0)時間前"
+            }else if diff.day != 0 {
+                cell.createdAt.text = "moderator・\(diff.day ?? 0)日前"
+            }
             
             
             

@@ -8,7 +8,9 @@
 
 import UIKit
 import DKImagePickerController
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
 
 class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     

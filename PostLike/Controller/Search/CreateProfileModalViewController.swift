@@ -8,7 +8,7 @@
 
 import UIKit
 import DKImagePickerController
-import Firebase
+import FirebaseFirestore
 
 class CreateProfileModalViewController: UIViewController {
     

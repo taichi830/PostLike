@@ -8,7 +8,10 @@
 
 import UIKit
 import DKImagePickerController
-import Firebase
+import FirebaseFirestore
+import FirebaseStorage
+import FirebaseAuth
+
 
 class ProfileEditViewController: UIViewController {
     

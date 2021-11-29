@@ -7,8 +7,9 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseFirestore
 import FirebaseDynamicLinks
+import FirebaseAuth
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

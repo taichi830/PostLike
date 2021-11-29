@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate {
     

@@ -10,11 +10,19 @@ import UIKit
 
 class LinkTextView: UITextView{
     
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     func setText(text: String, urls: [String]) {
         self.text = text
         let style = NSMutableParagraphStyle()
-//        style.lineSpacing = 1
-        let attributes = [NSAttributedString.Key.paragraphStyle : style,.font:UIFont.systemFont(ofSize: 16)]
+        style.minimumLineHeight = 1
+        let attributes = [NSAttributedString.Key.paragraphStyle : style,.font:UIFont.systemFont(ofSize: 15)]
         let attributeString = NSMutableAttributedString(string:self.text,
                                                         attributes: attributes)
         urls.forEach { url in
@@ -24,6 +32,5 @@ class LinkTextView: UITextView{
         }
         self.attributedText = attributeString
     }
-    
 }
 
