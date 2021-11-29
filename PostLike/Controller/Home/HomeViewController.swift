@@ -512,18 +512,6 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
             cell.tableViewCellDelegate = self
             cell.setContent(contents: timeLineContent, likeContensArray: likeContentsArray)
             
-            let now = Date()
-            let createdAt = timeLineContent.createdAt.dateValue()
-            let diff = Calendar.current.dateComponents([.day,.hour,.minute,.second], from: createdAt, to: now)
-            if diff.day == 0 && diff.hour == 0 && diff.minute == 0 && diff.second != 0 {
-                cell.createdAt.text = "moderator・\(diff.second ?? 0)秒前"
-            }else if diff.day == 0 && diff.hour == 0 && diff.minute != 0 {
-                cell.createdAt.text = "moderator・\(diff.minute ?? 0)分前"
-            }else if diff.day == 0 && diff.hour != 0{
-                cell.createdAt.text = "moderator・\(diff.hour ?? 0)時間前"
-            }else if diff.day != 0 {
-                cell.createdAt.text = "moderator・\(diff.day ?? 0)日前"
-            }
             
             
             
@@ -531,7 +519,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
                 $0.documentID == timeLineContent.roomID
             }
             let roomNameLabel = cell.roomNameLabel
-            if roomNameArray.isEmpty != true{
+            if roomNameArray.isEmpty != true {
                 roomNameLabel?.text = ("\(roomNameArray[0].roomName)")
                 roomNameLabel?.adjustsFontSizeToFitWidth = true
                 roomNameLabel?.minimumScaleFactor = 0.8
