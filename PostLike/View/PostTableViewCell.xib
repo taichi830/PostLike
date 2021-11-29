@@ -34,9 +34,12 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CXR-aB-Hqf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CXR-aB-Hqf">
                                 <rect key="frame" x="303" y="8" width="30" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="99r-AP-s8k"/>
+                                    <constraint firstAttribute="height" constant="22" id="ePm-OR-XdW"/>
+                                </constraints>
                                 <color key="tintColor" white="0.60183632779999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" image="ellipsis" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium" weight="thin"/>
@@ -60,7 +63,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="CXR-aB-Hqf" secondAttribute="trailing" id="AvR-C7-Dxv"/>
                             <constraint firstAttribute="height" constant="36" id="djK-Uf-qdh"/>
+                            <constraint firstItem="CXR-aB-Hqf" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="top" constant="8" id="voa-PT-qdV"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzU-D5-2Hu">
@@ -180,6 +185,9 @@
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sze-mn-Ula" customClass="LinkTextView" customModule="PostLike" customModuleProvider="target">
                         <rect key="frame" x="20" y="56" width="335" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="kNT-5B-riz"/>
+                        </constraints>
                         <color key="textColor" systemColor="labelColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -190,14 +198,14 @@
                     <constraint firstAttribute="trailing" secondItem="BDF-Fr-x3p" secondAttribute="trailing" id="3DW-96-nhi"/>
                     <constraint firstItem="bm6-fz-dga" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="21" id="93M-Lh-8PF"/>
                     <constraint firstItem="BDF-Fr-x3p" firstAttribute="top" secondItem="RPc-ga-pWI" secondAttribute="bottom" constant="20" id="9q4-al-3ly"/>
-                    <constraint firstAttribute="trailing" secondItem="Sze-mn-Ula" secondAttribute="trailing" constant="20" id="EC7-wz-jdr"/>
                     <constraint firstAttribute="trailing" secondItem="RPc-ga-pWI" secondAttribute="trailing" constant="23" id="ESm-5Q-SUV"/>
+                    <constraint firstItem="Sze-mn-Ula" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="FJE-8b-wBp"/>
+                    <constraint firstAttribute="trailing" secondItem="Sze-mn-Ula" secondAttribute="trailing" constant="20" id="I48-qk-OuU"/>
                     <constraint firstItem="BDF-Fr-x3p" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="M5M-kh-bmS"/>
-                    <constraint firstItem="dzU-D5-2Hu" firstAttribute="top" secondItem="Sze-mn-Ula" secondAttribute="bottom" id="O8p-R9-vqm"/>
-                    <constraint firstItem="Sze-mn-Ula" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="RqK-E6-iKf"/>
                     <constraint firstAttribute="trailing" secondItem="bm6-fz-dga" secondAttribute="trailing" constant="21" id="YWN-m6-UTQ"/>
+                    <constraint firstItem="Sze-mn-Ula" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="bottom" id="bYR-SO-Qeo"/>
                     <constraint firstAttribute="bottom" secondItem="BDF-Fr-x3p" secondAttribute="bottom" id="f4D-nq-FSP"/>
-                    <constraint firstItem="Sze-mn-Ula" firstAttribute="top" secondItem="bm6-fz-dga" secondAttribute="bottom" id="hRa-cS-nW8"/>
+                    <constraint firstItem="dzU-D5-2Hu" firstAttribute="top" secondItem="Sze-mn-Ula" secondAttribute="bottom" id="gaV-Vi-uyq"/>
                     <constraint firstItem="RPc-ga-pWI" firstAttribute="top" secondItem="dzU-D5-2Hu" secondAttribute="bottom" constant="14" id="rkF-RE-tWU"/>
                     <constraint firstAttribute="trailing" secondItem="dzU-D5-2Hu" secondAttribute="trailing" constant="19" id="s8W-zF-uim"/>
                     <constraint firstItem="bm6-fz-dga" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="w2I-IU-Ude"/>
@@ -224,7 +232,7 @@
                 <outlet property="userImageView" destination="xvn-kZ-v3x" id="jiR-rx-BBk"/>
                 <outlet property="userNameLabel" destination="Tj0-IA-fcS" id="QDo-k9-enh"/>
             </connections>
-            <point key="canvasLocation" x="-41.304347826086961" y="67.633928571428569"/>
+            <point key="canvasLocation" x="-41.304347826086961" y="66.964285714285708"/>
         </tableViewCell>
     </objects>
     <resources>
