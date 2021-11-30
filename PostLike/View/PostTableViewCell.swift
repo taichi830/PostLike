@@ -88,7 +88,7 @@ class PostTableViewCell: UITableViewCell{
         
 //        投稿文をセット
         postTextView.setText(text: contents.text, urls: contents.text.urlsFromRegexs)
-        postTextView.textContainerInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: -5)
+        postTextView.textContainerInset = UIEdgeInsets(top: 0, left: -3, bottom: 0, right: -3)
         if contents.text == "" {
             postTextView.isHidden = true
         }else{
