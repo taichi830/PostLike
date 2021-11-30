@@ -220,10 +220,8 @@
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="RPc-ga-pWI" secondAttribute="trailing" id="BeI-xb-Gpu"/>
-                            <constraint firstItem="Sze-mn-Ula" firstAttribute="leading" secondItem="a6Z-HP-3v6" secondAttribute="leading" id="Prn-q2-1rA"/>
                             <constraint firstItem="RPc-ga-pWI" firstAttribute="leading" secondItem="a6Z-HP-3v6" secondAttribute="leading" id="UN8-7i-nBy"/>
                             <constraint firstItem="oEP-eB-gUt" firstAttribute="leading" secondItem="a6Z-HP-3v6" secondAttribute="leading" id="YP1-Vq-PtP"/>
-                            <constraint firstAttribute="trailing" secondItem="Sze-mn-Ula" secondAttribute="trailing" id="g0Z-s9-Pec"/>
                             <constraint firstAttribute="trailing" secondItem="oEP-eB-gUt" secondAttribute="trailing" id="vMu-bz-Lbh"/>
                         </constraints>
                     </stackView>
