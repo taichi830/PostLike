@@ -509,11 +509,10 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
         
         if let timeLineContent = tableViewItems[safe: indexPath.row] as? Contents{
             let cell = timeLineTableView.dequeueReusableCell(withIdentifier: "postTable", for: indexPath) as! PostTableViewCell
+            
             cell.tableViewCellDelegate = self
+            
             cell.setContent(contents: timeLineContent, likeContensArray: likeContentsArray)
-            
-            
-            
             
             let roomNameArray = joinedRoomArray.filter {
                 $0.documentID == timeLineContent.roomID
