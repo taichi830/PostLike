@@ -33,10 +33,8 @@ class NotificationViewController: UIViewController {
         notificationTableView.delegate = self
         notificationTableView.dataSource = self
         notificationTableView.tableHeaderView = headerView
-        
-        
-        
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
