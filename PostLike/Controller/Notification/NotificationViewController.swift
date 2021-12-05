@@ -19,8 +19,8 @@ class NotificationViewController: UIViewController {
     @IBOutlet weak var headerView: UIView!
     
     
-    var notificationArray = [Contents]()
-    var label = UILabel()
+    private var notificationArray = [Contents]()
+    private var label = UILabel()
     
     
     
@@ -100,7 +100,7 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     
-    func fetchNotificationInfo(){
+    private func fetchNotificationInfo(){
         self.notificationArray.removeAll()
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
