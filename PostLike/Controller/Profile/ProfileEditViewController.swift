@@ -40,9 +40,7 @@ class ProfileEditViewController: UIViewController {
         
         
         userImage.layer.cornerRadius = 50
-        
         completeButton.layer.cornerRadius = 23
-        
         
         setProfile()
         
@@ -51,14 +49,11 @@ class ProfileEditViewController: UIViewController {
         userNameEditLabel.layer.borderWidth = 1
         userNameEditLabel.layer.borderColor = UIColor.systemGray5.cgColor
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
     }
     
     
     
-    func setProfile(){
+    private func setProfile(){
         if passedUserImage != "" {
             userImage.sd_setImage(with: URL(string: passedUserImage), completed: nil)
             personView.image = UIImage()
@@ -105,7 +100,6 @@ class ProfileEditViewController: UIViewController {
         startIndicator()
         if updatedUserImage == UIImage() {
             updateProfile(userImageUrl: passedUserImage)
-            
         }else{
             createUserStrage()
             
@@ -116,7 +110,7 @@ class ProfileEditViewController: UIViewController {
     
     
     
-    func deleteStrage(){
+    private func deleteStrage(){
         let storage = Storage.storage()
         let imageRef = NSString(string: passedUserImage)
         let desertRef = storage.reference(forURL: imageRef as String)
@@ -135,7 +129,7 @@ class ProfileEditViewController: UIViewController {
     
     
     
-    func updateProfile(userImageUrl:String){
+    private func updateProfile(userImageUrl:String){
         let docData = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
         let uid = Auth.auth().currentUser!.uid
         
@@ -160,7 +154,7 @@ class ProfileEditViewController: UIViewController {
     
     
     
-    func createUserStrage(){
+    private func createUserStrage(){
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
         guard let updateImage = updatedUserImage.jpegData(compressionQuality: 0.2) else {return}
@@ -213,30 +207,6 @@ extension ProfileEditViewController:UITextFieldDelegate{
         }
     }
     
-    
-    
-    @objc func keybordWillShow(_ notification: Notification) {
-        guard let userInfo = notification.userInfo as? [String:Any] else {
-            return
-        }
-        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
-            return
-        }
-        guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        
-        if self.backView.frame.height - self.stackView.frame.origin.y - self.stackView.frame.height - rect.height < 30 {
-            
-            UIView.animate(withDuration: duration) {
-                self.backView.frame.origin.y = -10
-            }
-        }
-        
-        
-        
-    }
     
     
     

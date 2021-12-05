@@ -82,7 +82,6 @@
 		CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
-		CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator.swift */; };
 		CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */; };
 		CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */; };
@@ -170,7 +169,6 @@
 		CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomEditViewController.swift; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
-		CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModalViewController.swift; sourceTree = "<group>"; };
 		CED4902026ED024900582742 /* ShowIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowIndicator.swift; sourceTree = "<group>"; };
 		CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImageContentsViewController.swift; sourceTree = "<group>"; };
 		CEE6A42125C104AA00F6FE06 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -356,7 +354,6 @@
 			isa = PBXGroup;
 			children = (
 				CE5A66CB25527D580044B91C /* JoinedRoomViewController.swift */,
-				CED1E440272B0ABF00B24FFE /* ProfileModalViewController.swift */,
 				CEE972E1262190EF00CB78C2 /* ProfileViewController.swift */,
 				CE5D4FD325CA568600ED17A8 /* ProfileEditViewController.swift */,
 				CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */,
@@ -637,7 +634,6 @@
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
-				CED1E441272B0ABF00B24FFE /* ProfileModalViewController.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
 				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,

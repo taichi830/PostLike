@@ -18,16 +18,12 @@ class JoinedRoomViewController: UIViewController{
     
     
     
-    var profileRoomArray = [Contents]()
-    var label = UILabel()
-    
-    
-    
+    private var profileRoomArray = [Contents]()
+    private var label = UILabel()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         myRoomCollectionView.delegate = self
         myRoomCollectionView.dataSource = self
@@ -56,7 +52,7 @@ class JoinedRoomViewController: UIViewController{
     
     
     
-    func alertComfirm(){
+    private func alertComfirm(){
         let alert = UIAlertController(title: "ログアウトしてよろしいでしょうか？", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
             self.logout()
@@ -68,7 +64,7 @@ class JoinedRoomViewController: UIViewController{
     
     
     
-    func logout(){
+    private func logout(){
         let auth = Auth.auth()
         do {
             try auth.signOut()
@@ -85,7 +81,7 @@ class JoinedRoomViewController: UIViewController{
     
     
     
-    func fetchProfileRoom(){
+    private func fetchProfileRoom(){
         let uid = Auth.auth().currentUser!.uid
         profileRoomArray.removeAll()
         Firestore.firestore().collection("users").document(uid).collection("rooms").whereField("isJoined", isEqualTo: true).order(by: "createdAt",descending: true).getDocuments { (querySnapshot, err) in
@@ -128,10 +124,10 @@ class JoinedRoomViewController: UIViewController{
 
 extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewDataSource{
     
-    func collectionItenSize(){
+    private func collectionItenSize(){
         //セルの大きさと間隔
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: ((self.view.frame.width) - 55)/2, height: 150)
+        layout.itemSize = CGSize(width: (self.view.frame.width - 55)/2, height: 150)
         layout.minimumLineSpacing = 20
         layout.minimumInteritemSpacing = 15
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
@@ -153,20 +149,6 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
         
         let roomName = cell.viewWithTag(2) as! UILabel
         let roomImageView = cell.viewWithTag(5) as! UIImageView
-        
-//        userImage.clipsToBounds = true
-//        userImage.layer.cornerRadius = userImage.frame.height/2
-//        userImage.layer.borderWidth = 1
-//        userImage.layer.borderColor = UIColor.systemGray5.cgColor
-        
-//        if profileRoomArray[indexPath.row].userImage == "" {
-////            personImage.image = UIImage(systemName: "person.3.fill")
-//            userImage.backgroundColor = .systemGray4
-//            userImage.image = UIImage()
-//        }else{
-//            userImage.sd_setImage(with: URL(string: self.profileRoomArray[indexPath.row].userImage), completed: nil)
-////            personImage.image = UIImage()
-//        }
         
         let text:String = " \(profileRoomArray[indexPath.row].roomName)"
         let font:UIFont = .systemFont(ofSize: 17, weight: .semibold)
@@ -196,13 +178,8 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
         }
         
         
-//        userName.text = profileRoomArray[indexPath.row].userName
-//
+
         roomImageView.sd_setImage(with: URL(string: profileRoomArray[indexPath.row].roomImage), completed: nil)
-        
-//        backView.layer.cornerRadius = 5
-//        backView.layer.borderWidth = 1
-//        backView.layer.borderColor = UIColor.systemGray6.cgColor
         
         
         return cell

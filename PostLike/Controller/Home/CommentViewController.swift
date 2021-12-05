@@ -12,6 +12,9 @@ import FirebaseAuth
 
 class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate {
     
+    
+    
+    
     var passedUserImage = String()
     var passedUserName = String()
     var passedComment = String()
@@ -28,9 +31,6 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     
-    
-    
-   
     @IBOutlet weak var myImage: UIImageView!
     @IBOutlet weak var backView: UIView!
     @IBOutlet weak var commentTextView: UITextView!
@@ -49,7 +49,6 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
         commentTableView.dataSource = self
         
         commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "commentCell")
-        commentTableView.estimatedRowHeight = 89
         commentTableView.rowHeight = UITableView.automaticDimension
         
         
