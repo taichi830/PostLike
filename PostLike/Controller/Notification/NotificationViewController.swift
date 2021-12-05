@@ -57,7 +57,7 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        let cell = notificationTableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = notificationTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         let roomImage = cell.viewWithTag(1) as! UIImageView
         let roomName = cell.viewWithTag(2) as! UILabel
