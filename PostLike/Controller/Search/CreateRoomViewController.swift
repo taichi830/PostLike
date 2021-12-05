@@ -34,11 +34,6 @@ class CreateRoomViewController: UIViewController {
         
         selectButtonBackView.layer.cornerRadius = 5
         
-        
-        
-        
-        
-        
         roomNameTextField.delegate = self
         roomNameTextField.layer.cornerRadius = 5
         roomNameTextField.layer.borderWidth = 1
@@ -60,13 +55,14 @@ class CreateRoomViewController: UIViewController {
     
     
     
-    @IBAction func cancelButton(_ sender: Any) {
+    @IBAction private func cancelButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func toNextPage(_ sender: Any) {
+    
+    
+    @IBAction private func toNextPage(_ sender: Any) {
         let createHostVC = storyboard?.instantiateViewController(withIdentifier: "createHostProfile") as! CreateModeratorProfileViewController
-        
         createHostVC.passedRoomImage = roomImage.image ?? UIImage()
         createHostVC.passedRoomName = roomNameTextField.text ?? ""
         createHostVC.passedRoomIntro = roomIntroTextView.text ?? ""
@@ -78,14 +74,14 @@ class CreateRoomViewController: UIViewController {
     
     
     
-    @IBAction func callAlubm(_ sender: Any) {
-        let pickerController = DKImagePickerController()
-        pickerController.maxSelectableCount = 1
-        pickerController.sourceType = .photo
-        pickerController.assetType = .allPhotos
-        pickerController.allowSelectAll = true
-        pickerController.showsCancelButton = true
-        pickerController.didSelectAssets = {(assets: [DKAsset]) in
+    @IBAction private func callAlubm(_ sender: Any) {
+        let imagePickerController = DKImagePickerController()
+        imagePickerController.maxSelectableCount = 1
+        imagePickerController.sourceType = .photo
+        imagePickerController.assetType = .allPhotos
+        imagePickerController.allowSelectAll = true
+        imagePickerController.showsCancelButton = true
+        imagePickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
                     
@@ -93,11 +89,9 @@ class CreateRoomViewController: UIViewController {
                 })
             }
         }
-        
-        
-        pickerController.modalPresentationStyle = .fullScreen
-        pickerController.UIDelegate = CustomUIDelegate()
-        self.present(pickerController, animated: true, completion: nil)
+        imagePickerController.modalPresentationStyle = .fullScreen
+        imagePickerController.UIDelegate = CustomUIDelegate()
+        self.present(imagePickerController, animated: true, completion: nil)
     }
 
 }
@@ -116,11 +110,15 @@ extension CreateRoomViewController:UITextFieldDelegate{
         }
     }
     
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
-    @objc func keybordWillShow(_ notification: Notification) {
+    
+    
+    @objc private func keybordWillShow(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
@@ -131,27 +129,23 @@ extension CreateRoomViewController:UITextFieldDelegate{
         guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
         }
-        
         let distance =  rect.origin.y - 549
-        
-        
-        
         if distance < 0 {
             UIView.animate(withDuration: duration) {
                 self.backView.frame.origin.y = 86 + distance
             }
         }
-        
     }
     
-    @objc func keybordWillHide(_ notification: Notification) {
+    
+    
+    @objc private func keybordWillHide(_ notification: Notification) {
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
         }
         guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
             return
         }
-        
         UIView.animate(withDuration: duration) {
             self.backView.frame.origin.y = self.topView.frame.origin.y + self.topView.frame.height
         }
