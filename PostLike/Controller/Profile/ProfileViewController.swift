@@ -30,14 +30,13 @@ class ProfileViewController: UIViewController {
     
     var passedDocumentID = String()
     var passedModerator = String()
-    var likeTableView:UITableView!
-    var contentsArray = [Contents]()
-    var userInfo:Contents?
-    var likeCount:Contents?
-    var postCount:Contents?
-    var likeContentsArray = [Contents]()
-    var row:Int = 0
-    var lastDocument:QueryDocumentSnapshot?
+    private var contentsArray = [Contents]()
+    private var userInfo:Contents?
+    private var likeCount:Contents?
+    private var postCount:Contents?
+    private var likeContentsArray = [Contents]()
+    private var row:Int = 0
+    private var lastDocument:QueryDocumentSnapshot?
     
     
     
@@ -82,11 +81,9 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         fetchUserInfo()
         fetchPostCount()
         fetchLikeCount()
-        
     }
     
     
@@ -110,7 +107,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    func createProfileTableView(){
+    private func createProfileTableView(){
         profileTableView.delegate = self
         profileTableView.dataSource = self
         profileTableView.tableHeaderView = headerView
@@ -120,7 +117,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    func setUpEditButton(){
+    private func setUpEditButton(){
         let uid = Auth.auth().currentUser!.uid
         if passedModerator == uid {
             headerView.hostProfileEditButton.layer.cornerRadius = 2
@@ -183,9 +180,9 @@ class ProfileViewController: UIViewController {
         modalMenuVC.passedRoomID = passedDocumentID
         modalMenuVC.passedViewController = self
         if passedModerator == uid {
-            modalMenuVC.passedType = "moderator"
+            modalMenuVC.passedType = ModalType.moderator.rawValue
         }else{
-            modalMenuVC.passedType = "exit"
+            modalMenuVC.passedType = ModalType.exit.rawValue
         }
         present(modalMenuVC, animated: true, completion: nil)
     }
@@ -194,12 +191,6 @@ class ProfileViewController: UIViewController {
     
     
 
-    
-    
-    
-    
-    
-    
     @IBAction func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
@@ -209,9 +200,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    
-    
-    func fetchLikeContents(documentIDs:[String]){
+    private func fetchLikeContents(documentIDs:[String]){
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("likes").whereField("documentID", in: documentIDs).getDocuments { (querySnapshot, err) in
             if let err = err {
@@ -230,7 +219,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    func fetchPostContents(_ comleted: @escaping() -> Void){
+    private func fetchPostContents(_ comleted: @escaping() -> Void){
         let uid = Auth.auth().currentUser!.uid
         self.contentsArray.removeAll()
         Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").order(by: "createdAt", descending: true).limit(to: 5).getDocuments { (querySnapshot, err) in
@@ -269,7 +258,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    func fetchMoreContents(){
+    private func fetchMoreContents(){
         guard let lastDoc = self.lastDocument else {return}
         var contentsArray2 = [Contents]()
         contentsArray2.removeAll()
@@ -303,7 +292,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    func fetchPostCount(){
+    private func fetchPostCount(){
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("profilePostCount").document("count").getDocument { snapShot, err in
             if let err = err {
@@ -321,7 +310,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    func fetchLikeCount(){
+    private func fetchLikeCount(){
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("profileLikeCount").document("count").getDocument { snapShot, err in
             if let err = err {
@@ -339,7 +328,7 @@ class ProfileViewController: UIViewController {
     
     
     
-    func fetchUserInfo(){
+    private func fetchUserInfo(){
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).getDocument { (snapShot, err) in
             if let err = err {
@@ -422,7 +411,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     //likeBatch
     
-    func createLikeContents(row:Int,batch:WriteBatch){
+    private func createLikeContents(row:Int,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[row].documentID
         let roomID = passedDocumentID
@@ -435,7 +424,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     
     
-    func updateLikeCount(row:Int,batch:WriteBatch){
+    private func updateLikeCount(row:Int,batch:WriteBatch){
         let documentID = contentsArray[row].documentID
         let roomID = passedDocumentID
         let uid = Auth.auth().currentUser!.uid
@@ -454,7 +443,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     
     
-    func likeBatch(row:Int){
+    private func likeBatch(row:Int){
         let batch = Firestore.firestore().batch()
         createLikeContents(row: row, batch: batch)
         updateLikeCount(row: row, batch: batch)
@@ -472,7 +461,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     //deleteBatch
     
-    func decreaseLikeCount(row: Int,batch:WriteBatch){
+    private func decreaseLikeCount(row: Int,batch:WriteBatch){
         let documentID = contentsArray[row].documentID
         let roomID = passedDocumentID
         let uid = Auth.auth().currentUser!.uid
@@ -492,7 +481,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     
     
-    func deleteLikeContents(row:Int,batch:WriteBatch){
+    private func deleteLikeContents(row:Int,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
@@ -502,7 +491,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     
     
-    func deleteLikeBatch(row:Int){
+    private func deleteLikeBatch(row:Int){
         let batch = Firestore.firestore().batch()
         let documentID = contentsArray[row].documentID
         decreaseLikeCount(row: row, batch: batch)
@@ -608,14 +597,14 @@ extension ProfileViewController:TableViewCellDelegate{
 extension ProfileViewController:DeletePostDelegate{
     
     
-    func deleteMediaPosts(batch:WriteBatch,documentID:String){
+    private func deleteMediaPosts(batch:WriteBatch,documentID:String){
         let documentID = contentsArray[row].documentID
         let ref =  Firestore.firestore().collection("rooms").document(passedDocumentID).collection("mediaPosts").document(documentID)
         batch.deleteDocument(ref)
     }
     
     
-    func deletePosts(batch:WriteBatch,documentID:String){
+    private func deletePosts(batch:WriteBatch,documentID:String){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").document(documentID)
@@ -623,29 +612,30 @@ extension ProfileViewController:DeletePostDelegate{
     }
     
     
-    func deleteModeratorPosts(batch:WriteBatch,documentID:String){
+    private func deleteModeratorPosts(batch:WriteBatch,documentID:String){
         let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("moderatorPosts").document(documentID)
         batch.deleteDocument(ref)
     }
     
-    func decreaseRoomPostCount(batch:WriteBatch){
+    private func decreaseRoomPostCount(batch:WriteBatch){
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("roomPostCount").document("count")
         batch.setData(["postCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
     }
     
     
     
-    func decreasePostCount(batch:WriteBatch){
+    private func decreasePostCount(batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("profilePostCount").document("count")
         batch.setData(["postCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
     }
 
     
-    func deleteStrageFile(imageUrl:Array<String>){
+    private func deleteStrageFile(imageUrl:Array<String>){
         let storage = Storage.storage()
-        if imageUrl.count == 1{
+        switch imageUrl.count {
+        case 1:
             let imageRef = NSString(string: imageUrl[0])
             let desertRef = storage.reference(forURL: imageRef as String)
             desertRef.delete { err in
@@ -656,7 +646,7 @@ extension ProfileViewController:DeletePostDelegate{
                     print("success")
                 }
             }
-        }else if imageUrl.count == 2 {
+        case 2:
             let imageRef = NSString(string: imageUrl[0])
             let desertRef = storage.reference(forURL: imageRef as String)
             desertRef.delete { err in
@@ -677,8 +667,43 @@ extension ProfileViewController:DeletePostDelegate{
                     print("success")
                 }
             }
+        default:
+            break
         }
-        
+//        if imageUrl.count == 1{
+//            let imageRef = NSString(string: imageUrl[0])
+//            let desertRef = storage.reference(forURL: imageRef as String)
+//            desertRef.delete { err in
+//                if err != nil {
+//                    print("false")
+//                    return
+//                }else{
+//                    print("success")
+//                }
+//            }
+//        }else if imageUrl.count == 2 {
+//            let imageRef = NSString(string: imageUrl[0])
+//            let desertRef = storage.reference(forURL: imageRef as String)
+//            desertRef.delete { err in
+//                if err != nil {
+//                    print("false")
+//                    return
+//                }else{
+//                    print("success")
+//                }
+//            }
+//            let imageRef2 = NSString(string: imageUrl[1])
+//            let desertRef2 = storage.reference(forURL: imageRef2 as String)
+//            desertRef2.delete { err in
+//                if err != nil {
+//                    print("false")
+//                    return
+//                }else{
+//                    print("success")
+//                }
+//            }
+//        }
+//
         
     }
     
@@ -707,10 +732,10 @@ extension ProfileViewController:DeletePostDelegate{
                 self.contentsArray.removeAll {
                     $0.documentID == mappedArray[0].documentID
                 }
-                self.profileTableView.reloadData()
                 if imageUrl[0] != "" {
                     self.deleteStrageFile(imageUrl: imageUrl)
                 }
+                self.profileTableView.reloadData()
                 
             }
         }
@@ -725,18 +750,18 @@ extension ProfileViewController:DeletePostDelegate{
 
 extension ProfileViewController:ExitRoomDelegate{
     
-    func exitRoom(batch:WriteBatch){
+    private func exitRoom(batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(self.passedDocumentID)
         batch.updateData(["isJoined":false], forDocument: ref)
     }
     
-    func decreaseMemberCount(batch:WriteBatch){
+    private func decreaseMemberCount(batch:WriteBatch){
         let ref = Firestore.firestore().collection("rooms").document(self.passedDocumentID).collection("memberCount").document("count")
         batch.setData(["memberCount": FieldValue.increment(-1.0)], forDocument: ref, merge: true)
     }
     
-    func deleteUidFromRoomMateList(batch:WriteBatch){
+    private func deleteUidFromRoomMateList(batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("members").document(uid)
         batch.deleteDocument(ref)
@@ -765,17 +790,17 @@ extension ProfileViewController:ExitRoomDelegate{
 
 extension ProfileViewController:DeleteRoomDelegate{
     
-    func deleteRoom(batch:WriteBatch){
+    private func deleteRoom(batch:WriteBatch){
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID)
         batch.deleteDocument(ref)
     }
     
-    func deleteMemberCount(batch:WriteBatch){
+    private func deleteMemberCount(batch:WriteBatch){
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("memberCount").document("count")
         batch.deleteDocument(ref)
     }
     
-    func deleteRoomPostCount(batch:WriteBatch){
+    private func deleteRoomPostCount(batch:WriteBatch){
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("roomPostCount").document("count")
         batch.deleteDocument(ref)
     }
@@ -783,7 +808,7 @@ extension ProfileViewController:DeleteRoomDelegate{
 
 
 
-    func deleteMyprofile(batch:WriteBatch){
+    private func deleteMyprofile(batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
         batch.updateData(["isJoined":false], forDocument: ref)

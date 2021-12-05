@@ -232,7 +232,8 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
                 exitRoomDelegate?.exitRoomBatch()
                 dismiss(animated: true, completion: nil)
             }else if indexPath.row == 1 {
-                let deleteAlertVC = storyboard?.instantiateViewController(withIdentifier: "deleteAlert") as! DeleteRoomViewController
+                let storyboard = UIStoryboard.init(name: "Profile", bundle: nil)
+                let deleteAlertVC = storyboard.instantiateViewController(withIdentifier: "deleteAlert") as! DeleteRoomViewController
                 deleteAlertVC.modalPresentationStyle = .custom
                 deleteAlertVC.transitioningDelegate = passedViewController as? UIViewControllerTransitioningDelegate
                 deleteAlertVC.passedRoomID = passedRoomID
