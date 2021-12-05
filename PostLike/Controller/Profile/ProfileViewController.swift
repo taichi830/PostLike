@@ -174,20 +174,20 @@ class ProfileViewController: UIViewController {
     
     
     @IBAction func menuButton(_ sender: Any) {
-        let profileModalVC = storyboard?.instantiateViewController(withIdentifier: "profileModal") as! ProfileModalViewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         let uid = Auth.auth().currentUser!.uid
-        profileModalVC.modalPresentationStyle = .custom
-        profileModalVC.transitioningDelegate = self
-        profileModalVC.exitRoomDelegate = self
-        profileModalVC.passedModerator = passedModerator
-        profileModalVC.passedRoomID = passedDocumentID
-        profileModalVC.passedViewController = self
+        modalMenuVC.modalPresentationStyle = .custom
+        modalMenuVC.transitioningDelegate = self
+        modalMenuVC.exitRoomDelegate = self
+        modalMenuVC.passedRoomID = passedDocumentID
+        modalMenuVC.passedViewController = self
         if passedModerator == uid {
-            profileModalVC.passedType = "moderator"
+            modalMenuVC.passedType = "moderator"
         }else{
-            profileModalVC.passedType = "exit"
+            modalMenuVC.passedType = "exit"
         }
-        present(profileModalVC, animated: true, completion: nil)
+        present(modalMenuVC, animated: true, completion: nil)
     }
     
     
@@ -534,7 +534,8 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
 
 extension ProfileViewController:TableViewCellDelegate{
     func reportButton(row: Int) {
-        let modalMenuVC = storyboard?.instantiateViewController(withIdentifier: "profileModal") as! ProfileModalViewController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
         modalMenuVC.passedDocumentID = contentsArray[row].documentID

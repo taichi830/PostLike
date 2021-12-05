@@ -135,7 +135,6 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
                 let dic = document.data()
                 let content = Room.init(dic: dic)
                 self.imagesArray.append(content)
-                
             }
             guard let lastSnapShot = querySnapshot!.documents.last else { return }
             self.lastDocument = lastSnapShot

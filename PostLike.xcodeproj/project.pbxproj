@@ -71,11 +71,11 @@
 		CE77EF6526E67EEF00154886 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5E26E67EEF00154886 /* SceneDelegate.swift */; };
 		CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */; };
 		CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */; };
-		CEA19BED26D631C800283E91 /* ArrayChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* ArrayChunk.swift */; };
+		CE854BDB275B34730089BEF4 /* CommonModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE854BDA275B34730089BEF4 /* CommonModal.swift */; };
+		CEA19BED26D631C800283E91 /* Array-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* Array-extenshion.swift */; };
 		CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */; };
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
-		CEA97FE7272907E100B51A96 /* UnderMenuPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */; };
@@ -149,14 +149,14 @@
 		CE77EF5E26E67EEF00154886 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomHeaderView.swift; sourceTree = "<group>"; };
+		CE854BDA275B34730089BEF4 /* CommonModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonModal.swift; sourceTree = "<group>"; };
 		CE967139265AAE1700E7820F /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
-		CEA19BEC26D631C800283E91 /* ArrayChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayChunk.swift; sourceTree = "<group>"; };
+		CEA19BEC26D631C800283E91 /* Array-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array-extenshion.swift"; sourceTree = "<group>"; };
 		CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomHeaderView.xib; sourceTree = "<group>"; };
 		CEA19BF026D7D70900283E91 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdTableViewCell.swift; sourceTree = "<group>"; };
 		CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NativeAdTableViewCell.xib; sourceTree = "<group>"; };
 		CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalMenuViewController.swift; sourceTree = "<group>"; };
-		CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderMenuPresentationController.swift; sourceTree = "<group>"; };
 		CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		CEAA5C812520D56700755F90 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
@@ -268,13 +268,13 @@
 			children = (
 				CEBA3B3A26A4698B00159B12 /* Alert-extenshion.swift */,
 				CE33BA5826637D1B001EC04B /* TabImage-extenshion.swift */,
-				CEA19BEC26D631C800283E91 /* ArrayChunk.swift */,
+				CEA19BEC26D631C800283E91 /* Array-extenshion.swift */,
 				CED4902026ED024900582742 /* ShowIndicator.swift */,
 				CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */,
 				CEF363282725858B00D5D443 /* PresentModalViewController.swift */,
-				CEA97FE6272907E100B51A96 /* UnderMenuPresentationController.swift */,
 				CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */,
 				CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */,
+				CE854BDA275B34730089BEF4 /* CommonModal.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -613,13 +613,14 @@
 				CE012C1326B6EFD4006CC20E /* RoomCollectionViewCell.swift in Sources */,
 				CE012C1426B6EFD4006CC20E /* CommentViewController.swift in Sources */,
 				CE012C1526B6EFD4006CC20E /* ProfileViewController.swift in Sources */,
-				CEA19BED26D631C800283E91 /* ArrayChunk.swift in Sources */,
+				CEA19BED26D631C800283E91 /* Array-extenshion.swift in Sources */,
 				CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */,
 				CE012C1726B6EFD4006CC20E /* SearchResultHeaderView.swift in Sources */,
 				CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */,
 				CE012C1826B6EFD4006CC20E /* ImageCollectionViewCell.swift in Sources */,
 				CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
+				CE854BDB275B34730089BEF4 /* CommonModal.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
 				CEBD5B32274F6CAC00E2FB83 /* String-extenshion.swift in Sources */,
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
@@ -631,7 +632,6 @@
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
 				CE77EF6026E67EEF00154886 /* User.swift in Sources */,
 				CE012C2126B6EFD4006CC20E /* ProfileEditViewController.swift in Sources */,
-				CEA97FE7272907E100B51A96 /* UnderMenuPresentationController.swift in Sources */,
 				CE012C2326B6EFD4006CC20E /* JoinedRoomViewController.swift in Sources */,
 				CE012C2726B6EFD4006CC20E /* LoginViewController.swift in Sources */,
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,

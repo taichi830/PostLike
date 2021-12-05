@@ -567,15 +567,10 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
         let tappedRow = tappedIndexPath?.row
         let enteredVC = storyboard?.instantiateViewController(withIdentifier: "enteredVC") as! EnteredRoomContentViewController
         if let followContent = tableViewItems[tappedRow!] as? Contents {
-            
             let roomInfo = joinedRoomArray.filter {
                 $0.documentID == followContent.roomID
             }
-//            enteredVC.passedModerator = roomInfo[0].moderator
             enteredVC.passedDocumentID = roomInfo[0].documentID
-//            enteredVC.passedTitle = roomInfo[0].roomName
-//            enteredVC.passedProfileImage = roomInfo[0].userImage
-//            enteredVC.passedUserName = roomInfo[0].userName
             navigationController?.pushViewController(enteredVC, animated: true)
         }
     }
