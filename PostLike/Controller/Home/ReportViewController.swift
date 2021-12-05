@@ -10,15 +10,23 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
+
+enum ReportType:String {
+    case post
+    case user
+    case room
+}
+
 class ReportViewController: UIViewController  {
     
     
-    var reportItems = ["スパムである","センシティブである","差別的である","不快である","その他"]
-    var row = Int()
+    
+    private let reportItems = ["スパムである","センシティブである","差別的である","不快である","その他"]
+    private var row = Int()
     var passedDocumentID = String()
     var passedRoomID = String()
     var passedUid = String()
-    var reporttype = String()
+    var reportType = String()
     weak var titleTableViewDelegate: RemoveContentsDelegate?
     
     
@@ -35,9 +43,9 @@ class ReportViewController: UIViewController  {
         reportButton.isEnabled = false
         reportButton.layer.cornerRadius = 23
         
-        if reporttype == "post"{
+        if reportType == ReportType.post.rawValue {
             topLabel.text = "投稿を報告・ミュート"
-        }else if reporttype == "user" {
+        }else if reportType == ReportType.user.rawValue {
             topLabel.text = "ユーザーを報告・ブロック"
         }
         
@@ -50,46 +58,73 @@ class ReportViewController: UIViewController  {
     
     
     @IBAction func sendReport(_ sender: Any) {
-        let batch = Firestore.firestore().batch()
-        let uid = Auth.auth().currentUser!.uid
         let field = ["spam","sensitive","discriminatory","discomfort","other"]
-        let docData = ["documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
-        let docData2 = ["documentID":"\(passedRoomID)-\(passedUid)","roomID":passedRoomID,"uid":passedUid,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
+        let uid = Auth.auth().currentUser!.uid
         
-        
-        if reporttype == "post"{
-            let reportPostRef = Firestore.firestore().collection("reportedPosts").document(passedDocumentID)
-            let muteRef = Firestore.firestore().collection("users").document(uid).collection("reports").document(passedDocumentID)
-            batch.setData(docData, forDocument: reportPostRef,merge: true)
-            batch.setData(["type":reporttype,"documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
-            batch.commit { err in
-                if err != nil {
-                    return
-                }else{
-                    self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
-                        self.titleTableViewDelegate!.removeMutedContent(documentID: self.passedDocumentID)
-                    }
+        switch reportType {
+        case ReportType.post.rawValue:
+            let reportData = ["documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
+            let reportRef = Firestore.firestore().collection("reportedPosts").document(passedDocumentID)
+            let docData = ["type":reportType,"documentID":passedDocumentID,"roomID":passedRoomID,"uid":passedUid]
+            let ref = Firestore.firestore().collection("users").document(uid).collection("reports").document(passedDocumentID)
+            
+            sendReports(reportData: reportData, docData: docData, reportRef: reportRef, ref: ref, completion: {
+                self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
+                    self.titleTableViewDelegate!.removeMutedContent(documentID: self.passedDocumentID)
+                }
+            })
+            
+        case ReportType.user.rawValue:
+            let documentID = "\(passedRoomID)-\(passedUid)"
+            let docData = ["type":reportType,"documentID":documentID,"roomID":passedRoomID,"uid":passedUid]
+            let ref = Firestore.firestore().collection("users").document(uid).collection("reports").document(documentID)
+            let reportData = ["documentID":documentID,"roomID":passedRoomID,"uid":passedUid,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
+            let reportRef = Firestore.firestore().collection("reportedUsers").document(documentID)
+            
+            sendReports(reportData: reportData, docData: docData, reportRef: reportRef, ref: ref) {
+                self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
+                    self.titleTableViewDelegate!.removeBlockedUserContents(uid: self.passedUid, roomID: self.passedRoomID)
                 }
             }
-        }else if reporttype == "user"{
-            let reportUserRef = Firestore.firestore().collection("reportedUsers").document("\(passedRoomID)-\(passedUid)")
-            let muteRef = Firestore.firestore().collection("users").document(uid).collection("reports").document("\(passedRoomID)-\(passedUid)")
-            batch.setData(docData2, forDocument: reportUserRef,merge: true)
-            batch.setData(["type":reporttype,"documentID":"\(passedRoomID)-\(passedUid)","roomID":passedRoomID,"uid":passedUid], forDocument: muteRef,merge: true)
-            batch.commit { err in
-                if err != nil {
+                
+        case ReportType.room.rawValue:
+            let docData = ["documentID":passedRoomID,"\(field[row])":FieldValue.increment(1.0)] as [String : Any]
+            Firestore.firestore().collection("reportedRooms").document(passedRoomID).setData(docData, merge: true){
+                (err) in
+                if let err = err {
+                    print("firestoreへの保存に失敗しました。\(err)")
                     return
-                }else{
-                    self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
-                        self.titleTableViewDelegate!.removeBlockedUserContents(uid: self.passedUid, roomID: self.passedRoomID)
-                    }
                 }
+                print("fireStoreへの保存に成功しました。")
+                self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
             }
+            
+        default:
+            return
         }
         
-        
-        
     }
+    
+    
+    
+    
+    
+    private func sendReports(reportData:[String:Any],docData:[String:Any],reportRef:DocumentReference,ref:DocumentReference, completion: @escaping () -> Void){
+        let batch = Firestore.firestore().batch()
+        batch.setData(reportData, forDocument: reportRef, merge: true)
+        batch.setData(docData, forDocument: ref,merge: true)
+        batch.commit { err in
+            if err != nil {
+                return
+            }else{
+                completion()
+            }
+        }
+    
+    }
+    
+    
+    
     
 
    

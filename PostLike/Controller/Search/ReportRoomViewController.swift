@@ -11,8 +11,8 @@ import FirebaseFirestore
 
 class ReportRoomViewController: UIViewController {
 
-    var reportItems = ["スパムである","センシティブである","差別的である","不快である","その他"]
-    var row = Int()
+    private let reportItems = ["スパムである","センシティブである","差別的である","不快である","その他"]
+    private var row = Int()
     var passedRoomID = String()
     
     
