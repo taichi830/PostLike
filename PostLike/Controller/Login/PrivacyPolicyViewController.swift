@@ -22,7 +22,7 @@ class PrivacyPolicyViewController: UIViewController{
     }
     
     
-    func loadAddressURL() {
+    private func loadAddressURL() {
         if let targetURL = Bundle.main.path(forResource: "index", ofType: "html"){
             let url = URL(fileURLWithPath: targetURL)
             let req = URLRequest(url: url)
