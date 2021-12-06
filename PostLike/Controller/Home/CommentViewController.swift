@@ -25,7 +25,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     var passedDocumentID = String()
     var passedMediaArray = Array<String>()
     var passedRoomID = String()
-    private var commentsArray = [Room]()
+    private var commentsArray = [Contents]()
     private var user:Contents?
     private var alertLabel = UILabel()
     
@@ -259,7 +259,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
             }
             for document in querySnapShot!.documents {
                 let dic = document.data()
-                let comment = Room.init(dic: dic)
+                let comment = Contents.init(dic: dic)
                 self.commentsArray.append(comment)
             }
             if self.commentsArray.isEmpty == true {

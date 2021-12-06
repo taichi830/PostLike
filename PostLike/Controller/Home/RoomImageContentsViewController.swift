@@ -18,7 +18,7 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
     
     var passedRoomID = String()
     var passedRoomName = String()
-    private var imagesArray = [Room]()
+    private var imagesArray = [Contents]()
     private var lastDocument:QueryDocumentSnapshot?
     
     override func viewDidLoad() {
@@ -71,9 +71,8 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
             }
             for document in querySnapshot!.documents {
                 let dic = document.data()
-                let content = Room.init(dic: dic)
+                let content = Contents.init(dic: dic)
                 self.imagesArray.append(content)
-                print(content)
             }
             if self.imagesArray.count == 0 {
             let label = UILabel(frame: CGRect(x: 0, y: self.imageCollecionView.frame.size.height/2, width: self.view.frame.width, height: 20))
@@ -102,7 +101,7 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
             }
             for document in querySnapshot!.documents {
                 let dic = document.data()
-                let content = Room.init(dic: dic)
+                let content = Contents.init(dic: dic)
                 self.imagesArray.append(content)
             }
             guard let lastSnapShot = querySnapshot!.documents.last else { return }
