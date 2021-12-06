@@ -24,10 +24,10 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     var passedRoomName = String()
     var passedDocumentID = String()
     var passedMediaArray = Array<String>()
-    var commentsArray = [Room]()
-    var user:Contents?
     var passedRoomID = String()
-    var alertLabel = UILabel()
+    private var commentsArray = [Room]()
+    private var user:Contents?
+    private var alertLabel = UILabel()
     
     
     
@@ -79,7 +79,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     
-    func setHeaderView(){
+    private func setHeaderView(){
         let headerView = CommentHeaderView()
         headerView.userImageView.layer.cornerRadius = 20
         if passedUserImage != "" {
@@ -105,7 +105,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
 
     
-    func setPostedDate(headerView:CommentHeaderView){
+    private func setPostedDate(headerView:CommentHeaderView){
         let dateLabel = headerView.createdAtLabel
         let timestamp = self.passedDate
         let dt = timestamp.dateValue()
@@ -151,7 +151,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
 
     
     
-    @objc func keybordWillShow(_ notification: Notification) {
+    @objc private func keybordWillShow(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
@@ -173,7 +173,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     
-    @objc func keybordWillHide(_ notification: Notification) {
+    @objc private func keybordWillHide(_ notification: Notification) {
         self.backView.frame.origin.y = self.view.frame.size.height - (self.backView.frame.size.height+self.view.safeAreaInsets.bottom)
     }
     
@@ -216,7 +216,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     
-    func fetchUserInfo(){
+    private func fetchUserInfo(){
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedRoomID).getDocument { (snapShot, err) in
             if let err = err {
@@ -245,7 +245,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
 
-    func createComment(batch:WriteBatch,documentID:String){
+    private func createComment(batch:WriteBatch,documentID:String){
         let uid = Auth.auth().currentUser!.uid
         let userName = user!.userName
         let userImage = user!.userImage
@@ -258,7 +258,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     
-    func incrementCommentCount(batch:WriteBatch){
+    private func incrementCommentCount(batch:WriteBatch){
         let profileRef = Firestore.firestore().collection("users").document(passedUid).collection("rooms").document(passedRoomID).collection("posts").document(passedDocumentID)
         batch.setData(["commentCount": FieldValue.increment(1.0)], forDocument: profileRef, merge: true)
         
@@ -272,7 +272,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     
-    func giveNotification(batch:WriteBatch,documentID:String){
+    private func giveNotification(batch:WriteBatch,documentID:String){
         let uid = passedUid
         let myUid = Auth.auth().currentUser!.uid
         let postID = passedDocumentID
@@ -289,7 +289,7 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     
-    func fetchComments(){
+    private func fetchComments(){
         self.commentsArray.removeAll()
         Firestore.firestore().collectionGroup("comments").whereField("postID", isEqualTo: passedDocumentID).order(by: "createdAt", descending: true).getDocuments { (querySnapShot, err) in
             if let err = err {

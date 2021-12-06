@@ -27,14 +27,13 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     @IBOutlet weak var personImage: UIImageView!
     
     
-    var photoArray:[UIImage] = []
-    var photoUrl :[String] = []
-    var roomTitle = String()
+    private var photoArray:[UIImage] = []
+    private var photoUrl :[String] = []
+    var passedRoomTitle = String()
     var passedDocumentID = String()
     var passedUserImageUrl = String()
     var passedUserName = String()
     var passedHostUid = String()
-    let documentID = NSUUID().uuidString
     
     
     
@@ -174,7 +173,7 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     
-    func createPosts(media:Array<Any>,batch:WriteBatch){
+    func createPosts(documentID:String,media:Array<Any>,batch:WriteBatch){
         let date = Timestamp()
         let uid = Auth.auth().currentUser!.uid
         let docData = ["userName":passedUserName,"userImage":passedUserImageUrl,"media": media,"text":textView.text!,"createdAt":date,"uid":uid,"documentID":documentID,"roomID":passedDocumentID,"likeCount":0,"commentCount":0] as [String: Any]
@@ -183,8 +182,8 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     
     
-    //トリガー用
-    func createModeratorPosts(media:Array<Any>,batch:WriteBatch){
+    //cloud functionのトリガー用
+    func createModeratorPosts(documentID:String,media:Array<Any>,batch:WriteBatch){
         let date = Timestamp()
         let uid = Auth.auth().currentUser!.uid
         let docData = ["createdAt":date,"uid":uid,"roomID":passedDocumentID,"documentID":documentID] as [String : Any]
@@ -194,7 +193,7 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     //クエリの制限で写真のみを作成順で取得できないため写真を別コレクションで保存
-    func createMediaPosts(media:Array<String>,batch:WriteBatch){
+    func createMediaPosts(documentID:String,media:Array<String>,batch:WriteBatch){
         let date = Timestamp()
         let uid = Auth.auth().currentUser!.uid
         let docData = ["media":media,"createdAt":date,"uid":uid,"roomID":passedDocumentID,"documentID":documentID,"userName":passedUserName,"userImage":passedUserImageUrl,"likeCount":0,"commentCount":0,"text":textView.text!] as [String : Any]
@@ -220,16 +219,17 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     
-    func postBatch(){
+    func postBatch(documentID:String){
         let batch = Firestore.firestore().batch()
         let uid = Auth.auth().currentUser!.uid
+        
         if passedHostUid == uid {
-            createPosts(media: [""], batch: batch)
+            createPosts(documentID: documentID, media: [""], batch: batch)
             increaseMyPostCount(batch: batch)
             increaseRoomPostCount(batch: batch)
-            createModeratorPosts(media: [""], batch: batch)
+            createModeratorPosts(documentID: documentID, media: [""], batch: batch)
         }else{
-            createPosts(media: [""], batch: batch)
+            createPosts(documentID: documentID, media: [""], batch: batch)
             increaseMyPostCount(batch: batch)
             increaseRoomPostCount(batch: batch)
         }
@@ -253,7 +253,7 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     
     
-    func creatFireStorage(){
+    func creatFireStorage(documentID:String){
         for photo in photoArray{
             guard let posting = photo.jpegData(compressionQuality: 0.3)
             else{return}
@@ -287,14 +287,14 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                                 let batch = Firestore.firestore().batch()
                                 let uid = Auth.auth().currentUser!.uid
                                 if self.passedHostUid == uid {
-                                    self.createPosts(media: self.photoUrl, batch: batch)
-                                    self.createMediaPosts(media: self.photoUrl, batch: batch)
-                                    self.createModeratorPosts(media:self.photoUrl, batch: batch)
+                                    self.createPosts(documentID: documentID, media: self.photoUrl, batch: batch)
+                                    self.createMediaPosts(documentID: documentID, media: self.photoUrl, batch: batch)
+                                    self.createModeratorPosts(documentID: documentID, media:self.photoUrl, batch: batch)
                                     self.increaseMyPostCount(batch: batch)
                                     self.increaseRoomPostCount(batch: batch)
                                 }else{
-                                    self.createPosts(media: self.photoUrl, batch: batch)
-                                    self.createMediaPosts(media: self.photoUrl, batch: batch)
+                                    self.createPosts(documentID: documentID, media: self.photoUrl, batch: batch)
+                                    self.createMediaPosts(documentID: documentID, media: self.photoUrl, batch: batch)
                                     self.increaseMyPostCount(batch: batch)
                                     self.increaseRoomPostCount(batch: batch)
                                 }
@@ -336,10 +336,11 @@ class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }else{
             startIndicator()
             textView.resignFirstResponder()
+            let documentID = NSUUID().uuidString
             if photoArray.isEmpty == true {
-                postBatch()
+                postBatch(documentID: documentID)
             }else{
-                creatFireStorage()
+                creatFireStorage(documentID: documentID)
             }
         }
     }

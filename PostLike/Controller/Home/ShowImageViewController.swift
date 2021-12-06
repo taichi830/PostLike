@@ -35,7 +35,7 @@ class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     var passedUserImage = String()
     var passedRoomID = String()
     var passedDocumentID = String()
-    var contentInfo:Contents?
+    private var contentInfo:Contents?
     
     
     
@@ -70,7 +70,7 @@ class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     
     
     
-    func setContents(){
+    private func setContents(){
         self.userImage.layer.cornerRadius = 19
         if passedUserImage != "" {
             self.userImage.sd_setImage(with: URL(string: passedUserImage), completed: nil)
@@ -86,7 +86,7 @@ class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     
     
     
-    @objc func tapped(_ sender:UITapGestureRecognizer){
+    @objc private func tapped(_ sender:UITapGestureRecognizer){
         if backView.isHidden == false {
             backView.isHidden = true
             topView.isHidden = true
@@ -99,7 +99,7 @@ class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     
     
     
-    func fetchImageSize(){
+    private func fetchImageSize(){
         let imageArray = passedMedia.map { String -> UIImage in
             let url = URL(string: String)
             do {
@@ -121,7 +121,7 @@ class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     
-    func createScrollView(){
+    private func createScrollView(){
         let viewHeight = self.view.frame.height - (self.view.safeAreaInsets.top + self.view.safeAreaInsets.bottom)
         imageScrollView.frame = CGRect(x: 0, y: self.view.safeAreaInsets.top, width: self.view.frame.width, height: viewHeight)
         imageScrollView.contentSize = CGSize(width: Int(view.frame.width)*passedMedia.count, height: Int(viewHeight))
@@ -133,7 +133,7 @@ class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     
     
     
-    func pasteImage(height: CGFloat,height2:CGFloat,width:CGFloat){
+    private func pasteImage(height: CGFloat,height2:CGFloat,width:CGFloat){
         let viewHeight = self.view.frame.height - 120
         let view = UIView()
         let view2 = UIView()
@@ -202,7 +202,6 @@ class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
                 self.dismiss(animated: true, completion: nil)
             }else{
                 UIView.animate(withDuration: 0.2, delay: 0, options: .transitionCurlUp, animations: {
-                    
                     self.imageScrollView.frame.origin.y = 0
                     
                 }, completion: { (finished: Bool) in
