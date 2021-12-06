@@ -123,7 +123,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @objc func tappedImageCollectionButton(_ sender:UIButton){
+    @objc private func tappedImageCollectionButton(_ sender:UIButton){
         let imageVC = storyboard?.instantiateViewController(withIdentifier: "images") as! RoomImageContentsViewController
         imageVC.passedRoomID = passedDocumentID
         imageVC.passedRoomName = headerView.roomNameLabel.text ?? ""
@@ -136,7 +136,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     @objc func tappedPostButton(_ sender:UIButton){
         let postVC = storyboard?.instantiateViewController(withIdentifier: "postVC") as! PostViewController
-        postVC.roomTitle = self.headerView.roomNameLabel.text!
+        postVC.passedRoomTitle = self.headerView.roomNameLabel.text!
         postVC.passedDocumentID = self.roomInfo!.documentID
         postVC.passedHostUid = self.roomInfo!.moderator
         postVC.passedUserImageUrl = self.profileInfo!.userImage
@@ -161,7 +161,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @objc func swiped(_ sender:UISwipeGestureRecognizer){
+    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
         navigationController?.popViewController(animated: true)
     }
     
@@ -170,7 +170,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @objc func updateContents(){
+    @objc private func updateContents(){
         roomExistCheck()
         fetchProfileInfo()
         indicator.startAnimating()
@@ -547,7 +547,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
    
     
     //いいねした時の処理
-    func createLikeContents(row:Int,batch:WriteBatch){
+    private func createLikeContents(row:Int,batch:WriteBatch){
         let myuid = Auth.auth().currentUser!.uid
         let uid = contentsArray[row].uid
         let timestamp = Timestamp()
@@ -562,7 +562,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-    func updateLikeCount(row:Int,batch:WriteBatch){
+    private func updateLikeCount(row:Int,batch:WriteBatch){
         let documentID = contentsArray[row].documentID
         let roomID = contentsArray[row].roomID
         let uid = contentsArray[row].uid
@@ -578,12 +578,11 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
             let mediaPostRef = Firestore.firestore().collection("rooms").document(roomID).collection("mediaPosts").document(documentID)
             batch.updateData(["likeCount": FieldValue.increment(1.0)], forDocument: mediaPostRef)
         }
-        
     }
     
     
     
-    func giveNotification(row:Int,batch:WriteBatch){
+    private func giveNotification(row:Int,batch:WriteBatch){
         let uid = contentsArray[row].uid
         let myUid = Auth.auth().currentUser!.uid
         let postID = contentsArray[row].documentID
@@ -600,7 +599,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
 
-    func likeBatch(row:Int){
+    private func likeBatch(row:Int){
         let batch = Firestore.firestore().batch()
         createLikeContents(row: row, batch: batch)
         updateLikeCount(row: row, batch: batch)
@@ -623,7 +622,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     //いいねをやめたときの処理
-    func deleteLikeContents(row:Int,batch:WriteBatch){
+    private func deleteLikeContents(row:Int,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
@@ -632,7 +631,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-    func deleteLikeCount(row:Int,batch:WriteBatch){
+    private func deleteLikeCount(row:Int,batch:WriteBatch){
         let documentID = contentsArray[row].documentID
         let roomID = contentsArray[row].roomID
         let uid = contentsArray[row].uid
@@ -652,7 +651,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
 
     
-    func deleteNotification(row:Int,batch:WriteBatch){
+    private func deleteNotification(row:Int,batch:WriteBatch){
         let uid = contentsArray[row].uid
         let myuid = Auth.auth().currentUser!.uid
         let postID = contentsArray[row].documentID
@@ -666,7 +665,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     }
     
     
-    func deleteLikeBatch(row:Int){
+    private func deleteLikeBatch(row:Int){
         let batch = Firestore.firestore().batch()
         let documentID = contentsArray[row].documentID
         deleteLikeContents(row: row, batch: batch)

@@ -18,8 +18,8 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
     
     var passedRoomID = String()
     var passedRoomName = String()
-    var imagesArray = [Room]()
-    var lastDocument:QueryDocumentSnapshot?
+    private var imagesArray = [Room]()
+    private var lastDocument:QueryDocumentSnapshot?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,68 +34,35 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
         fetchImages()
     }
     
+    
+    
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
     
-    @objc func swiped(_ sender:UISwipeGestureRecognizer){
+    
+    
+    
+    
+    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
         navigationController?.popViewController(animated: true)
     }
+    
+    
+    
+    
     
     @IBAction func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     
-    func collectionSize(){
-        let layout = UICollectionViewFlowLayout()
-        let width:CGFloat = (view.frame.size.width - 2)/3
-        let height:CGFloat = view.frame.size.width/3
-        layout.itemSize = CGSize(width: width, height: height)
-        layout.minimumInteritemSpacing = 1
-        layout.minimumLineSpacing = 1
-        imageCollecionView.collectionViewLayout = layout
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imagesArray.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = imageCollecionView.dequeueReusableCell(withReuseIdentifier: "images", for: indexPath)
-        
-        let image = cell.viewWithTag(1) as! UIImageView
-        image.sd_setImage(with: URL(string: imagesArray[indexPath.row].mediaArray[0]), completed: nil)
-        
-        let doubleSquareView = cell.viewWithTag(2) as! UIImageView
-        if imagesArray[indexPath.row].mediaArray.count >= 2 {
-            doubleSquareView.image = UIImage(systemName: "square.fill.on.square.fill")
-        }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let showImageVC = storyboard?.instantiateViewController(withIdentifier: "showImage") as! ShowImageViewController
-        showImageVC.passedText = imagesArray[indexPath.row].text
-        showImageVC.passedMedia = imagesArray[indexPath.row].mediaArray
-        showImageVC.passedUid = imagesArray[indexPath.row].uid
-        showImageVC.passedRoomID = imagesArray[indexPath.row].roomID
-        showImageVC.passedDocumentID = imagesArray[indexPath.row].documentID
-        showImageVC.passedUserName = imagesArray[indexPath.row].userName
-        showImageVC.passedUserImage = imagesArray[indexPath.row].userImage
-        present(showImageVC, animated: true, completion: nil)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row + 1 == self.imagesArray.count{
-            fetchMoreImages()
-        }
-    }
     
     
     
-    func fetchImages(){
+    private func fetchImages(){
         self.imagesArray.removeAll()
         Firestore.firestore().collection("rooms").document(passedRoomID).collection("mediaPosts").order(by: "createdAt", descending:true).limit(to: 15).getDocuments {  (querySnapshot, err) in
             if let err = err {
@@ -124,7 +91,9 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
     
     
     
-    func fetchMoreImages(){
+    
+    
+    private func fetchMoreImages(){
         guard let lastDoc = self.lastDocument else {return}
         Firestore.firestore().collection("rooms").document(passedRoomID).collection("mediaPosts").order(by: "createdAt", descending: true).start(afterDocument: lastDoc).limit(to: 15).getDocuments { querySnapshot, err in
             if let err = err {
@@ -141,6 +110,76 @@ class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate
             self.imageCollecionView.reloadData()
         }
     }
+    
+    
+    
+    
+    
+    private func collectionSize(){
+        let layout = UICollectionViewFlowLayout()
+        let width:CGFloat = (view.frame.size.width - 2)/3
+        let height:CGFloat = view.frame.size.width/3
+        layout.itemSize = CGSize(width: width, height: height)
+        layout.minimumInteritemSpacing = 1
+        layout.minimumLineSpacing = 1
+        imageCollecionView.collectionViewLayout = layout
+    }
+    
+    
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imagesArray.count
+    }
+    
+    
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = imageCollecionView.dequeueReusableCell(withReuseIdentifier: "images", for: indexPath)
+        
+        let image = cell.viewWithTag(1) as! UIImageView
+        image.sd_setImage(with: URL(string: imagesArray[indexPath.row].mediaArray[0]), completed: nil)
+        
+        let doubleSquareView = cell.viewWithTag(2) as! UIImageView
+        if imagesArray[indexPath.row].mediaArray.count >= 2 {
+            doubleSquareView.image = UIImage(systemName: "square.fill.on.square.fill")
+        }
+        
+        return cell
+    }
+    
+    
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let showImageVC = storyboard?.instantiateViewController(withIdentifier: "showImage") as! ShowImageViewController
+        showImageVC.passedText = imagesArray[indexPath.row].text
+        showImageVC.passedMedia = imagesArray[indexPath.row].mediaArray
+        showImageVC.passedUid = imagesArray[indexPath.row].uid
+        showImageVC.passedRoomID = imagesArray[indexPath.row].roomID
+        showImageVC.passedDocumentID = imagesArray[indexPath.row].documentID
+        showImageVC.passedUserName = imagesArray[indexPath.row].userName
+        showImageVC.passedUserImage = imagesArray[indexPath.row].userImage
+        present(showImageVC, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row + 1 == self.imagesArray.count{
+            fetchMoreImages()
+        }
+    }
+    
+    
+    
+    
     
     
 

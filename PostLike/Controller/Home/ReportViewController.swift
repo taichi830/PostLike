@@ -34,6 +34,9 @@ class ReportViewController: UIViewController  {
     @IBOutlet weak var reportButton: UIButton!
     @IBOutlet weak var topLabel: UILabel!
     
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,9 +55,16 @@ class ReportViewController: UIViewController  {
     }
     
     
+    
+    
+    
     @IBAction func backButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
+    
+    
+    
     
     
     @IBAction func sendReport(_ sender: Any) {

@@ -62,9 +62,67 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     
-    @objc func viewDidTouch(_ sender: UITapGestureRecognizer) {
+    @objc private func viewDidTouch(_ sender: UITapGestureRecognizer) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    
+    
+    
+    private func showActivityViewController(){
+        
+        var components = URLComponents()
+        components.scheme = "https"
+        #if DEBUG
+        components.host = "postliketest.page.link"
+        #else
+        components.host = "postlike.page.link"
+        #endif
+        components.path = "/rooms"
+        
+        let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedRoomID)
+        components.queryItems = [roomIDQueryItem]
+        
+        guard let link = components.url else {return}
+        #if DEBUG
+        let dynamicLinksDomainURIPrefix = "https://postliketest.page.link"
+        #else
+        let dynamicLinksDomainURIPrefix = "https://postlike.page.link"
+        #endif
+        
+        guard let shareLink = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else {return}
+        
+        if let bundleID = Bundle.main.bundleIdentifier {
+            shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
+        }
+        shareLink.iOSParameters?.appStoreID = "1584149456"
+        
+        shareLink.androidParameters = .none
+        shareLink.androidParameters?.minimumVersion = .zero
+        
+        shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
+        shareLink.socialMetaTagParameters?.title = passedRoomName
+        shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
+        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
+        shareLink.shorten { url, warnings, err in
+            if err != nil {
+                return
+            }else{
+                if let warnings = warnings {
+                    for warning in warnings {
+                        print("\(warning)")
+                    }
+                }
+                guard let url = url else {return}
+                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomName, roomImage: self.passedRoomImage)]
+                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
+                self.present(activityViewController, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
+    
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -123,6 +181,8 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
         return cell
     }
     
+    
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
@@ -138,6 +198,7 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
                 reportVC.reportType = ReportType.post.rawValue
                 reportVC.titleTableViewDelegate = passedViewController as? RemoveContentsDelegate
                 present(reportVC, animated: true,completion: nil)
+                
             }else if indexPath.row == 1 {
                 let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
                 reportVC.passedDocumentID = passedDocumentID
@@ -146,60 +207,15 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
                 reportVC.reportType = ReportType.user.rawValue
                 reportVC.titleTableViewDelegate = passedViewController as? RemoveContentsDelegate
                 present(reportVC, animated: true, completion: nil)
+                
             }else{
                 dismiss(animated: true, completion: nil)
             }
             
         case ModalType.room.rawValue:
             if indexPath.row == 0 {
-                var components = URLComponents()
-                components.scheme = "https"
-                #if DEBUG
-                components.host = "postliketest.page.link"
-                #else
-                components.host = "postlike.page.link"
-                #endif
-                components.path = "/rooms"
-                
-                let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedRoomID)
-                components.queryItems = [roomIDQueryItem]
-                
-                guard let link = components.url else {return}
-                #if DEBUG
-                let dynamicLinksDomainURIPrefix = "https://postliketest.page.link"
-                #else
-                let dynamicLinksDomainURIPrefix = "https://postlike.page.link"
-                #endif
-                
-                guard let shareLink = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else {return}
-                
-                if let bundleID = Bundle.main.bundleIdentifier {
-                    shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
-                }
-                shareLink.iOSParameters?.appStoreID = "1584149456"
-                
-                shareLink.androidParameters = .none
-                shareLink.androidParameters?.minimumVersion = .zero
-                
-                shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-                shareLink.socialMetaTagParameters?.title = passedRoomName
-                shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
-                shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
-                shareLink.shorten { url, warnings, err in
-                    if err != nil {
-                        return
-                    }else{
-                        if let warnings = warnings {
-                            for warning in warnings {
-                                print("\(warning)")
-                            }
-                        }
-                        guard let url = url else {return}
-                        let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomName, roomImage: self.passedRoomImage)]
-                        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
-                        self.present(activityViewController, animated: true, completion: nil)
-                    }
-                }
+                self.showActivityViewController()
+
             }else if indexPath.row == 1 {
                 let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
                 reportVC.passedDocumentID = passedDocumentID
