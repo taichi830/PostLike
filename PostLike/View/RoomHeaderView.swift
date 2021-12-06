@@ -35,7 +35,6 @@ class RoomHeaderView: UIView {
             view.frame = self.bounds
             self.addSubview(view)
         }
-//        myProfileImageView.layer.cornerRadius = 15
     }
 
 
