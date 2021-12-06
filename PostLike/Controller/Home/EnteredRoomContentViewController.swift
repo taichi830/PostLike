@@ -27,18 +27,27 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     var passedDocumentID = String()
+    private var label = UILabel()
+    private lazy var indicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.center = roomImageView.center
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.hidesWhenStopped = true
+        roomImageView.addSubview(indicator)
+        return indicator
+    }()
+    private var roomInfo:Room?
     private var contentsArray = [Contents]()
     private var profileArray = [Room]()
     private var likeContentsArray = [Contents]()
     private var reportedContentsArray = [Contents]()
     private var reportedUsersArray = [Contents]()
-    private var roomInfo:Room?
     private var profileInfo:Contents?
     private var lastDocument:QueryDocumentSnapshot?
     private var lastLikeDocument:QueryDocumentSnapshot?
-    private var label = UILabel()
-    private var memberCount:Room?
-    private var indicator = UIActivityIndicatorView()
+    private var memberCount: Room?
+    
     
     
     
@@ -47,29 +56,19 @@ class EnteredRoomContentViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupTableView()
         startIndicator()
         fetchContents {
             self.dismissIndicator()
             self.contentsTableView.reloadData()
         }
-        
-        let tapGesure:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapMyprofile(_:)))
-        tapGesure.delegate = self
-        headerView.myProfileImageView.layer.cornerRadius = 15
-        headerView.myProfileImageView.isUserInteractionEnabled = true
-        headerView.myProfileImageView.addGestureRecognizer(tapGesure)
-        
-        headerView.imageCollectionButton.addTarget(self, action: #selector(tappedImageCollectionButton(_:)), for: .touchUpInside)
-        headerView.postButton.addTarget(self, action: #selector(tappedPostButton(_:)), for: .touchUpInside)
+        setupHeaderView()
         
         backButtonBackButton.clipsToBounds = true
         backButtonBackButton.layer.cornerRadius = backButtonBackButton.frame.height/2
         
         dotsButtonBackView.clipsToBounds = true
         dotsButtonBackView.layer.cornerRadius = dotsButtonBackView.frame.height/2
-        
     }
     
     
@@ -94,31 +93,17 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    
-    private func setupTableView(){
-        contentsTableView.delegate = self
-        contentsTableView.dataSource = self
-        contentsTableView.tableHeaderView =  headerView
-        contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
-        contentsTableView.contentInsetAdjustmentBehavior = .never
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
-        contentsTableView.addGestureRecognizer(swipeGesture)
+    private func setupHeaderView() {
+        let tapGesure:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapMyprofile(_:)))
+        tapGesure.delegate = self
+        headerView.myProfileImageView.layer.cornerRadius = 15
+        headerView.myProfileImageView.isUserInteractionEnabled = true
+        headerView.myProfileImageView.addGestureRecognizer(tapGesure)
         
-        let refleshControl = CustomRefreshControl()
-        indicator.center = roomImageView.center
-        indicator.style = .medium
-        indicator.color = .white
-        indicator.hidesWhenStopped = true
-        roomImageView.addSubview(indicator)
-        contentsTableView.refreshControl = refleshControl
-        contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
+        headerView.imageCollectionButton.addTarget(self, action: #selector(tappedImageCollectionButton(_:)), for: .touchUpInside)
+        headerView.postButton.addTarget(self, action: #selector(tappedPostButton(_:)), for: .touchUpInside)
     }
     
-    
-
-    
-    
-
     
     
     
@@ -134,13 +119,13 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @objc func tappedPostButton(_ sender:UIButton){
+    @objc private func tappedPostButton(_ sender:UIButton){
         let postVC = storyboard?.instantiateViewController(withIdentifier: "postVC") as! PostViewController
         postVC.passedRoomTitle = self.headerView.roomNameLabel.text!
-        postVC.passedDocumentID = self.roomInfo!.documentID
-        postVC.passedHostUid = self.roomInfo!.moderator
-        postVC.passedUserImageUrl = self.profileInfo!.userImage
-        postVC.passedUserName = self.profileInfo!.userName
+        postVC.passedDocumentID = self.roomInfo?.documentID ?? ""
+        postVC.passedHostUid = self.roomInfo?.moderator ?? ""
+        postVC.passedUserImageUrl = self.profileInfo?.userImage ?? ""
+        postVC.passedUserName = self.profileInfo?.userName ?? ""
         present(postVC, animated: true, completion: nil)
     }
     
@@ -148,7 +133,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @objc func tapMyprofile(_ sender: UITapGestureRecognizer){
+    @objc private func tapMyprofile(_ sender: UITapGestureRecognizer){
         let storyboard = UIStoryboard(name: "Profile", bundle: nil)
         let myproVC = storyboard.instantiateViewController(withIdentifier: "myproVC") as! ProfileViewController
         myproVC.passedDocumentID = passedDocumentID
@@ -157,6 +142,24 @@ class EnteredRoomContentViewController: UIViewController{
     }
     
     
+    
+    
+    
+    
+    
+    private func setupTableView(){
+        contentsTableView.delegate = self
+        contentsTableView.dataSource = self
+        contentsTableView.tableHeaderView =  headerView
+        contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
+        contentsTableView.contentInsetAdjustmentBehavior = .never
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
+        contentsTableView.addGestureRecognizer(swipeGesture)
+        let refleshControl = CustomRefreshControl()
+        contentsTableView.refreshControl = refleshControl
+        contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
+        
+    }
     
     
     
@@ -171,10 +174,10 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     @objc private func updateContents(){
-        roomExistCheck()
-        fetchProfileInfo()
         indicator.startAnimating()
         self.likeContentsArray.removeAll()
+        roomExistCheck()
+        fetchProfileInfo()
         fetchContents {
             self.contentsTableView.refreshControl?.endRefreshing()
             self.indicator.stopAnimating()
@@ -202,7 +205,7 @@ class EnteredRoomContentViewController: UIViewController{
         modalMenuVC.transitioningDelegate = self
         modalMenuVC.passedRoomID = passedDocumentID
         modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = "room"
+        modalMenuVC.passedType = ModalType.room.rawValue
         modalMenuVC.passedRoomImageUrl = roomInfo?.roomImage ?? ""
         modalMenuVC.passedRoomName = roomInfo?.roomName ?? ""
         modalMenuVC.passedRoomIntro = roomInfo?.roomIntro ?? ""
@@ -211,12 +214,11 @@ class EnteredRoomContentViewController: UIViewController{
     }
     
     
-  
+    
     
     
     private func fetchProfileInfo(){
         let uid = Auth.auth().currentUser!.uid
-        
         Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).getDocument { snapShot, err in
             if let err = err {
                 print("false\(err)")
@@ -225,6 +227,7 @@ class EnteredRoomContentViewController: UIViewController{
             guard let snapShot = snapShot,let dic = snapShot.data() else {return}
             let profileInfo = Contents(dic: dic)
             self.profileInfo = profileInfo
+            
             if  self.profileInfo?.isJoined == false {
                 self.headerView.postButton.isEnabled = false
                 self.headerView.postButton.tintColor = .lightGray
@@ -281,7 +284,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-   private  func fetchMemberCount(){
+    private func fetchMemberCount(){
         Firestore.firestore().collection("rooms").document(passedDocumentID).collection("memberCount").document("count").getDocument { snapShot, err in
             if let err = err {
                 print("false\(err)")
@@ -309,7 +312,7 @@ class EnteredRoomContentViewController: UIViewController{
                     self.reportedContentsArray.append(reportedContents)
                 }
                 let filteredArray = self.reportedUsersArray.filter {
-                    $0.type == "post"
+                    $0.type == ReportType.post.rawValue
                 }
                 for content in filteredArray {
                     self.contentsArray.removeAll(where: {$0.documentID == content.documentID})
@@ -345,7 +348,7 @@ class EnteredRoomContentViewController: UIViewController{
                     self.reportedUsersArray.append(reportedUsers)
                 }
                 let filteredArray = self.reportedUsersArray.filter {
-                    $0.type == "user"
+                    $0.type == ReportType.user.rawValue
                 }
                 for content in filteredArray {
                     self.contentsArray.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
@@ -397,7 +400,7 @@ class EnteredRoomContentViewController: UIViewController{
     
     
     
-   private func fetchContents(_ completed: @escaping() -> Void){
+    private func fetchContents(_ completed: @escaping() -> Void){
         self.contentsArray.removeAll()
         Firestore.firestore().collectionGroup("posts").whereField("roomID", isEqualTo: passedDocumentID).order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
             if let err = err {
@@ -458,8 +461,8 @@ class EnteredRoomContentViewController: UIViewController{
     
     private func fetchMoreContetns(){
         guard let lastDocument = lastDocument else {return}
-        var contentsArray2 = [Contents]()
-        contentsArray2.removeAll()
+        var contentsArray = [Contents]()
+        contentsArray.removeAll()
         Firestore.firestore().collectionGroup("posts").whereField("roomID", isEqualTo: passedDocumentID).order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: 10).getDocuments { (querySnapShot, err) in
             if let err = err{
                 print(err)
@@ -475,15 +478,15 @@ class EnteredRoomContentViewController: UIViewController{
                 let dic = document.data()
                 let followedContent = Contents.init(dic: dic)
                 self.contentsArray.append(followedContent)
-                contentsArray2.append(followedContent)
+                contentsArray.append(followedContent)
             }
             
-            if contentsArray2.count != 0 {
-                let mappedDocumentArray = contentsArray2.map { Room -> String in
+            if contentsArray.count != 0 {
+                let mappedDocumentArray = contentsArray.map { Room -> String in
                     let documentID = Room.documentID
                     return documentID
                 }
-                let mappedUidArray = contentsArray2.map { Room -> String in
+                let mappedUidArray = contentsArray.map { Room -> String in
                     let uid = Room.uid
                     return uid
                 }
@@ -544,7 +547,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-   
+    
     
     //いいねした時の処理
     private func createLikeContents(row:Int,batch:WriteBatch){
@@ -598,7 +601,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     }
     
     
-
+    
     private func likeBatch(row:Int){
         let batch = Firestore.firestore().batch()
         createLikeContents(row: row, batch: batch)
@@ -649,7 +652,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
         }
     }
     
-
+    
     
     private func deleteNotification(row:Int,batch:WriteBatch){
         let uid = contentsArray[row].uid
@@ -691,7 +694,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-
+    
 }
 
 

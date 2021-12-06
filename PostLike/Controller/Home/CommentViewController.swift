@@ -51,9 +51,6 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
         commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "commentCell")
         commentTableView.rowHeight = UITableView.automaticDimension
         
-        
-        
-        
         setHeaderView()
         
         commentTextView.delegate = self
@@ -80,19 +77,10 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
     
     
     private func setHeaderView(){
-        let headerView = CommentHeaderView()
-        headerView.userImageView.layer.cornerRadius = 20
-        if passedUserImage != "" {
-            headerView.userImageView.sd_setImage(with: URL(string: passedUserImage), completed: nil)
-            headerView.personImageView.image = UIImage()
-        }else{
-            headerView.personImageView.image = UIImage(systemName: "person.fill")
-        }
-        headerView.userNameLabel.text = passedUserName
-        headerView.commentLabel.text = passedComment
-        setPostedDate(headerView: headerView)
         
-
+        let headerView = CommentHeaderView()
+        headerView.setupHeaderView(userName: passedUserName, userImageUrl: passedUserImage, comment: passedComment, date: passedDate)
+        
         self.commentTableView.tableHeaderView = headerView
         if let tableHeaderView = self.commentTableView.tableHeaderView {
             tableHeaderView.setNeedsLayout()
@@ -102,33 +90,6 @@ class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDele
             self.commentTableView.tableHeaderView = tableHeaderView
         }
     }
-    
-
-    
-    private func setPostedDate(headerView:CommentHeaderView){
-        let dateLabel = headerView.createdAtLabel
-        let timestamp = self.passedDate
-        let dt = timestamp.dateValue()
-        let dt2 = Date()
-        let cal = Calendar(identifier: .gregorian)
-        let diff = cal.dateComponents([.day,.hour,.minute,.second], from: dt, to: dt2)
-        let day = diff.day
-        let hour = diff.hour
-        let minute = diff.minute
-        let second = diff.second
-        
-        
-        if day == 0 && hour == 0 && minute == 0    {
-            dateLabel!.text = "\(second?.description ?? "")秒前"
-        }else if day == 0 && hour == 0 && minute != 0{
-            dateLabel!.text = "\(minute?.description ?? "")分前"
-        }else if day == 0 && hour != 0 {
-            dateLabel!.text = "\(hour?.description ?? "")時間前"
-        }else if day != 0 {
-            dateLabel!.text = "\(day?.description ?? "")日前"
-        }
-    }
-    
     
 
     
