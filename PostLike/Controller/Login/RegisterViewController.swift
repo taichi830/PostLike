@@ -32,8 +32,6 @@ class RegisterViewController: UIViewController {
         super.viewDidLoad()
         
         emailTextField.delegate = self
-        
-        
         emailTextField.attributedPlaceholder = NSAttributedString(string: "メールアドレス", attributes: [.foregroundColor: UIColor.lightGray.cgColor])
         
         registerButton.layer.cornerRadius = 15

@@ -80,6 +80,7 @@ class InitialViewController: UIViewController {
 
 }
 
+
 extension InitialViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         let urlString = URL.absoluteString

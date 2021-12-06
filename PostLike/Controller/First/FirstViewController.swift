@@ -20,18 +20,13 @@ class FirstViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        
             self.userCheck()
-        
     }
     
     
     func userCheck(){
-       
-        
-        
+    
         if Auth.auth().currentUser == nil {
-            
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             let registerVC = storyboard.instantiateViewController(withIdentifier: "register") as! RegisterViewController
             navigationController?.pushViewController(registerVC, animated: false)
