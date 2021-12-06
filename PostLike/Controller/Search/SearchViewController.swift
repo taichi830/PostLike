@@ -48,6 +48,7 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         historyTableView.delegate = self
         historyTableView.dataSource = self
+        
         resultTableView.delegate = self
         resultTableView.dataSource = self
         
@@ -55,10 +56,10 @@ class SearchViewController: UIViewController {
         searchField.backgroundImage = UIImage()
         
         headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        headerView.isHidden = true
         resultTableView.tableHeaderView = headerView
         
-        headerView.isHidden = true
-        
+       
         createButton.layer.cornerRadius = 15
         createButton.clipsToBounds = true
         createButton.isEnabled = false
@@ -278,8 +279,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
         idetifyTable(tableView)
         if cellIdentifier == TableTypr.history.rawValue {
             let cell = historyTableView.dequeueReusableCell(withIdentifier: "history", for: indexPath)
-            let historyImage = cell.viewWithTag(1) as!
-                UIImageView
+            let historyImage = cell.viewWithTag(1) as!UIImageView
             let personsImage = cell.viewWithTag(2) as! UIImageView
             let historyName = cell.viewWithTag(3) as! UILabel
             let contentView = cell.viewWithTag(4)!

@@ -102,7 +102,7 @@ extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
         
         let roomIntroLabel = cell.viewWithTag(3) as! UILabel
         
-        switch Section(rawValue: indexPath.row) {
+        switch Section(rawValue: indexPath.section) {
         case .popular:
             roomImageView.sd_setImage(with: URL(string: popularRoomsArray[indexPath.row].roomImage), completed: nil)
             roomNameLabel.text = popularRoomsArray[indexPath.row].roomName
@@ -158,7 +158,7 @@ extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = storyboard?.instantiateViewController(withIdentifier: "detailVC") as! RoomDetailViewController
-        switch Section(rawValue: indexPath.row) {
+        switch Section(rawValue: indexPath.section) {
         case .popular:
             detailVC.passedDocumentID = popularRoomsArray[indexPath.row].documentID
             self.navigationController?.pushViewController(detailVC, animated: true)
