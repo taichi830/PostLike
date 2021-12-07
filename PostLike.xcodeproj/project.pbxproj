@@ -30,7 +30,6 @@
 		CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE249CAC25989C4E003C87A0 /* PostViewController.swift */; };
 		CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */; };
 		CE012C2F26B6EFD4006CC20E /* TabImage-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BA5826637D1B001EC04B /* TabImage-extenshion.swift */; };
-		CE012C3026B6EFD4006CC20E /* ReportRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE65D290265E394100811EA0 /* ReportRoomViewController.swift */; };
 		CE012C3126B6EFD4006CC20E /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5C11FD25E371B100AAF0C0 /* CommentTableViewCell.swift */; };
 		CE012C3226B6EFD4006CC20E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE262B9725678434009B7F5D /* HomeViewController.swift */; };
 		CE012C3326B6EFD4006CC20E /* CreateRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52CD41256E34970032D661 /* CreateRoomViewController.swift */; };
@@ -137,7 +136,6 @@
 		CE5D4FD325CA568600ED17A8 /* ProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewController.swift; sourceTree = "<group>"; };
 		CE5DA40B25924889005CF79D /* EnteredRoomContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnteredRoomContentViewController.swift; sourceTree = "<group>"; };
 		CE65D28E265CE22500811EA0 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
-		CE65D290265E394100811EA0 /* ReportRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRoomViewController.swift; sourceTree = "<group>"; };
 		CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		CE77EF5826E67EEF00154886 /* Contents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contents.swift; sourceTree = "<group>"; };
 		CE77EF5926E67EEF00154886 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -250,7 +248,7 @@
 				CE8C5A5E274A31AD00A49E56 /* Storyboard */,
 				CE77EF5726E67EEF00154886 /* Model */,
 				CEAA5C7E2520D34E00755F90 /* View */,
-				CEAA5C7D2520D34500755F90 /* Controller */,
+				CEAA5C7D2520D34500755F90 /* ViewController */,
 				CEAE5951271C1E41009CD18D /* HTML Files */,
 				CE18882F25205A25001C687C /* Assets.xcassets */,
 				CE77EF5D26E67EEF00154886 /* AppDelegate.swift */,
@@ -273,6 +271,7 @@
 				CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */,
 				CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */,
 				CE854BDA275B34730089BEF4 /* CommonModal.swift */,
+				CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -281,9 +280,8 @@
 			isa = PBXGroup;
 			children = (
 				CE77EF5826E67EEF00154886 /* Contents.swift */,
-				CE77EF5926E67EEF00154886 /* User.swift */,
-				CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */,
 				CE77EF5B26E67EEF00154886 /* Room.swift */,
+				CE77EF5926E67EEF00154886 /* User.swift */,
 				CE77EF5C26E67EEF00154886 /* Response.swift */,
 			);
 			path = Model;
@@ -336,7 +334,6 @@
 				CEF363262725552D00D5D443 /* CreateProfileModalViewController.swift */,
 				CE52CD41256E34970032D661 /* CreateRoomViewController.swift */,
 				CEED29B5260E27BE00AFA2FB /* CreateModeratorProfileViewController.swift */,
-				CE65D290265E394100811EA0 /* ReportRoomViewController.swift */,
 				CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */,
 			);
 			path = Search;
@@ -384,7 +381,7 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		CEAA5C7D2520D34500755F90 /* Controller */ = {
+		CEAA5C7D2520D34500755F90 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
 				CE8C5A5F274A321500A49E56 /* TabBar */,
@@ -395,7 +392,7 @@
 				CE8C5A59274A2B6000A49E56 /* Login */,
 				CE8C5A58274A2B5500A49E56 /* First */,
 			);
-			path = Controller;
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		CEAA5C7E2520D34E00755F90 /* View */ = {
@@ -638,7 +635,6 @@
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
 				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,
 				CE012C2F26B6EFD4006CC20E /* TabImage-extenshion.swift in Sources */,
-				CE012C3026B6EFD4006CC20E /* ReportRoomViewController.swift in Sources */,
 				CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */,
 				CE012C3126B6EFD4006CC20E /* CommentTableViewCell.swift in Sources */,
 				CE77EF6126E67EEF00154886 /* DKImagePicker.swift in Sources */,
