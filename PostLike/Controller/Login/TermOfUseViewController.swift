@@ -12,6 +12,8 @@ import WebKit
 class TermOfUseViewController: UIViewController {
 
     @IBOutlet weak var webView: WKWebView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,7 +23,7 @@ class TermOfUseViewController: UIViewController {
     
 
   
-    func loadAddressURL() {
+    private func loadAddressURL() {
         if let targetURL = Bundle.main.path(forResource: "termOfUse", ofType: "html"){
             let url = URL(fileURLWithPath: targetURL)
             let req = URLRequest(url: url)

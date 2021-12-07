@@ -19,8 +19,8 @@ class NotificationViewController: UIViewController {
     @IBOutlet weak var headerView: UIView!
     
     
-    var notificationArray = [Contents]()
-    var label = UILabel()
+    private var notificationArray = [Contents]()
+    private var label = UILabel()
     
     
     
@@ -33,10 +33,8 @@ class NotificationViewController: UIViewController {
         notificationTableView.delegate = self
         notificationTableView.dataSource = self
         notificationTableView.tableHeaderView = headerView
-        
-        
-        
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -59,7 +57,7 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        let cell = notificationTableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = notificationTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         let roomImage = cell.viewWithTag(1) as! UIImageView
         let roomName = cell.viewWithTag(2) as! UILabel
@@ -100,7 +98,7 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
     }
     
     
-    func fetchNotificationInfo(){
+    private func fetchNotificationInfo(){
         self.notificationArray.removeAll()
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in

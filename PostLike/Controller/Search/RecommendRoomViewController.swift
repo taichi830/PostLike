@@ -11,12 +11,16 @@ import FirebaseFirestore
 
 class RecommendRoomViewController: UIViewController{
     
+    enum Section:Int {
+        case popular = 0
+        case latest
+    }
     
     
     
     @IBOutlet weak var recommendRoomTableView: UITableView!
     
-    private var sectionItem = ["人気順","新着順"]
+    private let sectionItem = ["人気順","新着順"]
     private var popularRoomsArray = [Room]()
     private var latestRoomsArray = [Room]()
     
@@ -33,7 +37,7 @@ class RecommendRoomViewController: UIViewController{
     }
     
     
-    func fetchPopularRoom(){
+    private func fetchPopularRoom(){
         Firestore.firestore().collection("rooms").order(by: "memberCount", descending: true).limit(to: 10).getDocuments { querySnapShot, err in
             if err != nil {
                 return
@@ -51,7 +55,7 @@ class RecommendRoomViewController: UIViewController{
     
     
     
-    func fetchLatestRoom(){
+    private func fetchLatestRoom(){
         Firestore.firestore().collection("rooms").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { querySnapShot, err in
             if err != nil {
                 return
@@ -75,10 +79,10 @@ class RecommendRoomViewController: UIViewController{
 extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
+        switch Section(rawValue: section) {
+        case .popular:
             return popularRoomsArray.count
-        case 1:
+        case .latest:
             return latestRoomsArray.count
         default:
             return 0
@@ -98,8 +102,8 @@ extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
         
         let roomIntroLabel = cell.viewWithTag(3) as! UILabel
         
-        switch indexPath.section {
-        case 0:
+        switch Section(rawValue: indexPath.section) {
+        case .popular:
             roomImageView.sd_setImage(with: URL(string: popularRoomsArray[indexPath.row].roomImage), completed: nil)
             roomNameLabel.text = popularRoomsArray[indexPath.row].roomName
             if popularRoomsArray[indexPath.row].roomIntro == "" {
@@ -110,7 +114,7 @@ extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
                 roomIntroLabel.text = popularRoomsArray[indexPath.row].roomIntro
             }
             
-        case 1:
+        case .latest:
             roomImageView.sd_setImage(with: URL(string: latestRoomsArray[indexPath.row].roomImage), completed: nil)
             roomNameLabel.text = latestRoomsArray[indexPath.row].roomName
             if latestRoomsArray[indexPath.row].roomIntro == "" {
@@ -120,14 +124,10 @@ extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
                 roomIntroLabel.textColor = .black
                 roomIntroLabel.text = latestRoomsArray[indexPath.row].roomIntro
             }
+            
         default:
             break
         }
-        
-//        let button = cell.viewWithTag(4) as! UIButton
-//        button.layer.cornerRadius = 16
-//        button.clipsToBounds = true
-//
     
         return cell
     }
@@ -158,11 +158,11 @@ extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = storyboard?.instantiateViewController(withIdentifier: "detailVC") as! RoomDetailViewController
-        switch indexPath.section {
-        case 0:
+        switch Section(rawValue: indexPath.section) {
+        case .popular:
             detailVC.passedDocumentID = popularRoomsArray[indexPath.row].documentID
             self.navigationController?.pushViewController(detailVC, animated: true)
-        case 1:
+        case .latest:
             detailVC.passedDocumentID = latestRoomsArray[indexPath.row].documentID
             self.navigationController?.pushViewController(detailVC, animated: true)
         default:

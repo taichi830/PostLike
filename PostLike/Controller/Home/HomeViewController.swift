@@ -564,18 +564,13 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
     @objc private func tappedRoomNameLabel(_ sender:UITapGestureRecognizer){
         let tappedLocation = sender.location(in: timeLineTableView)
         let tappedIndexPath = timeLineTableView.indexPathForRow(at: tappedLocation)
-        let tappedRow = tappedIndexPath?.row
+        let tappedRow = tappedIndexPath!.row
         let enteredVC = storyboard?.instantiateViewController(withIdentifier: "enteredVC") as! EnteredRoomContentViewController
-        if let followContent = tableViewItems[tappedRow!] as? Contents {
-            
+        if let followContent = tableViewItems[tappedRow] as? Contents {
             let roomInfo = joinedRoomArray.filter {
                 $0.documentID == followContent.roomID
             }
-//            enteredVC.passedModerator = roomInfo[0].moderator
             enteredVC.passedDocumentID = roomInfo[0].documentID
-//            enteredVC.passedTitle = roomInfo[0].roomName
-//            enteredVC.passedProfileImage = roomInfo[0].userImage
-//            enteredVC.passedUserName = roomInfo[0].userName
             navigationController?.pushViewController(enteredVC, animated: true)
         }
     }
@@ -618,7 +613,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func updateLikeCount(row:Int,batch:WriteBatch){
+    private func updateLikeCount(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
             
             let roomID = followContent.roomID
@@ -642,7 +637,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func createLikeContents(row:Int,batch:WriteBatch){
+    private func createLikeContents(row:Int,batch:WriteBatch){
         
         if let followContent = tableViewItems[row] as? Contents {
             let myuid = Auth.auth().currentUser!.uid
@@ -665,7 +660,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func giveNotification(row:Int,batch:WriteBatch){
+    private func giveNotification(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
             let myUid = Auth.auth().currentUser!.uid
             let uid = followContent.uid
@@ -687,7 +682,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func likeBatch(row:Int){
+    private func likeBatch(row:Int){
         let batch = Firestore.firestore().batch()
         updateLikeCount(row: row, batch: batch)
         createLikeContents(row: row, batch: batch)
@@ -706,7 +701,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func deleteLikeCount(row:Int,batch:WriteBatch){
+    private func deleteLikeCount(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
             
             let documentID = followContent.documentID
@@ -735,7 +730,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func deleteLikeContent(row:Int,batch:WriteBatch){
+    private func deleteLikeContent(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
             let uid = Auth.auth().currentUser!.uid
             let documentID = followContent.documentID
@@ -747,7 +742,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func deleteNotification(row:Int,batch:WriteBatch){
+    private  func deleteNotification(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
             let uid = followContent.uid
             let myuid = Auth.auth().currentUser!.uid
@@ -766,7 +761,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    func deleteLikeBatch(row:Int){
+    private func deleteLikeBatch(row:Int){
         let batch = Firestore.firestore().batch()
         deleteLikeCount(row: row, batch: batch)
         deleteLikeContent(row: row, batch: batch)
@@ -912,7 +907,7 @@ extension HomeViewController: GADUnifiedNativeAdLoaderDelegate {
     }
     
     
-    func addNativeAds(){
+    private func addNativeAds(){
         self.tableViewItems.removeAll()
         
         self.tableViewItems.append(contentsOf: self.timeLineContents)

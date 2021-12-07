@@ -692,6 +692,7 @@
                     </view>
                     <connections>
                         <outlet property="backView" destination="ofN-D2-f04" id="eaH-0C-6VW"/>
+                        <outlet property="backViewHeightConstraint" destination="quX-Wi-eQn" id="A3c-3x-aZl"/>
                         <outlet property="clearView" destination="FR5-2b-9Mr" id="ZgD-u4-TUT"/>
                         <outlet property="menuTableView" destination="ZBX-3b-NZh" id="OR8-9J-E0G"/>
                     </connections>

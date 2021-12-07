@@ -24,7 +24,6 @@ class RoomDetailViewController: UIViewController {
     
     @IBOutlet weak var roomName: UILabel!
     @IBOutlet weak var contentsTableView: UITableView!
-    
     @IBOutlet weak var roomImageView: UIImageView!
     @IBOutlet weak var roomImageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var roomImageViewTopConstraint: NSLayoutConstraint!
@@ -44,9 +43,9 @@ class RoomDetailViewController: UIViewController {
     private var contentsArray = [Contents]()
     private var reportedUsersArray = [Contents]()
     private var reportedContentsArray = [Contents]()
+    private var likeContentsArray = [Contents]()
     private var joinedRoom:Contents?
     private var roomInfo:Room?
-    private var likeContentsArray = [Contents]()
     private var memberCount:Room?
     private var lastDocument:QueryDocumentSnapshot?
     
@@ -130,7 +129,7 @@ class RoomDetailViewController: UIViewController {
         modalMenuVC.transitioningDelegate = self
         modalMenuVC.passedRoomID = passedDocumentID
         modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = "room"
+        modalMenuVC.passedType = ModalType.room.rawValue
         modalMenuVC.passedRoomImageUrl = roomInfo?.roomImage ?? ""
         modalMenuVC.passedRoomName = roomInfo?.roomName ?? ""
         modalMenuVC.passedRoomIntro = roomInfo?.roomIntro ?? ""
@@ -752,7 +751,7 @@ extension RoomDetailViewController:TableViewCellDelegate{
         modalMenuVC.passedRoomID = contentsArray[row].roomID
         modalMenuVC.passedUid = contentsArray[row].uid
         modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = "post"
+        modalMenuVC.passedType = ReportType.post.rawValue
         present(modalMenuVC, animated: true, completion: nil)
     }
     
