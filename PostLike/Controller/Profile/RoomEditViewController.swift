@@ -59,7 +59,7 @@ class RoomEditViewController: UIViewController {
     
     
     
-    func fetchRoomIntro(){
+    private func fetchRoomIntro(){
         Firestore.firestore().collection("rooms").document(passedDocumentID).getDocument { snapShot, err in
             if let err = err {
                 print("false\(err)")
@@ -115,7 +115,7 @@ class RoomEditViewController: UIViewController {
     
     
     
-    func updateRoomInfo(roomImageUrl:String,batch:WriteBatch){
+    private func updateRoomInfo(roomImageUrl:String,batch:WriteBatch){
         let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID)
         batch.updateData(docData, forDocument: ref)
@@ -126,7 +126,7 @@ class RoomEditViewController: UIViewController {
     
     
     
-    func updateMyRoomInfo(roomImageUrl:String,batch:WriteBatch){
+    private func updateMyRoomInfo(roomImageUrl:String,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
@@ -137,7 +137,7 @@ class RoomEditViewController: UIViewController {
     
     
     
-    func deleteStrage(){
+    private func deleteStrage(){
         let storage = Storage.storage()
         let imageRef = NSString(string: roomIntro!.roomImage)
         let desertRef = storage.reference(forURL: imageRef as String)
@@ -156,7 +156,7 @@ class RoomEditViewController: UIViewController {
     
     
     
-    func createUserStrage(){
+    private func createUserStrage(){
         let fileName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("room_images").child(fileName)
         
@@ -263,7 +263,7 @@ extension RoomEditViewController:UITextFieldDelegate,UITextViewDelegate {
     
     
     
-    @objc func keybordWillShow(_ notification: Notification) {
+    @objc private func keybordWillShow(_ notification: Notification) {
     
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
@@ -289,7 +289,7 @@ extension RoomEditViewController:UITextFieldDelegate,UITextViewDelegate {
     
     
     
-    @objc func keybordWillHide(_ notification: Notification) {
+    @objc private func keybordWillHide(_ notification: Notification) {
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
         }

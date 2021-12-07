@@ -55,14 +55,14 @@ class CreateProfileModalViewController: UIViewController {
     
     
     
-    @IBAction func callAlubm(_ sender: Any) {
-        let pickerController = DKImagePickerController()
-        pickerController.maxSelectableCount = 1
-        pickerController.sourceType = .photo
-        pickerController.assetType = .allPhotos
-        pickerController.allowSelectAll = true
-        pickerController.showsCancelButton = true
-        pickerController.didSelectAssets = {(assets: [DKAsset]) in
+    @IBAction private func callAlubm(_ sender: Any) {
+        let imagePickerController = DKImagePickerController()
+        imagePickerController.maxSelectableCount = 1
+        imagePickerController.sourceType = .photo
+        imagePickerController.assetType = .allPhotos
+        imagePickerController.allowSelectAll = true
+        imagePickerController.showsCancelButton = true
+        imagePickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
                     self.profileImageView.image = image
@@ -70,16 +70,16 @@ class CreateProfileModalViewController: UIViewController {
                 })
             }
         }
-        pickerController.modalPresentationStyle = .fullScreen
-        pickerController.UIDelegate = CustomUIDelegate()
-        self.present(pickerController, animated: true, completion: nil)
+        imagePickerController.modalPresentationStyle = .fullScreen
+        imagePickerController.UIDelegate = CustomUIDelegate()
+        self.present(imagePickerController, animated: true, completion: nil)
     }
     
     
     
     
     
-    @IBAction func done(_ sender: Any) {
+    @IBAction private func done(_ sender: Any) {
         modalIndicator(view: self.view)
         if profileImageView.image == nil {
             createProfileDelegate?.joinRoomBatch({
@@ -93,7 +93,7 @@ class CreateProfileModalViewController: UIViewController {
     }
     
     
-    @objc func viewDidTouch(_ sender: UITapGestureRecognizer) {
+    @objc private func viewDidTouch(_ sender: UITapGestureRecognizer) {
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -110,7 +110,7 @@ class CreateProfileModalViewController: UIViewController {
 extension CreateProfileModalViewController:UITextFieldDelegate{
     
     
-    @objc func keybordWillShow(_ notification: Notification) {
+    @objc private func keybordWillShow(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
@@ -133,7 +133,7 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
     
     
     
-    @objc func keybordWillHide(_ notification: Notification) {
+    @objc private func keybordWillHide(_ notification: Notification) {
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
         }

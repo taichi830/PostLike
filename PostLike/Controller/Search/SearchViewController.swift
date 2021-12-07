@@ -12,9 +12,12 @@ import FirebaseAuth
 import InstantSearchClient
 
 
-class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDelegate {
+class SearchViewController: UIViewController {
     
-    
+    enum TableTypr:String {
+        case history
+        case result
+    }
     
     var roomArrray = [Room]()
     var resultArray = [Post_Like]()
@@ -45,6 +48,7 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
         super.viewDidLoad()
         historyTableView.delegate = self
         historyTableView.dataSource = self
+        
         resultTableView.delegate = self
         resultTableView.dataSource = self
         
@@ -52,13 +56,14 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
         searchField.backgroundImage = UIImage()
         
         headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        headerView.isHidden = true
         resultTableView.tableHeaderView = headerView
         
-        headerView.isHidden = true
-        
+       
         createButton.layer.cornerRadius = 15
         createButton.clipsToBounds = true
         createButton.isEnabled = false
+        
         
         topCreateRoomButton.layer.cornerRadius = 15
         topCreateRoomButton.clipsToBounds = true
@@ -83,7 +88,7 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
     
     
     
-    @objc func keybordWillShow(_ notification: Notification) {
+    @objc private func keybordWillShow(_ notification: Notification) {
         searchField.setShowsCancelButton(true, animated: true)
         UIView.animate(withDuration: 0.2) {
             self.containerView.alpha = 0
@@ -94,33 +99,7 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
     
     
     
-    
-    
-    
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchField.setShowsCancelButton(false, animated: true)
-        searchField.resignFirstResponder()
-        searchField.text = ""
-        headerView.isHidden = true
-        resultTableView.isHidden = true
-        backView.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.containerView.alpha = 1
-            self.topViewHeight.constant = 50
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-
-    
-    
-    
-    
-    
-    
-    
-    func emptyCheckOfSearchField(searchText:String){
+    private func emptyCheckOfSearchField(searchText:String){
         if searchText == "" {
             headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
             headerView.isHidden = true
@@ -132,78 +111,13 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
             headerView.isHidden = false
             resultTableView.isHidden = false
             backView.isHidden = true
+            createButton.isEnabled = true
         }
     }
     
     
     
-    
-    
-    func callAlgolia(searchText:String){
-        #if DEBUG
-        let appID = "AT9Z5755AK"
-        let apiKey = "91c505ad021fe4eaf299f4a9d15fbd2b"
-        let indexName = "PostLike_dev"
-        #else
-        let appID = "GICHEEECDF"
-        let apiKey = "e66bef3d0dd124854d5137007a5aafc2"
-        let indexName = "rooms"
-        #endif
-        
-        
-        let client = Client(appID: appID, apiKey: apiKey)
-        let index = client.index(withName: indexName)
-        let query = Query(query: searchText)
-        let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if text == "" {
-            self.resultArray.removeAll()
-            self.resultTableView.reloadData()
-        }else{
-            index.search(query, completionHandler: { (content, err) -> Void in
-                self.resultArray.removeAll()
-                if let err = err {
-                    print(err)
-                    return
-                } else {
-                    guard let content = content else { fatalError("no content") }
-                    let data = try! JSONSerialization.data(withJSONObject: content, options: .prettyPrinted)
-                    let response = try! JSONDecoder().decode(Hits.self, from: data)
-                    for hit in response.hits {
-                        self.resultArray.append(hit)
-                    }
-                    self.resultTableView.reloadData()
-                }
-            })
-        }
-    }
-    
-    
-    
-    
-    
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let searchText: String = (searchBar.text! as NSString).replacingCharacters(in: range, with: text)
-        self.emptyCheckOfSearchField(searchText: searchText)
-        self.timer?.invalidate()
-        self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.call), userInfo: nil, repeats: false)
-        return true
-    }
-    
-    
-    
-    
-    
-    @objc func call(){
-        self.callAlgolia(searchText: searchField.text!)
-    }
-    
-    
-
-    
-    
-    
-    
-    func fetchHistory(){
+    private func fetchHistory(){
         self.historyArray.removeAll()
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("history").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
@@ -229,25 +143,17 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
             }
             self.historyTableView.reloadData()
         }
-        
     }
     
     
     
-    @IBAction func createRoom(_ sender: Any) {
-        let createRoomVC = storyboard?.instantiateViewController(withIdentifier: "createRoomVC") as! CreateRoomViewController
-        createRoomVC.passedRoomName = searchField.text!
-        createRoomVC.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(createRoomVC, animated: true)
-    }
     
-    
-    
-    @IBAction func createRoom2(_ sender: Any) {
+    @IBAction private func createRoom(sender: UIButton) {
         let createRoomVC = storyboard?.instantiateViewController(withIdentifier: "createRoomVC") as! CreateRoomViewController
         createRoomVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(createRoomVC, animated: true)
     }
+    
     
     
     
@@ -259,17 +165,96 @@ class SearchViewController: UIViewController,UITextFieldDelegate,UISearchBarDele
 
 
 
+extension SearchViewController: UISearchBarDelegate {
+    
+    private func callAlgolia(searchText:String){
+        #if DEBUG
+        let appID = "AT9Z5755AK"
+        let apiKey = "91c505ad021fe4eaf299f4a9d15fbd2b"
+        let indexName = "PostLike_dev"
+        #else
+        let appID = "GICHEEECDF"
+        let apiKey = "e66bef3d0dd124854d5137007a5aafc2"
+        let indexName = "rooms"
+        #endif
+    
+        let client = Client(appID: appID, apiKey: apiKey)
+        let index = client.index(withName: indexName)
+        let query = Query(query: searchText)
+        let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if text == "" {
+            self.resultArray.removeAll()
+            self.resultTableView.reloadData()
+        }else{
+            index.search(query, completionHandler: { (content,err) -> Void in
+                self.resultArray.removeAll()
+                do {
+                    guard let content = content else { fatalError("no content") }
+                    let data = try JSONSerialization.data(withJSONObject: content, options: .prettyPrinted)
+                    let response = try JSONDecoder().decode(Hits.self, from: data)
+                    self.resultArray.append(contentsOf: response.hits)
+                    self.resultTableView.reloadData()
+                } catch {
+                    print(err ?? "")
+                }
+            })
+        }
+    }
+    
+    
+    
+    
+    @objc private func call(){
+        self.callAlgolia(searchText: searchField.text!)
+    }
+    
+    
+    
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let searchText: String = (searchBar.text! as NSString).replacingCharacters(in: range, with: text)
+        self.emptyCheckOfSearchField(searchText: searchText)
+        self.timer?.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(call), userInfo: nil, repeats: false)
+        return true
+    }
+    
+    
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchField.setShowsCancelButton(false, animated: true)
+        searchField.resignFirstResponder()
+        searchField.text = ""
+        headerView.isHidden = true
+        resultTableView.isHidden = true
+        backView.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.containerView.alpha = 1
+            self.topViewHeight.constant = 50
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+}
+
 
 
 
 extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
-    func idetifyTable(_ tableView:UITableView) -> Void{
+    private func idetifyTable(_ tableView:UITableView) -> Void{
         if tableView.tag == 10 {
-            cellIdentifier = "history"
+            cellIdentifier = TableTypr.history.rawValue
         }
         else if tableView.tag == 11 {
-            cellIdentifier = "result"
+            cellIdentifier = TableTypr.result.rawValue
         }
     }
     
@@ -278,10 +263,10 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         idetifyTable(tableView)
-        if cellIdentifier == "history" {
+        if cellIdentifier == TableTypr.history.rawValue {
             return historyArray.count
         }
-        else if cellIdentifier == "result" {
+        else if cellIdentifier == TableTypr.result.rawValue {
             return resultArray.count
         }
         return Int()
@@ -292,10 +277,9 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         idetifyTable(tableView)
-        if cellIdentifier == "history"{
+        if cellIdentifier == TableTypr.history.rawValue {
             let cell = historyTableView.dequeueReusableCell(withIdentifier: "history", for: indexPath)
-            let historyImage = cell.viewWithTag(1) as!
-                UIImageView
+            let historyImage = cell.viewWithTag(1) as!UIImageView
             let personsImage = cell.viewWithTag(2) as! UIImageView
             let historyName = cell.viewWithTag(3) as! UILabel
             let contentView = cell.viewWithTag(4)!
@@ -321,10 +305,10 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
                 }
             }
             
-
+            
             return cell
             
-        }else if cellIdentifier == "result"{
+        }else if cellIdentifier == TableTypr.result.rawValue {
             let cell = resultTableView.dequeueReusableCell(withIdentifier: "result", for: indexPath)
             
             let roomImage = cell.viewWithTag(5) as! UIImageView
@@ -381,11 +365,11 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = storyboard?.instantiateViewController(withIdentifier: "detailVC") as! RoomDetailViewController
         idetifyTable(tableView)
-        if cellIdentifier == "history"{
+        if cellIdentifier == TableTypr.history.rawValue {
             
             detailVC.passedDocumentID = historyArray[indexPath.row].documentID
             
-        }else if cellIdentifier == "result"{
+        }else if cellIdentifier == TableTypr.result.rawValue {
             detailVC.passedDocumentID = resultArray[indexPath.row].documentID
             createHistory(roomImageUrl: resultArray[indexPath.row].roomImage, roomName: resultArray[indexPath.row].roomName, documentID: resultArray[indexPath.row].documentID)
         }
@@ -411,7 +395,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     
     
-    @objc func deleteContent(_ sender:UIButton){
+    @objc private func deleteContent(_ sender:UIButton){
         let uid = Auth.auth().currentUser!.uid
         let documentID = historyArray[-sender.tag].documentID
         Firestore.firestore().collection("users").document(uid).collection("history").document(documentID).delete { err in
@@ -430,7 +414,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     
     
-    func createHistory(roomImageUrl:String,roomName:String,documentID:String){
+    private func createHistory(roomImageUrl:String,roomName:String,documentID:String){
         let uid = Auth.auth().currentUser!.uid
         let timestamp = Timestamp()
         let docData = ["roomImage":roomImageUrl,"roomName":roomName,"documentID":documentID,"createdAt":timestamp] as [String : Any]

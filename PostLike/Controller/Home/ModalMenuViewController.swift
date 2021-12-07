@@ -9,14 +9,18 @@
 import UIKit
 import FirebaseDynamicLinks
 
+
+enum ModalType:String {
+    case post
+    case room
+    case exit
+    case delete
+    case moderator
+}
+
+
 class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
-    
-    private let element = [
-        (type:"post",text:["投稿を報告・ミュートする","ユーザーを報告・ブロックする","キャンセル"],image:["square.slash","person","xmark"]),
-        (type:"room",text:["シェアする","ルームを報告する","キャンセル"],image:["square.and.arrow.up","flag","xmark"]),
-        (type:"exit",text:["ルームを退出する","ルームを削除する","キャンセル"],image:["arrowshape.turn.up.right","trash","xmark"])
-    ]
     var passedDocumentID = String()
     var passedRoomID = String()
     var passedUid = String()
@@ -26,10 +30,14 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
     var passedRoomImageUrl = String()
     var passedRoomIntro = String()
     var passedRoomImage = UIImage()
+    var passedImageUrl = [String]()
+    weak var deletePostDelegate:DeletePostDelegate?
+    weak var exitRoomDelegate:ExitRoomDelegate?
     
     @IBOutlet weak var menuTableView: UITableView!
     @IBOutlet weak var clearView: UIView!
     @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
     
     
     override func viewDidLoad() {
@@ -40,42 +48,140 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
         self.transitioningDelegate = self
         backView.layer.cornerRadius = 10
         self.clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.viewDidTouch)))
+        
+        
     }
     
     
-    @objc func viewDidTouch(_ sender: UITapGestureRecognizer) {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if passedType == ModalType.exit.rawValue || passedType == ModalType.delete.rawValue {
+            backViewHeightConstraint.constant = 160
+        }
+    }
+    
+    
+    @objc private func viewDidTouch(_ sender: UITapGestureRecognizer) {
         self.dismiss(animated: true, completion: nil)
     }
     
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    
+    private func showActivityViewController(){
         
-        return element[0].text.count
+        var components = URLComponents()
+        components.scheme = "https"
+        #if DEBUG
+        components.host = "postliketest.page.link"
+        #else
+        components.host = "postlike.page.link"
+        #endif
+        components.path = "/rooms"
+        
+        let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedRoomID)
+        components.queryItems = [roomIDQueryItem]
+        
+        guard let link = components.url else {return}
+        #if DEBUG
+        let dynamicLinksDomainURIPrefix = "https://postliketest.page.link"
+        #else
+        let dynamicLinksDomainURIPrefix = "https://postlike.page.link"
+        #endif
+        
+        guard let shareLink = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else {return}
+        
+        if let bundleID = Bundle.main.bundleIdentifier {
+            shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
+        }
+        shareLink.iOSParameters?.appStoreID = "1584149456"
+        
+        shareLink.androidParameters = .none
+        shareLink.androidParameters?.minimumVersion = .zero
+        
+        shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
+        shareLink.socialMetaTagParameters?.title = passedRoomName
+        shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
+        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
+        shareLink.shorten { url, warnings, err in
+            if err != nil {
+                return
+            }else{
+                if let warnings = warnings {
+                    for warning in warnings {
+                        print("\(warning)")
+                    }
+                }
+                guard let url = url else {return}
+                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomName, roomImage: self.passedRoomImage)]
+                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
+                self.present(activityViewController, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
+    
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch passedType {
+        case ModalType.post.rawValue:
+            return 3
+            
+        case ModalType.room.rawValue:
+            return 3
+            
+        case ModalType.exit.rawValue:
+            return 2
+            
+        case ModalType.delete.rawValue:
+            return 2
+            
+        case ModalType.moderator.rawValue:
+            return 3
+            
+        default:
+            break
+        }
+        
+        return Int()
+        
     }
     
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = menuTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
         let imageView = cell.viewWithTag(1) as! UIImageView
         let label = cell.viewWithTag(2) as! UILabel
         
         switch passedType {
-        case "post":
-            imageView.image = UIImage(systemName: element[0].image[indexPath.row])
-            label.text = element[0].text[indexPath.row]
-        case "room":
-            imageView.image = UIImage(systemName: element[1].image[indexPath.row])
-            label.text = element[1].text[indexPath.row]
-        case "exit":
-            imageView.image = UIImage(systemName: element[2].image[indexPath.row])
-            label.text = element[1].text[indexPath.row]
-        default: break
+        case ModalType.post.rawValue:
+            CommonModal.shared.items(type: .post, label: label, imageView: imageView, row: indexPath.row)
             
+        case ModalType.room.rawValue:
+            CommonModal.shared.items(type: .room, label: label, imageView: imageView, row: indexPath.row)
+            
+        case ModalType.exit.rawValue:
+            CommonModal.shared.items(type: .exit, label: label, imageView: imageView, row: indexPath.row)
+            
+        case ModalType.exit.rawValue:
+            CommonModal.shared.items(type: .exit, label: label, imageView: imageView, row: indexPath.row)
+            
+        case ModalType.delete.rawValue:
+            CommonModal.shared.items(type: .delete, label: label, imageView: imageView, row: indexPath.row)
+            
+        case ModalType.moderator.rawValue:
+            CommonModal.shared.items(type: .moderator, label: label, imageView: imageView, row: indexPath.row)
+            
+        default: break
         }
         return cell
     }
+    
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
@@ -83,85 +189,76 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch passedType {
-        case "post":
+        case ModalType.post.rawValue:
             if indexPath.row == 0 {
                 let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
                 reportVC.passedDocumentID = passedDocumentID
                 reportVC.passedRoomID = passedRoomID
                 reportVC.passedUid = passedUid
-                reportVC.reporttype = "post"
+                reportVC.reportType = ReportType.post.rawValue
                 reportVC.titleTableViewDelegate = passedViewController as? RemoveContentsDelegate
                 present(reportVC, animated: true,completion: nil)
+                
             }else if indexPath.row == 1 {
                 let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
                 reportVC.passedDocumentID = passedDocumentID
                 reportVC.passedRoomID = passedRoomID
                 reportVC.passedUid = passedUid
-                reportVC.reporttype = "user"
+                reportVC.reportType = ReportType.user.rawValue
                 reportVC.titleTableViewDelegate = passedViewController as? RemoveContentsDelegate
+                present(reportVC, animated: true, completion: nil)
+                
+            }else{
+                dismiss(animated: true, completion: nil)
+            }
+            
+        case ModalType.room.rawValue:
+            if indexPath.row == 0 {
+                self.showActivityViewController()
+
+            }else if indexPath.row == 1 {
+                let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
+                reportVC.passedDocumentID = passedDocumentID
+                reportVC.passedRoomID = passedRoomID
+                reportVC.passedUid = passedUid
+                reportVC.reportType = ReportType.room.rawValue
                 present(reportVC, animated: true, completion: nil)
             }else{
                 dismiss(animated: true, completion: nil)
             }
-        case "room":
+            
+        case ModalType.exit.rawValue:
             if indexPath.row == 0 {
-                var components = URLComponents()
-                components.scheme = "https"
-                #if DEBUG
-                components.host = "postliketest.page.link"
-                #else
-                components.host = "postlike.page.link"
-                #endif
-                
-                components.path = "/rooms"
-                
-                let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedRoomID)
-                components.queryItems = [roomIDQueryItem]
-                
-                guard let link = components.url else {return}
-                #if DEBUG
-                let dynamicLinksDomainURIPrefix = "https://postliketest.page.link"
-                #else
-                let dynamicLinksDomainURIPrefix = "https://postlike.page.link"
-                #endif
-                
-                guard let shareLink = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else {return}
-                
-                if let bundleID = Bundle.main.bundleIdentifier {
-                    shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
-                }
-                shareLink.iOSParameters?.appStoreID = "1584149456"
-                
-                shareLink.androidParameters = .none
-                shareLink.androidParameters?.minimumVersion = .zero
-                
-                shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-                shareLink.socialMetaTagParameters?.title = passedRoomName
-                shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
-                shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
-                shareLink.shorten { url, warnings, err in
-                    if err != nil {
-                        return
-                    }else{
-                        if let warnings = warnings {
-                            for warning in warnings {
-                                print("\(warning)")
-                            }
-                        }
-                        guard let url = url else {return}
-                        let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomName, roomImage: self.passedRoomImage)]
-                        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
-                        self.present(activityViewController, animated: true, completion: nil)
-                    }
-                }
+                exitRoomDelegate?.exitRoomBatch()
+                dismiss(animated: true, completion: nil)
             }else if indexPath.row == 1 {
-                let storyboard = UIStoryboard(name: "Search", bundle: nil)
-                let reportRoomVC = storyboard.instantiateViewController(identifier: "reportRoom") as! ReportRoomViewController
-                reportRoomVC.passedRoomID = passedRoomID
-                present(reportRoomVC, animated: true, completion: nil)
-            }else{
                 dismiss(animated: true, completion: nil)
             }
+            
+        case ModalType.delete.rawValue:
+            if indexPath.row == 0 {
+                self.deletePostDelegate?.deletePostBatch(documentID: self.passedDocumentID, imageUrl: self.passedImageUrl)
+                dismiss(animated: true,completion: nil)
+            }else if indexPath.row == 1 {
+                dismiss(animated: true, completion: nil)
+            }
+            
+        case ModalType.moderator.rawValue:
+            if indexPath.row == 0 {
+                exitRoomDelegate?.exitRoomBatch()
+                dismiss(animated: true, completion: nil)
+            }else if indexPath.row == 1 {
+                let storyboard = UIStoryboard.init(name: "Profile", bundle: nil)
+                let deleteAlertVC = storyboard.instantiateViewController(withIdentifier: "deleteAlert") as! DeleteRoomViewController
+                deleteAlertVC.modalPresentationStyle = .custom
+                deleteAlertVC.transitioningDelegate = passedViewController as? UIViewControllerTransitioningDelegate
+                deleteAlertVC.passedRoomID = passedRoomID
+                deleteAlertVC.deleteRoomDelegate = passedViewController as? DeleteRoomDelegate
+                present(deleteAlertVC, animated: true, completion: nil)
+            }else {
+                dismiss(animated: true,completion: nil)
+            }
+            
         default:
             return
         }
@@ -176,7 +273,6 @@ class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewD
 
 extension ModalMenuViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        
         
         return PresentModalViewController(presentedViewController: presented, presenting: presenting)
         

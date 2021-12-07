@@ -142,25 +142,6 @@ extension SetPassWordViewController: UITextFieldDelegate{
         return true
     }
     
-//    @objc func keybordWillShow(_ notification: Notification) {
-//        guard let userInfo = notification.userInfo as? [String:Any] else {
-//            return
-//        }
-//        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
-//            return
-//        }
-//        guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-//            return
-//        }
-//        UIView.animate(withDuration: duration) {
-//            self.completeButton.frame.origin.y = rect.origin.y - 50
-//        }
-//    }
-    
-    
-//    @objc func keybordWillHide(_ notification: Notification) {
-//        self.buttonView.frame.origin.y = self.view.frame.size.height - (self.buttonView.frame.size.height+self.view.safeAreaInsets.bottom)
-//    }
     
     
     
