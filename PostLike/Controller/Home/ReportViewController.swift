@@ -50,6 +50,8 @@ class ReportViewController: UIViewController  {
             topLabel.text = "投稿を報告・ミュート"
         }else if reportType == ReportType.user.rawValue {
             topLabel.text = "ユーザーを報告・ブロック"
+        }else if reportType == ReportType.room.rawValue {
+            topLabel.text = "ルームを報告"
         }
         
     }
