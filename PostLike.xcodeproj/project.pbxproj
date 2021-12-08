@@ -243,6 +243,7 @@
 		CE18882525205A24001C687C /* PostLike */ = {
 			isa = PBXGroup;
 			children = (
+				CE2E27D327606412002D0E41 /* ViewModel */,
 				CE012C5D26B6F196006CC20E /* Configs */,
 				CE33BA5726637CDA001EC04B /* Extenshion */,
 				CE8C5A5E274A31AD00A49E56 /* Storyboard */,
@@ -257,6 +258,13 @@
 				CE18883425205A25001C687C /* Info.plist */,
 			);
 			path = PostLike;
+			sourceTree = "<group>";
+		};
+		CE2E27D327606412002D0E41 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CE33BA5726637CDA001EC04B /* Extenshion */ = {
