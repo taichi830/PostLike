@@ -16,7 +16,7 @@ class RegisterViewController: UIViewController {
     
     
     @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var registerButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var alertView: UILabel!
     @IBOutlet weak var alertLabelHeight: NSLayoutConstraint!
     @IBOutlet weak var birthDayTextField: UITextField!
@@ -41,7 +41,7 @@ class RegisterViewController: UIViewController {
         genderTextField.attributedPlaceholder = NSAttributedString(string: "性別", attributes: [.foregroundColor: UIColor.lightGray.cgColor])
         
         alertView.layer.cornerRadius = 5
-        registerButton.layer.cornerRadius = 16
+        nextButton.layer.cornerRadius = 16
         
         
         
@@ -163,7 +163,7 @@ class RegisterViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        registerButton.rx.tap
+        nextButton.rx.tap
             .asDriver()
             .drive { [weak self] _ in
                 self?.tappedNextButton()
@@ -172,8 +172,8 @@ class RegisterViewController: UIViewController {
         
         registerViewModel.validRegisterDriver
             .drive { [weak self] validAll in
-                self?.registerButton.isEnabled = validAll
-                self?.registerButton.backgroundColor = validAll ? .red : .systemGray4
+                self?.nextButton.isEnabled = validAll
+                self?.nextButton.backgroundColor = validAll ? .red : .systemGray4
             }
             .disposed(by: disposeBag)
         
