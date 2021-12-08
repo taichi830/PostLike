@@ -58,6 +58,8 @@
 		CE199F7926DE125E009F1B7E /* TermOfUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE199F7826DE125E009F1B7E /* TermOfUseViewController.swift */; };
 		CE199F7C26E1C8DD009F1B7E /* GoogleService-Info.Develop.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE199F7B26E1C8DD009F1B7E /* GoogleService-Info.Develop.plist */; };
 		CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */; };
+		CE2E27D527606659002D0E41 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27D427606659002D0E41 /* RegisterViewModel.swift */; };
+		CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */; };
 		CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */; };
 		CE5D0C23270715100019F9D5 /* GoogleService-Info.Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0C22270715100019F9D5 /* GoogleService-Info.Release.plist */; };
 		CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */; };
@@ -114,6 +116,8 @@
 		CE249CAC25989C4E003C87A0 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		CE262B9725678434009B7F5D /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CE262B992568C0CA009B7F5D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		CE2E27D427606659002D0E41 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CE33BA5826637D1B001EC04B /* TabImage-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-extenshion.swift"; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 		CE2E27D327606412002D0E41 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CE2E27D427606659002D0E41 /* RegisterViewModel.swift */,
+				CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -648,9 +654,11 @@
 				CE77EF6126E67EEF00154886 /* DKImagePicker.swift in Sources */,
 				CE77EF6426E67EEF00154886 /* AppDelegate.swift in Sources */,
 				CE012C3226B6EFD4006CC20E /* HomeViewController.swift in Sources */,
+				CE2E27D527606659002D0E41 /* RegisterViewModel.swift in Sources */,
 				CE012C3326B6EFD4006CC20E /* CreateRoomViewController.swift in Sources */,
 				CE77EF6526E67EEF00154886 /* SceneDelegate.swift in Sources */,
 				CE012C3426B6EFD4006CC20E /* PostTableViewCell.swift in Sources */,
+				CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */,
 				CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */,
 				CE012C3526B6EFD4006CC20E /* NotificationViewController.swift in Sources */,
 				CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */,
