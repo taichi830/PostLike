@@ -116,18 +116,14 @@ class RegisterViewController: UIViewController {
                 return str
             }
             .disposed(by: disposeBag)
-        picker.rx.modelSelected(String.self)
-            .map { strs in
-                return strs.first
-            }
-            .bind(to: genderTextField.rx.text)
-            .disposed(by: disposeBag)
-        genderTextField.rx.text
-            .asDriver()
-            .drive { [weak self] text in
-                self?.registerViewModel.genderTextInPut.onNext(text ?? "")
+        picker.rx.itemSelected.asDriver()
+            .drive { [weak self] item in
+                self?.registerViewModel.genderTextInPut.onNext(dataList[item.row])
+                self?.genderTextField.text = dataList[item.row]
             }
             .disposed(by: disposeBag)
+
+        
         
         let datePickerView:UIDatePicker = UIDatePicker()
         datePickerView.backgroundColor = .white
@@ -156,6 +152,8 @@ class RegisterViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        
+        
         emailTextField.rx.text
             .asDriver()
             .drive { [weak self] text in
@@ -163,12 +161,20 @@ class RegisterViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        
+        
+        
         nextButton.rx.tap
             .asDriver()
             .drive { [weak self] _ in
                 self?.tappedNextButton()
+                print(self?.genderTextField.text ?? "no value")
             }
             .disposed(by: disposeBag)
+        
+        
+        
+        
         
         registerViewModel.validRegisterDriver
             .drive { [weak self] validAll in
