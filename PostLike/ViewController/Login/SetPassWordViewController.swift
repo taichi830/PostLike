@@ -13,7 +13,7 @@ import FirebaseAuth
 class SetPassWordViewController: UIViewController {
     
     @IBOutlet weak var passWordTextField: UITextField!
-    @IBOutlet weak var completeButton: UIButton!
+    @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var alertLabel: UILabel!
     @IBOutlet weak var alertLabelHeight: NSLayoutConstraint!
     @IBOutlet weak var eyeButton: UIButton!
@@ -24,7 +24,7 @@ class SetPassWordViewController: UIViewController {
         
         passWordTextField.delegate = self
         passWordTextField.becomeFirstResponder()
-        completeButton.layer.cornerRadius = 20
+        doneButton.layer.cornerRadius = 20
         eyeButton.tintColor = .lightGray
         
     }
@@ -123,11 +123,11 @@ extension SetPassWordViewController: UITextFieldDelegate{
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if  passWordTextField.text != ""{
-            completeButton.backgroundColor = .systemRed
-            completeButton.isEnabled = true
+            doneButton.backgroundColor = .systemRed
+            doneButton.isEnabled = true
         }else {
-            completeButton.backgroundColor = .systemGray4
-            completeButton.isEnabled = false
+            doneButton.backgroundColor = .systemGray4
+            doneButton.isEnabled = false
         }
     }
     

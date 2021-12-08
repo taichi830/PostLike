@@ -148,9 +148,6 @@
                                         <state key="normal" title="次へ">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="done:" destination="qTw-6I-3fb" eventType="touchUpInside" id="HpA-vX-Gu6"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -274,7 +271,7 @@
                         <outlet property="birthDayTextField" destination="pzI-45-Gef" id="VjZ-UV-ecA"/>
                         <outlet property="emailTextField" destination="IPd-0T-AFy" id="c1s-Kw-3PA"/>
                         <outlet property="genderTextField" destination="BoG-Ov-2iJ" id="KyJ-p0-gbB"/>
-                        <outlet property="registerButton" destination="RBz-L9-Xvz" id="h0k-8g-hB8"/>
+                        <outlet property="nextButton" destination="RBz-L9-Xvz" id="h0k-8g-hB8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N2E-tH-GQ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -422,7 +419,7 @@
                     <connections>
                         <outlet property="alertLabel" destination="BOK-IK-d36" id="KAc-qQ-wcQ"/>
                         <outlet property="alertLabelHeight" destination="Ol5-j9-y94" id="ojD-Nl-y59"/>
-                        <outlet property="completeButton" destination="k2V-b7-gD8" id="pah-w1-rhx"/>
+                        <outlet property="doneButton" destination="k2V-b7-gD8" id="pah-w1-rhx"/>
                         <outlet property="eyeButton" destination="v5k-27-VfM" id="O9t-2r-e46"/>
                         <outlet property="passWordTextField" destination="ycA-AU-Tgm" id="hVO-4p-kPc"/>
                     </connections>
@@ -669,9 +666,6 @@
                                 <state key="normal" title="完了">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <connections>
-                                    <action selector="done:" destination="Z7u-co-4Cc" eventType="touchUpInside" id="dz9-Sj-f8a"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ntN-hC-cW2"/>
@@ -702,7 +696,7 @@
                     <connections>
                         <outlet property="alertLabelHeight" destination="mxL-CN-ZfY" id="6LM-er-suX"/>
                         <outlet property="alertView" destination="dMt-Pv-YBI" id="REj-v2-qoa"/>
-                        <outlet property="completeButton" destination="t5b-CZ-IcG" id="IEp-yc-n08"/>
+                        <outlet property="doneButton" destination="t5b-CZ-IcG" id="xfC-Y4-9Se"/>
                         <outlet property="emailTextField" destination="YKw-gx-MVa" id="ZXg-hf-NxD"/>
                         <outlet property="eyeButton" destination="RWj-Ii-zjp" id="Dz5-PF-WfC"/>
                         <outlet property="passwordTextField" destination="uVY-DM-7Rq" id="Y8D-dg-lzZ"/>
@@ -791,7 +785,6 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="done:" destination="Z7u-co-4Cc" eventType="touchUpInside" id="Y38-Hr-xR5"/>
                                     <action selector="sendResetMail:" destination="qyI-lI-ch4" eventType="touchUpInside" id="d54-oe-Pof"/>
                                 </connections>
                             </button>
