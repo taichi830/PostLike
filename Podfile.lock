@@ -193,10 +193,16 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - PromisesObjC (1.2.12)
+  - RxCocoa (6.2.0):
+    - RxRelay (= 6.2.0)
+    - RxSwift (= 6.2.0)
+  - RxRelay (6.2.0):
+    - RxSwift (= 6.2.0)
+  - RxSwift (6.2.0)
   - SDWebImage (5.12.1):
     - SDWebImage/Core (= 5.12.1)
   - SDWebImage/Core (5.12.1)
-  - SwiftyGif (5.4.0)
+  - SwiftyGif (5.4.1)
 
 DEPENDENCIES:
   - DKImagePickerController
@@ -211,6 +217,8 @@ DEPENDENCIES:
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `8.1.0`)
   - Google-Mobile-Ads-SDK
   - InstantSearchClient
+  - RxCocoa
+  - RxSwift
   - SDWebImage
 
 SPEC REPOS:
@@ -238,6 +246,9 @@ SPEC REPOS:
     - InstantSearchClient
     - nanopb
     - PromisesObjC
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - SDWebImage
     - SwiftyGif
 
@@ -276,9 +287,12 @@ SPEC CHECKSUMS:
   InstantSearchClient: cd4b41f46bed82c1b12c759c76b733f7ed6dd8c2
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  RxCocoa: 4baf94bb35f2c0ab31bc0cb9f1900155f646ba42
+  RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
+  RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
-  SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
+  SwiftyGif: 6895c887f5551618a3c5dd3ecb512419105bacca
 
-PODFILE CHECKSUM: 6866f96bd4bbf7ad246e72e1e299b0e0c26d7568
+PODFILE CHECKSUM: 690f330d851460a59b74a38641475e61fe9f609f
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

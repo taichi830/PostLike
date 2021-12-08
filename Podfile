@@ -18,6 +18,8 @@
   pod 'Firebase/DynamicLinks'
   pod 'Firebase/AdMob'
   pod 'Google-Mobile-Ads-SDK'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
  end
  
