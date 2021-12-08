@@ -148,9 +148,6 @@
                                         <state key="normal" title="次へ">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="done:" destination="qTw-6I-3fb" eventType="touchUpInside" id="HpA-vX-Gu6"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -669,9 +666,6 @@
                                 <state key="normal" title="完了">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <connections>
-                                    <action selector="done:" destination="Z7u-co-4Cc" eventType="touchUpInside" id="dz9-Sj-f8a"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ntN-hC-cW2"/>
@@ -791,7 +785,6 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="done:" destination="Z7u-co-4Cc" eventType="touchUpInside" id="Y38-Hr-xR5"/>
                                     <action selector="sendResetMail:" destination="qyI-lI-ch4" eventType="touchUpInside" id="d54-oe-Pof"/>
                                 </connections>
                             </button>
