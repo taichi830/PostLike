@@ -9,6 +9,8 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import RxSwift
+import RxCocoa
 
 class RegisterViewController: UIViewController {
     
@@ -23,32 +25,24 @@ class RegisterViewController: UIViewController {
     
     
     
-    var toolBar:UIToolbar!
-    let dataList = ["","男性","女性","選択しない"]
+    private let disposeBag = DisposeBag()
+    private let registerViewModel = RegisterViewModel()
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailTextField.delegate = self
+        
+        setupBinds()
+        
         emailTextField.attributedPlaceholder = NSAttributedString(string: "メールアドレス", attributes: [.foregroundColor: UIColor.lightGray.cgColor])
-        
-        registerButton.layer.cornerRadius = 15
-        
-        birthDayTextField.delegate = self
         birthDayTextField.attributedPlaceholder = NSAttributedString(string: "生年月日", attributes: [.foregroundColor: UIColor.lightGray.cgColor])
-        
-        genderTextField.delegate = self
         genderTextField.attributedPlaceholder = NSAttributedString(string: "性別", attributes: [.foregroundColor: UIColor.lightGray.cgColor])
-        
-        
-        
-        
-        
         
         alertView.layer.cornerRadius = 5
         registerButton.layer.cornerRadius = 16
+        
         
         
     }
@@ -66,31 +60,22 @@ class RegisterViewController: UIViewController {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    @IBAction func done(_ sender: Any) {
+    private func tappedNextButton() {
         startIndicator()
         self.view.endEditing(true)
-        let actionCodeSettings = ActionCodeSettings() //メールリンクの作成方法をFirebaseに伝えるオブジェクト
-        actionCodeSettings.handleCodeInApp = true //ログインをアプリ内で完結させる必要があります
-        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!) //iOSデバイス内でログインリンクを開くアプリのBundle ID
+        let actionCodeSettings = ActionCodeSettings()
+        actionCodeSettings.handleCodeInApp = true
+        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
         //リンクURL
         var components = URLComponents()
         components.scheme = "https"
-        
         #if DEBUG
         components.host = "postliketest.page.link"
         #else
         components.host = "postlike.page.link"
         #endif
         
-        //Firebaseコンソールで作成したダイナミックリンクURLドメイン
-        let queryItemEmailName = "email" //URLにemail情報(パラメータ)を追加する
+        let queryItemEmailName = "email"
         let emailTypeQueryItem = URLQueryItem(name: queryItemEmailName, value: emailTextField.text!)
         components.queryItems = [emailTypeQueryItem]
         guard let linkParameter = components.url else { return }
@@ -114,20 +99,90 @@ class RegisterViewController: UIViewController {
                 self.dismissIndicator()
             }
         }
-        
-        
     }
     
     
     
     
     
+    private func setupBinds() {
+        
+        let dataList = ["","男性","女性","選択しない"]
+        let picker = UIPickerView()
+        picker.backgroundColor = .white
+        self.genderTextField.inputView = picker
+        Observable.just(dataList)
+            .bind(to: picker.rx.itemTitles) { _ , str in
+                return str
+            }
+            .disposed(by: disposeBag)
+        picker.rx.modelSelected(String.self)
+            .map { strs in
+                return strs.first
+            }
+            .bind(to: genderTextField.rx.text)
+            .disposed(by: disposeBag)
+        genderTextField.rx.text
+            .asDriver()
+            .drive { [weak self] text in
+                self?.registerViewModel.genderTextInPut.onNext(text ?? "")
+            }
+            .disposed(by: disposeBag)
+        
+        let datePickerView:UIDatePicker = UIDatePicker()
+        datePickerView.backgroundColor = .white
+        datePickerView.preferredDatePickerStyle = .wheels
+        datePickerView.datePickerMode = UIDatePicker.Mode.date
+        self.birthDayTextField.inputView = datePickerView
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat  = "yyyy/MM/dd"
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        datePickerView.rx.value.changed.asDriver()
+            .drive { [weak self] date in
+                self?.registerViewModel.birthDayTextInPut.onNext(date)
+                self?.birthDayTextField.text = dateFormatter.string(from: date)
+            }
+            .disposed(by: disposeBag)
+        registerViewModel.validBirthDayDriver
+            .drive { valid in
+                if valid == false {
+                    self.alertView.isHidden = false
+                    self.alertView.text = "3歳以下はご利用できません"
+                    self.alertLabelHeight.constant = 42
+                } else {
+                    self.alertView.isHidden = true
+                    self.alertLabelHeight.constant = 0
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        emailTextField.rx.text
+            .asDriver()
+            .drive { [weak self] text in
+                self?.registerViewModel.emailTextInPut.onNext(text ?? "")
+            }
+            .disposed(by: disposeBag)
+        
+        registerButton.rx.tap
+            .asDriver()
+            .drive { [weak self] _ in
+                self?.tappedNextButton()
+            }
+            .disposed(by: disposeBag)
+        
+        registerViewModel.validRegisterDriver
+            .drive { [weak self] validAll in
+                self?.registerButton.isEnabled = validAll
+                self?.registerButton.backgroundColor = validAll ? .red : .systemGray4
+            }
+            .disposed(by: disposeBag)
+        
+        
+        
+    }
     
     
     
-}
-
-extension RegisterViewController: UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -136,112 +191,13 @@ extension RegisterViewController: UITextFieldDelegate, UIPickerViewDelegate, UIP
     
     
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
     
     
     
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        if emailTextField.text != ""  && birthDayTextField.text != "" && genderTextField.text != "" {
-            registerButton.backgroundColor = .systemRed
-            registerButton.isEnabled = true
-        }else {
-            registerButton.backgroundColor = .lightGray
-            registerButton.isEnabled = false
-        }
-    }
-    
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        self.alertView.isHidden = true
-        self.alertLabelHeight.constant = 0
-        if textField.placeholder == "生年月日" {
-            let datePickerView:UIDatePicker = UIDatePicker()
-            datePickerView.backgroundColor = .white
-            datePickerView.preferredDatePickerStyle = .wheels
-            datePickerView.datePickerMode = UIDatePicker.Mode.date
-            textField.inputView = datePickerView
-            datePickerView.addTarget(self, action: #selector(datePickerValueChanged), for: UIControl.Event.valueChanged)
-        }else if textField == genderTextField {
-            let picker = UIPickerView()
-            picker.backgroundColor = .white
-            picker.delegate = self
-            picker.dataSource = self
-            genderTextField.inputView = picker
-        }
-    }
     
     
     
-    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat  = "yyyy/MM/dd"
-        dateFormatter.locale = Locale(identifier: "ja_JP")
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
-        let now =  Date()
-        let birthDay = sender.date
-        let days = Calendar.current.dateComponents([.year], from: birthDay, to: now)
-        print(days.year!)
-        
-        if sender.date > Date() {
-            alertView.isHidden = false
-            self.alertLabelHeight.constant = 42
-            alertView.text = "未来人は登録できません"
-            registerButton.backgroundColor = .lightGray
-            registerButton.isEnabled = false
-            
-        }else if days.year! < 4 {
-            alertView.isHidden = false
-            self.alertLabelHeight.constant = 42
-            alertView.text = "3歳以下はご利用できません"
-            registerButton.backgroundColor = .lightGray
-            registerButton.isEnabled = false
-        }else{
-            alertView.isHidden = true
-            self.alertLabelHeight.constant = 0
-            birthDayTextField.text = dateFormatter.string(from: sender.date)
-            if emailTextField.text != ""  && birthDayTextField.text != "" && genderTextField.text != "" {
-                registerButton.backgroundColor = .systemRed
-                registerButton.isEnabled = true
-            }
-        }
-    }
-    
-    
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        self.alertView.isHidden = true
-        self.alertLabelHeight.constant = 0
-        return true
-    }
-    
-    
-    
-    @objc func doneBtn(){
-        birthDayTextField.resignFirstResponder()
-    }
-    
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 4
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        
-        return dataList[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        genderTextField.text = dataList[row]
-    }
 }
-
 
 
 
