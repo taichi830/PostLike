@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var completeButton: UIButton!
+    @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var alertView: UILabel!
     @IBOutlet weak var alertLabelHeight: NSLayoutConstraint!
     @IBOutlet weak var eyeButton: UIButton!
@@ -34,7 +34,7 @@ class LoginViewController: UIViewController {
         emailTextField.becomeFirstResponder()
         eyeButton.tintColor = .lightGray
         alertView.layer.cornerRadius = 5
-        completeButton.layer.cornerRadius = 20
+        doneButton.layer.cornerRadius = 20
         
         setupBinds()
     }
@@ -90,8 +90,8 @@ class LoginViewController: UIViewController {
         
         loginViewModel.validLoginDriver
             .drive { [weak self] validAll in
-                self?.completeButton.isEnabled = validAll
-                self?.completeButton.backgroundColor = validAll ? .red : .systemGray4
+                self?.doneButton.isEnabled = validAll
+                self?.doneButton.backgroundColor = validAll ? .red : .systemGray4
             }
             .disposed(by: disposeBag)
         
@@ -99,7 +99,7 @@ class LoginViewController: UIViewController {
         
         
         
-        completeButton.rx.tap
+        doneButton.rx.tap
             .asDriver()
             .drive { [weak self] _ in
                 self?.login()
