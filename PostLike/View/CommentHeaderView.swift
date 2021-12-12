@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseFirestore
 
-class CommentHeaderView: UIView {
+final class CommentHeaderView: UIView {
     
     
     @IBOutlet weak var userImageView: UIImageView!

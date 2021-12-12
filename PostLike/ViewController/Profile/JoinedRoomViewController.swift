@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 
-class JoinedRoomViewController: UIViewController{
+final class JoinedRoomViewController: UIViewController{
     
     
     @IBOutlet weak var myRoomCollectionView: UICollectionView!

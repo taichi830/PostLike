@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RoomHeaderView: UIView {
+final class RoomHeaderView: UIView {
     
     @IBOutlet weak var bluredImageView: UIImageView!
     @IBOutlet weak var roomNameLabel: UILabel!

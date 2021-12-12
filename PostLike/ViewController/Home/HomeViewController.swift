@@ -27,7 +27,7 @@ protocol TableViewCellDelegate:AnyObject {
 }
 
 
-class HomeViewController: UIViewController{
+final class HomeViewController: UIViewController{
     
     
     

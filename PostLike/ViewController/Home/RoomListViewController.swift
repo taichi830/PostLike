@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RoomListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+final class RoomListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
    
 
     

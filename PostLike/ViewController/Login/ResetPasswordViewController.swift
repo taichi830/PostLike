@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class ResetPasswordViewController: UIViewController {
+final class ResetPasswordViewController: UIViewController {
     
     
     @IBOutlet weak var emailTextField: UITextField!

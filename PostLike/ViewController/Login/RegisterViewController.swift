@@ -12,7 +12,7 @@ import FirebaseAuth
 import RxSwift
 import RxCocoa
 
-class RegisterViewController: UIViewController {
+final class RegisterViewController: UIViewController {
     
     
     @IBOutlet weak var emailTextField: UITextField!

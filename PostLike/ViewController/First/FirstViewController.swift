@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class FirstViewController: UIViewController {
+final class FirstViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

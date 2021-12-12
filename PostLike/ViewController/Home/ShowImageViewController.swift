@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 
 
-class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
+final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     
     
     @IBOutlet weak var bluredImage: UIImageView!

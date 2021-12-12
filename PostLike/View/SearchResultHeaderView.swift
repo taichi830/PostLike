@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchResultHeaderView: UIView {
+final class SearchResultHeaderView: UIView {
     
     @IBOutlet weak var roomImage: UIImageView!
     @IBOutlet weak var joinButton: UIButton!

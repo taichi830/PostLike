@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class RegisterViewModel {
+final class RegisterViewModel {
     
     private let disposeBag = DisposeBag()
     

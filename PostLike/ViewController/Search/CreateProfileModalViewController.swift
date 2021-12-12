@@ -10,7 +10,7 @@ import UIKit
 import DKImagePickerController
 import FirebaseFirestore
 
-class CreateProfileModalViewController: UIViewController {
+final class CreateProfileModalViewController: UIViewController {
     
     
     @IBOutlet weak var backViewOfProfileImage: UIView!

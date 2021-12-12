@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class NotificationViewController: UIViewController {
+final class NotificationViewController: UIViewController {
     
 
     

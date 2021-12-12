@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class InitialViewController: UIViewController {
+final class InitialViewController: UIViewController {
 
     
     @IBOutlet weak var backView: UIView!

@@ -2,7 +2,7 @@
 
 import UIKit
 
-class BaseTabBarController: UITabBarController {
+final class BaseTabBarController: UITabBarController {
     
     enum ControllerName:Int {
         case home,search,notification,profile

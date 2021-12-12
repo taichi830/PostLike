@@ -13,7 +13,7 @@ import FirebaseStorage
 import FirebaseAuth
 
 
-class ProfileEditViewController: UIViewController {
+final class ProfileEditViewController: UIViewController {
     
     
     @IBOutlet weak var personView: UIImageView!

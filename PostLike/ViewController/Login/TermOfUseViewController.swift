@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class TermOfUseViewController: UIViewController {
+final class TermOfUseViewController: UIViewController {
 
     @IBOutlet weak var webView: WKWebView!
     

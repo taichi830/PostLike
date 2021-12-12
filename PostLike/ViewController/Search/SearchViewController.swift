@@ -12,7 +12,7 @@ import FirebaseAuth
 import InstantSearchClient
 
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     enum TableTypr:String {
         case history

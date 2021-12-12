@@ -18,7 +18,7 @@ protocol CreateProfileDelegate:AnyObject {
     func createStrageWithBatch(_ completed: @escaping() -> Void,userName:String,profileImageView:UIImageView)
 }
 
-class RoomDetailViewController: UIViewController {
+final class RoomDetailViewController: UIViewController {
     
     
     

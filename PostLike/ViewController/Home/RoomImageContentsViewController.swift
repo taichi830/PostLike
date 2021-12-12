@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseFirestore
 
-class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
+final class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     
     
     @IBOutlet weak var imageCollecionView: UICollectionView!

@@ -17,7 +17,7 @@ enum ReportType:String {
     case room
 }
 
-class ReportViewController: UIViewController  {
+final class ReportViewController: UIViewController  {
     
     
     

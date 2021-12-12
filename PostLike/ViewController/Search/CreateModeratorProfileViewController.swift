@@ -15,7 +15,7 @@ import DKImagePickerController
 
 
 
-class CreateModeratorProfileViewController: UIViewController {
+final class CreateModeratorProfileViewController: UIViewController {
     
     
     @IBOutlet weak var userImage: UIImageView!

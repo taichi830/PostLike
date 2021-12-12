@@ -9,7 +9,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class ComfirmEmailViewController: UIViewController {
+final class ComfirmEmailViewController: UIViewController {
     
     @IBOutlet weak var adressLabel: UILabel!
     

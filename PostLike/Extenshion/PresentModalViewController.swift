@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PresentModalViewController: UIPresentationController, UIAdaptivePresentationControllerDelegate {
+final class PresentModalViewController: UIPresentationController, UIAdaptivePresentationControllerDelegate {
     
     var overlayView = UIView()
     var passedFrame = CGRect()

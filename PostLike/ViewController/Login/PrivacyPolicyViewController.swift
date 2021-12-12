@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class PrivacyPolicyViewController: UIViewController{
+final class PrivacyPolicyViewController: UIViewController{
     
     
     @IBOutlet weak var webView: WKWebView!

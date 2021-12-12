@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomRefreshControl: UIRefreshControl{
+final class CustomRefreshControl: UIRefreshControl{
     override func layoutSubviews() {
         var frame: CGRect = self.frame
         let moveY: CGFloat = 50

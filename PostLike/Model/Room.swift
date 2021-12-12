@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseFirestore
 
-class Room{
+final class Room{
     
     let roomName:String
     let documentID:String

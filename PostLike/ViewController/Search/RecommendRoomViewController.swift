@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseFirestore
 
-class RecommendRoomViewController: UIViewController{
+final class RecommendRoomViewController: UIViewController{
     
     enum Section:Int {
         case popular = 0

@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseFirestore
 
-class User{
+final class User{
     
     let birthDay:Timestamp
     let fcmToken:String
