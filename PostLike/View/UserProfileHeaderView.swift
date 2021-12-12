@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserProfileHeaderView: UIView{
+final class UserProfileHeaderView: UIView{
     
     
     @IBOutlet weak var userImageView: UIImageView!

@@ -12,7 +12,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
 
-class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+final class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
     
     

@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseFirestore
 
-class DeleteRoomViewController: UIViewController {
+final class DeleteRoomViewController: UIViewController {
 
     
     var passedRoomID = String()

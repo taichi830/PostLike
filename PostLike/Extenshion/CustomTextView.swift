@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LinkTextView: UITextView{
+final class LinkTextView: UITextView{
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)

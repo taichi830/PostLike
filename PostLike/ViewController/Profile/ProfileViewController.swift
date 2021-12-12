@@ -25,7 +25,7 @@ protocol DeleteRoomDelegate:AnyObject {
 
 
 
-class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     
     
     var passedDocumentID = String()

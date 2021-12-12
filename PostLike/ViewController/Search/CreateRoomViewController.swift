@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import DKImagePickerController
 
-class CreateRoomViewController: UIViewController {
+final class CreateRoomViewController: UIViewController {
     
     
     @IBOutlet weak var createButton: UIButton!

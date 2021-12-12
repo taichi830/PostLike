@@ -9,7 +9,7 @@
 import Foundation
 import FirebaseFirestore
 
-class Contents{
+final class Contents{
     
     
     let mediaArray:Array<String>

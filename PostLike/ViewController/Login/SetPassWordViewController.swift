@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class SetPassWordViewController: UIViewController {
+final class SetPassWordViewController: UIViewController {
     
     @IBOutlet weak var passWordTextField: UITextField!
     @IBOutlet weak var doneButton: UIButton!

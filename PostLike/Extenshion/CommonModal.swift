@@ -11,7 +11,7 @@ import UIKit
 
 
 
-class CommonModal {
+final class CommonModal {
     
 
     static let shared = CommonModal()

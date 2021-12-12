@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RoomCollectionViewCell: UICollectionViewCell {
+final class RoomCollectionViewCell: UICollectionViewCell {
     
    
     @IBOutlet weak var personImage: UIImageView!

@@ -12,7 +12,7 @@ import FirebaseAuth
 import FirebaseStorage
 import DKImagePickerController
 
-class RoomEditViewController: UIViewController {
+final class RoomEditViewController: UIViewController {
 
     @IBOutlet weak var roomImage: UIImageView!
     @IBOutlet weak var roomTextField: UITextField!

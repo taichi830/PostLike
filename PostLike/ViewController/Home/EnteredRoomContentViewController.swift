@@ -10,7 +10,7 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class EnteredRoomContentViewController: UIViewController{
+final class EnteredRoomContentViewController: UIViewController{
     
     
     

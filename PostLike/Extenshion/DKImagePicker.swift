@@ -9,7 +9,7 @@
 import Foundation
 import DKImagePickerController
 
-class CustomUIDelegate: DKImagePickerControllerBaseUIDelegate {
+final class CustomUIDelegate: DKImagePickerControllerBaseUIDelegate {
     override func createDoneButtonIfNeeded() -> UIButton {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.setTitle("選択", for: .normal)

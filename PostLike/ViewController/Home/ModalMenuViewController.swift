@@ -19,7 +19,7 @@ enum ModalType:String {
 }
 
 
-class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
     var passedDocumentID = String()
     var passedRoomID = String()
@@ -286,7 +286,7 @@ extension ModalMenuViewController:UIViewControllerTransitioningDelegate {
 
 import LinkPresentation
 
-class ShareActivitySource:NSObject, UIActivityItemSource{
+final class ShareActivitySource:NSObject, UIActivityItemSource{
     
     private let linkMetadata:LPLinkMetadata
     
