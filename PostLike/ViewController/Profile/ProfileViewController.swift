@@ -520,7 +520,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
 
 
 
-
+//MARK: tableViewのデリゲート処理
 extension ProfileViewController:TableViewCellDelegate{
     func reportButton(row: Int) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -593,7 +593,7 @@ extension ProfileViewController:TableViewCellDelegate{
 
 
 
-
+//MARK: 投稿削除時のデリゲート処理
 extension ProfileViewController:DeletePostDelegate{
     
     
@@ -670,40 +670,6 @@ extension ProfileViewController:DeletePostDelegate{
         default:
             break
         }
-//        if imageUrl.count == 1{
-//            let imageRef = NSString(string: imageUrl[0])
-//            let desertRef = storage.reference(forURL: imageRef as String)
-//            desertRef.delete { err in
-//                if err != nil {
-//                    print("false")
-//                    return
-//                }else{
-//                    print("success")
-//                }
-//            }
-//        }else if imageUrl.count == 2 {
-//            let imageRef = NSString(string: imageUrl[0])
-//            let desertRef = storage.reference(forURL: imageRef as String)
-//            desertRef.delete { err in
-//                if err != nil {
-//                    print("false")
-//                    return
-//                }else{
-//                    print("success")
-//                }
-//            }
-//            let imageRef2 = NSString(string: imageUrl[1])
-//            let desertRef2 = storage.reference(forURL: imageRef2 as String)
-//            desertRef2.delete { err in
-//                if err != nil {
-//                    print("false")
-//                    return
-//                }else{
-//                    print("success")
-//                }
-//            }
-//        }
-//
         
     }
     
@@ -727,6 +693,10 @@ extension ProfileViewController:DeletePostDelegate{
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 return
             }else{
                 self.contentsArray.removeAll {
@@ -747,7 +717,7 @@ extension ProfileViewController:DeletePostDelegate{
 
 
 
-
+//MARK: ルーム退出時のデリゲート処理
 extension ProfileViewController:ExitRoomDelegate{
     
     private func exitRoom(batch:WriteBatch){
@@ -775,6 +745,10 @@ extension ProfileViewController:ExitRoomDelegate{
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 return
             }else{
                 self.navigationController?.popViewController(animated: true)
@@ -788,6 +762,8 @@ extension ProfileViewController:ExitRoomDelegate{
 }
 
 
+
+//MARK: ルーム削除時のデリゲート処理
 extension ProfileViewController:DeleteRoomDelegate{
     
     private func deleteRoom(batch:WriteBatch){
@@ -827,6 +803,10 @@ extension ProfileViewController:DeleteRoomDelegate{
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 return
             }else{
                 self.navigationController?.popToRootViewController(animated: true)
