@@ -14,7 +14,7 @@ import FirebaseAuth
 final class JoinedRoomViewController: UIViewController{
     
     
-    @IBOutlet weak var myRoomCollectionView: UICollectionView!
+    @IBOutlet private weak var myRoomCollectionView: UICollectionView!
     
     
     
@@ -40,7 +40,7 @@ final class JoinedRoomViewController: UIViewController{
     }
     
     
-    @IBAction func menuButton(_ sender: Any) {
+    @IBAction private func menuButton(_ sender: Any) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "ログアウト", style: .default, handler: {_ in
             self.alertComfirm()

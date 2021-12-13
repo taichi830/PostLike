@@ -15,12 +15,12 @@ final class DeleteRoomViewController: UIViewController {
     var passedRoomID = String()
     weak var deleteRoomDelegate:DeleteRoomDelegate?
     
-    @IBOutlet weak var checkButton: UIButton!
-    @IBOutlet weak var deleteButton: UIButton!
-    @IBOutlet weak var clearView: UIView!
-    @IBOutlet weak var alertLabel: UILabel!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var lightRedView: UIView!
+    @IBOutlet private weak var checkButton: UIButton!
+    @IBOutlet private weak var deleteButton: UIButton!
+    @IBOutlet private weak var clearView: UIView!
+    @IBOutlet private weak var alertLabel: UILabel!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var lightRedView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,14 +39,14 @@ final class DeleteRoomViewController: UIViewController {
     
     
     
-    @objc func tappedBackView(_ sender:UITapGestureRecognizer){
+    @objc private func tappedBackView(_ sender:UITapGestureRecognizer){
         self.dismiss(animated: true, completion: nil)
     }
     
     
     
     
-    @IBAction func addCheck(_ sender: Any) {
+    @IBAction private func addCheck(_ sender: Any) {
         if deleteButton.isEnabled == false{
             checkButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
             deleteButton.isEnabled = true
@@ -65,16 +65,15 @@ final class DeleteRoomViewController: UIViewController {
     
     
     
-    @IBAction func deleteRoom(_ sender: Any) {
+    @IBAction private func deleteRoom(_ sender: Any) {
         self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
             self.deleteRoomDelegate?.deleteRoomAtContainerView()
         })
-        
     }
     
     
     
-    @IBAction func cancelButton(_ sender: Any) {
+    @IBAction private func cancelButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     

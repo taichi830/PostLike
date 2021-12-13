@@ -14,7 +14,7 @@ final class RoomListViewController: UIViewController,UITableViewDelegate,UITable
     
     var passedFollwedRoomArray = [Contents]()
     
-    @IBOutlet weak var roomListTableView: UITableView!
+    @IBOutlet private weak var roomListTableView: UITableView!
     
     
     
@@ -40,7 +40,7 @@ final class RoomListViewController: UIViewController,UITableViewDelegate,UITable
     
    
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     

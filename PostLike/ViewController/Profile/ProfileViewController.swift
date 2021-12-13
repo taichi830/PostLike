@@ -42,10 +42,10 @@ final class ProfileViewController: UIViewController {
     
     
     
-    @IBOutlet weak var headerView: UserProfileHeaderView!
-    @IBOutlet weak var titleName: UILabel!
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var profileTableView: UITableView!
+    @IBOutlet private weak var headerView: UserProfileHeaderView!
+    @IBOutlet private weak var titleName: UILabel!
+    @IBOutlet private weak var topView: UIView!
+    @IBOutlet private weak var profileTableView: UITableView!
     
     
     
@@ -90,13 +90,13 @@ final class ProfileViewController: UIViewController {
     
     
     
-    @objc func swiped(_ sender:UISwipeGestureRecognizer){
+    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
         navigationController?.popViewController(animated: true)
     }
     
     
     
-    @objc func updateContents(){
+    @objc private func updateContents(){
         self.likeContentsArray.removeAll()
         self.fetchPostContents {
             self.profileTableView.refreshControl?.endRefreshing()
@@ -144,7 +144,7 @@ final class ProfileViewController: UIViewController {
     
     
     
-    @objc func pushProfileEditButton(){
+    @objc private func pushProfileEditButton(){
         let editVC = storyboard?.instantiateViewController(identifier: "editVC") as! ProfileEditViewController
         editVC.passedRoomName = titleName.text!
         editVC.passedDocumentID = passedDocumentID
@@ -157,7 +157,7 @@ final class ProfileViewController: UIViewController {
     
     
     
-    @objc func pushRoomEditButton(){
+    @objc private func pushRoomEditButton(){
         let roomEditVC = storyboard?.instantiateViewController(identifier: "editRoom") as! RoomEditViewController
         roomEditVC.passedRoomName = titleName.text!
         roomEditVC.passedRoomImage = self.userInfo!.roomImage
@@ -170,7 +170,7 @@ final class ProfileViewController: UIViewController {
     
     
     
-    @IBAction func menuButton(_ sender: Any) {
+    @IBAction private func menuButton(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         let uid = Auth.auth().currentUser!.uid
@@ -191,7 +191,7 @@ final class ProfileViewController: UIViewController {
     
     
 
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     

@@ -13,15 +13,15 @@ import DKImagePickerController
 final class CreateRoomViewController: UIViewController {
     
     
-    @IBOutlet weak var createButton: UIButton!
-    @IBOutlet weak var roomImage: UIImageView!
-    @IBOutlet weak var roomIntroTextView: UITextView!
-    @IBOutlet weak var roomNameTextField: UITextField!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var introTextView: UITextView!
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var selectButtonBackView: UIView!
+    @IBOutlet private weak var createButton: UIButton!
+    @IBOutlet private weak var roomImage: UIImageView!
+    @IBOutlet private weak var roomIntroTextView: UITextView!
+    @IBOutlet private weak var roomNameTextField: UITextField!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var introTextView: UITextView!
+    @IBOutlet private weak var topView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var selectButtonBackView: UIView!
     
     var passedRoomName = String()
     

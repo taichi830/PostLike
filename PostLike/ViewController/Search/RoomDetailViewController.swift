@@ -114,7 +114,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     
@@ -122,7 +122,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @IBAction func reportButton(_ sender: Any) {
+    @IBAction private func reportButton(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
@@ -140,7 +140,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @objc func swiped(_ sender:UISwipeGestureRecognizer){
+    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
         navigationController?.popViewController(animated: true)
     }
     
@@ -150,7 +150,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @objc func tappedBluredView(_ sender:UITapGestureRecognizer){
+    @objc private func tappedBluredView(_ sender:UITapGestureRecognizer){
         tabBarController?.tabBar.isHidden = false
     }
     
@@ -159,7 +159,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @objc func pushedJoinButton(_ sender: UIButton) {
+    @objc private func pushedJoinButton(_ sender: UIButton) {
         if sender.titleLabel?.text == "参加する" && self.joinedRoom?.documentID == ""{
             let modalVC = self.storyboard?.instantiateViewController(withIdentifier: "modal") as! CreateProfileModalViewController
             modalVC.modalPresentationStyle = .custom
@@ -179,7 +179,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @objc func tappedbluredView(_ sender: UITapGestureRecognizer){
+    @objc private func tappedbluredView(_ sender: UITapGestureRecognizer){
         tabBarController?.tabBar.isHidden = false
     }
     

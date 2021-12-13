@@ -30,9 +30,9 @@ final class ReportViewController: UIViewController  {
     weak var titleTableViewDelegate: RemoveContentsDelegate?
     
     
-    @IBOutlet weak var reportItemTableView: UITableView!
-    @IBOutlet weak var reportButton: UIButton!
-    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet private weak var reportItemTableView: UITableView!
+    @IBOutlet private weak var reportButton: UIButton!
+    @IBOutlet private weak var topLabel: UILabel!
     
     
     
@@ -60,7 +60,7 @@ final class ReportViewController: UIViewController  {
     
     
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -69,7 +69,7 @@ final class ReportViewController: UIViewController  {
     
     
     
-    @IBAction func sendReport(_ sender: Any) {
+    @IBAction private func sendReport(_ sender: Any) {
         let field = ["spam","sensitive","discriminatory","discomfort","other"]
         let uid = Auth.auth().currentUser!.uid
         

@@ -18,11 +18,11 @@ import DKImagePickerController
 final class CreateModeratorProfileViewController: UIViewController {
     
     
-    @IBOutlet weak var userImage: UIImageView!
-    @IBOutlet weak var personImage: UIImageView!
-    @IBOutlet weak var backView: UIImageView!
-    @IBOutlet weak var completeButton: UIButton!
-    @IBOutlet weak var userNameTextField: UITextField!
+    @IBOutlet private weak var userImage: UIImageView!
+    @IBOutlet private weak var personImage: UIImageView!
+    @IBOutlet private weak var backView: UIImageView!
+    @IBOutlet private weak var completeButton: UIButton!
+    @IBOutlet private weak var userNameTextField: UITextField!
     
     
     

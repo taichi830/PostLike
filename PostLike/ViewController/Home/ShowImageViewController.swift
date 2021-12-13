@@ -14,15 +14,15 @@ import FirebaseFirestore
 final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegate {
     
     
-    @IBOutlet weak var bluredImage: UIImageView!
-    @IBOutlet weak var userImage: UIImageView!
-    @IBOutlet weak var textLabel: UILabel!
-    @IBOutlet weak var userName: UILabel!
-    @IBOutlet weak var imageScrollView: UIScrollView!
-    @IBOutlet var panGesture: UIPanGestureRecognizer!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var personImage: UIImageView!
-    @IBOutlet weak var topView: UIView!
+    @IBOutlet private weak var bluredImage: UIImageView!
+    @IBOutlet private weak var userImage: UIImageView!
+    @IBOutlet private weak var textLabel: UILabel!
+    @IBOutlet private weak var userName: UILabel!
+    @IBOutlet private weak var imageScrollView: UIScrollView!
+    @IBOutlet private var panGesture: UIPanGestureRecognizer!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var personImage: UIImageView!
+    @IBOutlet private weak var topView: UIView!
     
     
     

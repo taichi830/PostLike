@@ -12,8 +12,8 @@ import FirebaseFirestore
 final class RoomImageContentsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
     
     
-    @IBOutlet weak var imageCollecionView: UICollectionView!
-    @IBOutlet weak var roomName: UILabel!
+    @IBOutlet private weak var imageCollecionView: UICollectionView!
+    @IBOutlet private weak var roomName: UILabel!
     
     
     var passedRoomID = String()
@@ -23,13 +23,16 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
+        imageCollecionView.addGestureRecognizer(swipeGesture)
         imageCollecionView.delegate = self
         imageCollecionView.dataSource = self
+        
         roomName.text = passedRoomName
         roomName.adjustsFontSizeToFitWidth = true
         roomName.minimumScaleFactor = 0.9
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
-        imageCollecionView.addGestureRecognizer(swipeGesture)
+        
         collectionSize()
         fetchImages()
     }
@@ -55,7 +58,7 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     
     
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     

@@ -11,7 +11,7 @@ import WebKit
 
 final class TermOfUseViewController: UIViewController {
 
-    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet private weak var webView: WKWebView!
     
     
     override func viewDidLoad() {
@@ -32,7 +32,7 @@ final class TermOfUseViewController: UIViewController {
     }
     
     
-    @IBAction func back(_ sender: Any) {
+    @IBAction private func back(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     

@@ -24,7 +24,7 @@ final class FirstViewController: UIViewController {
     }
     
     
-    func userCheck(){
+    private func userCheck(){
     
         if Auth.auth().currentUser == nil {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)

@@ -18,7 +18,7 @@ final class RecommendRoomViewController: UIViewController{
     
     
     
-    @IBOutlet weak var recommendRoomTableView: UITableView!
+    @IBOutlet private weak var recommendRoomTableView: UITableView!
     
     private let sectionItem = ["人気順","新着順"]
     private var popularRoomsArray = [Room]()

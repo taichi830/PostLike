@@ -31,12 +31,12 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     
-    @IBOutlet weak var myImage: UIImageView!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var commentTextView: UITextView!
-    @IBOutlet weak var sendButton: UIButton!
-    @IBOutlet weak var commentTableView: UITableView!
-    @IBOutlet weak var personImage2: UIImageView!
+    @IBOutlet private weak var myImage: UIImageView!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var commentTextView: UITextView!
+    @IBOutlet private weak var sendButton: UIButton!
+    @IBOutlet private weak var commentTableView: UITableView!
+    @IBOutlet private weak var personImage2: UIImageView!
     
     
     
@@ -47,7 +47,6 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
         
         commentTableView.delegate = self
         commentTableView.dataSource = self
-        
         commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "commentCell")
         commentTableView.rowHeight = UITableView.automaticDimension
         
@@ -80,7 +79,6 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
         
         let headerView = CommentHeaderView()
         headerView.setupHeaderView(userName: passedUserName, userImageUrl: passedUserImage, comment: passedComment, date: passedDate)
-        
         self.commentTableView.tableHeaderView = headerView
         if let tableHeaderView = self.commentTableView.tableHeaderView {
             tableHeaderView.setNeedsLayout()
@@ -93,7 +91,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
 
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -149,7 +147,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     
-    @IBAction func sendButton(_ sender: Any) {
+    @IBAction private func sendButton(_ sender: Any) {
         if commentTextView.text == "" || commentTextView.text == "コメントを入力する" || self.user == nil{
             return
         }else{
