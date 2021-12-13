@@ -16,15 +16,15 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     
-    @IBOutlet weak var textView: LinkTextView!
-    @IBOutlet weak var photoTableView: UITableView!
-    @IBOutlet weak var buttonView: UIView!
-    @IBOutlet weak var postButton: UIButton!
-    @IBOutlet weak var postTitleLabel: UILabel!
-    @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var profileName: UILabel!
-    @IBOutlet weak var postContentView: UIView!
-    @IBOutlet weak var personImage: UIImageView!
+    @IBOutlet private weak var textView: LinkTextView!
+    @IBOutlet private weak var photoTableView: UITableView!
+    @IBOutlet private weak var buttonView: UIView!
+    @IBOutlet private weak var postButton: UIButton!
+    @IBOutlet private weak var postTitleLabel: UILabel!
+    @IBOutlet private weak var profileImage: UIImageView!
+    @IBOutlet private weak var profileName: UILabel!
+    @IBOutlet private weak var postContentView: UIView!
+    @IBOutlet private weak var personImage: UIImageView!
     
     
     private var photoArray:[UIImage] = []
@@ -75,7 +75,7 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     
-    @IBAction func cancelButton(_ sender: Any) {
+    @IBAction private func cancelButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -108,11 +108,11 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     
-    @IBAction func albumButton(_ sender: Any) {
+    @IBAction private func albumButton(_ sender: Any) {
         showAlbum()
     }
     
-    @IBAction func albumButton2(_ sender: Any) {
+    @IBAction private func albumButton2(_ sender: Any) {
         showAlbum()
     }
     
@@ -330,10 +330,8 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     
-    @IBAction func postButton(_ sender: Any) {
-        if textView.text == "" && photoArray.isEmpty == true {
-            return
-        }else{
+    @IBAction private func postButton(_ sender: Any) {
+        if textView.text != "" || photoArray.isEmpty != true {
             startIndicator()
             textView.resignFirstResponder()
             let documentID = NSUUID().uuidString
@@ -362,7 +360,7 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
 
 extension PostViewController: UITextViewDelegate{
     
-    @objc func keybordWillShow(_ notification: Notification) {
+    @objc private func keybordWillShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
         }
@@ -378,7 +376,7 @@ extension PostViewController: UITextViewDelegate{
     }
     
     
-    @objc func keybordWillHide(_ notification: Notification) {
+    @objc private func keybordWillHide(_ notification: Notification) {
         self.buttonView.frame.origin.y = self.view.frame.size.height - (self.buttonView.frame.size.height+self.view.safeAreaInsets.bottom)
     }
     

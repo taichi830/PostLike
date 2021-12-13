@@ -31,12 +31,12 @@ final class HomeViewController: UIViewController{
     
     
     
-    @IBOutlet weak var roomCollectionView: UICollectionView!
-    @IBOutlet weak var timeLineTableView: UITableView!
-    @IBOutlet weak var bluredView: UIView!
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var headerSeparaterView: UIView!
+    @IBOutlet private weak var roomCollectionView: UICollectionView!
+    @IBOutlet private weak var timeLineTableView: UITableView!
+    @IBOutlet private weak var bluredView: UIView!
+    @IBOutlet private weak var topView: UIView!
+    @IBOutlet private weak var headerView: UIView!
+    @IBOutlet private weak var headerSeparaterView: UIView!
     
     
     private var joinedRoomArray = [Contents]()
@@ -104,7 +104,7 @@ final class HomeViewController: UIViewController{
     
     
     
-    @IBAction func allViewButton(_ sender: Any) {
+    @IBAction private func allViewButton(_ sender: Any) {
         let roomList = storyboard?.instantiateViewController(identifier: "roomList") as! RoomListViewController
         roomList.passedFollwedRoomArray = joinedRoomArray
         navigationController?.pushViewController(roomList, animated: true)
@@ -611,8 +611,6 @@ extension HomeViewController:RemoveContentsDelegate{
 
 extension HomeViewController:TableViewCellDelegate {
     
-    
-    
     private func updateLikeCount(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
             
@@ -742,7 +740,7 @@ extension HomeViewController:TableViewCellDelegate {
     
     
     
-    private  func deleteNotification(row:Int,batch:WriteBatch){
+    private func deleteNotification(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
             let uid = followContent.uid
             let myuid = Auth.auth().currentUser!.uid

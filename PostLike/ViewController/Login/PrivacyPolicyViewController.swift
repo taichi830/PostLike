@@ -12,7 +12,7 @@ import WebKit
 final class PrivacyPolicyViewController: UIViewController{
     
     
-    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet private weak var webView: WKWebView!
 
 
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ final class PrivacyPolicyViewController: UIViewController{
     }
     
     
-    @IBAction func back(_ sender: Any) {
+    @IBAction private func back(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     

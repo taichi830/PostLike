@@ -16,15 +16,15 @@ import FirebaseAuth
 final class ProfileEditViewController: UIViewController {
     
     
-    @IBOutlet weak var personView: UIImageView!
-    @IBOutlet weak var userImage: UIImageView!
-    @IBOutlet weak var userNameEditLabel: UITextField!
-    @IBOutlet weak var topLabel: UILabel!
-    @IBOutlet weak var completeButton: UIButton!
+    @IBOutlet private weak var personView: UIImageView!
+    @IBOutlet private weak var userImage: UIImageView!
+    @IBOutlet private weak var userNameEditLabel: UITextField!
+    @IBOutlet private weak var topLabel: UILabel!
+    @IBOutlet private weak var completeButton: UIButton!
     
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
     
     
     private var updatedRoomImage = UIImage()
@@ -69,12 +69,12 @@ final class ProfileEditViewController: UIViewController {
     }
     
     
-    @IBAction func cancelButton(_ sender: Any) {
+    @IBAction private func cancelButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
     
-    @IBAction func changeProfileImage(_ sender: Any) {
+    @IBAction private func changeProfileImage(_ sender: Any) {
         let pickerController = DKImagePickerController()
         pickerController.maxSelectableCount = 1
         pickerController.sourceType = .photo
@@ -96,7 +96,7 @@ final class ProfileEditViewController: UIViewController {
     }
     
     
-    @IBAction func changeButton(_ sender: Any) {
+    @IBAction private func changeButton(_ sender: Any) {
         startIndicator()
         if updatedUserImage == UIImage() {
             updateProfile(userImageUrl: passedUserImage)

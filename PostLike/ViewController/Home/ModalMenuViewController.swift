@@ -34,10 +34,12 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
     weak var deletePostDelegate:DeletePostDelegate?
     weak var exitRoomDelegate:ExitRoomDelegate?
     
-    @IBOutlet weak var menuTableView: UITableView!
-    @IBOutlet weak var clearView: UIView!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var backViewHeightConstraint: NSLayoutConstraint!
+    
+    
+    @IBOutlet private weak var menuTableView: UITableView!
+    @IBOutlet private weak var backViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var clearView: UIView!
+    @IBOutlet private weak var backView: UIView!
     
     
     override func viewDidLoad() {
@@ -46,10 +48,8 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
         menuTableView.delegate = self
         menuTableView.dataSource = self
         self.transitioningDelegate = self
+        clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.viewDidTouch)))
         backView.layer.cornerRadius = 10
-        self.clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.viewDidTouch)))
-        
-        
     }
     
     
@@ -186,6 +186,9 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
+    
+    
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch passedType {

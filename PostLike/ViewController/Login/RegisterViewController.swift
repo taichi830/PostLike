@@ -15,12 +15,12 @@ import RxCocoa
 final class RegisterViewController: UIViewController {
     
     
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var alertView: UILabel!
-    @IBOutlet weak var alertLabelHeight: NSLayoutConstraint!
-    @IBOutlet weak var birthDayTextField: UITextField!
-    @IBOutlet weak var genderTextField: UITextField!
+    @IBOutlet private weak var emailTextField: UITextField!
+    @IBOutlet private weak var nextButton: UIButton!
+    @IBOutlet private weak var alertView: UILabel!
+    @IBOutlet private weak var alertLabelHeight: NSLayoutConstraint!
+    @IBOutlet private weak var birthDayTextField: UITextField!
+    @IBOutlet private weak var genderTextField: UITextField!
     
     
     
@@ -52,7 +52,7 @@ final class RegisterViewController: UIViewController {
     
     
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     

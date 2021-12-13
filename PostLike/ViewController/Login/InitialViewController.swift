@@ -13,10 +13,10 @@ import FirebaseAuth
 final class InitialViewController: UIViewController {
 
     
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var createAccountButton: UIButton!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var agreeTextView: UITextView!{
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var createAccountButton: UIButton!
+    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var agreeTextView: UITextView!{
         didSet{
             agreeTextView.isScrollEnabled = false
             agreeTextView.isEditable = false
@@ -67,12 +67,12 @@ final class InitialViewController: UIViewController {
     
     
 
-    @IBAction func createAccount(_ sender: Any) {
+    @IBAction private func createAccount(_ sender: Any) {
         let registerVC = storyboard?.instantiateViewController(withIdentifier: "register") as! RegisterViewController
         navigationController?.pushViewController(registerVC, animated: true)
     }
     
-    @IBAction func login(_ sender: Any) {
+    @IBAction private func login(_ sender: Any) {
         let loginVC = storyboard?.instantiateViewController(withIdentifier: "login") as! LoginViewController
         navigationController?.pushViewController(loginVC, animated: true)
     }

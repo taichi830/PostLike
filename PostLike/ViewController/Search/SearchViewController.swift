@@ -28,19 +28,19 @@ final class SearchViewController: UIViewController {
     
     
     
-    @IBOutlet weak var resultTableView: UITableView!
-    @IBOutlet weak var searchField: UISearchBar!
-    @IBOutlet weak var createButton: UIButton!
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var alertLabel: UILabel!
-    @IBOutlet weak var separateView: UIView!
-    @IBOutlet weak var historyTableView: UITableView!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var topCreateRoomButton: UIButton!
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var searchBackView: UIView!
-    @IBOutlet weak var topViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var resultTableView: UITableView!
+    @IBOutlet private weak var searchField: UISearchBar!
+    @IBOutlet private weak var createButton: UIButton!
+    @IBOutlet private weak var headerView: UIView!
+    @IBOutlet private weak var alertLabel: UILabel!
+    @IBOutlet private weak var separateView: UIView!
+    @IBOutlet private weak var historyTableView: UITableView!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var containerView: UIView!
+    @IBOutlet private weak var topCreateRoomButton: UIButton!
+    @IBOutlet private weak var topView: UIView!
+    @IBOutlet private weak var searchBackView: UIView!
+    @IBOutlet private weak var topViewHeight: NSLayoutConstraint!
     
     
     

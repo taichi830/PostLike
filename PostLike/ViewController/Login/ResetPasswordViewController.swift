@@ -13,8 +13,8 @@ import FirebaseAuth
 final class ResetPasswordViewController: UIViewController {
     
     
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet private weak var emailTextField: UITextField!
+    @IBOutlet private weak var doneButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,12 +23,12 @@ final class ResetPasswordViewController: UIViewController {
     }
     
     
-    @IBAction func back(_ sender: Any) {
+    @IBAction private func back(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
     
-    @IBAction func sendResetMail(_ sender: Any) {
+    @IBAction private func sendResetMail(_ sender: Any) {
         Auth.auth().sendPasswordReset(withEmail: emailTextField.text!) { err in
             if err != nil {
                 let alertAction = UIAlertAction(title: "OK", style: .default)

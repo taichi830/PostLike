@@ -14,14 +14,14 @@ import DKImagePickerController
 
 final class RoomEditViewController: UIViewController {
 
-    @IBOutlet weak var roomImage: UIImageView!
-    @IBOutlet weak var roomTextField: UITextField!
-    @IBOutlet weak var introTextView: UITextView!
-    @IBOutlet weak var completeButton: UIButton!
-    @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var callAlubmButtonBackView: UIView!
+    @IBOutlet private weak var roomImage: UIImageView!
+    @IBOutlet private weak var roomTextField: UITextField!
+    @IBOutlet private weak var introTextView: UITextView!
+    @IBOutlet private weak var completeButton: UIButton!
+    @IBOutlet private weak var stackView: UIStackView!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var topView: UIView!
+    @IBOutlet private weak var callAlubmButtonBackView: UIView!
     
     
     var passedRoomName = String()
@@ -82,7 +82,7 @@ final class RoomEditViewController: UIViewController {
     
     
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
@@ -91,7 +91,7 @@ final class RoomEditViewController: UIViewController {
 
     
     
-    @IBAction func photoAlbumButton(_ sender: Any) {
+    @IBAction private func photoAlbumButton(_ sender: Any) {
         let pickerController = DKImagePickerController()
         pickerController.maxSelectableCount = 1
         pickerController.sourceType = .photo
@@ -207,7 +207,7 @@ final class RoomEditViewController: UIViewController {
     
     
     
-    @IBAction func completeButton(_ sender: Any) {
+    @IBAction private func completeButton(_ sender: Any) {
         startIndicator()
         if updatedRoomImage == UIImage() {
             let batch = Firestore.firestore().batch()

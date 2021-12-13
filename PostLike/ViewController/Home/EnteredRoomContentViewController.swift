@@ -14,29 +14,30 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @IBOutlet weak var contentsTableView: UITableView!
-    @IBOutlet weak var backButtonBackButton: UIView!
-    @IBOutlet weak var dotsButtonBackView: UIView!
-    @IBOutlet weak var headerView: RoomHeaderView!
-    @IBOutlet weak var headerViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var headerViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var roomImageView: UIImageView!
-    @IBOutlet weak var topBlurEffect: UIVisualEffectView!
-    @IBOutlet weak var topRoomNameLabel: UILabel!
-    @IBOutlet weak var effectViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var contentsTableView: UITableView!
+    @IBOutlet private weak var backButtonBackButton: UIView! {
+        didSet {
+            backButtonBackButton.clipsToBounds = true
+            backButtonBackButton.layer.cornerRadius = backButtonBackButton.frame.height/2
+        }
+    }
+    @IBOutlet private weak var dotsButtonBackView: UIView! {
+        didSet {
+            dotsButtonBackView.clipsToBounds = true
+            dotsButtonBackView.layer.cornerRadius = dotsButtonBackView.frame.height/2
+        }
+    }
+    @IBOutlet private weak var headerView: RoomHeaderView!
+    @IBOutlet private weak var headerViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var headerViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var roomImageView: UIImageView!
+    @IBOutlet private weak var topBlurEffect: UIVisualEffectView!
+    @IBOutlet private weak var topRoomNameLabel: UILabel!
+    @IBOutlet private weak var effectViewHeight: NSLayoutConstraint!
     
     
     var passedDocumentID = String()
     private var label = UILabel()
-    private lazy var indicator:UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView()
-        indicator.center = roomImageView.center
-        indicator.style = .medium
-        indicator.color = .white
-        indicator.hidesWhenStopped = true
-        roomImageView.addSubview(indicator)
-        return indicator
-    }()
     private var roomInfo:Room?
     private var contentsArray = [Contents]()
     private var profileArray = [Room]()
@@ -47,7 +48,15 @@ final class EnteredRoomContentViewController: UIViewController{
     private var lastDocument:QueryDocumentSnapshot?
     private var lastLikeDocument:QueryDocumentSnapshot?
     private var memberCount: Room?
-    
+    private lazy var indicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.center = roomImageView.center
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.hidesWhenStopped = true
+        roomImageView.addSubview(indicator)
+        return indicator
+    }()
     
     
     
@@ -64,11 +73,9 @@ final class EnteredRoomContentViewController: UIViewController{
         }
         setupHeaderView()
         
-        backButtonBackButton.clipsToBounds = true
-        backButtonBackButton.layer.cornerRadius = backButtonBackButton.frame.height/2
         
-        dotsButtonBackView.clipsToBounds = true
-        dotsButtonBackView.layer.cornerRadius = dotsButtonBackView.frame.height/2
+        
+        
     }
     
     
@@ -190,7 +197,7 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     
@@ -199,7 +206,7 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    @IBAction func menuButton(_ sender: Any) {
+    @IBAction private func menuButton(_ sender: Any) {
         let modalMenuVC = storyboard?.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
@@ -540,7 +547,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if ((indexPath.row + 1) == (self.contentsArray.count - 8)) && self.contentsArray.count == 10 {
+        if (indexPath.row + 1 == self.contentsArray.count - 8) && self.contentsArray.count == 10 {
             fetchMoreContetns()
         }
     }
@@ -549,7 +556,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-    //いいねした時の処理
+    //MARK: いいねした時の処理
     private func createLikeContents(row:Int,batch:WriteBatch){
         let myuid = Auth.auth().currentUser!.uid
         let uid = contentsArray[row].uid
@@ -624,7 +631,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     
     
     
-    //いいねをやめたときの処理
+    //MARK: いいねをやめた時の処理
     private func deleteLikeContents(row:Int,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[row].documentID

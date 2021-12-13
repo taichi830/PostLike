@@ -12,11 +12,11 @@ import FirebaseAuth
 
 final class SetPassWordViewController: UIViewController {
     
-    @IBOutlet weak var passWordTextField: UITextField!
-    @IBOutlet weak var doneButton: UIButton!
-    @IBOutlet weak var alertLabel: UILabel!
-    @IBOutlet weak var alertLabelHeight: NSLayoutConstraint!
-    @IBOutlet weak var eyeButton: UIButton!
+    @IBOutlet private weak var passWordTextField: UITextField!
+    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private weak var alertLabel: UILabel!
+    @IBOutlet private weak var alertLabelHeight: NSLayoutConstraint!
+    @IBOutlet private weak var eyeButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ final class SetPassWordViewController: UIViewController {
         
     }
     
-    @IBAction func pushEyeButton(_ sender: Any) {
+    @IBAction private func pushEyeButton(_ sender: Any) {
         if eyeButton.tintColor == .lightGray {
             passWordTextField.isSecureTextEntry = false
             eyeButton.setImage(UIImage(systemName: "eye"), for: .normal)
@@ -42,7 +42,7 @@ final class SetPassWordViewController: UIViewController {
     }
     
     
-    @IBAction func pushCompleteButton(_ sender: Any) {
+    @IBAction private func pushCompleteButton(_ sender: Any) {
         
         guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
             return
@@ -105,7 +105,7 @@ final class SetPassWordViewController: UIViewController {
     
     
     
-    @IBAction func toLoginVC(_ sender: Any) {
+    @IBAction private func toLoginVC(_ sender: Any) {
         let loginVC = storyboard?.instantiateViewController(withIdentifier: "login") as! LoginViewController
         self.navigationController?.pushViewController(loginVC, animated: true)
     }

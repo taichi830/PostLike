@@ -14,12 +14,12 @@ import RxCocoa
 
 final class LoginViewController: UIViewController {
     
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var doneButton: UIButton!
-    @IBOutlet weak var alertView: UILabel!
-    @IBOutlet weak var alertLabelHeight: NSLayoutConstraint!
-    @IBOutlet weak var eyeButton: UIButton!
+    @IBOutlet private weak var emailTextField: UITextField!
+    @IBOutlet private weak var passwordTextField: UITextField!
+    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private weak var alertView: UILabel!
+    @IBOutlet private weak var alertLabelHeight: NSLayoutConstraint!
+    @IBOutlet private weak var eyeButton: UIButton!
     
     private let loginViewModel = LoginViewModel()
     private let disposeBag = DisposeBag()
@@ -40,7 +40,7 @@ final class LoginViewController: UIViewController {
     }
     
     
-    @IBAction func pushEyeButton(_ sender: Any) {
+    @IBAction private func pushEyeButton(_ sender: Any) {
         if eyeButton.tintColor == .lightGray {
             passwordTextField.isSecureTextEntry = false
             eyeButton.setImage(UIImage(systemName: "eye"), for: .normal)
@@ -54,7 +54,7 @@ final class LoginViewController: UIViewController {
     
     
     
-    @IBAction func backButton(_ sender: Any) {
+    @IBAction private func backButton(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -62,7 +62,7 @@ final class LoginViewController: UIViewController {
     
     
     
-    @IBAction func resetPassword(_ sender: Any) {
+    @IBAction private func resetPassword(_ sender: Any) {
         let resetPasswordVC = storyboard?.instantiateViewController(withIdentifier: "resetPassword") as! ResetPasswordViewController
         navigationController?.pushViewController(resetPasswordVC, animated: true)
         

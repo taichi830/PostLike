@@ -11,7 +11,7 @@ import FirebaseAuth
 
 final class ComfirmEmailViewController: UIViewController {
     
-    @IBOutlet weak var adressLabel: UILabel!
+    @IBOutlet private weak var adressLabel: UILabel!
     
     var passedGender = String()
     var passedBirthDay = String()
@@ -27,7 +27,7 @@ final class ComfirmEmailViewController: UIViewController {
     
     
     
-    @IBAction func sendEmailAgain(_ sender: Any) {
+    @IBAction private func sendEmailAgain(_ sender: Any) {
         let actionCodeSettings = ActionCodeSettings() //メールリンクの作成方法をFirebaseに伝えるオブジェクト
         actionCodeSettings.handleCodeInApp = true //ログインをアプリ内で完結させる必要があります
         actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!) //iOSデバイス内でログインリンクを開くアプリのBundle ID
@@ -59,7 +59,7 @@ final class ComfirmEmailViewController: UIViewController {
     }
     
     
-    @IBAction func changeEmailAdress(_ sender: Any) {
+    @IBAction private func changeEmailAdress(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     

@@ -14,9 +14,9 @@ final class NotificationViewController: UIViewController {
     
 
     
-    @IBOutlet weak var notificationTableView: UITableView!
-    @IBOutlet weak var latestLabel: UILabel!
-    @IBOutlet weak var headerView: UIView!
+    @IBOutlet private weak var notificationTableView: UITableView!
+    @IBOutlet private weak var latestLabel: UILabel!
+    @IBOutlet private weak var headerView: UIView!
     
     
     private var notificationArray = [Contents]()

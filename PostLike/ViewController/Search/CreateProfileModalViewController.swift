@@ -13,15 +13,15 @@ import FirebaseFirestore
 final class CreateProfileModalViewController: UIViewController {
     
     
-    @IBOutlet weak var backViewOfProfileImage: UIView!
-    @IBOutlet weak var userNameTextField: UITextField!
-    @IBOutlet weak var doneButton: UIButton!
-    @IBOutlet weak var callAlubmButton: UIButton!
-    @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var personImageView: UIImageView!
-    @IBOutlet weak var backView: UIView!
-    @IBOutlet weak var clearView: UIView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var backViewOfProfileImage: UIView!
+    @IBOutlet private weak var userNameTextField: UITextField!
+    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private weak var callAlubmButton: UIButton!
+    @IBOutlet private weak var profileImageView: UIImageView!
+    @IBOutlet private weak var personImageView: UIImageView!
+    @IBOutlet private weak var backView: UIView!
+    @IBOutlet private weak var clearView: UIView!
+    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
     
     
     
