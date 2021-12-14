@@ -262,7 +262,7 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
             if indexPath.row == 0 {
                 let alert = UIAlertController(title: "ルームを退出", message: "ルームから退出してよろしいですか？", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
-                    self.deletePostDelegate?.deletePostBatch(documentID: self.passedDocumentID, imageUrl: self.passedImageUrl)
+                    self.exitRoomDelegate?.exitRoomBatch()
                     self.dismiss(animated: true,completion: nil)
                 }))
                 alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
