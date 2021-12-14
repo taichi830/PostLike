@@ -862,7 +862,7 @@ extension HomeViewController:TableViewCellDelegate {
             modalMenuVC.passedUid = followContent.uid
         }
         modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = "post"
+        modalMenuVC.passedType = ModalType.post.rawValue
         present(modalMenuVC, animated: true, completion: nil)
     }
     
