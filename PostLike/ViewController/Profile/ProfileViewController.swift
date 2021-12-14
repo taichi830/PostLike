@@ -532,7 +532,7 @@ extension ProfileViewController:TableViewCellDelegate{
         modalMenuVC.passedImageUrl = contentsArray[row].mediaArray
         modalMenuVC.passedViewController = self
         modalMenuVC.deletePostDelegate = self
-        modalMenuVC.passedType = "delete"
+        modalMenuVC.passedType = ModalType.delete.rawValue
         present(modalMenuVC, animated: true, completion: nil)
     }
     
