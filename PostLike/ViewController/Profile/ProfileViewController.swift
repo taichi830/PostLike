@@ -35,7 +35,6 @@ final class ProfileViewController: UIViewController {
     private var likeCount:Contents?
     private var postCount:Contents?
     private var likeContentsArray = [Contents]()
-    private var row:Int = 0
     private var lastDocument:QueryDocumentSnapshot?
     
     
@@ -598,7 +597,6 @@ extension ProfileViewController:DeletePostDelegate{
     
     
     private func deleteMediaPosts(batch:WriteBatch,documentID:String){
-        let documentID = contentsArray[row].documentID
         let ref =  Firestore.firestore().collection("rooms").document(passedDocumentID).collection("mediaPosts").document(documentID)
         batch.deleteDocument(ref)
     }
@@ -606,14 +604,12 @@ extension ProfileViewController:DeletePostDelegate{
     
     private func deletePosts(batch:WriteBatch,documentID:String){
         let uid = Auth.auth().currentUser!.uid
-        let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").document(documentID)
         batch.deleteDocument(ref)
     }
     
     
     private func deleteModeratorPosts(batch:WriteBatch,documentID:String){
-        let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("moderatorPosts").document(documentID)
         batch.deleteDocument(ref)
     }
