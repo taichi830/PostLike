@@ -10,15 +10,6 @@ import UIKit
 import FirebaseDynamicLinks
 
 
-enum ModalType:String {
-    case post
-    case room
-    case exit
-    case delete
-    case moderator
-}
-
-
 final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
     var passedDocumentID = String()
