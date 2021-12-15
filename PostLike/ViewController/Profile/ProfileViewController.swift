@@ -35,7 +35,6 @@ final class ProfileViewController: UIViewController {
     private var likeCount:Contents?
     private var postCount:Contents?
     private var likeContentsArray = [Contents]()
-    private var row:Int = 0
     private var lastDocument:QueryDocumentSnapshot?
     
     
@@ -520,7 +519,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
 
 
 
-
+//MARK: tableViewのデリゲート処理
 extension ProfileViewController:TableViewCellDelegate{
     func reportButton(row: Int) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -532,7 +531,7 @@ extension ProfileViewController:TableViewCellDelegate{
         modalMenuVC.passedImageUrl = contentsArray[row].mediaArray
         modalMenuVC.passedViewController = self
         modalMenuVC.deletePostDelegate = self
-        modalMenuVC.passedType = "delete"
+        modalMenuVC.passedType = ModalType.delete.rawValue
         present(modalMenuVC, animated: true, completion: nil)
     }
     
@@ -593,12 +592,11 @@ extension ProfileViewController:TableViewCellDelegate{
 
 
 
-
+//MARK: 投稿削除時のデリゲート処理
 extension ProfileViewController:DeletePostDelegate{
     
     
     private func deleteMediaPosts(batch:WriteBatch,documentID:String){
-        let documentID = contentsArray[row].documentID
         let ref =  Firestore.firestore().collection("rooms").document(passedDocumentID).collection("mediaPosts").document(documentID)
         batch.deleteDocument(ref)
     }
@@ -606,14 +604,12 @@ extension ProfileViewController:DeletePostDelegate{
     
     private func deletePosts(batch:WriteBatch,documentID:String){
         let uid = Auth.auth().currentUser!.uid
-        let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").document(documentID)
         batch.deleteDocument(ref)
     }
     
     
     private func deleteModeratorPosts(batch:WriteBatch,documentID:String){
-        let documentID = contentsArray[row].documentID
         let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("moderatorPosts").document(documentID)
         batch.deleteDocument(ref)
     }
@@ -670,40 +666,6 @@ extension ProfileViewController:DeletePostDelegate{
         default:
             break
         }
-//        if imageUrl.count == 1{
-//            let imageRef = NSString(string: imageUrl[0])
-//            let desertRef = storage.reference(forURL: imageRef as String)
-//            desertRef.delete { err in
-//                if err != nil {
-//                    print("false")
-//                    return
-//                }else{
-//                    print("success")
-//                }
-//            }
-//        }else if imageUrl.count == 2 {
-//            let imageRef = NSString(string: imageUrl[0])
-//            let desertRef = storage.reference(forURL: imageRef as String)
-//            desertRef.delete { err in
-//                if err != nil {
-//                    print("false")
-//                    return
-//                }else{
-//                    print("success")
-//                }
-//            }
-//            let imageRef2 = NSString(string: imageUrl[1])
-//            let desertRef2 = storage.reference(forURL: imageRef2 as String)
-//            desertRef2.delete { err in
-//                if err != nil {
-//                    print("false")
-//                    return
-//                }else{
-//                    print("success")
-//                }
-//            }
-//        }
-//
         
     }
     
@@ -727,6 +689,10 @@ extension ProfileViewController:DeletePostDelegate{
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 return
             }else{
                 self.contentsArray.removeAll {
@@ -747,7 +713,7 @@ extension ProfileViewController:DeletePostDelegate{
 
 
 
-
+//MARK: ルーム退出時のデリゲート処理
 extension ProfileViewController:ExitRoomDelegate{
     
     private func exitRoom(batch:WriteBatch){
@@ -775,6 +741,10 @@ extension ProfileViewController:ExitRoomDelegate{
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 return
             }else{
                 self.navigationController?.popViewController(animated: true)
@@ -788,6 +758,8 @@ extension ProfileViewController:ExitRoomDelegate{
 }
 
 
+
+//MARK: ルーム削除時のデリゲート処理
 extension ProfileViewController:DeleteRoomDelegate{
     
     private func deleteRoom(batch:WriteBatch){
@@ -827,6 +799,10 @@ extension ProfileViewController:DeleteRoomDelegate{
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 return
             }else{
                 self.navigationController?.popToRootViewController(animated: true)

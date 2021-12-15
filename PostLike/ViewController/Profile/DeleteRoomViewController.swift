@@ -66,9 +66,15 @@ final class DeleteRoomViewController: UIViewController {
     
     
     @IBAction private func deleteRoom(_ sender: Any) {
-        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
-            self.deleteRoomDelegate?.deleteRoomAtContainerView()
-        })
+        let alert = UIAlertController(title: "ルームを削除", message: "本当にルームを削除してもよろしいですか？", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: {
+                self.deleteRoomDelegate?.deleteRoomAtContainerView()
+            })
+        }))
+        alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
     
