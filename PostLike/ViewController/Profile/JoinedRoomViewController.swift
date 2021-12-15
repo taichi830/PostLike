@@ -40,44 +40,17 @@ final class JoinedRoomViewController: UIViewController{
     }
     
     
+    
+    
+    
     @IBAction private func menuButton(_ sender: Any) {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "ログアウト", style: .default, handler: {_ in
-            self.alertComfirm()
-        }))
-        actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil))
-        self.present(actionSheet, animated: true, completion: nil)
+        let accountSettingVC = storyboard?.instantiateViewController(withIdentifier: "accountSettingVC") as! AccountSettingViewController
+        accountSettingVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(accountSettingVC, animated: true)
     }
     
+
     
-    
-    
-    private func alertComfirm(){
-        let alert = UIAlertController(title: "ログアウトしてよろしいでしょうか？", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
-            self.logout()
-        }))
-        alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    private func logout(){
-        let auth = Auth.auth()
-        do {
-            try auth.signOut()
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let navigationVC = storyboard.instantiateViewController(identifier: "navigation") as! UINavigationController
-            self.present(navigationVC, animated: false, completion: nil)
-            print("success")
-            
-        } catch let sighOutErr as NSError {
-            print ("Error signing out: %@", sighOutErr)
-            return
-        }
-    }
     
     
     

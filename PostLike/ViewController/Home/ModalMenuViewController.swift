@@ -232,24 +232,42 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
             
         case ModalType.exit.rawValue:
             if indexPath.row == 0 {
-                exitRoomDelegate?.exitRoomBatch()
-                dismiss(animated: true, completion: nil)
+                let alert = UIAlertController(title: "ルームを退出", message: "ルームから退出してよろしいですか？", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
+                    self.exitRoomDelegate?.exitRoomBatch()
+                    self.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
             }else if indexPath.row == 1 {
                 dismiss(animated: true, completion: nil)
             }
             
         case ModalType.delete.rawValue:
             if indexPath.row == 0 {
-                self.deletePostDelegate?.deletePostBatch(documentID: self.passedDocumentID, imageUrl: self.passedImageUrl)
-                dismiss(animated: true,completion: nil)
+                let alert = UIAlertController(title: "投稿を削除", message: "本当に投稿を削除してもよろしいですか？", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
+                    self.deletePostDelegate?.deletePostBatch(documentID: self.passedDocumentID, imageUrl: self.passedImageUrl)
+                    self.dismiss(animated: true,completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+               
             }else if indexPath.row == 1 {
                 dismiss(animated: true, completion: nil)
             }
             
         case ModalType.moderator.rawValue:
             if indexPath.row == 0 {
-                exitRoomDelegate?.exitRoomBatch()
-                dismiss(animated: true, completion: nil)
+                let alert = UIAlertController(title: "ルームを退出", message: "ルームから退出してよろしいですか？", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
+                    self.exitRoomDelegate?.exitRoomBatch()
+                    self.dismiss(animated: true,completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
             }else if indexPath.row == 1 {
                 let storyboard = UIStoryboard.init(name: "Profile", bundle: nil)
                 let deleteAlertVC = storyboard.instantiateViewController(withIdentifier: "deleteAlert") as! DeleteRoomViewController
