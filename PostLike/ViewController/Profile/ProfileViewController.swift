@@ -32,12 +32,8 @@ final class ProfileViewController: UIViewController {
     var passedModerator = String()
     private var contentsArray = [Contents]()
     private var userInfo:Contents?
-    private var likeCount:Contents?
-    private var postCount:Contents?
     private var likeContentsArray = [Contents]()
     private var lastDocument:QueryDocumentSnapshot?
-    
-    
     
     
     
@@ -53,26 +49,18 @@ final class ProfileViewController: UIViewController {
         
         super.viewDidLoad()
         
-        headerView.userImageView.layer.cornerRadius = 50
-        headerView.userImageView.layer.borderColor = UIColor.systemGray5.cgColor
-        headerView.userImageView.layer.borderWidth = 1
-        
-        
         createProfileTableView()
         setUpEditButton()
-        
+        fetchPostContents {
+        }
         
         let refleshControl = UIRefreshControl()
         self.profileTableView.refreshControl = refleshControl
         self.profileTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
         
-        fetchPostContents {
-        }
         
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
         profileTableView.addGestureRecognizer(swipeGesture)
-        
-        
         
     }
     
@@ -100,7 +88,6 @@ final class ProfileViewController: UIViewController {
         self.fetchPostContents {
             self.profileTableView.refreshControl?.endRefreshing()
         }
-        
     }
     
     
@@ -119,22 +106,11 @@ final class ProfileViewController: UIViewController {
     private func setUpEditButton(){
         let uid = Auth.auth().currentUser!.uid
         if passedModerator == uid {
-            headerView.hostProfileEditButton.layer.cornerRadius = 2
-            headerView.hostProfileEditButton.layer.borderColor = UIColor.systemGray5.cgColor
-            headerView.hostProfileEditButton.layer.borderWidth = 1
             headerView.profileEditButton.isHidden = true
             headerView.hostProfileEditButton.addTarget(self, action: #selector(self.pushProfileEditButton), for: .touchUpInside)
-            
-            headerView.roomEditButton.layer.cornerRadius = 2
-            headerView.roomEditButton.layer.borderColor = UIColor.systemGray5.cgColor
-            headerView.roomEditButton.layer.borderWidth = 1
             headerView.roomEditButton.addTarget(self, action: #selector(self.pushRoomEditButton), for: .touchUpInside)
         }else{
-            headerView.profileEditButton.layer.cornerRadius = 2
-            headerView.profileEditButton.layer.borderColor = UIColor.systemGray5.cgColor
-            headerView.profileEditButton.layer.borderWidth = 1
             headerView.profileEditButton.addTarget(self, action: #selector(self.pushProfileEditButton), for: .touchUpInside)
-            
             headerView.editButtonStackView.isHidden = true
             
         }
@@ -145,10 +121,10 @@ final class ProfileViewController: UIViewController {
     
     @objc private func pushProfileEditButton(){
         let editVC = storyboard?.instantiateViewController(identifier: "editVC") as! ProfileEditViewController
-        editVC.passedRoomName = titleName.text!
+        editVC.passedRoomName = titleName.text ?? ""
         editVC.passedDocumentID = passedDocumentID
-        editVC.passedUserImage = self.userInfo!.userImage
-        editVC.passedUserName = self.userInfo!.userName
+        editVC.passedUserImage = self.userInfo?.userImage ?? ""
+        editVC.passedUserName = self.userInfo?.userName ?? ""
         editVC.hidesBottomBarWhenPushed = true
         present(editVC, animated: true, completion: nil)
     }
@@ -158,8 +134,8 @@ final class ProfileViewController: UIViewController {
     
     @objc private func pushRoomEditButton(){
         let roomEditVC = storyboard?.instantiateViewController(identifier: "editRoom") as! RoomEditViewController
-        roomEditVC.passedRoomName = titleName.text!
-        roomEditVC.passedRoomImage = self.userInfo!.roomImage
+        roomEditVC.passedRoomName = titleName.text ?? ""
+        roomEditVC.passedRoomImage = self.userInfo?.roomImage ?? ""
         roomEditVC.passedDocumentID = passedDocumentID
         roomEditVC.hidesBottomBarWhenPushed = true
         present(roomEditVC, animated: true, completion: nil)
@@ -226,7 +202,9 @@ final class ProfileViewController: UIViewController {
                 print("取得に失敗しました。\(err)")
                 return
             }
-            for document in querySnapshot!.documents {
+            guard let querySnapshot = querySnapshot, let lastSnapShot = querySnapshot.documents.last else { return }
+            self.lastDocument = lastSnapShot
+            for document in querySnapshot.documents {
                 let dic = document.data()
                 let content = Contents.init(dic: dic)
                 self.contentsArray.append(content)
@@ -240,8 +218,6 @@ final class ProfileViewController: UIViewController {
                 self.profileTableView.addSubview(label)
                 self.profileTableView.reloadData()
             }else{
-                guard let lastSnapShot = querySnapshot!.documents.last else { return }
-                self.lastDocument = lastSnapShot
                 let mappedArray = self.contentsArray.map { Room -> String in
                     let documentID = Room.documentID
                     return documentID
@@ -258,22 +234,21 @@ final class ProfileViewController: UIViewController {
     
     
     private func fetchMoreContents(){
-        guard let lastDoc = self.lastDocument else {return}
         var contentsArray2 = [Contents]()
         contentsArray2.removeAll()
+        guard let lastDoc = self.lastDocument else {return}
         let uid = Auth.auth().currentUser!.uid
         Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").order(by: "createdAt", descending: true).start(afterDocument: lastDoc).limit(to: 5).getDocuments { (querySnapshot, err) in
             if let err = err {
                 print("取得に失敗しました。\(err)")
                 return
             }
-            guard let lastSnapShot = querySnapshot!.documents.last else { return }
-            if lastSnapShot == self.lastDocument {
-                return
-            }else{
+            guard let querySnapshot = querySnapshot, let lastSnapShot = querySnapshot.documents.last else { return }
+            if lastSnapShot != self.lastDocument {
                 self.lastDocument = lastSnapShot
             }
-            for document in querySnapshot!.documents {
+            
+            for document in querySnapshot.documents {
                 let dic = document.data()
                 let content = Contents.init(dic: dic)
                 self.contentsArray.append(content)
@@ -281,8 +256,7 @@ final class ProfileViewController: UIViewController {
             }
             if contentsArray2.count != 0 {
                 let mappedArray = contentsArray2.map { Room -> String in
-                    let documentID = Room.documentID
-                    return documentID
+                    return Room.documentID
                 }
                 self.fetchLikeContents(documentIDs: mappedArray)
             }
@@ -300,8 +274,7 @@ final class ProfileViewController: UIViewController {
             }
             guard let snapShot = snapShot,let dic = snapShot.data() else {return}
             let postCount = Contents(dic: dic)
-            self.postCount = postCount
-            self.headerView.postCountLabel.text = self.postCount?.postCount.description
+            self.headerView.postCountLabel.text = postCount.postCount.description
         }
     }
     
@@ -318,8 +291,7 @@ final class ProfileViewController: UIViewController {
             }else{
                 guard let snap = snapShot,let dic = snap.data() else {return}
                 let likedCount = Contents(dic: dic)
-                self.postCount = likedCount
-                self.headerView.likeCountLabel.text = self.postCount?.likeCount.description
+                self.headerView.likeCountLabel.text = likedCount.likeCount.description
             }
         }
     }
@@ -343,10 +315,10 @@ final class ProfileViewController: UIViewController {
             self.titleName.minimumScaleFactor = 0.9
             self.headerView.userNameLabel.text = self.userInfo?.userName
             if self.userInfo?.userImage != "" {
-                self.headerView.userImageView.sd_setImage(with: URL(string: self.userInfo!.userImage), completed: nil)
+                self.headerView.userImageView.sd_setImage(with: URL(string: self.userInfo?.userImage ?? ""), completed: nil)
                 self.headerView.personImageView.image = UIImage()
-                self.profileTableView.reloadData()
             }
+            self.profileTableView.reloadData()
         }
     }
     

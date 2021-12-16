@@ -33,6 +33,7 @@ final class UserProfileHeaderView: UIView{
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         loadNib()
+        setupHeaderView()
     }
 
     private func loadNib() {
@@ -40,6 +41,24 @@ final class UserProfileHeaderView: UIView{
             view.frame = self.bounds
             self.addSubview(view)
         }
+    }
+    
+    private func setupHeaderView(){
+        userImageView.layer.cornerRadius = userImageView.frame.height/2
+        userImageView.layer.borderColor = UIColor.systemGray5.cgColor
+        userImageView.layer.borderWidth = 1
+        
+        hostProfileEditButton.layer.cornerRadius = 2
+        hostProfileEditButton.layer.borderColor = UIColor.systemGray5.cgColor
+        hostProfileEditButton.layer.borderWidth = 1
+        
+        roomEditButton.layer.cornerRadius = 2
+        roomEditButton.layer.borderColor = UIColor.systemGray5.cgColor
+        roomEditButton.layer.borderWidth = 1
+        
+        profileEditButton.layer.cornerRadius = 2
+        profileEditButton.layer.borderColor = UIColor.systemGray5.cgColor
+        profileEditButton.layer.borderWidth = 1
     }
     
 }
