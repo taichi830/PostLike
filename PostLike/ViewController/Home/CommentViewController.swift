@@ -27,7 +27,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     var passedRoomID = String()
     private var commentsArray = [Contents]()
     private var user:Contents?
-    private var alertLabel = UILabel()
+    private var label = MessageLabel()
     
     
     
@@ -261,14 +261,11 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
                 self.commentsArray.append(comment)
             }
             if self.commentsArray.isEmpty == true {
-                self.alertLabel = UILabel(frame: CGRect(x: 0, y: self.commentTableView.center.y - 70, width: self.view.frame.width, height: 40))
-                self.alertLabel.text = "コメントがありません"
-                self.alertLabel.textAlignment = .center
-                self.alertLabel.textColor = .lightGray
-                self.alertLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-                self.commentTableView.addSubview(self.alertLabel)
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
+                self.label.text = "コメントがありません"
+                self.commentTableView.addSubview(self.label)
             }else {
-                self.alertLabel.text = ""
+                self.label.text = ""
             }
             self.commentTableView.reloadData()
         }

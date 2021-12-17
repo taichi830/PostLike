@@ -202,22 +202,22 @@ final class ProfileViewController: UIViewController {
                 print("取得に失敗しました。\(err)")
                 return
             }
-            guard let querySnapshot = querySnapshot, let lastSnapShot = querySnapshot.documents.last else { return }
-            self.lastDocument = lastSnapShot
+            guard let querySnapshot = querySnapshot else {return}
+            
             for document in querySnapshot.documents {
                 let dic = document.data()
                 let content = Contents.init(dic: dic)
                 self.contentsArray.append(content)
             }
             if self.contentsArray.count == 0 {
-                let label = UILabel(frame: CGRect(x: 0, y: self.headerView.frame.height + (self.profileTableView.frame.height - self.headerView.frame.height)/2 - 45, width: self.view.frame.width, height: 30))
+                let label = MessageLabel()
+                label.setupLabel(view: self.view, y: self.view.center.y + 50)
                 label.text = "投稿がまだありません"
-                label.textAlignment = .center
-                label.textColor = .lightGray
-                label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.profileTableView.addSubview(label)
                 self.profileTableView.reloadData()
             }else{
+                let lastSnapShot = querySnapshot.documents.last
+                self.lastDocument = lastSnapShot
                 let mappedArray = self.contentsArray.map { Room -> String in
                     let documentID = Room.documentID
                     return documentID

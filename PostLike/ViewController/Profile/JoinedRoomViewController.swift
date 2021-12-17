@@ -19,7 +19,7 @@ final class JoinedRoomViewController: UIViewController{
     
     
     private var profileRoomArray = [Contents]()
-    private var label = UILabel()
+    private var label = MessageLabel()
     
     
     override func viewDidLoad() {
@@ -69,11 +69,8 @@ final class JoinedRoomViewController: UIViewController{
             }
             
             if self.profileRoomArray.isEmpty == true {
-                self.label.frame = CGRect(x: 0, y: self.myRoomCollectionView.frame.height/2-15, width: self.view.frame.width, height: 30)
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
                 self.label.text = "参加しているルームはありません"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
-                self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.myRoomCollectionView.addSubview(self.label)
             }else{
                 self.label.text = ""

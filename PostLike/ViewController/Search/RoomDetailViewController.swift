@@ -39,7 +39,7 @@ final class RoomDetailViewController: UIViewController {
     var passedNumberOfMember = Int()
     var passedRoomIntro = String()
     
-    private var label = UILabel()
+    private var label = MessageLabel()
     private var contentsArray = [Contents]()
     private var reportedUsersArray = [Contents]()
     private var reportedContentsArray = [Contents]()
@@ -251,11 +251,8 @@ final class RoomDetailViewController: UIViewController {
                     self.contentsArray.removeAll(where: {$0.documentID == content.documentID})
                 }
                 if self.contentsArray.count == 0{
-                    self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
+                    self.label.setupLabel(view: self.view, y: self.view.center.y)
                     self.label.text = "投稿がまだありません"
-                    self.label.textAlignment = .center
-                    self.label.textColor = .lightGray
-                    self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                     self.contentsTableView.addSubview(self.label)
                     completed()
                 }else{
@@ -287,11 +284,8 @@ final class RoomDetailViewController: UIViewController {
                     self.contentsArray.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
                 }
                 if self.contentsArray.count == 0{
-                    self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
+                    self.label.setupLabel(view: self.view, y: self.view.center.y)
                     self.label.text = "投稿がまだありません"
-                    self.label.textAlignment = .center
-                    self.label.textColor = .lightGray
-                    self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                     self.contentsTableView.addSubview(self.label)
                     completed()
                 }else{
@@ -353,11 +347,8 @@ final class RoomDetailViewController: UIViewController {
                 self.contentsArray.append(content)
             }
             if self.contentsArray.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
+                self.label.setupLabel(view: self.view, y: self.view.center.y)
                 self.label.text = "投稿がまだありません"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
-                self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.contentsTableView.addSubview(self.label)
                 self.contentsTableView.reloadData()
                 completed()

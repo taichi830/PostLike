@@ -47,7 +47,7 @@ final class HomeViewController: UIViewController{
     private var nativeAds = [GADUnifiedNativeAd]()
     private var adLoader: GADAdLoader!
     private var tableViewItems = [Any]()
-    private var label = UILabel()
+    private var label = MessageLabel()
     private var timelinePosts = [Contents]()
     private var moreTimelinePosts = [Contents]()
     private var lastDocument:QueryDocumentSnapshot?
@@ -270,20 +270,14 @@ final class HomeViewController: UIViewController{
                 self.timelinePosts.append(followedContent)
             }
             if self.joinedRoomArray.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.width, height: 30)
+                self.label.setupLabel(view: self.view, y: self.view.center.y)
                 self.label.text = "ルームを作成、探して参加しよう！"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
-                self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.timeLineTableView.addSubview(self.label)
                 completionClosure([])
                 
             } else if self.timelinePosts.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
+                self.label.setupLabel(view: self.view, y: self.view.center.y)
                 self.label.text = "投稿がまだありません"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
-                self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.timeLineTableView.addSubview(self.label)
                 self.timeLineTableView.reloadData()
                 self.timeLineTableView.refreshControl?.endRefreshing()

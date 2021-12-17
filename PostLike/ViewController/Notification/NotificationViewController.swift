@@ -20,7 +20,7 @@ final class NotificationViewController: UIViewController {
     
     
     private var notificationArray = [Contents]()
-    private var label = UILabel()
+    private var label = MessageLabel()
     
     
     
@@ -115,10 +115,8 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
             
             if self.notificationArray.count == 0 {
                 self.latestLabel.isHidden = true
-                self.label = UILabel(frame: CGRect(x: 0, y: self.view.center.y - 100, width: self.view.frame.size.width, height: 40))
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
                 self.label.text = "お知らせはありません"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
                 self.notificationTableView.addSubview(self.label)
             }else{
                 self.latestLabel.isHidden = false

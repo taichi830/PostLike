@@ -14,17 +14,17 @@ import InstantSearchClient
 
 final class SearchViewController: UIViewController {
     
-    enum TableType:String {
+    private enum TableType:String {
         case history
         case result
     }
     
-    var roomArrray = [Room]()
-    var resultArray = [Post_Like]()
-    var historyArray = [Contents]()
-    var cellIdentifier = ""
-    var label = UILabel()
-    var timer: Timer?
+    private var roomArrray = [Room]()
+    private var resultArray = [Post_Like]()
+    private var historyArray = [Contents]()
+    private var cellIdentifier = ""
+    private var label = MessageLabel()
+    private var timer: Timer?
     
     
     
@@ -101,21 +101,7 @@ final class SearchViewController: UIViewController {
     
     
     
-    private func emptyCheckOfSearchField(searchText:String){
-        if searchText == "" {
-            headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-            headerView.isHidden = true
-            resultTableView.isHidden = true
-            backView.isHidden = false
-        }else{
-            alertLabel.text = "\"\(searchText)\" のRoomが見つかりませんでした。"
-            headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 138)
-            headerView.isHidden = false
-            resultTableView.isHidden = false
-            backView.isHidden = true
-            createButton.isEnabled = true
-        }
-    }
+   
     
     
     
@@ -132,11 +118,7 @@ final class SearchViewController: UIViewController {
                 let historyRoom = Contents.init(dic: dic)
                 self.historyArray.append(historyRoom)
             }
-            self.label.removeFromSuperview()
-            self.label = UILabel(frame: CGRect(x: 0, y: self.view.frame.height/2 - 80, width: self.view.frame.width, height: 30))
-            self.label.textAlignment = .center
-            self.label.textColor = .lightGray
-            self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+            self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
             self.historyTableView.addSubview(self.label)
             if self.historyArray.isEmpty == true {
                 self.label.text = "ルームを検索、作成してみよう"
@@ -168,6 +150,22 @@ final class SearchViewController: UIViewController {
 
 
 extension SearchViewController: UISearchBarDelegate {
+    
+    private func emptyCheckOfSearchField(searchText:String){
+        if searchText == "" {
+            headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+            headerView.isHidden = true
+            resultTableView.isHidden = true
+            backView.isHidden = false
+        }else{
+            alertLabel.text = "\"\(searchText)\" のRoomが見つかりませんでした。"
+            headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 138)
+            headerView.isHidden = false
+            resultTableView.isHidden = false
+            backView.isHidden = true
+            createButton.isEnabled = true
+        }
+    }
     
     private func callAlgolia(searchText:String){
         #if DEBUG
