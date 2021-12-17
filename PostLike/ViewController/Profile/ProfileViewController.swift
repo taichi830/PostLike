@@ -51,8 +51,7 @@ final class ProfileViewController: UIViewController {
         
         createProfileTableView()
         setUpEditButton()
-        fetchPostContents {
-        }
+        fetchPostContents{}
         
         let refleshControl = UIRefreshControl()
         self.profileTableView.refreshControl = refleshControl

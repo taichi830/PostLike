@@ -60,6 +60,7 @@
 		CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */; };
 		CE1C23C8276B946000D3CAC8 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C23C6276B946000D3CAC8 /* SearchTableViewCell.swift */; };
 		CE1C23C9276B946000D3CAC8 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1C23C7276B946000D3CAC8 /* SearchTableViewCell.xib */; };
+		CE1C23CB276C5CE800D3CAC8 /* MessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C23CA276C5CE800D3CAC8 /* MessageLabel.swift */; };
 		CE2E27D527606659002D0E41 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27D427606659002D0E41 /* RegisterViewModel.swift */; };
 		CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */; };
 		CE2E27DF276A3AFB002D0E41 /* AccountSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */; };
@@ -119,6 +120,7 @@
 		CE199F7D26E221D4009F1B7E /* SetPassWordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPassWordViewController.swift; sourceTree = "<group>"; };
 		CE1C23C6276B946000D3CAC8 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		CE1C23C7276B946000D3CAC8 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
+		CE1C23CA276C5CE800D3CAC8 /* MessageLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageLabel.swift; sourceTree = "<group>"; };
 		CE249CAC25989C4E003C87A0 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		CE262B9725678434009B7F5D /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CE262B992568C0CA009B7F5D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */,
 				CE854BDA275B34730089BEF4 /* CommonModal.swift */,
 				CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */,
+				CE1C23CA276C5CE800D3CAC8 /* MessageLabel.swift */,
 			);
 			path = CustomClass;
 			sourceTree = "<group>";
@@ -695,6 +698,7 @@
 				CE012C3226B6EFD4006CC20E /* HomeViewController.swift in Sources */,
 				CE2E27D527606659002D0E41 /* RegisterViewModel.swift in Sources */,
 				CE012C3326B6EFD4006CC20E /* CreateRoomViewController.swift in Sources */,
+				CE1C23CB276C5CE800D3CAC8 /* MessageLabel.swift in Sources */,
 				CE2E27DF276A3AFB002D0E41 /* AccountSettingViewController.swift in Sources */,
 				CE77EF6526E67EEF00154886 /* SceneDelegate.swift in Sources */,
 				CE012C3426B6EFD4006CC20E /* PostTableViewCell.swift in Sources */,
