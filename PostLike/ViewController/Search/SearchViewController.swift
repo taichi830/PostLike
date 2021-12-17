@@ -14,7 +14,7 @@ import InstantSearchClient
 
 final class SearchViewController: UIViewController {
     
-    enum TableTypr:String {
+    enum TableType:String {
         case history
         case result
     }
@@ -48,9 +48,11 @@ final class SearchViewController: UIViewController {
         super.viewDidLoad()
         historyTableView.delegate = self
         historyTableView.dataSource = self
+        historyTableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "searchTableViewCell")
         
         resultTableView.delegate = self
         resultTableView.dataSource = self
+        resultTableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "searchTableViewCell")
         
         searchField.delegate = self
         searchField.backgroundImage = UIImage()
@@ -251,10 +253,10 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     private func idetifyTable(_ tableView:UITableView) -> Void{
         if tableView.tag == 10 {
-            cellIdentifier = TableTypr.history.rawValue
+            cellIdentifier = TableType.history.rawValue
         }
         else if tableView.tag == 11 {
-            cellIdentifier = TableTypr.result.rawValue
+            cellIdentifier = TableType.result.rawValue
         }
     }
     
@@ -263,10 +265,10 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         idetifyTable(tableView)
-        if cellIdentifier == TableTypr.history.rawValue {
+        if cellIdentifier == TableType.history.rawValue {
             return historyArray.count
         }
-        else if cellIdentifier == TableTypr.result.rawValue {
+        else if cellIdentifier == TableType.result.rawValue {
             return resultArray.count
         }
         return Int()
@@ -277,84 +279,23 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         idetifyTable(tableView)
-        if cellIdentifier == TableTypr.history.rawValue {
-            let cell = historyTableView.dequeueReusableCell(withIdentifier: "history", for: indexPath)
-            let historyImage = cell.viewWithTag(1) as!UIImageView
-            let personsImage = cell.viewWithTag(2) as! UIImageView
-            let historyName = cell.viewWithTag(3) as! UILabel
-            let contentView = cell.viewWithTag(4)!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchTableViewCell", for: indexPath) as! SearchTableViewCell
+        if cellIdentifier == TableType.history.rawValue {
+            cell.setupCell(roomImageUrl: historyArray[indexPath.row].roomImage, roomName: historyArray[indexPath.row].roomName)
+            let btn = UIButton()
+            let btnImage = UIImage(systemName: "xmark")
+            btn.tag = -indexPath.row
+            btn.sizeToFit()
+            btn.setImage(btnImage, for: .normal)
+            btn.addTarget(self, action: #selector(deleteContent(_:)), for: .touchUpInside)
+            btn.tintColor = .black
+            cell.accessoryView = btn
             
-            if historyArray[indexPath.row].roomImage != "" {
-                historyImage.sd_setImage(with: URL(string: historyArray[indexPath.row].roomImage), completed: nil)
-                personsImage.image = UIImage()
-            }else{
-                historyImage.image = UIImage()
-                historyImage.backgroundColor = .systemGray5
-                personsImage.image =  UIImage(systemName: "person.3.fill")
-            }
-            historyImage.layer.cornerRadius = historyImage.frame.height/2
-            historyImage.layer.borderWidth = 1
-            historyImage.layer.borderColor = UIColor.systemGray5.cgColor
-            
-            historyName.text = historyArray[indexPath.row].roomName
-            
-            for subView in contentView.subviews{
-                if let deleteButton = subView as? UIButton{
-                    deleteButton.tag = -indexPath.row
-                    deleteButton.addTarget(self, action: #selector(deleteContent(_:)), for: .touchUpInside)
-                }
-            }
-            
-            
-            return cell
-            
-        }else if cellIdentifier == TableTypr.result.rawValue {
-            let cell = resultTableView.dequeueReusableCell(withIdentifier: "result", for: indexPath)
-            
-            let roomImage = cell.viewWithTag(5) as! UIImageView
-            let personsImage = cell.viewWithTag(6) as! UIImageView
-            let resultLabel = cell.viewWithTag(7) as! UILabel
-            
-            resultLabel.text = resultArray[indexPath.row].roomName
-            
-            if resultArray[indexPath.row].roomImage != "" {
-                roomImage.sd_setImage(with: URL(string: resultArray[indexPath.row].roomImage), completed: nil)
-                personsImage.image =  UIImage()
-            }else{
-                roomImage.image = UIImage()
-                roomImage.backgroundColor = .systemGray5
-                personsImage.image =  UIImage(systemName: "person.3.fill")
-            }
-            roomImage.layer.borderWidth = 1
-            roomImage.layer.borderColor = UIColor.systemGray5.cgColor
-            roomImage.layer.cornerRadius = roomImage.frame.height/2
-            
-            if resultArray.isEmpty == true {
-                headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-            }else{
-                headerView.frame = CGRect(x: 0, y: 106, width: self.view.frame.size.width, height: 138)
-            }
-            
-            if searchField.text == resultLabel.text {
-                
-                headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-                alertLabel.isHidden = true
-                createButton.isHidden = true
-                createButton.isEnabled = false
-                separateView.isHidden = true
-                
-            }else  if searchField.text != resultLabel.text || resultArray.isEmpty == true  {
-                alertLabel.text = "\"\(searchField.text!)\" のルームが見つかりませんでした。"
-                headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 138)
-                alertLabel.isHidden = false
-                createButton.isHidden = false
-                createButton.isEnabled = true
-                separateView.isHidden = false
-            }
-            
-            return cell
+        }else if cellIdentifier == TableType.result.rawValue {
+            cell.setupCell(roomImageUrl: resultArray[indexPath.row].roomImage, roomName: resultArray[indexPath.row].roomName)
         }
-        return UITableViewCell()
+        return cell
+        
     }
     
     
@@ -365,11 +306,10 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = storyboard?.instantiateViewController(withIdentifier: "detailVC") as! RoomDetailViewController
         idetifyTable(tableView)
-        if cellIdentifier == TableTypr.history.rawValue {
-            
+        if cellIdentifier == TableType.history.rawValue {
             detailVC.passedDocumentID = historyArray[indexPath.row].documentID
             
-        }else if cellIdentifier == TableTypr.result.rawValue {
+        }else if cellIdentifier == TableType.result.rawValue {
             detailVC.passedDocumentID = resultArray[indexPath.row].documentID
             createHistory(roomImageUrl: resultArray[indexPath.row].roomImage, roomName: resultArray[indexPath.row].roomName, documentID: resultArray[indexPath.row].documentID)
         }
@@ -383,13 +323,6 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 77
-    }
-    
-    
-    
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
     }
     
     
