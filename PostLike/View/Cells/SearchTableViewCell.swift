@@ -9,16 +9,26 @@
 import UIKit
 
 class SearchTableViewCell: UITableViewCell {
-
+    
+    @IBOutlet weak var roomImageView: UIImageView!
+    @IBOutlet weak var personsImageView: UIImageView!
+    @IBOutlet weak var roomNameLabel: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        roomImageView.layer.cornerRadius = roomImageView.frame.height/2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
+    
+    func setupCell(roomImageUrl:String,roomName:String){
+        roomImageView.sd_setImage(with: URL(string: roomImageUrl), completed: nil)
+        roomNameLabel.text = roomName
+    }
+    
+    
     
 }
