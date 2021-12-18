@@ -736,7 +736,7 @@
 				CODE_SIGN_ENTITLEMENTS = "PostLike/PostLike DevDebug.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.2.1;
+				CURRENT_PROJECT_VERSION = 1.2.2;
 				DEVELOPMENT_TEAM = X6NHLT8T59;
 				INFOPLIST_FILE = "$(SRCROOT)/PostLike/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -744,7 +744,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.taichiApp.PostLike.${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "PostLike Dev";
@@ -762,7 +762,7 @@
 				CODE_SIGN_ENTITLEMENTS = postLike/postLike.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: taichiro fukuda (X6NHLT8T59)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.2.1;
+				CURRENT_PROJECT_VERSION = 1.2.2;
 				DEVELOPMENT_TEAM = X6NHLT8T59;
 				INFOPLIST_FILE = "$(SRCROOT)/PostLike/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -770,7 +770,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = com.postlike.PostLike;
 				PRODUCT_NAME = PostLike;
@@ -974,7 +974,7 @@
 				CODE_SIGN_ENTITLEMENTS = "PostLike/PostLike DevStaging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.2.1;
+				CURRENT_PROJECT_VERSION = 1.2.2;
 				DEVELOPMENT_TEAM = X6NHLT8T59;
 				INFOPLIST_FILE = "$(SRCROOT)/PostLike/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -982,7 +982,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = com.postlike.PostLike;
 				PRODUCT_NAME = "PostLike Staging";
