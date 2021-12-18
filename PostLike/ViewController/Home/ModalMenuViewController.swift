@@ -190,7 +190,7 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
                 reportVC.passedRoomID = passedRoomID
                 reportVC.passedUid = passedUid
                 reportVC.reportType = ReportType.post.rawValue
-                reportVC.titleTableViewDelegate = passedViewController as? RemoveContentsDelegate
+                reportVC.removeContentsDelegate = passedViewController as? RemoveContentsDelegate
                 present(reportVC, animated: true,completion: nil)
                 
             }else if indexPath.row == 1 {
@@ -199,7 +199,7 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
                 reportVC.passedRoomID = passedRoomID
                 reportVC.passedUid = passedUid
                 reportVC.reportType = ReportType.user.rawValue
-                reportVC.titleTableViewDelegate = passedViewController as? RemoveContentsDelegate
+                reportVC.removeContentsDelegate = passedViewController as? RemoveContentsDelegate
                 present(reportVC, animated: true, completion: nil)
                 
             }else{
