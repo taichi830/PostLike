@@ -775,16 +775,16 @@ extension EnteredRoomContentViewController:TableViewCellDelegate {
 
 extension EnteredRoomContentViewController:RemoveContentsDelegate{
     func removeMutedContent(documentID:String) {
-        self.contentsArray.removeAll {
-            return ($0.documentID  == documentID )
+        self.contentsArray.removeAll { content in
+            return content.documentID == documentID
         }
         self.contentsTableView.reloadData()
     }
     
     
     func removeBlockedUserContents(uid:String,roomID:String){
-        self.contentsArray.removeAll {
-            return (($0.uid  == uid) && ($0.roomID == roomID))
+        self.contentsArray.removeAll { content in
+            return content.uid == uid && content.roomID == roomID
         }
         self.contentsTableView.reloadData()
     }
