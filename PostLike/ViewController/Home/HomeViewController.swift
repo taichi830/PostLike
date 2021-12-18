@@ -584,17 +584,17 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
 extension HomeViewController:RemoveContentsDelegate{
     
     func removeMutedContent(documentID:String) {
-        self.tableViewItems.removeAll { Protocol  in
-            let room = Protocol as? Contents
-            return (room?.documentID  == documentID )
+        self.tableViewItems.removeAll { content  in
+            let content = content as? Contents
+            return (content?.documentID  == documentID )
         }
         self.timeLineTableView.reloadData()
     }
     
     func removeBlockedUserContents(uid:String,roomID:String) {
-        self.tableViewItems.removeAll { Protocol  in
-            let room = Protocol as? Contents
-            return ((room?.uid  == uid) && (room?.roomID == roomID))
+        self.tableViewItems.removeAll { content  in
+            let content = content as? Contents
+            return content?.uid  == uid && content?.roomID == roomID
         }
         self.timeLineTableView.reloadData()
     }
