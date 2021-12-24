@@ -38,17 +38,9 @@ final class RecommendRoomViewController: UIViewController{
     
     
     private func fetchPopularRoom(){
-        Firestore.firestore().collection("rooms").order(by: "memberCount", descending: true).limit(to: 10).getDocuments { querySnapShot, err in
-            if err != nil {
-                return
-            }else{
-                for document in querySnapShot!.documents{
-                    let dic = document.data()
-                    let rooms = Room.init(dic: dic)
-                    self.popularRoomsArray.append(rooms)
-                }
-                self.recommendRoomTableView.reloadData()
-            }
+        Firestore.fetchPopularRoom { contents in
+            self.popularRoomsArray.append(contentsOf: contents)
+            self.recommendRoomTableView.reloadData()
         }
     }
     
@@ -56,17 +48,9 @@ final class RecommendRoomViewController: UIViewController{
     
     
     private func fetchLatestRoom(){
-        Firestore.firestore().collection("rooms").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { querySnapShot, err in
-            if err != nil {
-                return
-            }else{
-                for document in querySnapShot!.documents{
-                    let dic = document.data()
-                    let rooms = Room.init(dic: dic)
-                    self.latestRoomsArray.append(rooms)
-                }
-                self.recommendRoomTableView.reloadData()
-            }
+        Firestore.fetchLatestRoom { contents in
+            self.latestRoomsArray.append(contentsOf: contents)
+            self.recommendRoomTableView.reloadData()
         }
     }
     
