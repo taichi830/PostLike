@@ -63,38 +63,21 @@ final class RegisterViewController: UIViewController {
     private func tappedNextButton() {
         startIndicator()
         self.view.endEditing(true)
-        let actionCodeSettings = ActionCodeSettings()
-        actionCodeSettings.handleCodeInApp = true
-        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
-        //リンクURL
-        var components = URLComponents()
-        components.scheme = "https"
-        #if DEBUG
-        components.host = "postliketest.page.link"
-        #else
-        components.host = "postlike.page.link"
-        #endif
-        
-        let queryItemEmailName = "email"
-        let emailTypeQueryItem = URLQueryItem(name: queryItemEmailName, value: emailTextField.text!)
-        components.queryItems = [emailTypeQueryItem]
-        guard let linkParameter = components.url else { return }
-        actionCodeSettings.url = linkParameter
-        
-        Auth.auth().sendSignInLink(toEmail: emailTextField.text!, actionCodeSettings: actionCodeSettings) { err in
-            if let err = err {
-                print("error\(err)")
+        guard let email = emailTextField.text else { return }
+        Auth.sendSignInLink(email: email) { bool in
+            switch bool {
+            case false:
                 let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
                     self.dismissIndicator()
                 }
                 self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                return
-            }else{
+                
+            case true:
                 let confirmVC = self.storyboard?.instantiateViewController(withIdentifier: "confirm") as! ComfirmEmailViewController
-                confirmVC.passedEmailAdress = self.emailTextField.text!
-                UserDefaults.standard.set(self.emailTextField.text!, forKey: "email")
-                UserDefaults.standard.set(self.genderTextField.text!, forKey: "gender")
-                UserDefaults.standard.set(self.birthDayTextField.text!, forKey: "birthDay")
+                confirmVC.passedEmailAdress = self.emailTextField.text ?? ""
+                UserDefaults.standard.set(self.emailTextField.text ?? "", forKey: "email")
+                UserDefaults.standard.set(self.genderTextField.text ?? "", forKey: "gender")
+                UserDefaults.standard.set(self.birthDayTextField.text ?? "", forKey: "birthDay")
                 self.navigationController?.pushViewController(confirmVC, animated: true)
                 self.dismissIndicator()
             }

@@ -27,7 +27,7 @@ final class ReportViewController: UIViewController  {
     var passedRoomID = String()
     var passedUid = String()
     var reportType = String()
-    weak var titleTableViewDelegate: RemoveContentsDelegate?
+    weak var removeContentsDelegate: RemoveContentsDelegate?
     
     
     @IBOutlet private weak var reportItemTableView: UITableView!
@@ -82,7 +82,7 @@ final class ReportViewController: UIViewController  {
             
             sendReports(reportData: reportData, docData: docData, reportRef: reportRef, ref: ref, completion: {
                 self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
-                    self.titleTableViewDelegate!.removeMutedContent(documentID: self.passedDocumentID)
+                    self.removeContentsDelegate!.removeMutedContent(documentID: self.passedDocumentID)
                 }
             })
             
@@ -95,7 +95,7 @@ final class ReportViewController: UIViewController  {
             
             sendReports(reportData: reportData, docData: docData, reportRef: reportRef, ref: ref) {
                 self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
-                    self.titleTableViewDelegate!.removeBlockedUserContents(uid: self.passedUid, roomID: self.passedRoomID)
+                    self.removeContentsDelegate!.removeBlockedUserContents(uid: self.passedUid, roomID: self.passedRoomID)
                 }
             }
                 

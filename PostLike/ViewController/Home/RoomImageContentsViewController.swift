@@ -67,27 +67,19 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     
     private func fetchImages(){
         self.imagesArray.removeAll()
-        Firestore.firestore().collection("rooms").document(passedRoomID).collection("mediaPosts").order(by: "createdAt", descending:true).limit(to: 15).getDocuments {  (querySnapshot, err) in
-            if let err = err {
-                print("取得に失敗しました。\(err)")
-                return
+        Firestore.fetchImageContents(roomID: passedRoomID) { querySnapshot, contents in
+            if contents.isEmpty == true {
+                let label = UILabel(frame: CGRect(x: 0, y: self.imageCollecionView.frame.size.height/2, width: self.view.frame.width, height: 20))
+                    label.text = "投稿がありません"
+                    label.textAlignment = .center
+                    label.textColor = .lightGray
+                    label.font = UIFont.systemFont(ofSize: 17)
+                    self.imageCollecionView.addSubview(label)
+            }else{
+                self.imagesArray.append(contentsOf: contents)
+                self.lastDocument = querySnapshot.documents.last
+                self.imageCollecionView.reloadData()
             }
-            for document in querySnapshot!.documents {
-                let dic = document.data()
-                let content = Contents.init(dic: dic)
-                self.imagesArray.append(content)
-            }
-            if self.imagesArray.count == 0 {
-            let label = UILabel(frame: CGRect(x: 0, y: self.imageCollecionView.frame.size.height/2, width: self.view.frame.width, height: 20))
-                label.text = "投稿がありません"
-                label.textAlignment = .center
-                label.textColor = .lightGray
-                label.font = UIFont.systemFont(ofSize: 17)
-                self.imageCollecionView.addSubview(label)
-            }
-            self.imageCollecionView.reloadData()
-            guard let lastSnapShot = querySnapshot!.documents.last else { return }
-            self.lastDocument = lastSnapShot
         }
     }
     
@@ -96,19 +88,10 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     
     
     private func fetchMoreImages(){
-        guard let lastDoc = self.lastDocument else {return}
-        Firestore.firestore().collection("rooms").document(passedRoomID).collection("mediaPosts").order(by: "createdAt", descending: true).start(afterDocument: lastDoc).limit(to: 15).getDocuments { querySnapshot, err in
-            if let err = err {
-                print("取得に失敗しました。\(err)")
-                return
-            }
-            for document in querySnapshot!.documents {
-                let dic = document.data()
-                let content = Contents.init(dic: dic)
-                self.imagesArray.append(content)
-            }
-            guard let lastSnapShot = querySnapshot!.documents.last else { return }
-            self.lastDocument = lastSnapShot
+        guard let lastDocument = self.lastDocument else {return}
+        Firestore.fetchMoreImageContents(roomID: passedRoomID, lastDocument: lastDocument) { querySnapshot, contents in
+            self.imagesArray.append(contentsOf: contents)
+            self.lastDocument = querySnapshot.documents.last
             self.imageCollecionView.reloadData()
         }
     }

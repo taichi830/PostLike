@@ -39,17 +39,14 @@ final class HomeViewController: UIViewController{
     @IBOutlet private weak var headerSeparaterView: UIView!
     
     
-    private var joinedRoomArray = [Contents]()
-    private var timeLineContents = [Contents]()
+    private var joinedRoomsArray = [Contents]()
     private var likeContentsArray = [Contents]()
-    private var reportedContentsArray = [Contents]()
-    private var reportedUsersArray = [Contents]()
+    private var timeLineContents = [Contents]()
+    private var moderatorPosts = [Contents]()
     private var nativeAds = [GADUnifiedNativeAd]()
-    private var adLoader: GADAdLoader!
     private var tableViewItems = [Any]()
-    private var label = UILabel()
-    private var timelinePosts = [Contents]()
-    private var moreTimelinePosts = [Contents]()
+    private var adLoader: GADAdLoader!
+    private var label = MessageLabel()
     private var lastDocument:QueryDocumentSnapshot?
     
     
@@ -62,7 +59,7 @@ final class HomeViewController: UIViewController{
         startIndicator()
         fetchModeratorPosts()
         fetchJoinedRoom()
-    
+        
     }
     
     
@@ -94,7 +91,11 @@ final class HomeViewController: UIViewController{
     
     
     @objc private func updateContents(){
+        self.joinedRoomsArray.removeAll()
+        self.moderatorPosts.removeAll()
+        self.nativeAds.removeAll()
         self.likeContentsArray.removeAll()
+        self.tableViewItems.removeAll()
         fetchModeratorPosts()
         fetchJoinedRoom()
     }
@@ -106,7 +107,7 @@ final class HomeViewController: UIViewController{
     
     @IBAction private func allViewButton(_ sender: Any) {
         let roomList = storyboard?.instantiateViewController(identifier: "roomList") as! RoomListViewController
-        roomList.passedFollwedRoomArray = joinedRoomArray
+        roomList.passedFollwedRoomArray = joinedRoomsArray
         navigationController?.pushViewController(roomList, animated: true)
     }
     
@@ -144,26 +145,17 @@ final class HomeViewController: UIViewController{
     
     
     
-   private func fetchJoinedRoom(){
-        self.joinedRoomArray.removeAll()
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("rooms").whereField("isJoined", isEqualTo: true).order(by: "createdAt", descending: true).getDocuments { (querySnapshot, err) in
-            
-            if let err = err {
-                print("情報の取得に失敗しました。\(err)")
-                return
-            }
-            for document in querySnapshot!.documents{
-                let dic = document.data()
-                let followedRoom = Contents.init(dic: dic)
-                self.joinedRoomArray.append(followedRoom)
-            }
-            if self.joinedRoomArray.count == 0 {
+    private func fetchJoinedRoom(){
+        self.joinedRoomsArray.removeAll()
+        Firestore.fetchJoinedRooms { contents in
+            if contents.isEmpty == true {
                 self.timeLineTableView.refreshControl?.endRefreshing()
                 self.roomCollectionView.reloadData()
             }else{
-                self.roomCollectionView.reloadData()
                 self.label.removeFromSuperview()
+                self.joinedRoomsArray.append(contentsOf: contents)
+                self.roomCollectionView.reloadData()
+                
             }
         }
     }
@@ -173,27 +165,14 @@ final class HomeViewController: UIViewController{
     
     
     
-   private func fetchReportedContents(documentIDs:[String],_ completed: @escaping() -> Void){
-        let uid = Auth.auth().currentUser!.uid
-        self.reportedContentsArray.removeAll()
-        Firestore.firestore().collection("users").document(uid).collection("reports").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { querySnapshot, err in
-            if err != nil {
-                return
-            }else{
-                for document in querySnapshot!.documents{
-                    let dic = document.data()
-                    let reportedContents = Contents.init(dic: dic)
-                    self.reportedContentsArray.append(reportedContents)
+    private func fetchReportedContents(documentIDs:[String],_ completed: @escaping() -> Void) {
+        Firestore.fetchReportedContents(documentIDs: documentIDs) { contents in
+            for content in contents {
+                self.timeLineContents.removeAll { timeLineContent in
+                    timeLineContent.documentID == content.documentID
                 }
-                let filteredArray = self.reportedContentsArray.filter {
-                    $0.type == "post"
-                }
-                for content in filteredArray {
-                    self.timelinePosts.removeAll(where: {$0.documentID == content.documentID})
-                    self.moreTimelinePosts.removeAll(where: {$0.documentID == content.documentID})
-                }
-                completed()
             }
+            completed()
         }
     }
     
@@ -201,27 +180,14 @@ final class HomeViewController: UIViewController{
     
     
     
-   private func fetchReportedUsers(uids:[String],_ completed: @escaping() -> Void){
-        let uid = Auth.auth().currentUser!.uid
-        self.reportedUsersArray.removeAll()
-        Firestore.firestore().collection("users").document(uid).collection("reports").whereField("uid", in: uids).limit(to: 10).getDocuments { querySnapshot, err in
-            if err != nil {
-                return
-            }else{
-                for document in querySnapshot!.documents{
-                    let dic = document.data()
-                    let reportedUsers = Contents.init(dic: dic)
-                    self.reportedUsersArray.append(reportedUsers)
+    private func fetchReportedUsers(uids:[String],_ completed: @escaping() -> Void){
+        Firestore.fetchReportedUsers(uids: uids) { contents in
+            for content in contents {
+                self.timeLineContents.removeAll { timeLineContent in
+                    timeLineContent.uid == content.uid && timeLineContent.roomID == content.roomID
                 }
-                let filteredArray = self.reportedUsersArray.filter {
-                    $0.type == "user"
-                }
-                for content in filteredArray {
-                    self.timelinePosts.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
-                    self.moreTimelinePosts.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
-                }
-                completed()
             }
+            completed()
         }
     }
     
@@ -233,18 +199,9 @@ final class HomeViewController: UIViewController{
     
     
     
-   private func fetchLikeContents(documentIDs:[String]){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("likes").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("情報の取得に失敗しました。\(err)")
-                return
-            }
-            for document in querySnapshot!.documents{
-                let dic = document.data()
-                let likeContents = Contents.init(dic: dic)
-                self.likeContentsArray.append(likeContents)
-            }
+    private func fetchLikeContents(documentIDs:[String]){
+        Firestore.fetchLikeContents(documentIDs: documentIDs) { contents in
+            self.likeContentsArray.append(contentsOf: contents)
         }
     }
     
@@ -255,57 +212,30 @@ final class HomeViewController: UIViewController{
     
     
     
-   private func fetchTimelinePosts(completionClosure:@escaping ComplitionClosure){
-        self.timelinePosts.removeAll()
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("feeds").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { querySnapShot, err in
-            if let err = err{
-                print(err)
-                return
-            }
-            self.lastDocument = querySnapShot!.documents.last
-            for document in querySnapShot!.documents{
-                let dic = document.data()
-                let followedContent = Contents.init(dic: dic)
-                self.timelinePosts.append(followedContent)
-            }
-            if self.joinedRoomArray.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.width, height: 30)
+    private func fetchTimelinePosts(completion: @escaping([Contents]) -> Void){
+        self.timeLineContents.removeAll()
+        Firestore.fetchTimeLinePosts { querySnapshot, contents, uids, documentIDs in
+            if self.joinedRoomsArray.count == 0 {
+                self.label.setupLabel(view: self.view, y: self.view.center.y)
                 self.label.text = "ルームを作成、探して参加しよう！"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
-                self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.timeLineTableView.addSubview(self.label)
-                completionClosure([])
+                completion([])
                 
-            } else if self.timelinePosts.count == 0 {
-                self.label.frame = CGRect(x: 0, y: self.view.center.y, width: self.view.frame.size.width, height: 20)
+            } else if contents.count == 0 {
+                self.label.setupLabel(view: self.view, y: self.view.center.y)
                 self.label.text = "投稿がまだありません"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
-                self.label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.timeLineTableView.addSubview(self.label)
-                self.timeLineTableView.reloadData()
                 self.timeLineTableView.refreshControl?.endRefreshing()
-                completionClosure([])
+                completion([])
                 
             }else{
                 self.label.removeFromSuperview()
-                let documentIDs = self.timelinePosts.map { Contents -> String in
-                    let documentID = Contents.documentID
-                    return documentID
-                }
-                let uids = self.timelinePosts.map { Contents -> String in
-                    let uid = Contents.uid
-                    return uid
-                }
+                self.timeLineContents.append(contentsOf: contents)
                 self.fetchReportedContents(documentIDs: documentIDs) {
                     self.fetchReportedUsers(uids: uids) {
-                        completionClosure(self.timelinePosts)
+                        completion(self.timeLineContents)
                     }
                 }
-                
-                
             }
         }
     }
@@ -315,31 +245,20 @@ final class HomeViewController: UIViewController{
     
     
     private func fetchModeratorPosts(){
-        self.timeLineContents.removeAll()
-        self.nativeAds.removeAll()
-        fetchTimelinePosts(completionClosure: { results in
-            if results.isEmpty == true {
-                self.tableViewItems.removeAll()
+        fetchTimelinePosts(completion: { timeLineContents in
+            if timeLineContents.isEmpty == true {
+//                self.tableViewItems.removeAll()
                 self.timeLineTableView.reloadData()
                 self.timeLineTableView.refreshControl?.endRefreshing()
                 self.dismissIndicator()
             }else{
-                let documentIDs = results.map { Contents -> String in
-                    let documentID = Contents.documentID
-                    return documentID
+                let documentIDs = timeLineContents.map { element -> String in
+                    return element.documentID
                 }
                 self.fetchLikeContents(documentIDs: documentIDs)
-                Firestore.firestore().collectionGroup("posts").whereField("documentID", in: documentIDs).order(by: "createdAt", descending: true).getDocuments { querySnapshot, err in
-                    if let err = err {
-                        print("情報の取得に失敗しました。\(err)")
-                        return
-                    }
-                    for document in querySnapshot!.documents {
-                        let dic = document.data()
-                        let followedContent = Contents.init(dic: dic)
-                        self.timeLineContents.append(followedContent)
-                    }
-                    self.loadAdmob(numberOfAds: self.timelinePosts.count)
+                Firestore.fetchModeratorPosts(documentIDs: documentIDs) { contents in
+                    self.moderatorPosts.append(contentsOf: contents)
+                    self.loadAdmob(numberOfAds: contents.count)
                 }
             }
         })
@@ -349,38 +268,16 @@ final class HomeViewController: UIViewController{
     
     
     
-    private func fetchMoreTimelinePosts(completionClosure:@escaping ComplitionClosure){
-        self.moreTimelinePosts.removeAll()
+    private func fetchMoreTimelinePosts(completion: @escaping([Contents]) -> Void){
+        self.timeLineContents.removeAll()
         guard let lastDocument = lastDocument else {return}
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("feeds").order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: 10).getDocuments { (querySnapShot, err) in
-            if let err = err{
-                print(err)
-                return
-            }
-            guard let snapShot = querySnapShot!.documents.last else {return}
-            if snapShot == self.lastDocument {
-                return
-            }else{
-                self.lastDocument = snapShot
-            }
-            for document in querySnapShot!.documents {
-                let dic = document.data()
-                let followedContent = Contents.init(dic: dic)
-                self.moreTimelinePosts.append(followedContent)
-            }
-            if self.moreTimelinePosts.isEmpty != true {
-                let documentIDs = self.moreTimelinePosts.map { Contents -> String in
-                    let documentID = Contents.documentID
-                    return documentID
-                }
-                let uids = self.moreTimelinePosts.map { Contents -> String in
-                    let uid = Contents.uid
-                    return uid
-                }
+        Firestore.fetchMoreTimelinePosts(lastDocument: lastDocument) { querySnapshot, contents, uids, documentIDs in
+            if contents.isEmpty == false {
+                self.lastDocument = querySnapshot.documents.last
+                self.timeLineContents.append(contentsOf: contents)
                 self.fetchReportedContents(documentIDs: documentIDs) {
                     self.fetchReportedUsers(uids: uids) {
-                        completionClosure(self.moreTimelinePosts)
+                        completion(self.timeLineContents)
                     }
                 }
             }
@@ -393,23 +290,14 @@ final class HomeViewController: UIViewController{
     
     
     private func fetchMoreModeratorPosts(){
-        fetchMoreTimelinePosts { (results) in
-            let documentIDs = results.map { Contents -> String in
-                let documentID = Contents.documentID
-                return documentID
+        fetchMoreTimelinePosts { timeLineContents in
+            let documentIDs = timeLineContents.map { element -> String in
+                return element.documentID
             }
             self.fetchLikeContents(documentIDs: documentIDs)
-            Firestore.firestore().collectionGroup("posts").whereField("documentID", in: documentIDs).getDocuments { querySnapshot, err in
-                if let err = err {
-                    print("情報の取得に失敗しました。\(err)")
-                    return
-                }
-                for document in querySnapshot!.documents {
-                    let dic = document.data()
-                    let followedContent = Contents.init(dic: dic)
-                    self.timeLineContents.append(followedContent)
-                }
-                self.loadAdmob(numberOfAds: self.moreTimelinePosts.count + self.timelinePosts.count)
+            Firestore.fetchMoreModeratorPosts(documentIDs: documentIDs) { contents in
+                self.moderatorPosts.append(contentsOf: contents)
+                self.loadAdmob(numberOfAds: self.moderatorPosts.count)
             }
         }
     }
@@ -446,10 +334,10 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if self.joinedRoomArray.isEmpty == true {
+        if self.joinedRoomsArray.isEmpty == true {
             return 5
         }else{
-            return joinedRoomArray.count
+            return joinedRoomsArray.count
         }
     }
     
@@ -459,10 +347,10 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
         
         
         let cell = roomCollectionView.dequeueReusableCell(withReuseIdentifier: "myroomCell", for: indexPath) as! RoomCollectionViewCell
-        if self.joinedRoomArray.count != 0 {
-            cell.roomName.text = joinedRoomArray[indexPath.row].roomName
-            if joinedRoomArray[indexPath.row].roomImage != "" {
-                cell.roomImage.sd_setImage(with: URL(string: joinedRoomArray[indexPath.row].roomImage), completed: nil)
+        if self.joinedRoomsArray.count != 0 {
+            cell.roomName.text = joinedRoomsArray[indexPath.row].roomName
+            if joinedRoomsArray[indexPath.row].roomImage != "" {
+                cell.roomImage.sd_setImage(with: URL(string: joinedRoomsArray[indexPath.row].roomImage), completed: nil)
                 cell.personImage.image = UIImage()
             }else{
                 cell.roomImage.image = UIImage()
@@ -482,9 +370,9 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if self.joinedRoomArray.count != 0 {
+        if self.joinedRoomsArray.count != 0 {
             let enteredVC = storyboard?.instantiateViewController(withIdentifier: "enteredVC") as! EnteredRoomContentViewController
-            enteredVC.passedDocumentID = joinedRoomArray[indexPath.row].documentID
+            enteredVC.passedDocumentID = joinedRoomsArray[indexPath.row].documentID
             navigationController?.pushViewController(enteredVC, animated: true)
         }
     }
@@ -514,7 +402,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
             
             cell.setContent(contents: timeLineContent, likeContensArray: likeContentsArray)
             
-            let roomNameArray = joinedRoomArray.filter {
+            let roomNameArray = joinedRoomsArray.filter {
                 $0.documentID == timeLineContent.roomID
             }
             let roomNameLabel = cell.roomNameLabel
@@ -533,7 +421,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
             
         }else{
             
-            if let nativeAd = tableViewItems[indexPath.row] as? GADUnifiedNativeAd {
+            if let nativeAd = tableViewItems[safe:indexPath.row] as? GADUnifiedNativeAd {
                 
                 nativeAd.rootViewController = self
                 
@@ -567,7 +455,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
         let tappedRow = tappedIndexPath!.row
         let enteredVC = storyboard?.instantiateViewController(withIdentifier: "enteredVC") as! EnteredRoomContentViewController
         if let followContent = tableViewItems[tappedRow] as? Contents {
-            let roomInfo = joinedRoomArray.filter {
+            let roomInfo = joinedRoomsArray.filter {
                 $0.documentID == followContent.roomID
             }
             enteredVC.passedDocumentID = roomInfo[0].documentID
@@ -575,10 +463,10 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
         }
     }
     
-
     
     
-  
+    
+    
 }
 
 
@@ -590,17 +478,17 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
 extension HomeViewController:RemoveContentsDelegate{
     
     func removeMutedContent(documentID:String) {
-        self.tableViewItems.removeAll { Protocol  in
-            let room = Protocol as? Contents
-            return (room?.documentID  == documentID )
+        self.tableViewItems.removeAll { content  in
+            let content = content as? Contents
+            return (content?.documentID  == documentID )
         }
         self.timeLineTableView.reloadData()
     }
     
     func removeBlockedUserContents(uid:String,roomID:String) {
-        self.tableViewItems.removeAll { Protocol  in
-            let room = Protocol as? Contents
-            return ((room?.uid  == uid) && (room?.roomID == roomID))
+        self.tableViewItems.removeAll { content  in
+            let content = content as? Contents
+            return content?.uid  == uid && content?.roomID == roomID
         }
         self.timeLineTableView.reloadData()
     }
@@ -613,22 +501,12 @@ extension HomeViewController:TableViewCellDelegate {
     
     private func updateLikeCount(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
-            
             let roomID = followContent.roomID
             let documentID = followContent.documentID
+            let mediaArray = followContent.mediaArray[0]
             let uid = followContent.uid
-            let myUid = Auth.auth().currentUser!.uid
-            
-            let profileContentRef = Firestore.firestore().collection("users").document(uid).collection("rooms").document(roomID).collection("posts").document(documentID)
-            batch.setData(["likeCount": FieldValue.increment(1.0)], forDocument: profileContentRef, merge: true)
-            
-            let likeCountRef = Firestore.firestore().collection("users").document(myUid).collection("rooms").document(roomID).collection("profileLikeCount").document("count")
-            batch.setData(["likeCount": FieldValue.increment(1.0)], forDocument: likeCountRef, merge: true)
-            
-            if followContent.mediaArray[0] != "" {
-                let mediaPostRef = Firestore.firestore().collection("rooms").document(roomID).collection("mediaPosts").document(documentID)
-                batch.setData(["likeCount": FieldValue.increment(1.0)], forDocument: mediaPostRef, merge: true)
-            }
+            let myuid = Auth.auth().currentUser!.uid
+            Firestore.increaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaArray, batch: batch)
         }
     }
     
@@ -648,10 +526,19 @@ extension HomeViewController:TableViewCellDelegate {
             let text = followContent.text
             let userName = followContent.userName
             let userImage = followContent.userImage
-            let docData = ["media": media,"text":text,"userName":userName,"userImage":userImage,"documentID":documentID,"roomID":roomID,"createdAt":createdAt,"uid":uid,"postedAt":postedAt,"myUid":myuid] as [String:Any]
-            let likeRef = Firestore.firestore().collection("users").document(myuid).collection("likes").document(documentID)
-            
-            batch.setData(docData, forDocument: likeRef)
+            let dic = [
+                "media": media,
+                "text":text,
+                "userName":userName,
+                "userImage":userImage,
+                "documentID":documentID,
+                "roomID":roomID,
+                "createdAt":createdAt,
+                "uid":uid,
+                "postedAt":postedAt,
+                "myUid":myuid
+            ] as [String:Any]
+            Firestore.createLikedPost(myuid: myuid, documentID: documentID, dic: dic, batch: batch)
         }
     }
     
@@ -660,19 +547,24 @@ extension HomeViewController:TableViewCellDelegate {
     
     private func giveNotification(row:Int,batch:WriteBatch){
         if let followContent = tableViewItems[row] as? Contents {
-            let myUid = Auth.auth().currentUser!.uid
+            let myuid = Auth.auth().currentUser!.uid
             let uid = followContent.uid
             let postID = followContent.documentID
             let roomID = followContent.roomID
-            let roomInfo = joinedRoomArray.filter{ $0.documentID == followContent.roomID }
-            let documentID = "\(myUid)-\(postID)"
-            let docData = ["userName":roomInfo[0].userName,"userImage":roomInfo[0].userImage,"uid":myUid,"roomName":roomInfo[0].roomName,"createdAt":Timestamp(),"postID":postID,"roomID":roomID,"documentID":documentID,"type":"like"] as [String:Any]
-            let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
-            if uid == myUid {
-                return
-            }else{
-                batch.setData(docData, forDocument: ref)
-            }
+            let roomInfo = joinedRoomsArray.filter{ $0.documentID == followContent.roomID }
+            let documentID = "\(myuid)-\(postID)"
+            let dic = [
+                "userName":roomInfo[0].userName,
+                "userImage":roomInfo[0].userImage,
+                "uid":myuid,
+                "roomName":roomInfo[0].roomName,
+                "createdAt":Timestamp(),
+                "postID":postID,
+                "roomID":roomID,
+                "documentID":documentID,
+                "type":"like"
+            ] as [String:Any]
+            Firestore.createNotification(uid: uid, myuid: myuid, documentID: documentID, dic: dic, batch: batch)
         }
     }
     
@@ -705,21 +597,9 @@ extension HomeViewController:TableViewCellDelegate {
             let documentID = followContent.documentID
             let roomID = followContent.roomID
             let uid = followContent.uid
-            let myUid = Auth.auth().currentUser!.uid
-            
-            
-            let profileRef = Firestore.firestore().collection("users").document(uid).collection("rooms").document(roomID).collection("posts").document(documentID)
-            batch.setData(["likeCount": FieldValue.increment(-1.0)], forDocument: profileRef, merge: true)
-            
-            
-            let likeCountRef = Firestore.firestore().collection("users").document(myUid).collection("rooms").document(roomID).collection("profileLikeCount").document("count")
-            batch.setData(["likeCount": FieldValue.increment(-1.0)], forDocument: likeCountRef, merge: true)
-            
-            if followContent.mediaArray[0] != "" {
-                let mediaPostRef = Firestore.firestore().collection("rooms").document(roomID).collection("mediaPosts").document(documentID)
-                batch.setData(["likeCount": FieldValue.increment(-1.0)], forDocument: mediaPostRef,merge: true)
-            }
-            
+            let myuid = Auth.auth().currentUser!.uid
+            let mediaArray = followContent.mediaArray[0]
+            Firestore.decreaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaArray, batch: batch)
         }
     }
     
@@ -732,8 +612,7 @@ extension HomeViewController:TableViewCellDelegate {
         if let followContent = tableViewItems[row] as? Contents {
             let uid = Auth.auth().currentUser!.uid
             let documentID = followContent.documentID
-            let likeRef = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
-            batch.deleteDocument(likeRef)
+            Firestore.deleteLikedPost(uid: uid, documentID: documentID, batch: batch)
         }
     }
     
@@ -746,12 +625,7 @@ extension HomeViewController:TableViewCellDelegate {
             let myuid = Auth.auth().currentUser!.uid
             let postID = followContent.documentID
             let documentID = "\(myuid)-\(postID)"
-            let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
-            if uid == myuid {
-                return
-            }else{
-                batch.deleteDocument(ref)
-            }
+            Firestore.deleteNotification(uid: uid, myuid: myuid, documentID: documentID, batch: batch)
         }
     }
     
@@ -814,7 +688,7 @@ extension HomeViewController:TableViewCellDelegate {
         if let followContent = tableViewItems[row] as? Contents {
             
             let cLVC = storyboard?.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
-            let roomInfo = joinedRoomArray.filter{ $0.documentID == followContent.roomID }
+            let roomInfo = joinedRoomsArray.filter{ $0.documentID == followContent.roomID }
             cLVC.passedUserImage = followContent.userImage
             cLVC.passedUserName = followContent.userName
             cLVC.passedComment = followContent.text
@@ -877,7 +751,7 @@ extension HomeViewController:TableViewCellDelegate {
 
 extension HomeViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-            return PresentModalViewController(presentedViewController: presented, presenting: presenting)
+        return PresentModalViewController(presentedViewController: presented, presenting: presenting)
     }
 }
 
@@ -908,7 +782,7 @@ extension HomeViewController: GADUnifiedNativeAdLoaderDelegate {
     private func addNativeAds(){
         self.tableViewItems.removeAll()
         
-        self.tableViewItems.append(contentsOf: self.timeLineContents)
+        self.tableViewItems.append(contentsOf: self.moderatorPosts)
         
         if nativeAds.count <= 0 {
             return

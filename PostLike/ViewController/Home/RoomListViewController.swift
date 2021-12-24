@@ -26,12 +26,9 @@ final class RoomListViewController: UIViewController,UITableViewDelegate,UITable
         roomListTableView.dataSource = self
         
         if passedFollwedRoomArray.isEmpty == true {
-            let label = UILabel()
-            label.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: 30)
+            let label = MessageLabel()
+            label.setupLabel(view: self.view, y: self.view.center.y - 100)
             label.text = "参加しているルームはありません"
-            label.textAlignment = .center
-            label.textColor = .lightGray
-            label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
             roomListTableView.addSubview(label)
         }
 

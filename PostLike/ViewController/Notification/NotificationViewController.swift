@@ -20,7 +20,7 @@ final class NotificationViewController: UIViewController {
     
     
     private var notificationArray = [Contents]()
-    private var label = UILabel()
+    private var label = MessageLabel()
     
     
     
@@ -42,6 +42,24 @@ final class NotificationViewController: UIViewController {
         fetchNotificationInfo()
         UserDefaults.standard.setValue(0, forKey: "badgeCount")
         UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+    
+    
+    private func fetchNotificationInfo(){
+        self.notificationArray.removeAll()
+        Firestore.fetchNotifications { notifications in
+            if notifications.isEmpty == true {
+                self.latestLabel.isHidden = true
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
+                self.label.text = "お知らせはありません"
+                self.notificationTableView.addSubview(self.label)
+            }else {
+                self.notificationArray.append(contentsOf: notifications)
+                self.latestLabel.isHidden = false
+                self.label.text = ""
+                self.notificationTableView.reloadData()
+            }
+        }
     }
     
     
@@ -95,36 +113,6 @@ extension NotificationViewController:UITableViewDelegate,UITableViewDataSource{
         
         
         return cell
-    }
-    
-    
-    private func fetchNotificationInfo(){
-        self.notificationArray.removeAll()
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("情報の取得に失敗しました。\(err)")
-                return
-            }
-            for document in querySnapshot!.documents{
-                let dic = document.data()
-                let notification = Contents.init(dic: dic)
-                self.notificationArray.append(notification)
-            }
-            self.notificationTableView.reloadData()
-            
-            if self.notificationArray.count == 0 {
-                self.latestLabel.isHidden = true
-                self.label = UILabel(frame: CGRect(x: 0, y: self.view.center.y - 100, width: self.view.frame.size.width, height: 40))
-                self.label.text = "お知らせはありません"
-                self.label.textAlignment = .center
-                self.label.textColor = .lightGray
-                self.notificationTableView.addSubview(self.label)
-            }else{
-                self.latestLabel.isHidden = false
-                self.label.text = ""
-            }
-        }
     }
     
     

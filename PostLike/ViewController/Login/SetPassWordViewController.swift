@@ -44,17 +44,13 @@ final class SetPassWordViewController: UIViewController {
     
     @IBAction private func pushCompleteButton(_ sender: Any) {
         
-        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {
-            return
-        }
+        guard let email = UserDefaults.standard.value(forKey: "email") as? String else {return}
+        guard let password = passWordTextField.text else { return }
         guard let gender = UserDefaults.standard.value(forKey: "gender") as? String else {return}
-        guard let birthDay = UserDefaults.standard.value(forKey: "birthDay") as? String else{return}
-        guard let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String else {
-            return
-        }
+        guard let birthDay = UserDefaults.standard.value(forKey: "birthDay") as? String else {return}
+        guard let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String else {return}
         startIndicator()
-        
-        Auth.auth().createUser(withEmail: email, password: passWordTextField.text!) { auth, err in
+        Auth.createUser(email: email, password: password, gender: gender, birthDay: birthDay, fcmToken: fcmToken) { bool, err in
             if let err = err {
                 self.dismissIndicator()
                 self.alertLabelHeight.constant = 42
@@ -74,30 +70,12 @@ final class SetPassWordViewController: UIViewController {
                     }
                 }
                 self.alertLabel.isHidden = false
-            }else{
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat  = "yyyy/MM/dd"
-                dateFormatter.locale = Locale(identifier: "ja_JP")
-                dateFormatter.timeZone = TimeZone(identifier: "Asia/Tokyo")
-                let date = dateFormatter.date(from: birthDay)
-                let timestamp = Timestamp(date: date!)
-                let data = ["gender":gender,"birthDay":timestamp,"fcmToken":fcmToken] as [String:Any]
-                Firestore.firestore().collection("users").document(auth!.user.uid).setData(data) { err in
-                    if err != nil {
-                        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self.dismissIndicator()
-                        }
-                        self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                        return
-                    }else{
-                        print("ログイン成功")
-                        let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
-                        let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
-                        vc.selectedIndex = 0
-                        self.present(vc, animated: false, completion: nil)
-                    }
-                }
-                
+            }else {
+                print("ログイン成功")
+                let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+                let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+                vc.selectedIndex = 0
+                self.present(vc, animated: false, completion: nil)
             }
         }
     }
@@ -115,10 +93,6 @@ final class SetPassWordViewController: UIViewController {
 }
 
 extension SetPassWordViewController: UITextFieldDelegate{
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.view.endEditing(true)
-    }
     
     
     func textFieldDidChangeSelection(_ textField: UITextField) {

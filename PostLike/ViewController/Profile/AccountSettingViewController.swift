@@ -59,16 +59,23 @@ final class AccountSettingViewController: UIViewController {
     
     
     private func fetchUserInfo(){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).getDocument { snapShot, err in
-            if let err = err {
-                print("false:",err)
-                return
-            }
-            guard let snapShot = snapShot, let dic = snapShot.data() else {return}
-            let userInfo = User(dic: dic)
+        Firestore.fetchUserInfo { userInfo in
             self.userInfo = userInfo
             self.settingMenuTableView.reloadData()
+        }
+    }
+    
+    
+    private func openSetting(){
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {return}
+        if UIApplication.shared.canOpenURL(settingsUrl)  {
+          if #available(iOS 10.0, *) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+            })
+          }
+          else  {
+            UIApplication.shared.openURL(settingsUrl)
+          }
         }
     }
     
@@ -177,29 +184,17 @@ extension AccountSettingViewController:UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch Section(rawValue: indexPath.section) {
         case .notification:
-            let settingsUrl = URL(string: UIApplication.openSettingsURLString)
-            if UIApplication.shared.canOpenURL(settingsUrl!)  {
-              if #available(iOS 10.0, *) {
-                UIApplication.shared.open(settingsUrl!, completionHandler: { (success) in
-                })
-              }
-              else  {
-                UIApplication.shared.openURL(settingsUrl!)
-              }
-            }
+            openSetting()
+            
         case .other:
             if indexPath.row == 0 {
-                let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let privacyPolicyVC = storyboard.instantiateViewController(withIdentifier: "privacyPolicy") as! PrivacyPolicyViewController
-                self.navigationController?.pushViewController(privacyPolicyVC, animated: true)
+                pushViewController(storyboardName: "Login", identifier: "privacyPolicy")
                 
             }else if indexPath.row == 1 {
-                let storyboard = UIStoryboard(name: "Login", bundle: nil)
-                let termOfUseVC = storyboard.instantiateViewController(withIdentifier: "termOfUse") as! TermOfUseViewController
-                self.navigationController?.pushViewController(termOfUseVC, animated: true)
+                pushViewController(storyboardName: "Login", identifier: "termOfUse")
                 
             }else if indexPath.row == 2 {
-                self.alertComfirm()
+                alertComfirm()
             }
         default:
             break
@@ -218,15 +213,6 @@ extension AccountSettingViewController:UITableViewDelegate,UITableViewDataSource
         return sections[section]
     }
     
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let label = UILabel()
-//        label.text = "    \(sections[section])"
-//        label.textColor = .lightGray
-//        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-//        label.backgroundColor = .systemBackground
-//        return label
-//    }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 55

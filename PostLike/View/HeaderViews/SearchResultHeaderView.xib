@@ -95,7 +95,6 @@
                         <constraint firstItem="Hzr-rM-2qm" firstAttribute="top" secondItem="8hU-9f-7ba" secondAttribute="top" constant="16" id="Ysd-sL-JCT"/>
                         <constraint firstAttribute="trailing" secondItem="LIW-HJ-oPX" secondAttribute="trailing" id="Z0M-Vf-z3L"/>
                         <constraint firstItem="0i4-EF-KpU" firstAttribute="top" secondItem="qQX-2x-fwn" secondAttribute="bottom" constant="10" id="h7c-LW-agd"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="110" id="hSg-4W-aqC"/>
                         <constraint firstAttribute="bottom" secondItem="0i4-EF-KpU" secondAttribute="bottom" constant="13" id="oK8-nm-qpt"/>
                         <constraint firstItem="0i4-EF-KpU" firstAttribute="leading" secondItem="8hU-9f-7ba" secondAttribute="leading" constant="23" id="oo3-Sb-fUq"/>
                         <constraint firstAttribute="trailing" secondItem="Hzr-rM-2qm" secondAttribute="trailing" constant="13" id="xXG-mn-8zs"/>
