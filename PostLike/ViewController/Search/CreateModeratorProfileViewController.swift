@@ -81,61 +81,7 @@ final class CreateModeratorProfileViewController: UIViewController {
     @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
-    
-    
-    
-    
-    private func createRoomImageToStrage(_ completed: @escaping(_ url:String) -> Void){
-        guard let profileImage = passedRoomImage.jpegData(compressionQuality: 0.4) else {return}
-        let fileName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("room_images").child(fileName)
-        
-        storageRef.putData(profileImage, metadata: nil) { (metadata, err) in
-            
-            if let err = err{
-                print("Firestorageへの保存に失敗しました。\(err)")
-                return
-            }else{
-                print("Firestorageへの保存に成功しました。")
-                storageRef.downloadURL { (url, err) in
-                    if let err = err {
-                        print("firestorageからのダウンロードに失敗しました。\(err)")
-                        return
-                    }
-                    guard let urlString = url?.absoluteString else{return}
-                    completed(urlString)
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    private func createUserImageToStrage(_ completed: @escaping(_ url:String) -> Void){
-        guard let profileImage = userImage.image!.jpegData(compressionQuality: 0.1) else {return}
-        let fileName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
-        
-        storageRef.putData(profileImage, metadata: nil) { (metadata, err) in
-            
-            if let err = err{
-                print("Firestorageへの保存に失敗しました。\(err)")
-                return
-            }else{
-                print("Firestorageへの保存に成功しました。")
-                storageRef.downloadURL { (url, err) in
-                    if let err = err {
-                        print("firestorageからのダウンロードに失敗しました。\(err)")
-                        return
-                    }
-                    guard let urlString = url?.absoluteString else{return}
-                    completed(urlString)
-                }
-            }
-        }
-        
-    }
+
     
     
     
@@ -143,13 +89,18 @@ final class CreateModeratorProfileViewController: UIViewController {
     
     
     private func createRoomDetail(documentID:String,roomImageUrl:String,userImageUrl:String,batch:WriteBatch){
-        
         let uid = Auth.auth().currentUser!.uid
-        let timestamp = Timestamp()
-        let docData = ["createdAt":timestamp,"userImage":userImageUrl,"documentID":documentID,"roomImage":roomImageUrl,"moderator":uid,"roomName":passedRoomName,"userName":userNameTextField.text!,"uid":uid,"isJoined":true] as [String:Any]
-        let ref =  Firestore.firestore().collection("users").document(uid).collection("rooms").document(documentID)
-
-        batch.setData(docData, forDocument: ref)
+        let dic = [
+            "createdAt":Timestamp(),
+            "userImage":userImageUrl,
+            "documentID":documentID,
+            "roomImage":roomImageUrl,
+            "moderator":uid,
+            "roomName":passedRoomName,
+            "userName":userNameTextField.text ?? "",
+            "uid":uid,
+            "isJoined":true] as [String:Any]
+        Firestore.createProfile(uid: uid, documentID: documentID, dic: dic, batch: batch)
     }
     
     
@@ -157,42 +108,27 @@ final class CreateModeratorProfileViewController: UIViewController {
     
     private func createRoom(documentID:String,roomImageUrl:String,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
-        let createdAt = Timestamp()
-        let docData = ["roomImage":roomImageUrl,"documentID":documentID,"moderator":uid,"roomIntro":passedRoomIntro,"roomName":passedRoomName,"createdAt":createdAt,"memberCount":1,"postCount":0] as [String:Any]
-        let ref = Firestore.firestore().collection("rooms").document(documentID)
-        batch.setData(docData, forDocument: ref)
+        let dic = [
+            "roomImage":roomImageUrl,
+            "documentID":documentID,
+            "moderator":uid,
+            "roomIntro":passedRoomIntro,
+            "roomName":passedRoomName,
+            "createdAt":Timestamp(),
+            "memberCount":1,
+            "postCount":0] as [String:Any]
+        Firestore.createRoom(documentID: documentID, dic: dic, batch: batch)
     }
     
-    
-
-    private func createMemberCount(documentID:String,batch:WriteBatch){
-        let ref = Firestore.firestore().collection("rooms").document(documentID).collection("memberCount").document("count")
-        batch.setData(["roomID":documentID,"memberCount": 1], forDocument: ref)
-    }
-
-    
-    
-    private func createPostCount(documentID:String,batch:WriteBatch){
-        let ref = Firestore.firestore().collection("rooms").document(documentID).collection("roomPostCount").document("count")
-        batch.setData(["roomID":documentID,"postCount": 0], forDocument: ref)
-    }
-    
-    
-    private func createMemberList(documentID:String,batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let docData = ["uid":uid]
-        let ref = Firestore.firestore().collection("rooms").document(documentID).collection("members").document(uid)
-        batch.setData(docData, forDocument: ref)
-    }
     
     
     private func batchWhenNoImage(documentID:String){
         let batch = Firestore.firestore().batch()
         createRoom(documentID: documentID, roomImageUrl: "", batch: batch)
         createRoomDetail(documentID: documentID, roomImageUrl: "", userImageUrl: "", batch: batch)
-        createMemberCount(documentID: documentID, batch: batch)
-        createMemberList(documentID: documentID, batch: batch)
-        createPostCount(documentID: documentID, batch: batch)
+        Firestore.createMemberCount(documentID: documentID, batch: batch)
+        Firestore.createPostCount(documentID: documentID, batch: batch)
+        Firestore.createMemberList(documentID: documentID, batch: batch)
         batch.commit { err in
             if let err = err {
                 print("false\(err)")
@@ -210,12 +146,12 @@ final class CreateModeratorProfileViewController: UIViewController {
     
     private func batchWhenOnlyRoomImage(documentID:String){
         let batch = Firestore.firestore().batch()
-        createRoomImageToStrage { roomImageUrl in
+        Storage.addRoomImageToStrage(roomImage: passedRoomImage, self: self) { roomImageUrl in
             self.createRoomDetail(documentID: documentID, roomImageUrl: roomImageUrl, userImageUrl: "", batch: batch)
             self.createRoom(documentID: documentID, roomImageUrl: roomImageUrl, batch: batch)
-            self.createMemberCount(documentID: documentID, batch: batch)
-            self.createMemberList(documentID: documentID, batch: batch)
-            self.createPostCount(documentID: documentID, batch: batch)
+            Firestore.createMemberCount(documentID: documentID, batch: batch)
+            Firestore.createPostCount(documentID: documentID, batch: batch)
+            Firestore.createMemberList(documentID: documentID, batch: batch)
             batch.commit { err in
                 if let err = err {
                     print("false\(err)")
@@ -233,12 +169,12 @@ final class CreateModeratorProfileViewController: UIViewController {
     
     private func batchWhenOnlyUserImage(documentID:String){
         let batch = Firestore.firestore().batch()
-        createUserImageToStrage { userImageUrl in
+        Storage.addUserImageToStrage(userImage: self.userImage.image ?? UIImage(), self: self) { userImageUrl in
             self.createRoomDetail(documentID: documentID, roomImageUrl: "", userImageUrl: userImageUrl, batch: batch)
             self.createRoom(documentID: documentID, roomImageUrl: "", batch: batch)
-            self.createMemberCount(documentID: documentID, batch: batch)
-            self.createMemberList(documentID: documentID, batch: batch)
-            self.createPostCount(documentID: documentID, batch: batch)
+            Firestore.createMemberCount(documentID: documentID, batch: batch)
+            Firestore.createPostCount(documentID: documentID, batch: batch)
+            Firestore.createMemberList(documentID: documentID, batch: batch)
             batch.commit { err in
                 if let err = err {
                     print("false\(err)")
@@ -257,13 +193,13 @@ final class CreateModeratorProfileViewController: UIViewController {
     
     private func batchWhenUserImageAndRoomImage(documentID:String){
         let batch = Firestore.firestore().batch()
-        createRoomImageToStrage({ roomImageUrl in
-            self.createUserImageToStrage({ userImageUrl in
+        Storage.addRoomImageToStrage(roomImage: passedRoomImage, self: self) { roomImageUrl in
+            Storage.addUserImageToStrage(userImage: self.userImage.image ?? UIImage(), self: self) { userImageUrl in
                 self.createRoomDetail(documentID: documentID, roomImageUrl: roomImageUrl, userImageUrl: userImageUrl, batch: batch)
                 self.createRoom(documentID: documentID, roomImageUrl: roomImageUrl, batch: batch)
-                self.createMemberCount(documentID: documentID, batch: batch)
-                self.createMemberList(documentID: documentID, batch: batch)
-                self.createPostCount(documentID: documentID, batch: batch)
+                Firestore.createMemberCount(documentID: documentID, batch: batch)
+                Firestore.createPostCount(documentID: documentID, batch: batch)
+                Firestore.createMemberList(documentID: documentID, batch: batch)
                 batch.commit { err in
                     if let err = err {
                         print("false\(err)")
@@ -274,8 +210,8 @@ final class CreateModeratorProfileViewController: UIViewController {
                         self.navigationController?.popToViewController(self.navigationController!.viewControllers[0], animated: false)
                     }
                 }
-            })
-        })
+            }
+        }
     }
        
     
@@ -302,9 +238,6 @@ final class CreateModeratorProfileViewController: UIViewController {
         }else if passedRoomImage != UIImage() && userImage.image != nil{
             batchWhenUserImageAndRoomImage(documentID: documentID)
         }
-        
-        
-    
     }
     
     

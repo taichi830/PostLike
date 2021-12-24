@@ -29,17 +29,17 @@ final class ResetPasswordViewController: UIViewController {
     
     
     @IBAction private func sendResetMail(_ sender: Any) {
-        Auth.auth().sendPasswordReset(withEmail: emailTextField.text!) { err in
-            if err != nil {
+        let email = emailTextField.text ?? ""
+        Auth.resetPaaword(email: email) { bool in
+            switch bool {
+            case false:
                 let alertAction = UIAlertAction(title: "OK", style: .default)
                 self.showAlert(title: "メールの送信に失敗しました", message: "もう一度完了ボタンを押してください", actions: [alertAction])
-            }else{
+            case true:
                 let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
                     self.navigationController?.popViewController(animated: true)
                 }
                 self.showAlert(title: "メールを送信しました", message: "メールを確認してパスワードを再設定してください", actions: [alertAction])
-                    
-                
             }
         }
     }

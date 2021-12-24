@@ -18,7 +18,7 @@ final class JoinedRoomViewController: UIViewController{
     
     
     
-    private var profileRoomArray = [Contents]()
+    private var joinedRoomsArray = [Contents]()
     private var label = MessageLabel()
     
     
@@ -55,27 +55,17 @@ final class JoinedRoomViewController: UIViewController{
     
     
     private func fetchProfileRoom(){
-        let uid = Auth.auth().currentUser!.uid
-        profileRoomArray.removeAll()
-        Firestore.firestore().collection("users").document(uid).collection("rooms").whereField("isJoined", isEqualTo: true).order(by: "createdAt",descending: true).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("情報の取得に失敗しました。\(err)")
-                return
-            }
-            for document in querySnapshot!.documents{
-                let dic = document.data()
-                let profileRoom = Contents.init(dic: dic)
-                self.profileRoomArray.append(profileRoom)
-            }
-            
-            if self.profileRoomArray.isEmpty == true {
+        joinedRoomsArray.removeAll()
+        Firestore.fetchJoinedRooms { contents in
+            if contents.isEmpty == true {
                 self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
                 self.label.text = "参加しているルームはありません"
                 self.myRoomCollectionView.addSubview(self.label)
-            }else{
+            }else {
                 self.label.text = ""
+                self.joinedRoomsArray.append(contentsOf: contents)
+                self.myRoomCollectionView.reloadData()
             }
-            self.myRoomCollectionView.reloadData()
         }
     }
     
@@ -105,7 +95,7 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        profileRoomArray.count
+        joinedRoomsArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -120,7 +110,7 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
         let roomName = cell.viewWithTag(2) as! UILabel
         let roomImageView = cell.viewWithTag(5) as! UIImageView
         
-        let text:String = " \(profileRoomArray[indexPath.row].roomName)"
+        let text:String = " \(joinedRoomsArray[indexPath.row].roomName)"
         let font:UIFont = .systemFont(ofSize: 17, weight: .semibold)
         let size = CGSize(width: 10, height: 10)
         
@@ -141,15 +131,15 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
         roomName.minimumScaleFactor = 0.7
         
         let uid = Auth.auth().currentUser!.uid
-        if profileRoomArray[indexPath.row].moderator == uid{
+        if joinedRoomsArray[indexPath.row].moderator == uid{
             roomName.attributedText = mutableString
         }else{
-            roomName.text = profileRoomArray[indexPath.row].roomName
+            roomName.text = joinedRoomsArray[indexPath.row].roomName
         }
         
         
 
-        roomImageView.sd_setImage(with: URL(string: profileRoomArray[indexPath.row].roomImage), completed: nil)
+        roomImageView.sd_setImage(with: URL(string: joinedRoomsArray[indexPath.row].roomImage), completed: nil)
         
         
         return cell
@@ -160,8 +150,8 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let profileVC = storyboard?.instantiateViewController(identifier: "myproVC") as! ProfileViewController
-        profileVC.passedDocumentID = profileRoomArray[indexPath.row].documentID
-        profileVC.passedModerator = profileRoomArray[indexPath.row].moderator
+        profileVC.passedDocumentID = joinedRoomsArray[indexPath.row].documentID
+        profileVC.passedModerator = joinedRoomsArray[indexPath.row].moderator
         navigationController?.pushViewController(profileVC, animated: true)
     }
     

@@ -28,7 +28,7 @@ final class RoomEditViewController: UIViewController {
     var passedRoomImage = String()
     var passedDocumentID = String()
     var updatedRoomImage = UIImage()
-    var roomIntro:Room?
+    var roomInfo:Room?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,19 +60,12 @@ final class RoomEditViewController: UIViewController {
     
     
     private func fetchRoomIntro(){
-        Firestore.firestore().collection("rooms").document(passedDocumentID).getDocument { snapShot, err in
-            if let err = err {
-                print("false\(err)")
-                return
-            }else{
-                guard let snap = snapShot,let dic = snap.data() else {return}
-                let roomIntro = Room(dic: dic)
-                self.roomIntro = roomIntro
-                self.introTextView.text = roomIntro.roomIntro
-                self.roomTextField.text = roomIntro.roomName
-                if roomIntro.roomImage != "" {
-                    self.roomImage.sd_setImage(with: URL(string: roomIntro.roomImage), completed: nil)
-                }
+        Firestore.fetchRoomInfo(roomID: passedDocumentID) { roomInfo in
+            self.roomInfo = roomInfo
+            self.introTextView.text = roomInfo?.roomIntro
+            self.roomTextField.text = roomInfo?.roomName
+            if roomInfo?.roomImage != "" {
+                self.roomImage.sd_setImage(with: URL(string: roomInfo?.roomImage ?? ""), completed: nil)
             }
         }
     }
@@ -110,97 +103,32 @@ final class RoomEditViewController: UIViewController {
         pickerController.UIDelegate = CustomUIDelegate()
         self.present(pickerController, animated: true, completion: nil)
     }
-    
-    
-    
-    
-    
-    private func updateRoomInfo(roomImageUrl:String,batch:WriteBatch){
-        let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID)
-        batch.updateData(docData, forDocument: ref)
-    }
-    
-    
-    
-    
-    
-    
-    private func updateMyRoomInfo(roomImageUrl:String,batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let docData = ["roomImage":roomImageUrl,"roomName":roomTextField.text!,"roomIntro":introTextView.text ?? ""] as [String:Any]
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID)
-        batch.updateData(docData, forDocument: ref)
-    }
-    
-    
-    
-    
-    
-    private func deleteStrage(){
-        let storage = Storage.storage()
-        let imageRef = NSString(string: roomIntro!.roomImage)
-        let desertRef = storage.reference(forURL: imageRef as String)
-        desertRef.delete { err in
-            if err != nil {
-                print("false")
-                return
-            }else{
-                print("success")
-            }
-        }
-    }
-    
-    
-    
-    
+
     
     
     private func createUserStrage(){
-        let fileName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("room_images").child(fileName)
-        
-        guard let updateImage = updatedRoomImage.jpegData(compressionQuality: 0.4) else {return}
-        storageRef.putData(updateImage, metadata: nil) { (metadata, error) in
-            if let error = error{
-                print("Firestorageへの保存に失敗しました。\(error)")
-                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.dismissIndicator()
-                }
-                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                return
-            }else{
-                print("Firestorageへの保存に成功しました。")
-                storageRef.downloadURL { (url, error) in
-                    if let error = error {
-                        print("firestorageからのダウンロードに失敗しました。\(error)")
-                        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self.dismissIndicator()
-                        }
-                        self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                        return
+        Storage.addRoomImageToStrage(roomImage: updatedRoomImage, self: self) { urlString in
+            let dic = ["roomImage":urlString,"roomName":self.roomTextField.text ?? "","roomIntro":self.introTextView.text ?? ""] as [String:Any]
+            let batch = Firestore.firestore().batch()
+            Firestore.updateRoomInfo(dic: dic, roomID: self.passedDocumentID, batch: batch)
+            batch.commit { err in
+                if let err = err {
+                    print("err:",err)
+                    let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self.dismissIndicator()
                     }
-                    guard let urlString = url?.absoluteString else{return}
-                    let batch = Firestore.firestore().batch()
-                    self.updateRoomInfo(roomImageUrl: urlString, batch: batch)
-                    self.updateMyRoomInfo(roomImageUrl: urlString, batch: batch)
-                    batch.commit { err in
-                        if err != nil{
-                            let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                                self.dismissIndicator()
-                            }
-                            self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                        }else{
-                            self.dismiss(animated: true) {
-                                if self.roomIntro!.roomImage != "" {
-                                    self.deleteStrage()
-                                }
-                            }
+                    self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                    return
+                }else{
+                    self.dismiss(animated: true) {
+                        if urlString != "" {
+                            Storage.deleteStrage(roomImageUrl: self.roomInfo?.roomImage ?? "")
                         }
                     }
                 }
             }
         }
+
     }
     
     
@@ -211,8 +139,8 @@ final class RoomEditViewController: UIViewController {
         startIndicator()
         if updatedRoomImage == UIImage() {
             let batch = Firestore.firestore().batch()
-            updateRoomInfo(roomImageUrl: roomIntro!.roomImage, batch: batch)
-            updateMyRoomInfo(roomImageUrl: roomIntro!.roomImage, batch: batch)
+            let dic = ["roomImage":roomInfo?.roomImage ?? "","roomName":self.roomTextField.text ?? "","roomIntro":self.introTextView.text ?? ""] as [String:Any]
+            Firestore.updateRoomInfo(dic: dic, roomID: passedDocumentID, batch: batch)
             batch.commit { err in
                 if err != nil{
                     let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -226,8 +154,6 @@ final class RoomEditViewController: UIViewController {
         }else{
             createUserStrage()
         }
-        
-        
     }
 
 }
