@@ -19,7 +19,7 @@ final class PresentModalViewController: UIPresentationController, UIAdaptivePres
             return
         }
         overlayView.frame = containerView.bounds
-        overlayView.gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(PresentModalViewController.overlayViewDidTouch(_:)))]
+        overlayView.gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(self.overlayViewDidTouch(_:)))]
         overlayView.backgroundColor = .black
         overlayView.alpha = 0.0
         containerView.insertSubview(overlayView, at: 0)

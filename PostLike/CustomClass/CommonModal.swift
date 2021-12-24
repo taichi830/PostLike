@@ -10,6 +10,13 @@ import Foundation
 import UIKit
 
 
+enum ModalType:String {
+    case post
+    case room
+    case exit
+    case delete
+    case moderator
+}
 
 final class CommonModal {
     

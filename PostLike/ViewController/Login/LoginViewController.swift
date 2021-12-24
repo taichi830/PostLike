@@ -116,8 +116,7 @@ final class LoginViewController: UIViewController {
         startIndicator()
         self.view.endEditing(true)
         //ログイン
-        Auth.auth().signIn(withEmail: emailTextField.text!, password:passwordTextField.text!) { (auth, err) in
-            
+        Auth.login(email: emailTextField.text ?? "", password: passwordTextField.text ?? "") { bool, err in
             if let err = err {
                 self.dismissIndicator()
                 self.alertLabelHeight.constant = 42
@@ -143,30 +142,10 @@ final class LoginViewController: UIViewController {
                 }
                 self.alertView.isHidden = false
             }else{
-                let ref = Firestore.firestore().collection("users").document(auth!.user.uid)
-                ref.getDocument { snapShot, err in
-                    if err != nil {
-                        return
-                    }else{
-                        guard let snap = snapShot,let dic = snap.data() else {
-                            return
-                        }
-                        guard let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String else {
-                            return
-                        }
-                        let user = User(dic: dic)
-                        if user.fcmToken == fcmToken {
-                            return
-                        }else{
-                            Firestore.firestore().collection("users").document(auth!.user.uid).setData(["fcmToken":fcmToken], merge: true)
-                        }
-                    }
-                }
                 let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
                 let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
                 vc.selectedIndex = 0
                 self.present(vc, animated: false, completion: nil)
-                
             }
         }
     }

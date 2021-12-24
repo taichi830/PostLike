@@ -27,7 +27,6 @@ final class ProfileEditViewController: UIViewController {
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
     
     
-    private var updatedRoomImage = UIImage()
     private var updatedUserImage = UIImage()
     private var roomDetailInfo:Contents?
     var passedRoomName = String()
@@ -59,7 +58,6 @@ final class ProfileEditViewController: UIViewController {
             personView.image = UIImage()
         }
         userNameEditLabel.text = passedUserName
-        
     }
     
     
@@ -96,57 +94,33 @@ final class ProfileEditViewController: UIViewController {
     }
     
     
+    
     @IBAction private func changeButton(_ sender: Any) {
         startIndicator()
         if updatedUserImage == UIImage() {
-            updateProfile(userImageUrl: passedUserImage)
+            updateProfile(userImageUrl: self.passedUserImage)
         }else{
             createUserStrage()
-            
         }
     }
-    
-    
-    
-    
-    
-    private func deleteStrage(){
-        let storage = Storage.storage()
-        let imageRef = NSString(string: passedUserImage)
-        let desertRef = storage.reference(forURL: imageRef as String)
-        desertRef.delete { err in
-            if err != nil {
-                print("false")
-                return
-            }else{
-                print("success")
-            }
-        }
-    }
-    
-    
-    
     
     
     
     private func updateProfile(userImageUrl:String){
-        let docData = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
-        let uid = Auth.auth().currentUser!.uid
-        
-        Firestore.firestore().collection("users").document(uid).collection("rooms").document(self.passedDocumentID).setData(docData, merge: true){(err) in
-            
-            if let err = err {
-                print("firestoreへの保存に失敗しました。\(err)")
+        let dic = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
+        Firestore.updateProfileInfo(dic: dic, roomID: passedDocumentID) { bool in
+            if bool == false {
                 let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
                     self.dismissIndicator()
                 }
                 self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 return
-            }
-            print("firestoreへの保存に成功しました。")
-            self.dismiss(animated: true) {
-                if self.passedUserImage != "" {
-                    self.deleteStrage()
+            }else{
+                print("firestoreへの保存に成功しました。")
+                self.dismiss(animated: true) {
+                    if self.passedUserImage != "" {
+                        Storage.deleteStrage(roomImageUrl: self.passedUserImage)
+                    }
                 }
             }
         }
@@ -155,32 +129,8 @@ final class ProfileEditViewController: UIViewController {
     
     
     private func createUserStrage(){
-        let fileName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("profile_images").child(fileName)
-        guard let updateImage = updatedUserImage.jpegData(compressionQuality: 0.2) else {return}
-        storageRef.putData(updateImage, metadata: nil) { (metadata, error) in
-            if let error = error{
-                print("Firestorageへの保存に失敗しました。\(error)")
-                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.dismissIndicator()
-                }
-                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                return
-            }else{
-                print("Firestorageへの保存に成功しました。")
-                storageRef.downloadURL { (url, error) in
-                    if let error = error {
-                        print("firestorageからのダウンロードに失敗しました。\(error)")
-                        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self.dismissIndicator()
-                        }
-                        self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                        return
-                    }
-                    guard let urlString = url?.absoluteString else{return}
-                    self.updateProfile(userImageUrl: urlString)
-                }
-            }
+        Storage.addUserImageToStrage(userImage: self.updatedUserImage, self: self) { urlString in
+            self.updateProfile(userImageUrl: urlString)
         }
     }
     
