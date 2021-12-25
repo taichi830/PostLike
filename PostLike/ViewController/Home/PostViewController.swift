@@ -173,65 +173,69 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     
-    func createPosts(documentID:String,media:Array<Any>,batch:WriteBatch){
-        let date = Timestamp()
+    func createPosts(uid:String,documentID:String,media:Array<Any>,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
-        let docData = ["userName":passedUserName,"userImage":passedUserImageUrl,"media": media,"text":textView.text!,"createdAt":date,"uid":uid,"documentID":documentID,"roomID":passedDocumentID,"likeCount":0,"commentCount":0] as [String: Any]
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("posts").document(documentID)
-        batch.setData(docData, forDocument: ref)
+        let dic = [
+            "userName":passedUserName,
+            "userImage":passedUserImageUrl,
+            "media": media,
+            "text":textView.text!,
+            "createdAt":Timestamp(),
+            "uid":uid,
+            "documentID":documentID,
+            "roomID":passedDocumentID,
+            "likeCount":0,
+            "commentCount":0
+        ]
+        as [String: Any]
+        Firestore.createPost(roomID: passedDocumentID, documentID: documentID, media: media, dic: dic, batch: batch)
     }
     
     
     //cloud functionのトリガー用
-    func createModeratorPosts(documentID:String,media:Array<Any>,batch:WriteBatch){
-        let date = Timestamp()
+    func createModeratorPosts(uid:String,documentID:String,media:Array<Any>,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
-        let docData = ["createdAt":date,"uid":uid,"roomID":passedDocumentID,"documentID":documentID] as [String : Any]
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("moderatorPosts").document(documentID)
-        batch.setData(docData, forDocument: ref)
+        let dic = [
+            "createdAt":Timestamp(),
+            "uid":uid,
+            "roomID":passedDocumentID,
+            "documentID":documentID
+        ] as [String : Any]
+        Firestore.createModeratorPost(roomID: passedDocumentID, documentID: documentID, dic: dic, batch: batch)
     }
     
     
     //クエリの制限で写真のみを作成順で取得できないため写真を別コレクションで保存
-    func createMediaPosts(documentID:String,media:Array<String>,batch:WriteBatch){
-        let date = Timestamp()
-        let uid = Auth.auth().currentUser!.uid
-        let docData = ["media":media,"createdAt":date,"uid":uid,"roomID":passedDocumentID,"documentID":documentID,"userName":passedUserName,"userImage":passedUserImageUrl,"likeCount":0,"commentCount":0,"text":textView.text!] as [String : Any]
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("mediaPosts").document(documentID)
-        batch.setData(docData, forDocument: ref)
+    func createMediaPosts(uid:String,documentID:String,media:Array<String>,batch:WriteBatch){
+        let dic = [
+            "media":media,
+            "createdAt":Timestamp(),
+            "uid":uid,
+            "roomID":passedDocumentID,
+            "documentID":documentID,
+            "userName":passedUserName,
+            "userImage":passedUserImageUrl,
+            "likeCount":0,
+            "commentCount":0,
+            "text":textView.text ?? ""] as [String : Any]
+        Firestore.createcreateMediaPost(roomID: passedDocumentID, documentID: documentID, dic: dic, batch: batch)
     }
+    
+    
 
     
     
-    
-    func increaseMyPostCount(batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).collection("profilePostCount").document("count")
-        batch.setData(["postCount": FieldValue.increment(1.0)], forDocument: ref, merge: true)
-    }
-    
-    
-    func increaseRoomPostCount(batch:WriteBatch){
-        let ref = Firestore.firestore().collection("rooms").document(passedDocumentID).collection("roomPostCount").document("count")
-        batch.setData(["postCount": FieldValue.increment(1.0)], forDocument: ref, merge: true)
-    }
-    
-    
-    
-    
-    func postBatch(documentID:String){
-        let batch = Firestore.firestore().batch()
-        let uid = Auth.auth().currentUser!.uid
+    func postBatch(uid:String,documentID:String,batch:WriteBatch){
         
         if passedHostUid == uid {
-            createPosts(documentID: documentID, media: [""], batch: batch)
-            increaseMyPostCount(batch: batch)
-            increaseRoomPostCount(batch: batch)
-            createModeratorPosts(documentID: documentID, media: [""], batch: batch)
+            createPosts(uid: uid, documentID: documentID, media: [""], batch: batch)
+            createModeratorPosts(uid: uid, documentID: documentID, media: [""], batch: batch)
+            Firestore.increaseRoomPostCount(uid: uid, roomID: passedDocumentID, batch: batch)
+            Firestore.increaseProfilePostCount(uid: uid, roomID: passedDocumentID, batch: batch)
         }else{
-            createPosts(documentID: documentID, media: [""], batch: batch)
-            increaseMyPostCount(batch: batch)
-            increaseRoomPostCount(batch: batch)
+            createPosts(uid: uid, documentID: documentID, media: [""], batch: batch)
+            Firestore.increaseRoomPostCount(uid: uid, roomID: passedDocumentID, batch: batch)
+            Firestore.increaseProfilePostCount(uid: uid, roomID: passedDocumentID, batch: batch)
         }
         batch.commit { err in
             if let err = err {
@@ -253,67 +257,41 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     
-    func creatFireStorage(documentID:String){
-        for photo in photoArray{
-            guard let posting = photo.jpegData(compressionQuality: 0.3)
-            else{return}
-            let fileName = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("images").child("\(fileName).jpg")
-            let metaData = StorageMetadata()
-            metaData.contentType = "image.jpeg"
-            storageRef.putData(posting, metadata: metaData){(metadata,err) in
-                if let err = err {
-                    print("Storageへの保存に失敗しました。\(err)")
-                    let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                        self.dismissIndicator()
-                    }
-                    self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                    return
+    func creatFireStorage(uid:String,documentID:String,batch:WriteBatch){
+        Storage.addPostImagesToStrage(imagesArray: self.photoArray) { bool, urlStringArray in
+            switch bool {
+            case false:
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                    self.dismiss(animated: true, completion: nil)
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+            case true:
+                if self.passedHostUid == uid {
+                    self.createPosts(uid: uid, documentID: documentID, media: urlStringArray, batch: batch)
+                    self.createModeratorPosts(uid: uid, documentID: documentID, media: urlStringArray, batch: batch)
+                    self.createMediaPosts(uid: uid, documentID: documentID, media: urlStringArray, batch: batch)
+                    Firestore.increaseRoomPostCount(uid: uid, roomID: self.passedDocumentID, batch: batch)
+                    Firestore.increaseProfilePostCount(uid: uid, roomID: self.passedDocumentID, batch: batch)
                 }else{
-                    print("Storageへの保存に成功しました")
-                    storageRef.downloadURL { (url, err) in
-                        if let err = err{
-                            print("ダウンロードに失敗しました。\(err)")
-                            let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                                self.dismissIndicator()
-                                self.dismiss(animated: true, completion: nil)
-                            }
-                            self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                            return
-                        }else{
-                            guard let urlString = url?.absoluteString else{return}
-                            self.photoUrl.append(urlString)
-                            if self.photoUrl.count == self.photoArray.count {
-                                let batch = Firestore.firestore().batch()
-                                let uid = Auth.auth().currentUser!.uid
-                                if self.passedHostUid == uid {
-                                    self.createPosts(documentID: documentID, media: self.photoUrl, batch: batch)
-                                    self.createMediaPosts(documentID: documentID, media: self.photoUrl, batch: batch)
-                                    self.createModeratorPosts(documentID: documentID, media:self.photoUrl, batch: batch)
-                                    self.increaseMyPostCount(batch: batch)
-                                    self.increaseRoomPostCount(batch: batch)
-                                }else{
-                                    self.createPosts(documentID: documentID, media: self.photoUrl, batch: batch)
-                                    self.createMediaPosts(documentID: documentID, media: self.photoUrl, batch: batch)
-                                    self.increaseMyPostCount(batch: batch)
-                                    self.increaseRoomPostCount(batch: batch)
-                                }
-                                batch.commit { err in
-                                    if let err = err {
-                                        print("false\(err)")
-                                        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                                            self.dismissIndicator()
-                                        }
-                                        self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                                        return
-                                    }else{
-                                        print("success")
-                                        self.dismissIndicator()
-                                        self.dismiss(animated: true, completion: nil)
-                                    }
-                                }
-                            }
+                    self.createPosts(uid: uid, documentID: documentID, media: urlStringArray, batch: batch)
+                    self.createMediaPosts(uid: uid, documentID: documentID, media: urlStringArray, batch: batch)
+                    Firestore.increaseRoomPostCount(uid: uid, roomID: self.passedDocumentID, batch: batch)
+                    Firestore.increaseProfilePostCount(uid: uid, roomID: self.passedDocumentID, batch: batch)
+                }
+                batch.commit { err in
+                    if let err = err {
+                        print("false\(err)")
+                        let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self.dismissIndicator()
+                            self.dismiss(animated: true, completion: nil)
                         }
+                        self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                        return
+                    }else{
+                        print("success")
+                        self.dismissIndicator()
+                        self.dismiss(animated: true, completion: nil)
                     }
                 }
             }
@@ -324,8 +302,8 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     
-   
-
+    
+    
     
     
     
@@ -334,11 +312,14 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
         if textView.text != "" || photoArray.isEmpty != true {
             startIndicator()
             textView.resignFirstResponder()
+            let uid = Auth.auth().currentUser!.uid
             let documentID = NSUUID().uuidString
+            let batch = Firestore.firestore().batch()
             if photoArray.isEmpty == true {
-                postBatch(documentID: documentID)
+                postBatch(uid: uid, documentID: documentID, batch: batch)
+                
             }else{
-                creatFireStorage(documentID: documentID)
+                creatFireStorage(uid: uid, documentID: documentID, batch: batch)
             }
         }
     }

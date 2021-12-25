@@ -31,7 +31,7 @@ final class FirstViewController: UIViewController {
             let registerVC = storyboard.instantiateViewController(withIdentifier: "register") as! RegisterViewController
             navigationController?.pushViewController(registerVC, animated: false)
         }else{
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let homeVC = storyboard.instantiateViewController(withIdentifier: "home") as! HomeViewController
             navigationController?.pushViewController(homeVC, animated: false)
             

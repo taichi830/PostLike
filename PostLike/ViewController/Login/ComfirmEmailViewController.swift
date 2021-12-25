@@ -28,32 +28,14 @@ final class ComfirmEmailViewController: UIViewController {
     
     
     @IBAction private func sendEmailAgain(_ sender: Any) {
-        let actionCodeSettings = ActionCodeSettings() //メールリンクの作成方法をFirebaseに伝えるオブジェクト
-        actionCodeSettings.handleCodeInApp = true //ログインをアプリ内で完結させる必要があります
-        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!) //iOSデバイス内でログインリンクを開くアプリのBundle ID
-        //リンクURL
-        var components = URLComponents()
-        components.scheme = "https"
-        #if DEBUG
-        components.host = "postliketest.page.link"
-        #else
-        components.host = "postlike.page.link"
-        #endif //Firebaseコンソールで作成したダイナミックリンクURLドメイン
-        let queryItemEmailName = "email" //URLにemail情報(パラメータ)を追加する
-        let emailTypeQueryItem = URLQueryItem(name: queryItemEmailName, value: passedPassWord)
-        components.queryItems = [emailTypeQueryItem]
-        guard let linkParameter = components.url else { return }
-        actionCodeSettings.url = linkParameter
-        
-        Auth.auth().sendSignInLink(toEmail: passedPassWord, actionCodeSettings: actionCodeSettings) { err in
-            if err != nil {
-                return
-            }else{
-                let confirmVC = self.storyboard?.instantiateViewController(withIdentifier: "confirm") as! ComfirmEmailViewController
-                UserDefaults.standard.set(self.passedPassWord, forKey: "email")
-                UserDefaults.standard.set(self.passedGender, forKey: "gender")
-                UserDefaults.standard.set(self.passedBirthDay, forKey: "birthDay")
-                self.navigationController?.pushViewController(confirmVC, animated: true)
+        Auth.sendSignInLink(email: passedEmailAdress) { bool in
+            switch bool {
+            case false:
+                let alertAction = UIAlertAction(title: "OK", style: .default)
+                self.showAlert(title: "メールの送信に失敗しました", message: "もう一度送信してください", actions: [alertAction])
+            case true:
+                let alertAction = UIAlertAction(title: "OK", style: .default)
+                self.showAlert(title: "メールを送信しました", message: "メールを確認してパスワードを設定してください", actions: [alertAction])
             }
         }
     }

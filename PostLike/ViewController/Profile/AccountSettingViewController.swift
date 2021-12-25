@@ -59,14 +59,7 @@ final class AccountSettingViewController: UIViewController {
     
     
     private func fetchUserInfo(){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).getDocument { snapShot, err in
-            if let err = err {
-                print("false:",err)
-                return
-            }
-            guard let snapShot = snapShot, let dic = snapShot.data() else {return}
-            let userInfo = User(dic: dic)
+        Firestore.fetchUserInfo { userInfo in
             self.userInfo = userInfo
             self.settingMenuTableView.reloadData()
         }

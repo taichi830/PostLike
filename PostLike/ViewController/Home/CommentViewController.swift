@@ -148,14 +148,14 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     @IBAction private func sendButton(_ sender: Any) {
-        if commentTextView.text == "" || commentTextView.text == "コメントを入力する" || self.user == nil{
+        if commentTextView.text == "" || commentTextView.text == "コメントを入力する" {
             return
         }else{
-            let batch = Firestore.firestore().batch()
             let documentID = NSUUID().uuidString
-            createComment(batch: batch, documentID: documentID)
+            let batch = Firestore.firestore().batch()
+            createComment(documentID: documentID, batch: batch)
             incrementCommentCount(batch: batch)
-            giveNotification(batch: batch, documentID: documentID)
+            giveNotification(documentID: documentID,batch: batch)
             batch.commit { err in
                 if let err = err {
                     print("false\(err)")
@@ -176,26 +176,19 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     private func fetchUserInfo(){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedRoomID).getDocument { (snapShot, err) in
-            if let err = err {
-                print("情報の取得に失敗しました。\(err)")
-                return
-            }
-            guard let snapShot = snapShot,let dic = snapShot.data() else {return}
-            let user = Contents.init(dic: dic)
-            self.user = user
-            
-            if user.userImage != "" {
-                self.myImage.sd_setImage(with: URL(string: user.userImage), completed: nil)
-                self.personImage2.image = UIImage()
-            }
-            if user.isJoined == false {
+        Firestore.fetchUserInfo(roomID: passedRoomID) { userInfo in
+            if userInfo.isJoined == false {
                 self.commentTextView.text = "ルームに参加するとコメントできます"
                 self.commentTextView.isEditable = false
                 self.sendButton.isEnabled = false
                 self.sendButton.setTitleColor(.lightGray, for: .normal)
             }
+            self.user = userInfo
+            if userInfo.userImage != "" {
+                self.myImage.sd_setImage(with: URL(string: userInfo.userImage), completed: nil)
+                self.personImage2.image = UIImage()
+            }
+            
         }
     }
     
@@ -204,45 +197,52 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
 
-    private func createComment(batch:WriteBatch,documentID:String){
+    private func createComment(documentID:String,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
-        let userName = user!.userName
-        let userImage = user!.userImage
-        let date = Timestamp()
-        let docData = ["userName":userName,"userImage":userImage,"text":commentTextView.text!,"createdAt":date,"documentID":documentID,"roomID":passedRoomID,"postID":passedDocumentID,"uid":uid,"likeCount":0,"commentCount":0] as [String:Any]
-        let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedRoomID).collection("comments").document(documentID)
-        batch.setData(docData, forDocument: ref)
+        let dic =  [
+            "userName":user?.userName ?? "",
+            "userImage":user?.userImage ?? "",
+            "text":commentTextView.text ?? "",
+            "createdAt":Timestamp(),
+            "documentID":documentID,
+            "roomID":passedRoomID,
+            "postID":passedDocumentID,
+            "uid":uid,
+            "likeCount":0,
+            "commentCount":0]
+            as [String:Any]
+        Firestore.createComment(uid: uid, roomID: passedRoomID, documentID: documentID, dic: dic, batch: batch)
+
     }
     
     
     
     
     private func incrementCommentCount(batch:WriteBatch){
-        let profileRef = Firestore.firestore().collection("users").document(passedUid).collection("rooms").document(passedRoomID).collection("posts").document(passedDocumentID)
-        batch.setData(["commentCount": FieldValue.increment(1.0)], forDocument: profileRef, merge: true)
-        
+        Firestore.increaseCommentCount(uid: passedUid, roomID: passedRoomID, documentID: passedDocumentID, batch: batch)
         if passedMediaArray[0] != "" {
-            let mediaPostRef = Firestore.firestore().collection("rooms").document(passedRoomID).collection("mediaPosts").document(passedDocumentID)
-            batch.updateData(["commentCount": FieldValue.increment(1.0)], forDocument: mediaPostRef)
+            Firestore.increaseMediaPostCommentCount(roomID: passedRoomID, documentID: passedDocumentID, batch: batch)
         }
-        
-        
     }
     
     
     
-    private func giveNotification(batch:WriteBatch,documentID:String){
-        let uid = passedUid
-        let myUid = Auth.auth().currentUser!.uid
-        let postID = passedDocumentID
-        let docData = ["userName":user!.userName,"userImage":user!.userImage,"uid":myUid,"roomName":passedRoomName,"createdAt":Timestamp(),"postID":postID,"roomID":passedRoomID,"documentID":documentID,"type":"comment"] as [String:Any]
-        let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
-        
-        if uid == myUid {
-            return
-        }else{
-            batch.setData(docData, forDocument: ref, merge: true)
-        }
+    private func giveNotification(documentID:String,batch:WriteBatch){
+        let uid = Auth.auth().currentUser!.uid
+        let dic = [
+            "userName":user?.userName ?? "",
+            "userImage":user?.userImage ?? "",
+            "uid":uid,
+            "roomName":passedRoomName,
+            "createdAt":Timestamp(),
+            "postID":passedDocumentID,
+            "roomID":passedRoomID,
+            "documentID":documentID,
+            "type":"comment"] as [String:Any]
+        Firestore.createNotification(uid: passedUid, myuid: uid, documentID: documentID, dic: dic, batch: batch)
+//        if uid != passedUid {
+//            
+//        }
     }
     
     
@@ -250,24 +250,17 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     private func fetchComments(){
         self.commentsArray.removeAll()
-        Firestore.firestore().collectionGroup("comments").whereField("postID", isEqualTo: passedDocumentID).order(by: "createdAt", descending: true).getDocuments { (querySnapShot, err) in
-            if let err = err {
-                print("取得に失敗しました\(err)")
-                return
-            }
-            for document in querySnapShot!.documents {
-                let dic = document.data()
-                let comment = Contents.init(dic: dic)
-                self.commentsArray.append(comment)
-            }
-            if self.commentsArray.isEmpty == true {
+        Firestore.fetchComments(documentID: passedDocumentID) { comments in
+            if comments.isEmpty == true {
                 self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
                 self.label.text = "コメントがありません"
                 self.commentTableView.addSubview(self.label)
             }else {
                 self.label.text = ""
+                self.commentsArray.append(contentsOf: comments)
+                self.commentTableView.reloadData()
             }
-            self.commentTableView.reloadData()
+            
         }
     }
     
