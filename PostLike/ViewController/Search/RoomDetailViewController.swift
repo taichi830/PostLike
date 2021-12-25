@@ -41,13 +41,22 @@ final class RoomDetailViewController: UIViewController {
     
     private var label = MessageLabel()
     private var contentsArray = [Contents]()
-    private var reportedUsersArray = [Contents]()
-    private var reportedContentsArray = [Contents]()
+//    private var reportedUsersArray = [Contents]()
+//    private var reportedContentsArray = [Contents]()
     private var likeContentsArray = [Contents]()
     private var joinedRoom:Contents?
     private var roomInfo:Room?
-    private var memberCount:Room?
+//    private var memberCount:Room?
     private var lastDocument:QueryDocumentSnapshot?
+    private lazy var indicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.center = roomImageView.center
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.hidesWhenStopped = true
+        roomImageView.addSubview(indicator)
+        return indicator
+    }()
     
     
     
@@ -59,6 +68,9 @@ final class RoomDetailViewController: UIViewController {
         self.contentsTableView.dataSource = self
         self.contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
         self.contentsTableView.contentInsetAdjustmentBehavior = .never
+        let refleshControl = CustomRefreshControl()
+        self.contentsTableView.refreshControl = refleshControl
+        self.contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
         
         backButtonBackView.layer.cornerRadius = 15
         dotButtonBackView.layer.cornerRadius = 15
@@ -73,10 +85,13 @@ final class RoomDetailViewController: UIViewController {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
         contentsTableView.addGestureRecognizer(swipeGesture)
         
+        roomName.adjustsFontSizeToFitWidth = true
+        roomName.minimumScaleFactor = 0.9
         
+        self.headerView.roomName.adjustsFontSizeToFitWidth = true
+        self.headerView.roomName.minimumScaleFactor = 0.7
         
         fetchRoomInfo()
-        
         
     }
     
@@ -101,16 +116,29 @@ final class RoomDetailViewController: UIViewController {
     
     
     
+    
+    @objc private func updateContents(){
+        indicator.startAnimating()
+        self.contentsArray.removeAll()
+        self.likeContentsArray.removeAll()
+        fetchContents {
+            self.contentsTableView.refreshControl?.endRefreshing()
+            self.indicator.stopAnimating()
+            self.contentsTableView.reloadData()
+        }
+    }
+    
+    
+    
+    
+    
     private func setupHeaderView(){
         if let tableHeaderView = headerView {
-            tableHeaderView.setNeedsLayout()
-            tableHeaderView.layoutIfNeeded()
             let size = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
             tableHeaderView.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
             self.contentsTableView.tableHeaderView = tableHeaderView
         }
     }
-    
     
     
     
@@ -123,7 +151,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     @IBAction private func reportButton(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
@@ -160,16 +188,18 @@ final class RoomDetailViewController: UIViewController {
     
     
     @objc private func pushedJoinButton(_ sender: UIButton) {
-        if sender.titleLabel?.text == "参加する" && self.joinedRoom?.documentID == ""{
+        if self.joinedRoom?.documentID == "" {
             let modalVC = self.storyboard?.instantiateViewController(withIdentifier: "modal") as! CreateProfileModalViewController
             modalVC.modalPresentationStyle = .custom
             modalVC.transitioningDelegate = self
             modalVC.createProfileDelegate = self
             present(modalVC, animated: true, completion: nil)
-        }else if sender.titleLabel?.text == "参加する" && self.joinedRoom?.documentID != "" && self.joinedRoom?.isJoined == false{
+            
+        }else if self.joinedRoom?.isJoined == false {
             creatProfileWhenHaveCreated()
-        }else if sender.titleLabel?.text == "ルームへ" {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+        } else {
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let enteredVC = storyboard.instantiateViewController(identifier: "enteredVC") as! EnteredRoomContentViewController
             enteredVC.passedDocumentID = roomInfo!.documentID
             navigationController?.pushViewController(enteredVC,animated: false)
@@ -188,15 +218,12 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    
-    
     private func fetchRoomInfo(){
-        Firestore.firestore().collection("rooms").document(passedDocumentID).getDocument { (snapShot, err) in
-            if let err = err {
-                print("false\(err)")
-                return
-            }
-            if snapShot?.data() == nil {
+        Firestore.fetchRoomInfo(roomID: passedDocumentID) { roomInfo in
+            if roomInfo?.documentID == "" {
+                self.fetchContents {
+                    self.contentsTableView.reloadData()
+                }
                 self.headerView.joinButton.isEnabled = false
                 self.headerView.joinButton.backgroundColor = .systemBackground
                 self.headerView.joinButton.setTitleColor(.lightGray, for: .normal)
@@ -204,226 +231,19 @@ final class RoomDetailViewController: UIViewController {
                 self.headerView.roomName.textColor = .lightGray
                 self.headerView.roomName.font = UIFont.systemFont(ofSize: 17, weight: .regular)
                 self.setupHeaderView()
-                self.contentsTableView.reloadData()
             }else {
-                let dic = snapShot!.data()
-                let roomInfo = Room.init(dic: dic!)
                 self.roomInfo = roomInfo
-                self.roomName.text = self.roomInfo?.roomName
-                self.roomName.adjustsFontSizeToFitWidth = true
-                self.roomName.minimumScaleFactor = 0.9
-                self.headerView.roomName.text = self.roomInfo?.roomName
-                self.headerView.roomIntro.text = self.roomInfo?.roomIntro
-                self.headerView.roomName.adjustsFontSizeToFitWidth = true
-                self.headerView.roomName.minimumScaleFactor = 0.7
+                self.roomName.text = roomInfo?.roomName
+                self.headerView.roomName.text = roomInfo?.roomName
+                self.headerView.roomIntro.text = roomInfo?.roomIntro
                 self.setupHeaderView()
-                if self.roomInfo?.roomImage != "" {
-                    self.roomImageView.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
-                    self.headerView.roomImage.sd_setImage(with: URL(string: self.roomInfo!.roomImage), completed: nil)
+                if roomInfo?.roomImage != "" {
+                    self.roomImageView.sd_setImage(with: URL(string: roomInfo?.roomImage ?? ""), completed: nil)
+                    self.headerView.roomImage.sd_setImage(with: URL(string: roomInfo?.roomImage ?? ""), completed: nil)
                 }
                 self.fetchContents {
                     self.contentsTableView.reloadData()
                 }
-            }
-            
-        }
-    }
-    
-    
-    
-    
-    
-    private func fetchReportedContents(documentIDs:[String],_ completed: @escaping() -> Void){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("reports").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { querySnapshot, err in
-            if err != nil {
-                return
-            }else{
-                for document in querySnapshot!.documents{
-                    let dic = document.data()
-                    let reportedContents = Contents.init(dic: dic)
-                    self.reportedContentsArray.append(reportedContents)
-                }
-                let filteredArray = self.reportedUsersArray.filter {
-                    $0.type == "post"
-                }
-                for content in filteredArray {
-                    self.contentsArray.removeAll(where: {$0.documentID == content.documentID})
-                }
-                if self.contentsArray.count == 0{
-                    self.label.setupLabel(view: self.view, y: self.view.center.y)
-                    self.label.text = "投稿がまだありません"
-                    self.contentsTableView.addSubview(self.label)
-                    completed()
-                }else{
-                    completed()
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    private func fetchReportedUsers(uids:[String],_ completed: @escaping() -> Void){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("reports").whereField("uid", in: uids).limit(to: 10).getDocuments { querySnapshot, err in
-            if err != nil {
-                return
-            }else{
-                for document in querySnapshot!.documents{
-                    let dic = document.data()
-                    let reportedUsers = Contents.init(dic: dic)
-                    self.reportedUsersArray.append(reportedUsers)
-                }
-                let filteredArray = self.reportedUsersArray.filter {
-                    $0.type == "user"
-                }
-                for content in filteredArray {
-                    self.contentsArray.removeAll(where: {($0.uid == content.uid)&&($0.roomID == content.roomID)})
-                }
-                if self.contentsArray.count == 0{
-                    self.label.setupLabel(view: self.view, y: self.view.center.y)
-                    self.label.text = "投稿がまだありません"
-                    self.contentsTableView.addSubview(self.label)
-                    completed()
-                }else{
-                    completed()
-                }
-                
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchLikeContents(documentIDs:[String],_ completed: @escaping() -> Void){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("likes").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("情報の取得に失敗しました。\(err)")
-                return
-            }
-            for document in querySnapshot!.documents{
-                let dic = document.data()
-                let likeContents = Contents.init(dic: dic)
-                self.likeContentsArray.append(likeContents)
-            }
-            completed()
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchContents(_ completed: @escaping() -> Void){
-        self.contentsArray.removeAll()
-        Firestore.firestore().collectionGroup("posts").whereField("roomID", isEqualTo: passedDocumentID).order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("取得に失敗しました。\(err)")
-                let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [okAction])
-                return
-            }
-            guard let snapShot = querySnapshot else{
-                return
-            }
-            self.lastDocument = snapShot.documents.last
-            for document in querySnapshot!.documents {
-                let dic = document.data()
-                let content = Contents.init(dic: dic)
-                self.contentsArray.append(content)
-            }
-            if self.contentsArray.count == 0 {
-                self.label.setupLabel(view: self.view, y: self.view.center.y)
-                self.label.text = "投稿がまだありません"
-                self.contentsTableView.addSubview(self.label)
-                self.contentsTableView.reloadData()
-                completed()
-            }else{
-                self.label.text = ""
-                let mappedDocumentArray = self.contentsArray.map { Room -> String in
-                    let documentID = Room.documentID
-                    return documentID
-                }
-                let mappedUidArray = self.contentsArray.map { Room -> String in
-                    let uid = Room.uid
-                    return uid
-                }
-                self.fetchReportedUsers(uids: mappedUidArray) {
-                    self.fetchReportedContents(documentIDs: mappedDocumentArray) {
-                        self.fetchLikeContents(documentIDs: mappedDocumentArray) {
-                            completed()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchMoreContetns(){
-        guard let lastDocument = lastDocument else {return}
-        var contentsArray2 = [Contents]()
-        contentsArray2.removeAll()
-        Firestore.firestore().collectionGroup("posts").whereField("roomID", isEqualTo: passedDocumentID).order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: 10).getDocuments { (querySnapShot, err) in
-            if let err = err{
-                print(err)
-                return
-            }
-            guard let snapShot = querySnapShot!.documents.last else {return}
-            if snapShot == self.lastDocument {
-                return
-            }else{
-                self.lastDocument = snapShot
-            }
-            for document in querySnapShot!.documents{
-                let dic = document.data()
-                let followedContent = Contents.init(dic: dic)
-                self.contentsArray.append(followedContent)
-                contentsArray2.append(followedContent)
-            }
-            
-            if contentsArray2.count != 0 {
-                let mappedDocumentArray = contentsArray2.map { Room -> String in
-                    let documentID = Room.documentID
-                    return documentID
-                }
-                let mappedUidArray = contentsArray2.map { Room -> String in
-                    let uid = Room.uid
-                    return uid
-                }
-                self.fetchReportedUsers(uids: mappedUidArray) {
-                    self.fetchReportedContents(documentIDs: mappedDocumentArray) {
-                        self.fetchLikeContents(documentIDs: mappedDocumentArray) {
-                            self.contentsTableView.reloadData()
-                        }
-                    }
-                }
-                
-                
             }
         }
     }
@@ -434,28 +254,41 @@ final class RoomDetailViewController: UIViewController {
     
     
     private func fetchJoinedRoom(){
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("rooms").document(passedDocumentID).getDocument { snapShot, err in
-            
-            if let err = err {
-                print("情報の取得に失敗しました。\(err)")
-                return
-            }
-            let snapShot = snapShot
-            let dic = snapShot?.data()
-            let followedRoom = Contents.init(dic: dic ?? ["documentID":""])
-            self.joinedRoom = followedRoom
-            
-            if self.joinedRoom?.documentID == self.passedDocumentID && self.joinedRoom?.isJoined == true {
-                self.headerView.joinButton.setTitle("ルームへ", for: .normal)
-                self.headerView.joinButton.setTitleColor(.black, for: .normal)
-                self.headerView.joinButton.backgroundColor = .systemBackground
-                
-            }else{
+        Firestore.isJoinedCheck(roomID: passedDocumentID) { joinedRoom in
+            if joinedRoom == nil {
                 self.headerView.joinButton.setTitle("参加する", for: .normal)
                 self.headerView.joinButton.setTitleColor(.white, for: .normal)
                 self.headerView.joinButton.backgroundColor = .red
+            } else if joinedRoom?.isJoined == false {
+                self.joinedRoom = joinedRoom
+                self.headerView.joinButton.setTitle("参加する", for: .normal)
+                self.headerView.joinButton.setTitleColor(.white, for: .normal)
+                self.headerView.joinButton.backgroundColor = .red
+            } else {
+                self.joinedRoom = joinedRoom
+                self.headerView.joinButton.setTitle("ルームへ", for: .normal)
+                self.headerView.joinButton.setTitleColor(.black, for: .normal)
+                self.headerView.joinButton.backgroundColor = .systemBackground
             }
+        }
+    }
+    
+    
+    
+   
+    
+    
+    
+    
+    
+    private func fetchReportedContents(documentIDs:[String],_ completed: @escaping() -> Void){
+        Firestore.fetchReportedContents(documentIDs: documentIDs) { contents in
+            for content in contents {
+                self.contentsArray.removeAll {
+                    $0.documentID == content.documentID
+                }
+            }
+            completed()
         }
     }
     
@@ -463,25 +296,74 @@ final class RoomDetailViewController: UIViewController {
     
     
     
+    private func fetchReportedUsers(uids:[String],_ completed: @escaping() -> Void){
+        Firestore.fetchReportedUsers(uids: uids) { contents in
+            for content in contents {
+                self.contentsArray.removeAll { element in
+                    element.uid == content.uid && element.roomID == content.roomID
+                }
+            }
+            completed()
+        }
+    }
     
     
     
+    private func fetchLikeContents(documentIDs:[String],_ completed: @escaping() -> Void){
+        Firestore.fetchLikeContents(documentIDs: documentIDs) { contents in
+            self.likeContentsArray.append(contentsOf: contents)
+            completed()
+        }
+    }
     
     
     
+    private func fetchContents(_ completed: @escaping() -> Void){
+        self.contentsArray.removeAll()
+        Firestore.fetchRoomContents(roomID: passedDocumentID, viewController: self) { querySnapshot, contents, uids, documentIDs in
+            if contents.isEmpty == true {
+                self.label.setupLabel(view: self.view, y: self.view.center.y)
+                self.label.text = "投稿がまだありません"
+                self.contentsTableView.addSubview(self.label)
+                self.contentsTableView.reloadData()
+                completed()
+            }else{
+                self.label.text = ""
+                self.lastDocument = querySnapshot.documents.last
+                self.contentsArray.append(contentsOf: contents)
+                self.fetchReportedUsers(uids: uids) {
+                    self.fetchReportedContents(documentIDs: documentIDs) {
+                        self.fetchLikeContents(documentIDs: documentIDs) {
+                            completed()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    private func fetchMoreContetns(){
+        guard let lastDocument = lastDocument else {return}
+        Firestore.fetchMoreRoomContents(roomID: passedDocumentID, lastDocument: lastDocument) { querySnapshot,contents,uids,documentIDs  in
+            if contents.isEmpty == false {
+                self.lastDocument = querySnapshot.documents.last
+                self.contentsArray.append(contentsOf: contents)
+                self.fetchReportedUsers(uids: uids) {
+                    self.fetchReportedContents(documentIDs: documentIDs) {
+                        self.fetchLikeContents(documentIDs: documentIDs) {
+                            self.contentsTableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+   
     
     private func fetchMemberCount(){
-        Firestore.firestore().collection("rooms").document(passedDocumentID).collection("memberCount").document("count").getDocument { snapShot, err in
-            
-            if let err = err {
-                print("false\(err)")
-                return
-            }else{
-                guard let snap = snapShot,let dic = snap.data() else {return}
-                let memberCount = Room.init(dic: dic)
-                self.memberCount = memberCount
-                self.headerView.numberCount.text = "メンバー \(String(describing: self.memberCount!.numberOfMember))人"
-            }
+        Firestore.fetchRoomMemberCount(roomID: passedDocumentID) { memberCount in
+            self.headerView.numberCount.text = "メンバー \(String(describing: memberCount.numberOfMember))人"
         }
     }
     
@@ -558,13 +440,19 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
     //いいねをした時の処理
     private func createLikeContents(row:Int,batch:WriteBatch){
         let myuid = Auth.auth().currentUser!.uid
-        let uid = contentsArray[row].uid
-        let timestamp = Timestamp()
         let documentID = contentsArray[row].documentID
-        let postedAt = contentsArray[row].createdAt
-        let docData = ["media": contentsArray[row].mediaArray,"text":contentsArray[row].text,"userImage":contentsArray[row].userImage,"userName":contentsArray[row].userName,"documentID":documentID,"roomID":passedDocumentID,"createdAt":timestamp,"uid":uid,"postedAt":postedAt,"myUid":myuid] as [String:Any]
-        let ref = Firestore.firestore().collection("users").document(myuid).collection("likes").document(documentID)
-        batch.setData(docData, forDocument: ref, merge: true)
+        let dic = [
+            "media": contentsArray[row].mediaArray,
+            "text":contentsArray[row].text,
+            "userImage":contentsArray[row].userImage,
+            "userName":contentsArray[row].userName,
+            "documentID":documentID,
+            "roomID":passedDocumentID,
+            "createdAt":Timestamp(),
+            "uid":contentsArray[row].uid,
+            "postedAt":contentsArray[row].createdAt,
+            "myUid":myuid] as [String:Any]
+        Firestore.createLikedPost(myuid: myuid, documentID: documentID, dic: dic, batch: batch)
     }
     
     
@@ -573,18 +461,9 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
         let documentID = contentsArray[row].documentID
         let roomID = contentsArray[row].roomID
         let uid = contentsArray[row].uid
-        let myUid = Auth.auth().currentUser!.uid
-        
-        let profileRef = Firestore.firestore().collection("users").document(uid).collection("rooms").document(roomID).collection("posts").document(documentID)
-        batch.setData(["likeCount": FieldValue.increment(1.0)], forDocument: profileRef, merge: true)
-        
-        let likedCountRef = Firestore.firestore().collection("users").document(myUid).collection("rooms").document(roomID).collection("profileLikeCount").document("count")
-        batch.setData(["likeCount": FieldValue.increment(1.0)], forDocument: likedCountRef, merge: true)
-        
-        if contentsArray[row].mediaArray[0] != "" {
-            let mediaPostRef = Firestore.firestore().collection("rooms").document(roomID).collection("mediaPosts").document(documentID)
-            batch.updateData(["likeCount":FieldValue.increment(1.0)], forDocument: mediaPostRef)
-        }
+        let myuid = Auth.auth().currentUser!.uid
+        let mediaUrl = contentsArray[row].mediaArray[0]
+        Firestore.increaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaUrl, batch: batch)
     }
     
     
@@ -594,14 +473,17 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
         let myuid = Auth.auth().currentUser!.uid
         let postID = contentsArray[row].documentID
         let documentID = "\(myuid)-\(postID)"
-        let docData = ["userName":joinedRoom!.userName,"userImage":joinedRoom!.userImage,"uid":myuid,"roomName":self.roomInfo!.roomName,"createdAt":Timestamp(),"postID":postID,"roomID":contentsArray[row].roomID,"documentID":documentID,"type":"like"] as [String:Any]
-        let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
-        
-        if uid == myuid {
-            return
-        }else{
-            batch.setData(docData, forDocument: ref, merge: true)
-        }
+        let dic = [
+            "userName":joinedRoom?.userName ?? "",
+            "userImage":joinedRoom?.userImage ?? "",
+            "uid":myuid,
+            "roomName":roomInfo?.roomName ?? "",
+            "createdAt":Timestamp(),
+            "postID":postID,
+            "roomID":contentsArray[row].roomID,
+            "documentID":documentID,
+            "type":"like"] as [String:Any]
+        Firestore.createNotification(uid: uid,myuid: myuid, documentID: documentID, dic: dic, batch: batch)
     }
     
     
@@ -621,7 +503,7 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
                 print("false\(err)")
                 return
             }else{
-                self.fetchLatestLikeContent()
+                self.likeContentsArray.append(self.contentsArray[row])
             }
         }
     }
@@ -636,8 +518,7 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
     private func deleteLikeContents(row:Int,batch:WriteBatch){
         let uid = Auth.auth().currentUser!.uid
         let documentID = contentsArray[row].documentID
-        let ref = Firestore.firestore().collection("users").document(uid).collection("likes").document(documentID)
-        batch.deleteDocument(ref)
+        Firestore.deleteLikedPost(uid: uid, documentID: documentID, batch: batch)
     }
     
     
@@ -646,18 +527,9 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
         let documentID = contentsArray[row].documentID
         let roomID = contentsArray[row].roomID
         let uid = contentsArray[row].uid
-        let myUid = Auth.auth().currentUser!.uid
-        
-        let profileRef = Firestore.firestore().collection("users").document(uid).collection("rooms").document(roomID).collection("posts").document(documentID)
-        batch.setData(["likeCount": FieldValue.increment(-1.0)], forDocument: profileRef, merge: true)
-        
-        let likedCountRef = Firestore.firestore().collection("users").document(myUid).collection("rooms").document(roomID).collection("profileLikeCount").document("count")
-        batch.setData(["likeCount": FieldValue.increment(-1.0)], forDocument: likedCountRef, merge: true)
-        
-        if contentsArray[row].mediaArray[0] != "" {
-            let mediaPostRef = Firestore.firestore().collection("rooms").document(roomID).collection("mediaPosts").document(documentID)
-            batch.updateData(["likeCount":FieldValue.increment(-1.0)], forDocument: mediaPostRef)
-        }
+        let myuid = Auth.auth().currentUser!.uid
+        let mediaUrl = contentsArray[row].mediaArray[0]
+        Firestore.decreaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaUrl, batch: batch)
         
     }
     
@@ -670,12 +542,7 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
         let myuid = Auth.auth().currentUser!.uid
         let postID = contentsArray[row].documentID
         let documentID = "\(myuid)-\(postID)"
-        let ref = Firestore.firestore().collection("users").document(uid).collection("notifications").document(documentID)
-        if uid == myuid {
-            return
-        }else{
-            batch.deleteDocument(ref)
-        }
+        Firestore.deleteNotification(uid: uid, myuid: myuid, documentID: documentID, batch: batch)
     }
     
     
@@ -695,7 +562,6 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
                 print("false\(err)")
                 return
             }else{
-                
                 self.likeContentsArray.removeAll(where: {$0.documentID == documentID})
                 
             }
@@ -734,7 +600,7 @@ extension RoomDetailViewController:RemoveContentsDelegate{
 
 extension RoomDetailViewController:TableViewCellDelegate{
     func reportButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
@@ -747,7 +613,7 @@ extension RoomDetailViewController:TableViewCellDelegate{
     }
     
     func tappedPostImageView(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
         showImageVC.passedMedia = contentsArray[row].mediaArray
         showImageVC.passedUid = contentsArray[row].uid
@@ -784,7 +650,7 @@ extension RoomDetailViewController:TableViewCellDelegate{
     }
     
     func pushedCommentButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let cLVC = storyboard.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
         cLVC.passedUserImage = contentsArray[row].userImage
         cLVC.passedUserName = contentsArray[row].userName

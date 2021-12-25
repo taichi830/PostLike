@@ -61,7 +61,7 @@ final class SearchViewController: UIViewController {
         headerView.isHidden = true
         resultTableView.tableHeaderView = headerView
         
-       
+        
         createButton.layer.cornerRadius = 15
         createButton.clipsToBounds = true
         createButton.isEnabled = false
@@ -101,31 +101,22 @@ final class SearchViewController: UIViewController {
     
     
     
-   
+    
     
     
     
     private func fetchHistory(){
         self.historyArray.removeAll()
-        let uid = Auth.auth().currentUser!.uid
-        Firestore.firestore().collection("users").document(uid).collection("history").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
-            if let err = err {
-                print("false\(err)")
-                return
-            }
-            for document in querySnapshot!.documents{
-                let dic = document.data()
-                let historyRoom = Contents.init(dic: dic)
-                self.historyArray.append(historyRoom)
-            }
-            self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
-            self.historyTableView.addSubview(self.label)
-            if self.historyArray.isEmpty == true {
+        Firestore.fetchHistroy { contents in
+            if contents.isEmpty == true {
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
+                self.historyTableView.addSubview(self.label)
                 self.label.text = "ルームを検索、作成してみよう"
             }else{
-                self.label.text = ""
+                self.label.removeFromSuperview()
+                self.historyArray.append(contentsOf: contents)
+                self.historyTableView.reloadData()
             }
-            self.historyTableView.reloadData()
         }
     }
     
@@ -177,7 +168,7 @@ extension SearchViewController: UISearchBarDelegate {
         let apiKey = "e66bef3d0dd124854d5137007a5aafc2"
         let indexName = "rooms"
         #endif
-    
+        
         let client = Client(appID: appID, apiKey: apiKey)
         let index = client.index(withName: indexName)
         let query = Query(query: searchText)
@@ -327,18 +318,14 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     
     @objc private func deleteContent(_ sender:UIButton){
-        let uid = Auth.auth().currentUser!.uid
         let documentID = historyArray[-sender.tag].documentID
-        Firestore.firestore().collection("users").document(uid).collection("history").document(documentID).delete { err in
-            if let err = err {
-                print("false\(err)")
-                return
-            }
-            print("success")
+        Firestore.deleteHistory(documentID: documentID) {
             self.historyArray.remove(at: -sender.tag)
             self.historyTableView.reloadData()
             if self.historyArray.isEmpty == true {
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
                 self.label.text = "ルームを検索、作成してみよう"
+                self.historyTableView.addSubview(self.label)
             }
         }
     }
@@ -346,17 +333,12 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     
     private func createHistory(roomImageUrl:String,roomName:String,documentID:String){
-        let uid = Auth.auth().currentUser!.uid
-        let timestamp = Timestamp()
-        let docData = ["roomImage":roomImageUrl,"roomName":roomName,"documentID":documentID,"createdAt":timestamp] as [String : Any]
-        Firestore.firestore().collection("users").document(uid).collection("history").document(documentID).setData(docData){
-            (err) in
-            if let err = err {
-                print("firestoreへの保存に失敗しました。\(err)")
-                return
-            }
-            print("fireStoreへの保存に成功しました。")
-        }
+        let dic = [
+            "roomImage":roomImageUrl,
+            "roomName":roomName,
+            "documentID":documentID,
+            "createdAt":Timestamp()] as [String : Any]
+        Firestore.createHistory(documentID: documentID, dic: dic)
     }
 }
 
