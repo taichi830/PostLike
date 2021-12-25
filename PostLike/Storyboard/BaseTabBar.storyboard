@@ -9,7 +9,7 @@
         <!--Base Tab Bar Controller-->
         <scene sceneID="cT0-Zg-QpX">
             <objects>
-                <tabBarController storyboardIdentifier="baseTab" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2si-NA-Rhe" customClass="BaseTabBarController" customModule="PostLike_" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="baseTab" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2si-NA-Rhe" customClass="BaseTabBarController" customModule="PostLike" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vNp-mn-hgz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -27,10 +27,10 @@
             </objects>
             <point key="canvasLocation" x="-819" y="-172"/>
         </scene>
-        <!--Main-->
+        <!--Home-->
         <scene sceneID="2BG-ia-tMN">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="yNm-D2-3UG" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="Home" id="yNm-D2-3UG" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="4Yl-SM-z9a"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O8S-Z8-ZFB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

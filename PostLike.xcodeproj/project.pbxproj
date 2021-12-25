@@ -50,7 +50,7 @@
 		CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0BE2692659F7E900A419BE /* First.storyboard */; };
 		CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E5572642B00600A2765C /* Profile.storyboard */; };
 		CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5C11FE25E371B100AAF0C0 /* CommentTableViewCell.xib */; };
-		CE012C5226B6EFD4006CC20E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE18882C25205A24001C687C /* Main.storyboard */; };
+		CE012C5226B6EFD4006CC20E /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE18882C25205A24001C687C /* Home.storyboard */; };
 		CE012C5326B6EFD4006CC20E /* RoomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */; };
 		CE012C5526B6EFD4006CC20E /* Notification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E5552642AF6000A2765C /* Notification.storyboard */; };
 		CE199F7526DD159B009F1B7E /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = CE199F7426DCDC59009F1B7E /* index.html */; };
@@ -113,7 +113,7 @@
 		CE12E5532642967D00A2765C /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		CE12E5552642AF6000A2765C /* Notification.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Notification.storyboard; sourceTree = "<group>"; };
 		CE12E5572642B00600A2765C /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
-		CE18882D25205A24001C687C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CE18882D25205A24001C687C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Home.storyboard; sourceTree = "<group>"; };
 		CE18882F25205A25001C687C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE18883425205A25001C687C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE199F7426DCDC59009F1B7E /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 		CE45BEEF267AFD6F00564F3F /* SearchResultHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultHeaderView.swift; sourceTree = "<group>"; };
 		CE488A5C25DEC6A1005012FF /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
 		CE4B637A2670977200BC356F /* DeleteRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRoomViewController.swift; sourceTree = "<group>"; };
-		CE4F960826CCD25B00213900 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		CE4F960826CCD25B00213900 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Home.strings; sourceTree = "<group>"; };
 		CE52CD41256E34970032D661 /* CreateRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomViewController.swift; sourceTree = "<group>"; };
 		CE547B1725F7B9540060D1D0 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		CE5648BB25DA2FE900BE3FEE /* ShowImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageViewController.swift; sourceTree = "<group>"; };
@@ -451,7 +451,7 @@
 				CE12E54F26423A1D00A2765C /* BaseTabBar.storyboard */,
 				CE0BE2692659F7E900A419BE /* First.storyboard */,
 				CE967139265AAE1700E7820F /* Login.storyboard */,
-				CE18882C25205A24001C687C /* Main.storyboard */,
+				CE18882C25205A24001C687C /* Home.storyboard */,
 				CE12E5532642967D00A2765C /* Search.storyboard */,
 				CE12E5552642AF6000A2765C /* Notification.storyboard */,
 				CE12E5572642B00600A2765C /* Profile.storyboard */,
@@ -574,7 +574,7 @@
 				CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */,
 				CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */,
 				CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */,
-				CE012C5226B6EFD4006CC20E /* Main.storyboard in Resources */,
+				CE012C5226B6EFD4006CC20E /* Home.storyboard in Resources */,
 				CE012C5326B6EFD4006CC20E /* RoomCollectionViewCell.xib in Resources */,
 				CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */,
 				CE199F7C26E1C8DD009F1B7E /* GoogleService-Info.Develop.plist in Resources */,
@@ -736,13 +736,13 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		CE18882C25205A24001C687C /* Main.storyboard */ = {
+		CE18882C25205A24001C687C /* Home.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				CE18882D25205A24001C687C /* Base */,
 				CE4F960826CCD25B00213900 /* ja */,
 			);
-			name = Main.storyboard;
+			name = Home.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

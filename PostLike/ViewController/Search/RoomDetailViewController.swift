@@ -151,7 +151,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     @IBAction private func reportButton(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
@@ -199,7 +199,7 @@ final class RoomDetailViewController: UIViewController {
             creatProfileWhenHaveCreated()
             
         } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyboard = UIStoryboard(name: "Home", bundle: nil)
             let enteredVC = storyboard.instantiateViewController(identifier: "enteredVC") as! EnteredRoomContentViewController
             enteredVC.passedDocumentID = roomInfo!.documentID
             navigationController?.pushViewController(enteredVC,animated: false)
@@ -600,7 +600,7 @@ extension RoomDetailViewController:RemoveContentsDelegate{
 
 extension RoomDetailViewController:TableViewCellDelegate{
     func reportButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
@@ -613,7 +613,7 @@ extension RoomDetailViewController:TableViewCellDelegate{
     }
     
     func tappedPostImageView(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
         showImageVC.passedMedia = contentsArray[row].mediaArray
         showImageVC.passedUid = contentsArray[row].uid
@@ -650,7 +650,7 @@ extension RoomDetailViewController:TableViewCellDelegate{
     }
     
     func pushedCommentButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let cLVC = storyboard.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
         cLVC.passedUserImage = contentsArray[row].userImage
         cLVC.passedUserName = contentsArray[row].userName

@@ -146,7 +146,7 @@ final class ProfileViewController: UIViewController {
     
     
     @IBAction private func menuButton(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         let uid = Auth.auth().currentUser!.uid
         modalMenuVC.modalPresentationStyle = .custom
@@ -413,7 +413,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
 //MARK: tableViewのデリゲート処理
 extension ProfileViewController:TableViewCellDelegate{
     func reportButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
@@ -427,7 +427,7 @@ extension ProfileViewController:TableViewCellDelegate{
     }
     
     func tappedPostImageView(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
         showImageVC.passedMedia = contentsArray[row].mediaArray
         showImageVC.passedUid = contentsArray[row].uid
@@ -464,7 +464,7 @@ extension ProfileViewController:TableViewCellDelegate{
     }
     
     func pushedCommentButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let cLVC = storyboard.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
         cLVC.passedUserImage = contentsArray[row].userImage
         cLVC.passedUserName = contentsArray[row].userName
