@@ -47,7 +47,7 @@
 		CE012C4926B6EFD4006CC20E /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE967139265AAE1700E7820F /* Login.storyboard */; };
 		CE012C4A26B6EFD4006CC20E /* SearchResultHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE45BEE82679A94C00564F3F /* SearchResultHeaderView.xib */; };
 		CE012C4B26B6EFD4006CC20E /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEE6A42225C104AA00F6FE06 /* ImageCollectionViewCell.xib */; };
-		CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0BE2692659F7E900A419BE /* First.storyboard */; };
+		CE012C4D26B6EFD4006CC20E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE0BE2692659F7E900A419BE /* LaunchScreen.storyboard */; };
 		CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE12E5572642B00600A2765C /* Profile.storyboard */; };
 		CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE5C11FE25E371B100AAF0C0 /* CommentTableViewCell.xib */; };
 		CE012C5226B6EFD4006CC20E /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE18882C25205A24001C687C /* Home.storyboard */; };
@@ -106,7 +106,7 @@
 		9E7EF7448711919A6EB4D589 /* Pods-PostLike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike.release.xcconfig"; path = "Target Support Files/Pods-PostLike/Pods-PostLike.release.xcconfig"; sourceTree = "<group>"; };
 		B54853F2678F5303418A54F7 /* Pods-PostLike_develop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike_develop.debug.xcconfig"; path = "Target Support Files/Pods-PostLike_develop/Pods-PostLike_develop.debug.xcconfig"; sourceTree = "<group>"; };
 		CE012C5B26B6EFD4006CC20E /* PostLike Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PostLike Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE0BE2692659F7E900A419BE /* First.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = First.storyboard; sourceTree = "<group>"; };
+		CE0BE2692659F7E900A419BE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE12E54E264186E700A2765C /* postLike.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = postLike.entitlements; sourceTree = "<group>"; };
 		CE12E54F26423A1D00A2765C /* BaseTabBar.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BaseTabBar.storyboard; sourceTree = "<group>"; };
 		CE12E55126423CB800A2765C /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
@@ -449,7 +449,7 @@
 			isa = PBXGroup;
 			children = (
 				CE12E54F26423A1D00A2765C /* BaseTabBar.storyboard */,
-				CE0BE2692659F7E900A419BE /* First.storyboard */,
+				CE0BE2692659F7E900A419BE /* LaunchScreen.storyboard */,
 				CE967139265AAE1700E7820F /* Login.storyboard */,
 				CE18882C25205A24001C687C /* Home.storyboard */,
 				CE12E5532642967D00A2765C /* Search.storyboard */,
@@ -571,7 +571,7 @@
 				CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */,
 				CE012C4A26B6EFD4006CC20E /* SearchResultHeaderView.xib in Resources */,
 				CE012C4B26B6EFD4006CC20E /* ImageCollectionViewCell.xib in Resources */,
-				CE012C4D26B6EFD4006CC20E /* First.storyboard in Resources */,
+				CE012C4D26B6EFD4006CC20E /* LaunchScreen.storyboard in Resources */,
 				CE012C4F26B6EFD4006CC20E /* Profile.storyboard in Resources */,
 				CE012C5126B6EFD4006CC20E /* CommentTableViewCell.xib in Resources */,
 				CE012C5226B6EFD4006CC20E /* Home.storyboard in Resources */,
