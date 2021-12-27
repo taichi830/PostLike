@@ -82,6 +82,7 @@
 		CEA19BED26D631C800283E91 /* Array-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* Array-extenshion.swift */; };
 		CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */; };
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
+		CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */; };
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
@@ -171,6 +172,7 @@
 		CEA19BF026D7D70900283E91 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdTableViewCell.swift; sourceTree = "<group>"; };
 		CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NativeAdTableViewCell.xib; sourceTree = "<group>"; };
+		CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeightImageView.swift; sourceTree = "<group>"; };
 		CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalMenuViewController.swift; sourceTree = "<group>"; };
 		CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		CEAA5C812520D56700755F90 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				CE854BDA275B34730089BEF4 /* CommonModal.swift */,
 				CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */,
 				CE1C23CA276C5CE800D3CAC8 /* MessageLabel.swift */,
+				CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */,
 			);
 			path = CustomClass;
 			sourceTree = "<group>";
@@ -687,6 +690,7 @@
 				CEF363272725552D00D5D443 /* CreateProfileModalViewController.swift in Sources */,
 				CE012C1826B6EFD4006CC20E /* ImageCollectionViewCell.swift in Sources */,
 				CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */,
+				CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE854BDB275B34730089BEF4 /* CommonModal.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
