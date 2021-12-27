@@ -42,6 +42,7 @@ final class FlexibleHeightImageView: UIView {
         guard let img = imageView.image else { return }
         let width = vc.view.frame.width
         let height = width * img.size.height / img.size.width
+        //縦長の場合heightを小さくする
         if height >= vc.view.frame.height - 50 {
             let height2 = height - 88
             self.frame = CGRect(x: x, y: vc.view.center.y - height2/2, width: width, height: height2)
