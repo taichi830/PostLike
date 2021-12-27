@@ -45,7 +45,7 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
         super.viewDidLoad()
         setContents()
         createScrollView()
-        
+        pasteImage()
         self.view.addGestureRecognizer(panGesture)
         panGesture.delegate = self
         
@@ -53,17 +53,6 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
         tapGesture.delegate = self
         self.imageScrollView.addGestureRecognizer(tapGesture)
     }
-    
-    
-    
-    
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        fetchImageSize()
-    }
-    
     
     
     
@@ -99,27 +88,6 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     
     
     
-    private func fetchImageSize(){
-        let imageArray = passedMedia.map { String -> UIImage in
-            let url = URL(string: String)
-            do {
-                let data = try Data(contentsOf: url!)
-                let image = UIImage(data: data)
-                return image!
-            }catch let error {
-                print("Error : \(error.localizedDescription)")
-            }
-            return UIImage()
-        }
-        let imageHeight = imageArray[safe: 0]?.size.height ?? CGFloat()
-        let imageWidth = imageArray[safe: 0]?.size.width ?? CGFloat()
-        let height = (imageHeight * self.view.frame.width) / imageWidth
-        let imageHeight2 = imageArray[safe: 1]?.size.height ?? CGFloat()
-        let imageWidth2 = imageArray[safe: 1]?.size.width  ?? 1
-        let height2 = (imageHeight2 * self.view.frame.width) / imageWidth2
-        pasteImage(height: height, height2: height2, width: self.view.frame.width)
-    }
-    
     
     private func createScrollView(){
         let viewHeight = self.view.frame.height - (self.view.safeAreaInsets.top + self.view.safeAreaInsets.bottom)
@@ -133,39 +101,23 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     
     
     
-    private func pasteImage(height: CGFloat,height2:CGFloat,width:CGFloat){
-        let viewHeight = self.view.frame.height - 120
-        let view = UIView()
-        let view2 = UIView()
-       
-        if height >= viewHeight {
-            view.frame = CGRect(x: 0, y: self.view.frame.height/2 - viewHeight/2 , width: self.view.frame.width, height: viewHeight)
-        }else if height2 >= viewHeight{
-            view2.frame = CGRect(x: self.view.frame.width, y: self.view.frame.height/2 - viewHeight/2 , width: self.view.frame.width, height: viewHeight)
-        }else{
-            view.frame = CGRect(x: 0, y: self.view.frame.height/2 - height/2 , width: width, height: height)
-            view2.frame = CGRect(x: self.view.frame.width, y: self.view.frame.height/2 - height2/2 , width: width, height: height2)
-        }
-        
+    private func pasteImage(){
         if passedMedia.count == 1 {
-            let image1 = UIImageView(frame: view.frame)
-            image1.sd_setImage(with: URL(string: passedMedia[0] ), completed: nil)
-            image1.contentMode = .scaleAspectFill
-            imageScrollView.addSubview(image1)
-        }
-        
-        if passedMedia.count == 2 {
-            let image1 = UIImageView(frame:  view.frame)
-            image1.sd_setImage(with: URL(string: passedMedia[0]), completed: nil)
-            image1.contentMode = .scaleAspectFill
-            image1.clipsToBounds = true
-            imageScrollView.addSubview(image1)
+            let fImageView = FlexibleHeightImageView()
+            fImageView.imageUrl = passedMedia[0]
+            fImageView.x = 0
+            imageScrollView.addSubview(fImageView)
             
-            let image2 = UIImageView(frame: view2.frame)
-            image2.sd_setImage(with: URL(string: passedMedia[1]), completed: nil)
-            image2.contentMode = .scaleAspectFill
-            image2.clipsToBounds = true
-            imageScrollView.addSubview(image2)
+        } else if passedMedia.count == 2 {
+            let firstImageView = FlexibleHeightImageView()
+            firstImageView.imageUrl = passedMedia[0]
+            firstImageView.x = 0
+            imageScrollView.addSubview(firstImageView)
+            
+            let secondImageView = FlexibleHeightImageView()
+            secondImageView.imageUrl = passedMedia[1]
+            secondImageView.x = self.view.frame.width
+            imageScrollView.addSubview(secondImageView)
         }
     }
     
@@ -198,7 +150,7 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
         
         if panGesture.state == .ended  {
             self.imageScrollView.isScrollEnabled = true
-            if panGesture.velocity(in: self.imageScrollView).y >= 1000 && self.imageScrollView.frame.origin.y >= 50{
+            if panGesture.velocity(in: self.imageScrollView).y >= 1000 && self.imageScrollView.frame.origin.y >= 50 {
                 self.dismiss(animated: true, completion: nil)
             }else{
                 UIView.animate(withDuration: 0.2, delay: 0, options: .transitionCurlUp, animations: {
@@ -207,7 +159,6 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
                 }, completion: { (finished: Bool) in
                     self.backView.alpha = 1.0
                 })
-                
             }
         }
         panGesture.velocity(in: self.imageScrollView)
