@@ -113,7 +113,13 @@ final class PostTableViewCell: UITableViewCell{
             postImageView2.isHidden = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
             singlePostImageView.isHidden = false
-            singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String), completed: nil)
+            singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String)) { image, err, _, _ in
+                if err == nil {
+                    let height = image!.size.height * self.singlePostImageView.frame.size.width / image!.size.width
+                    self.underHeight.constant = height
+                    self.layoutIfNeeded()
+                }
+            }
             singlePostImageView.addGestureRecognizer(tapGesture)
         }else if contents.mediaArray.count == 2 {
             
