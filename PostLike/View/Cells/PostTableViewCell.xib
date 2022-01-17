@@ -260,8 +260,8 @@
                 <outlet property="reportButton" destination="CXR-aB-Hqf" id="cvf-hA-6CI"/>
                 <outlet property="roomNameLabel" destination="RSZ-u1-Tee" id="VHx-Fo-jBw"/>
                 <outlet property="singlePostImageView" destination="MLp-68-EXv" id="iun-al-lYo"/>
-                <outlet property="underHeight" destination="Ipj-um-vcI" id="6rx-6H-7ga"/>
-                <outlet property="underView" destination="dzU-D5-2Hu" id="Mkb-NN-QuO"/>
+                <outlet property="underHeight" destination="Ipj-um-vcI" id="Kuq-Ea-6c7"/>
+                <outlet property="underView" destination="dzU-D5-2Hu" id="w6g-sc-KJH"/>
                 <outlet property="userImageView" destination="xvn-kZ-v3x" id="jiR-rx-BBk"/>
                 <outlet property="userNameLabel" destination="Tj0-IA-fcS" id="QDo-k9-enh"/>
             </connections>

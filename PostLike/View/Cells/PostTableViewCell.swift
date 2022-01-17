@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 final class PostTableViewCell: UITableViewCell{
     
@@ -72,6 +73,11 @@ final class PostTableViewCell: UITableViewCell{
     }
     
     
+    override func prepareForReuse() {
+        underHeight.constant = 210 * underView.frame.width / 340
+    }
+    
+    
     func setContent(contents:Contents,likeContensArray:[Contents]){
         //ユーザー画像をセット
         if contents.userImage != "" {
@@ -103,7 +109,7 @@ final class PostTableViewCell: UITableViewCell{
         if contents.mediaArray[0] == "" {
             underHeight.constant = 0
         }else{
-            underHeight.constant = 210 * underView.frame.width / 339
+            underHeight.constant = 210 * underView.frame.width / 340
         }
         
         
@@ -117,7 +123,6 @@ final class PostTableViewCell: UITableViewCell{
                 if err == nil {
                     let height = image!.size.height * self.singlePostImageView.frame.size.width / image!.size.width
                     self.underHeight.constant = height
-                    self.layoutIfNeeded()
                 }
             }
             singlePostImageView.addGestureRecognizer(tapGesture)
