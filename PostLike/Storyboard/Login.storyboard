@@ -29,6 +29,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6HW-Hn-bs8">
                                 <rect key="frame" x="0.0" y="181" width="375" height="450"/>
                                 <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon" translatesAutoresizingMaskIntoConstraints="NO" id="KOL-0u-hcT">
+                                        <rect key="frame" x="157.66666666666666" y="22" width="60" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="J2I-Pi-Jhk"/>
+                                            <constraint firstAttribute="height" constant="56" id="aQ1-pc-ocj"/>
+                                        </constraints>
+                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PostLikeへようこそ!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m9G-DC-jpe">
                                         <rect key="frame" x="16" y="86" width="343" height="71"/>
                                         <constraints>
@@ -38,41 +45,56 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtG-sg-Lk2">
-                                        <rect key="frame" x="16" y="200" width="343" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="JdK-Bo-AEE">
+                                        <rect key="frame" x="16" y="202" width="343" height="190"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjK-Rt-ANr">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="Hq1-ar-Tbp"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                <state key="normal" title="Appleで登録">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapRegisterWithAppleButton:" destination="fzG-U9-UxR" eventType="touchUpInside" id="klQ-Tx-eFz"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtG-sg-Lk2">
+                                                <rect key="frame" x="0.0" y="70" width="343" height="50"/>
+                                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="E8Q-Xf-F7K"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <state key="normal" title="メールアドレスで登録">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="createAccount:" destination="fzG-U9-UxR" eventType="touchUpInside" id="SmL-7z-7g2"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9o-zJ-K3n">
+                                                <rect key="frame" x="0.0" y="140" width="343" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="bwi-3Z-IyB"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                <state key="normal" title="ログイン">
+                                                    <color key="titleColor" systemColor="labelColor"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="login:" destination="fzG-U9-UxR" eventType="touchUpInside" id="8hg-AR-KEp"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="E8Q-Xf-F7K"/>
+                                            <constraint firstAttribute="height" constant="190" id="ieQ-D8-6x0"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                        <state key="normal" title="アカウントを新規登録">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="createAccount:" destination="fzG-U9-UxR" eventType="touchUpInside" id="SmL-7z-7g2"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9o-zJ-K3n">
-                                        <rect key="frame" x="16" y="279" width="343" height="50"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="bwi-3Z-IyB"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                        <state key="normal" title="ログイン">
-                                            <color key="titleColor" systemColor="labelColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="login:" destination="fzG-U9-UxR" eventType="touchUpInside" id="8hg-AR-KEp"/>
-                                        </connections>
-                                    </button>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon" translatesAutoresizingMaskIntoConstraints="NO" id="KOL-0u-hcT">
-                                        <rect key="frame" x="157.66666666666666" y="22" width="60" height="56"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="J2I-Pi-Jhk"/>
-                                            <constraint firstAttribute="height" constant="56" id="aQ1-pc-ocj"/>
-                                        </constraints>
-                                    </imageView>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -81,13 +103,10 @@
                                     <constraint firstItem="m9G-DC-jpe" firstAttribute="leading" secondItem="6HW-Hn-bs8" secondAttribute="leading" constant="16" id="4ce-9Q-7H5"/>
                                     <constraint firstAttribute="height" constant="450" id="8nM-q3-Zxi"/>
                                     <constraint firstAttribute="trailing" secondItem="m9G-DC-jpe" secondAttribute="trailing" constant="16" id="Ajo-wJ-xTF"/>
-                                    <constraint firstAttribute="trailing" secondItem="q9o-zJ-K3n" secondAttribute="trailing" constant="16" id="JqO-W6-FAs"/>
-                                    <constraint firstItem="dtG-sg-Lk2" firstAttribute="leading" secondItem="6HW-Hn-bs8" secondAttribute="leading" constant="16" id="KAK-aD-zG5"/>
-                                    <constraint firstAttribute="trailing" secondItem="dtG-sg-Lk2" secondAttribute="trailing" constant="16" id="LHd-Sx-0VW"/>
-                                    <constraint firstItem="dtG-sg-Lk2" firstAttribute="top" secondItem="m9G-DC-jpe" secondAttribute="bottom" constant="43" id="TfO-NR-Pp6"/>
-                                    <constraint firstAttribute="bottom" secondItem="q9o-zJ-K3n" secondAttribute="bottom" constant="121" id="ouv-Pw-z1O"/>
-                                    <constraint firstItem="q9o-zJ-K3n" firstAttribute="top" secondItem="dtG-sg-Lk2" secondAttribute="bottom" constant="29" id="uDb-zm-sh8"/>
-                                    <constraint firstItem="q9o-zJ-K3n" firstAttribute="leading" secondItem="6HW-Hn-bs8" secondAttribute="leading" constant="16" id="xuK-U7-LdK"/>
+                                    <constraint firstAttribute="trailing" secondItem="JdK-Bo-AEE" secondAttribute="trailing" constant="16" id="MhG-Hw-pLm"/>
+                                    <constraint firstItem="JdK-Bo-AEE" firstAttribute="top" secondItem="m9G-DC-jpe" secondAttribute="bottom" constant="45" id="OxU-tu-525"/>
+                                    <constraint firstItem="JdK-Bo-AEE" firstAttribute="leading" secondItem="6HW-Hn-bs8" secondAttribute="leading" constant="16" id="gOg-Uk-Gxb"/>
+                                    <constraint firstItem="m9G-DC-jpe" firstAttribute="top" secondItem="KOL-0u-hcT" secondAttribute="bottom" constant="8" id="zJE-uJ-tb8"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -109,6 +128,7 @@
                         <outlet property="backView" destination="6HW-Hn-bs8" id="5kx-0Q-WFi"/>
                         <outlet property="createAccountButton" destination="dtG-sg-Lk2" id="5lu-kj-FQk"/>
                         <outlet property="loginButton" destination="q9o-zJ-K3n" id="Lg0-HZ-IHk"/>
+                        <outlet property="registerWithAppleButton" destination="hjK-Rt-ANr" id="BRs-Gh-AsP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ksY-n1-7Th" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
