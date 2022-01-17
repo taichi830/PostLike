@@ -170,7 +170,7 @@ extension InitialViewController: ASAuthorizationControllerDelegate,ASAuthorizati
         authorizationController.performRequests()
     }
     
-    
+    //ASAuthorizationControllerPresentationContextProviding
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
             guard let window = UIApplication.shared.delegate?.window else {
                 fatalError()
@@ -178,6 +178,7 @@ extension InitialViewController: ASAuthorizationControllerDelegate,ASAuthorizati
             return window!
         }
     
+    //ASAuthorizationControllerDelegate
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
             
             if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
