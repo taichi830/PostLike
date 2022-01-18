@@ -9,7 +9,7 @@
 #import "SDWebImageCompat.h"
 
 /**
- UIImage type for memory cache cost.
+ UIImage category for memory cache cost.
  */
 @interface UIImage (MemoryCacheCost)
 
@@ -19,7 +19,7 @@
  
  For `UIImage`, this method return the single frame bytes size when `image.images` is nil for static image. Return full frame bytes size when `image.images` is not nil for animated image.
  For `NSImage`, this method return the single frame bytes size because `NSImage` does not store all frames in memory.
- @note Note that because of the limitations of type this property can get out of sync if you create another instance with CGImage or other methods.
+ @note Note that because of the limitations of category this property can get out of sync if you create another instance with CGImage or other methods.
  @note For custom animated class conforms to `SDAnimatedImage`, you can override this getter method in your subclass to return a more proper value instead, which representing the current frame's total bytes.
  */
 @property (assign, nonatomic) NSUInteger sd_memoryCost;

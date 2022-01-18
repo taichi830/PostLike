@@ -7,17 +7,21 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseFirestore
 import FirebaseAuth
 import AuthenticationServices
 import CryptoKit
+import GoogleSignIn
 
 final class InitialViewController: UIViewController {
-
+    
     
     @IBOutlet private weak var backView: UIView!
     
     @IBOutlet weak var registerWithAppleButton: UIButton!
+    
+    @IBOutlet weak var registerWithGoogleButton: UIButton!
     
     @IBOutlet private weak var createAccountButton: UIButton!
     
@@ -52,7 +56,12 @@ final class InitialViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        registerWithGoogleButton.layer.cornerRadius = 27
+        registerWithGoogleButton.layer.shadowColor = UIColor.black.cgColor
+        registerWithGoogleButton.layer.shadowRadius = 4
+        registerWithGoogleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        registerWithGoogleButton.layer.shadowOpacity = 0.2
         
         registerWithAppleButton.layer.cornerRadius = 27
         registerWithAppleButton.layer.shadowColor = UIColor.black.cgColor
@@ -85,12 +94,18 @@ final class InitialViewController: UIViewController {
     }
     
     
+    
+    @IBAction func didTapRegisterWithGoogleButton(_ sender: Any) {
+        signUpWithGoogle()
+    }
+    
+    
     @IBAction func didTapRegisterWithAppleButton(_ sender: Any) {
         startSignInWithAppleFlow()
     }
     
     
-
+    
     @IBAction private func createAccount(_ sender: Any) {
         let registerVC = storyboard?.instantiateViewController(withIdentifier: "register") as! RegisterViewController
         navigationController?.pushViewController(registerVC, animated: true)
@@ -101,58 +116,107 @@ final class InitialViewController: UIViewController {
         navigationController?.pushViewController(loginVC, animated: true)
     }
     
-
+    
 }
 
 
+
+
+
+//SignUpWithGoogle
+extension InitialViewController {
+    func signUpWithGoogle() {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { [weak self] user, err in
+            
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: authentication.accessToken)
+            Auth.auth().signIn(with: credential) { auth, err in
+                if let err = err {
+                    print("err:",err)
+                    return
+                }
+                print("成功!!!")
+                let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+                let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+                vc.selectedIndex = 0
+                self?.present(vc, animated: false, completion: nil)
+                
+            }
+            
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+//SignUpWithApple
 extension InitialViewController: ASAuthorizationControllerDelegate,ASAuthorizationControllerPresentationContextProviding {
     
     private func randomNonceString(length: Int = 32) -> String {
-      precondition(length > 0)
-      let charset: [Character] =
-        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-      var result = ""
-      var remainingLength = length
-
-      while remainingLength > 0 {
-        let randoms: [UInt8] = (0 ..< 16).map { _ in
-          var random: UInt8 = 0
-          let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
-          if errorCode != errSecSuccess {
-            fatalError(
-              "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-            )
-          }
-          return random
+        precondition(length > 0)
+        let charset: [Character] =
+            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+        
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError(
+                        "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+                    )
+                }
+                return random
+            }
+            
+            randoms.forEach { random in
+                if remainingLength == 0 {
+                    return
+                }
+                
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
         }
-
-        randoms.forEach { random in
-          if remainingLength == 0 {
-            return
-          }
-
-          if random < charset.count {
-            result.append(charset[Int(random)])
-            remainingLength -= 1
-          }
-        }
-      }
-
-      return result
+        
+        return result
     }
     
     
     @available(iOS 13, *)
     private func sha256(_ input: String) -> String {
-      let inputData = Data(input.utf8)
-      let hashedData = SHA256.hash(data: inputData)
-      let hashString = hashedData.compactMap {
-        String(format: "%02x", $0)
-      }.joined()
-
-      return hashString
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
     }
-
+    
     
     
     @available(iOS 13, *)
@@ -163,7 +227,7 @@ extension InitialViewController: ASAuthorizationControllerDelegate,ASAuthorizati
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.email]
         request.nonce = sha256(nonce)
-
+        
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
@@ -172,49 +236,49 @@ extension InitialViewController: ASAuthorizationControllerDelegate,ASAuthorizati
     
     //ASAuthorizationControllerPresentationContextProviding
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-            guard let window = UIApplication.shared.delegate?.window else {
-                fatalError()
-            }
-            return window!
+        guard let window = UIApplication.shared.delegate?.window else {
+            fatalError()
         }
+        return window!
+    }
     
     //ASAuthorizationControllerDelegate
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-            
-            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                guard let nonce = currentNonce else {
-                    fatalError("Invalid state: A login callback was received, but no login request was sent.")
-                }
-                guard let appleIDToken = appleIDCredential.identityToken else {
-                    print("Unable to fetch identity token")
+        
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                print("Unable to fetch identity token")
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                return
+            }
+            let credential = OAuthProvider.credential(
+                withProviderID: "apple.com",
+                idToken: idTokenString,
+                rawNonce: nonce
+            )
+            Auth.auth().signIn(with: credential) { (authResult, error) in
+                if let error = error {
+                    print(error.localizedDescription)
                     return
                 }
-                guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                    print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
-                    return
-                }
-                let credential = OAuthProvider.credential(
-                    withProviderID: "apple.com",
-                    idToken: idTokenString,
-                    rawNonce: nonce
-                )
-                Auth.auth().signIn(with: credential) { (authResult, error) in
-                    if let error = error {
-                        print(error.localizedDescription)
-                        return
-                    }
-                    print("成功!!!")
-                    let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
-                    let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
-                    vc.selectedIndex = 0
-                    self.present(vc, animated: false, completion: nil)
-                }
+                print("成功!!!")
+                let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+                let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+                vc.selectedIndex = 0
+                self.present(vc, animated: false, completion: nil)
             }
         }
+    }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-            print(error.localizedDescription)
-        }
+        print(error.localizedDescription)
+    }
 }
 
 

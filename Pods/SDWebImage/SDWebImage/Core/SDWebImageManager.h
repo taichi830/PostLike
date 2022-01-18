@@ -74,7 +74,7 @@ typedef void(^SDInternalCompletionBlock)(UIImage * _Nullable image, NSData * _Nu
 @end
 
 /**
- * The SDWebImageManager is the class behind the UIImageView+WebCache type and likes.
+ * The SDWebImageManager is the class behind the UIImageView+WebCache category and likes.
  * It ties the asynchronous downloader (SDWebImageDownloader) with the image cache store (SDImageCache).
  * You can use this class directly to benefit from web image downloading with caching in another context than
  * a UIView.
