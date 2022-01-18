@@ -141,10 +141,10 @@
                     <connections>
                         <outlet property="agreeTextView" destination="K2t-Dw-G4K" id="X7M-cm-Rl9"/>
                         <outlet property="backView" destination="6HW-Hn-bs8" id="5kx-0Q-WFi"/>
-                        <outlet property="createAccountButton" destination="dtG-sg-Lk2" id="5lu-kj-FQk"/>
                         <outlet property="loginButton" destination="q9o-zJ-K3n" id="Lg0-HZ-IHk"/>
-                        <outlet property="registerWithAppleButton" destination="hjK-Rt-ANr" id="BRs-Gh-AsP"/>
-                        <outlet property="registerWithGoogleButton" destination="bbV-5j-EC5" id="yxE-Rd-kga"/>
+                        <outlet property="signUpWithAppleButton" destination="hjK-Rt-ANr" id="BRs-Gh-AsP"/>
+                        <outlet property="signUpWithEmailButton" destination="dtG-sg-Lk2" id="5lu-kj-FQk"/>
+                        <outlet property="signUpWithGoogleButton" destination="bbV-5j-EC5" id="yxE-Rd-kga"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ksY-n1-7Th" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -720,37 +720,68 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ua-Qd-jd9">
-                                <rect key="frame" x="16" y="359.66666666666669" width="343" height="86"/>
+                                <rect key="frame" x="16" y="314.66666666666669" width="343" height="186"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cj3-ii-KG1">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="1"/>
+                                        <rect key="frame" x="0.0" y="45" width="343" height="1"/>
                                         <color key="backgroundColor" systemColor="systemGray5Color"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="sC5-IB-G1U"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cp-Wp-n94">
-                                        <rect key="frame" x="0.0" y="36" width="343" height="50"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="tKc-ls-NjV">
+                                        <rect key="frame" x="0.0" y="81" width="343" height="105"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVN-qz-xfN">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="45"/>
+                                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="45" id="NBy-K9-IFF"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                <state key="normal" title="Googleでログイン">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cp-Wp-n94">
+                                                <rect key="frame" x="0.0" y="60" width="343" height="45"/>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="45" id="6eU-RI-SAh"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                <state key="normal" title="Appleでログイン">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="6eU-RI-SAh"/>
+                                            <constraint firstAttribute="height" constant="105" id="6hV-f5-1Ud"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                        <state key="normal" title="Appleでログイン">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                    </button>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="その他のログイン方法　" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2N-Po-oTG">
+                                        <rect key="frame" x="109.66666666666669" y="35" width="124" height="21"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="124" id="7CO-lg-Rq8"/>
+                                            <constraint firstAttribute="height" constant="21" id="itf-3M-zHV"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="2cp-Wp-n94" firstAttribute="leading" secondItem="9ua-Qd-jd9" secondAttribute="leading" id="20g-KT-c1K"/>
-                                    <constraint firstAttribute="bottom" secondItem="2cp-Wp-n94" secondAttribute="bottom" id="3Bs-Uh-oqF"/>
-                                    <constraint firstAttribute="trailing" secondItem="2cp-Wp-n94" secondAttribute="trailing" id="JVg-jz-zQK"/>
+                                    <constraint firstItem="tKc-ls-NjV" firstAttribute="leading" secondItem="9ua-Qd-jd9" secondAttribute="leading" id="0QB-Hx-Yy1"/>
+                                    <constraint firstAttribute="bottom" secondItem="tKc-ls-NjV" secondAttribute="bottom" id="4fp-2l-VW2"/>
+                                    <constraint firstAttribute="trailing" secondItem="tKc-ls-NjV" secondAttribute="trailing" id="6sN-Dh-ohh"/>
                                     <constraint firstAttribute="trailing" secondItem="cj3-ii-KG1" secondAttribute="trailing" id="JWM-bW-a0q"/>
-                                    <constraint firstAttribute="height" constant="86" id="NIg-zb-RKH"/>
+                                    <constraint firstItem="A2N-Po-oTG" firstAttribute="top" secondItem="9ua-Qd-jd9" secondAttribute="top" constant="35" id="KHo-9I-MF9"/>
+                                    <constraint firstItem="A2N-Po-oTG" firstAttribute="centerX" secondItem="9ua-Qd-jd9" secondAttribute="centerX" id="NFo-H9-jn5"/>
+                                    <constraint firstAttribute="height" constant="186" id="NIg-zb-RKH"/>
                                     <constraint firstItem="cj3-ii-KG1" firstAttribute="leading" secondItem="9ua-Qd-jd9" secondAttribute="leading" id="VJK-4h-xIf"/>
-                                    <constraint firstItem="cj3-ii-KG1" firstAttribute="top" secondItem="9ua-Qd-jd9" secondAttribute="top" id="a7P-Jy-bPs"/>
-                                    <constraint firstItem="2cp-Wp-n94" firstAttribute="top" secondItem="cj3-ii-KG1" secondAttribute="bottom" constant="35" id="biK-l8-1PP"/>
+                                    <constraint firstItem="cj3-ii-KG1" firstAttribute="top" secondItem="9ua-Qd-jd9" secondAttribute="top" constant="45" id="lYd-iM-Dvb"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -771,7 +802,7 @@
                             <constraint firstItem="ntN-hC-cW2" firstAttribute="trailing" secondItem="9ua-Qd-jd9" secondAttribute="trailing" constant="16" id="a13-br-5XM"/>
                             <constraint firstItem="ntN-hC-cW2" firstAttribute="trailing" secondItem="0Cl-Wz-dYk" secondAttribute="trailing" constant="16" id="cdw-8L-jcI"/>
                             <constraint firstItem="KTP-iy-tqf" firstAttribute="top" secondItem="dMt-Pv-YBI" secondAttribute="bottom" constant="20" id="hBO-EM-Kwr"/>
-                            <constraint firstItem="9ua-Qd-jd9" firstAttribute="top" secondItem="KTP-iy-tqf" secondAttribute="bottom" constant="45" id="jTn-Sv-BeJ"/>
+                            <constraint firstItem="9ua-Qd-jd9" firstAttribute="top" secondItem="KTP-iy-tqf" secondAttribute="bottom" id="jTn-Sv-BeJ"/>
                             <constraint firstItem="KTP-iy-tqf" firstAttribute="leading" secondItem="ntN-hC-cW2" secondAttribute="leading" constant="16" id="pzq-wE-mC9"/>
                             <constraint firstItem="ntN-hC-cW2" firstAttribute="trailing" secondItem="dMt-Pv-YBI" secondAttribute="trailing" constant="16" id="sRB-04-d0t"/>
                             <constraint firstItem="dMt-Pv-YBI" firstAttribute="top" secondItem="rgF-tW-Bbb" secondAttribute="bottom" constant="16" id="vLB-bG-GBm"/>
@@ -788,8 +819,9 @@
                         <outlet property="emailTextField" destination="YKw-gx-MVa" id="ZXg-hf-NxD"/>
                         <outlet property="eyeButton" destination="RWj-Ii-zjp" id="Dz5-PF-WfC"/>
                         <outlet property="loginMenuBackView" destination="9ua-Qd-jd9" id="I6z-mo-AiK"/>
-                        <outlet property="loginWithAppleButton" destination="2cp-Wp-n94" id="0A7-kV-zPH"/>
                         <outlet property="passwordTextField" destination="uVY-DM-7Rq" id="Y8D-dg-lzZ"/>
+                        <outlet property="signInWithAppleButton" destination="2cp-Wp-n94" id="0A7-kV-zPH"/>
+                        <outlet property="signInWithGoogleButton" destination="RVN-qz-xfN" id="nK3-0x-9rI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZyM-W8-EA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
