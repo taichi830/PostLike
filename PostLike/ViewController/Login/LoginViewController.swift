@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseFirestore
 import FirebaseAuth
 import AuthenticationServices
 import CryptoKit
 import RxSwift
 import RxCocoa
+import GoogleSignIn
 
 final class LoginViewController: UIViewController{
     
@@ -22,7 +24,8 @@ final class LoginViewController: UIViewController{
     @IBOutlet private weak var alertView: UILabel!
     @IBOutlet private weak var alertLabelHeight: NSLayoutConstraint!
     @IBOutlet private weak var eyeButton: UIButton!
-    @IBOutlet weak var loginWithAppleButton: UIButton!
+    @IBOutlet weak var signInWithAppleButton: UIButton!
+    @IBOutlet weak var signInWithGoogleButton: UIButton!
     @IBOutlet weak var loginMenuBackView: UIView!
     @IBOutlet weak var doneButtonBackView: UIView!
     @IBOutlet weak var buttonConstraint: NSLayoutConstraint!
@@ -44,7 +47,8 @@ final class LoginViewController: UIViewController{
         alertView.layer.cornerRadius = 5
         doneButton.layer.cornerRadius = 20
         
-        loginWithAppleButton.layer.cornerRadius = 27
+        signInWithAppleButton.layer.cornerRadius = 20
+        signInWithGoogleButton.layer.cornerRadius = 20
         
         setupBinds()
         
@@ -162,7 +166,26 @@ final class LoginViewController: UIViewController{
         
         
         
-        loginWithAppleButton.rx.tap
+        doneButton.rx.tap
+            .asDriver()
+            .drive { [weak self] _ in
+                self?.login()
+            }
+            .disposed(by: disposeBag)
+        
+        
+        
+        
+        
+        signInWithGoogleButton.rx.tap
+            .asDriver()
+            .drive { [weak self] _ in
+                self?.signUpWithGoogle()
+            }
+            .disposed(by: disposeBag)
+        
+        
+        signInWithAppleButton.rx.tap
             .asDriver()
             .drive { [weak self] _ in
                 self?.startSignInWithAppleFlow()
@@ -172,12 +195,7 @@ final class LoginViewController: UIViewController{
         
         
         
-        doneButton.rx.tap
-            .asDriver()
-            .drive { [weak self] _ in
-                self?.login()
-            }
-            .disposed(by: disposeBag)
+        
         
     }
     
@@ -234,6 +252,47 @@ final class LoginViewController: UIViewController{
 }
 
 
+//SignInWithGoogle
+extension LoginViewController {
+    private func signUpWithGoogle() {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { [weak self] user, err in
+            
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: authentication.accessToken)
+            Auth.auth().signIn(with: credential) { auth, err in
+                if let err = err {
+                    print("err:",err)
+                    return
+                }
+                print("成功!!!")
+                let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+                let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+                vc.selectedIndex = 0
+                self?.present(vc, animated: false, completion: nil)
+                
+            }
+            
+        }
+    }
+}
+
+
+
+
+//SignInWithApple
 extension LoginViewController:ASAuthorizationControllerDelegate,ASAuthorizationControllerPresentationContextProviding {
     
     

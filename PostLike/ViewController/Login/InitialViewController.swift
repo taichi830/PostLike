@@ -19,11 +19,11 @@ final class InitialViewController: UIViewController {
     
     @IBOutlet private weak var backView: UIView!
     
-    @IBOutlet weak var registerWithAppleButton: UIButton!
+    @IBOutlet weak var signUpWithAppleButton: UIButton!
     
-    @IBOutlet weak var registerWithGoogleButton: UIButton!
+    @IBOutlet weak var signUpWithGoogleButton: UIButton!
     
-    @IBOutlet private weak var createAccountButton: UIButton!
+    @IBOutlet private weak var signUpWithEmailButton: UIButton!
     
     @IBOutlet private weak var loginButton: UIButton!
     
@@ -57,23 +57,23 @@ final class InitialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        registerWithGoogleButton.layer.cornerRadius = 27
-        registerWithGoogleButton.layer.shadowColor = UIColor.black.cgColor
-        registerWithGoogleButton.layer.shadowRadius = 4
-        registerWithGoogleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        registerWithGoogleButton.layer.shadowOpacity = 0.2
+        signUpWithGoogleButton.layer.cornerRadius = 27
+        signUpWithGoogleButton.layer.shadowColor = UIColor.black.cgColor
+        signUpWithGoogleButton.layer.shadowRadius = 4
+        signUpWithGoogleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        signUpWithGoogleButton.layer.shadowOpacity = 0.2
         
-        registerWithAppleButton.layer.cornerRadius = 27
-        registerWithAppleButton.layer.shadowColor = UIColor.black.cgColor
-        registerWithAppleButton.layer.shadowRadius = 4
-        registerWithAppleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        registerWithAppleButton.layer.shadowOpacity = 0.2
+        signUpWithAppleButton.layer.cornerRadius = 27
+        signUpWithAppleButton.layer.shadowColor = UIColor.black.cgColor
+        signUpWithAppleButton.layer.shadowRadius = 4
+        signUpWithAppleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        signUpWithAppleButton.layer.shadowOpacity = 0.2
         
-        createAccountButton.layer.cornerRadius = 27
-        createAccountButton.layer.shadowColor = UIColor.black.cgColor
-        createAccountButton.layer.shadowRadius = 4
-        createAccountButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        createAccountButton.layer.shadowOpacity = 0.2
+        signUpWithEmailButton.layer.cornerRadius = 27
+        signUpWithEmailButton.layer.shadowColor = UIColor.black.cgColor
+        signUpWithEmailButton.layer.shadowRadius = 4
+        signUpWithEmailButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        signUpWithEmailButton.layer.shadowOpacity = 0.2
         
         loginButton.layer.cornerRadius = 27
         loginButton.layer.shadowColor = UIColor.black.cgColor
