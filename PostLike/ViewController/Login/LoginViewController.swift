@@ -9,10 +9,12 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import AuthenticationServices
+import CryptoKit
 import RxSwift
 import RxCocoa
 
-final class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController{
     
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
@@ -20,9 +22,16 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var alertView: UILabel!
     @IBOutlet private weak var alertLabelHeight: NSLayoutConstraint!
     @IBOutlet private weak var eyeButton: UIButton!
+    @IBOutlet weak var loginWithAppleButton: UIButton!
+    @IBOutlet weak var loginMenuBackView: UIView!
+    @IBOutlet weak var doneButtonBackView: UIView!
+    @IBOutlet weak var buttonConstraint: NSLayoutConstraint!
+    
+    
     
     private let loginViewModel = LoginViewModel()
     private let disposeBag = DisposeBag()
+    fileprivate var currentNonce: String?
     
     
     
@@ -31,13 +40,62 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         
-        emailTextField.becomeFirstResponder()
         eyeButton.tintColor = .lightGray
         alertView.layer.cornerRadius = 5
         doneButton.layer.cornerRadius = 20
         
+        loginWithAppleButton.layer.cornerRadius = 27
+        
         setupBinds()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    
+    @objc private func keybordWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String:Any] else {
+            return
+        }
+        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        
+        guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        
+        
+        UIView.animate(withDuration: duration) {
+            self.loginMenuBackView.isHidden = true
+            self.doneButtonBackView.isHidden = false
+            self.buttonConstraint.constant = rect.height
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    
+    @objc private func keybordWillHide(_ notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String:Any] else {
+            return
+        }
+        
+        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        
+        UIView.animate(withDuration: duration) {
+            self.loginMenuBackView.isHidden = false
+            self.doneButtonBackView.isHidden = true
+            self.buttonConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }
+        
+    }
+    
+    
+    
     
     
     @IBAction private func pushEyeButton(_ sender: Any) {
@@ -80,6 +138,9 @@ final class LoginViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        
+        
+        
         passwordTextField.rx.text
             .asDriver()
             .drive { [weak self] text in
@@ -88,6 +149,9 @@ final class LoginViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        
+        
+        
         loginViewModel.validLoginDriver
             .drive { [weak self] validAll in
                 self?.doneButton.isEnabled = validAll
@@ -95,6 +159,15 @@ final class LoginViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        
+        
+        
+        loginWithAppleButton.rx.tap
+            .asDriver()
+            .drive { [weak self] _ in
+                self?.startSignInWithAppleFlow()
+            }
+            .disposed(by: disposeBag)
         
         
         
@@ -158,4 +231,118 @@ final class LoginViewController: UIViewController {
     
     
     
+}
+
+
+extension LoginViewController:ASAuthorizationControllerDelegate,ASAuthorizationControllerPresentationContextProviding {
+    
+    
+    private func randomNonceString(length: Int = 32) -> String {
+      precondition(length > 0)
+      let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+      var result = ""
+      var remainingLength = length
+
+      while remainingLength > 0 {
+        let randoms: [UInt8] = (0 ..< 16).map { _ in
+          var random: UInt8 = 0
+          let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+          if errorCode != errSecSuccess {
+            fatalError(
+              "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+          }
+          return random
+        }
+
+        randoms.forEach { random in
+          if remainingLength == 0 {
+            return
+          }
+
+          if random < charset.count {
+            result.append(charset[Int(random)])
+            remainingLength -= 1
+          }
+        }
+      }
+
+      return result
+    }
+    
+    
+    @available(iOS 13, *)
+    private func sha256(_ input: String) -> String {
+      let inputData = Data(input.utf8)
+      let hashedData = SHA256.hash(data: inputData)
+      let hashString = hashedData.compactMap {
+        String(format: "%02x", $0)
+      }.joined()
+
+      return hashString
+    }
+
+    
+    
+    @available(iOS 13, *)
+    func startSignInWithAppleFlow() {
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.email]
+        request.nonce = sha256(nonce)
+
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    //ASAuthorizationControllerPresentationContextProviding
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+            guard let window = UIApplication.shared.delegate?.window else {
+                fatalError()
+            }
+            return window!
+        }
+    
+    //ASAuthorizationControllerDelegate
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+            
+            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                guard let nonce = currentNonce else {
+                    fatalError("Invalid state: A login callback was received, but no login request was sent.")
+                }
+                guard let appleIDToken = appleIDCredential.identityToken else {
+                    print("Unable to fetch identity token")
+                    return
+                }
+                guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                    print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                    return
+                }
+                let credential = OAuthProvider.credential(
+                    withProviderID: "apple.com",
+                    idToken: idTokenString,
+                    rawNonce: nonce
+                )
+                Auth.auth().signIn(with: credential) { (authResult, error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                        return
+                    }
+                    print("成功!!!")
+                    let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+                    let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+                    vc.selectedIndex = 0
+                    self.present(vc, animated: false, completion: nil)
+                }
+            }
+        }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+            print(error.localizedDescription)
+        }
 }
