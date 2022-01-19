@@ -132,6 +132,7 @@ extension Auth {
             
             if let err = err {
                 print(err)
+                completion(err)
                 return
             }
             
