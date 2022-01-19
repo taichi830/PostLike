@@ -125,37 +125,20 @@ final class InitialViewController: UIViewController {
 
 //SignUpWithGoogle
 extension InitialViewController {
-    func signUpWithGoogle() {
-        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-        
-        // Create Google Sign In configuration object.
-        let config = GIDConfiguration(clientID: clientID)
-        
-        // Start the sign in flow!
-        GIDSignIn.sharedInstance.signIn(with: config, presenting: self) { [weak self] user, err in
-            
+    private func signUpWithGoogle() {
+        guard let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String else {return}
+        self.startIndicator()
+        Auth.signInWithGoogle(vc: self, fcmToken: fcmToken) { [weak self] err in
             if let err = err {
-                print(err)
+                print("err:",err)
                 return
             }
-            
-            guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
-            
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
-                                                           accessToken: authentication.accessToken)
-            Auth.auth().signIn(with: credential) { auth, err in
-                if let err = err {
-                    print("err:",err)
-                    return
-                }
-                print("成功!!!")
-                let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
-                let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
-                vc.selectedIndex = 0
-                self?.present(vc, animated: false, completion: nil)
-                
-            }
-            
+            print("成功!!!")
+            self?.dismissIndicator()
+            let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+            let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+            vc.selectedIndex = 0
+            self?.present(vc, animated: false, completion: nil)
         }
     }
 }
@@ -262,12 +245,15 @@ extension InitialViewController: ASAuthorizationControllerDelegate,ASAuthorizati
                 idToken: idTokenString,
                 rawNonce: nonce
             )
-            Auth.auth().signIn(with: credential) { (authResult, error) in
-                if let error = error {
-                    print(error.localizedDescription)
+            guard let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String else {return}
+            self.startIndicator()
+            Auth.signInWithApple(credential: credential, fcmToken: fcmToken) { bool, err in
+                if let err = err {
+                    print("err:",err)
                     return
                 }
                 print("成功!!!")
+                self.dismissIndicator()
                 let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
                 let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
                 vc.selectedIndex = 0

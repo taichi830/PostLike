@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseAuth
 import FirebaseFirestore
+import GoogleSignIn
 
 extension Auth {
     //確認メールを送る
@@ -42,7 +44,7 @@ extension Auth {
         }
     }
     //ログイン処理
-    static func login(email:String,password:String,completion: @escaping (Bool,Error?) -> Void) {
+    static func signInWithEmail(email:String,password:String,completion: @escaping (Bool,Error?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { (auth, err) in
             if let err = err {
                 completion(false,err)
@@ -99,6 +101,61 @@ extension Auth {
                 completion(true)
             }
         }
+    }
+    //sign_up_with_apple
+    static func signInWithApple(credential:AuthCredential,fcmToken:String,completion: @escaping (Bool,Error?) -> Void) {
+        Auth.auth().signIn(with: credential) { auth, err in
+            if let err = err {
+                print("false:",err)
+                completion(false,err)
+            }else{
+                let dic = ["fcmToken":fcmToken] as [String : Any]
+                Firestore.createUser(uid: auth!.user.uid, dic: dic) { bool, err in
+                    if let err = err {
+                        completion(false,err)
+                    }else{
+                        completion(true,nil)
+                    }
+                }
+            }
+        }
+    }
+    //sign_up_with_google
+    static func signInWithGoogle(vc:UIViewController,fcmToken:String,completion: @escaping (Error?) -> Void) {
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        // Create Google Sign In configuration object.
+        let config = GIDConfiguration(clientID: clientID)
+        
+        // Start the sign in flow!
+        GIDSignIn.sharedInstance.signIn(with: config, presenting: vc) { user, err in
+            
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken,
+                                                           accessToken: authentication.accessToken)
+            Auth.auth().signIn(with: credential) { auth, err in
+                if let err = err {
+                    print("err:",err)
+                    completion(err)
+                }
+                let dic = ["fcmToken":fcmToken] as [String : Any]
+                Firestore.createUser(uid: auth!.user.uid, dic: dic) { bool, err in
+                    if let err = err {
+                        completion(err)
+                    }else{
+                        completion(nil)
+                    }
+                }
+            }
+            
+        }
+        
     }
     
     
