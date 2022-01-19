@@ -10,8 +10,6 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
-import AuthenticationServices
-import CryptoKit
 import GoogleSignIn
 
 final class InitialViewController: UIViewController {
@@ -104,7 +102,6 @@ final class InitialViewController: UIViewController {
     @IBAction func didTapRegisterWithAppleButton(_ sender: Any) {
         signUpWithAppleVC.vc = self
         signUpWithAppleVC.startSignInWithAppleFlow()
-//        startSignInWithAppleFlow()
     }
     
     
@@ -134,6 +131,7 @@ extension InitialViewController {
         Auth.signInWithGoogle(vc: self, fcmToken: fcmToken) { [weak self] err in
             if let err = err {
                 print("err:",err)
+                self?.dismissIndicator()
                 return
             }
             print("成功!!!")
