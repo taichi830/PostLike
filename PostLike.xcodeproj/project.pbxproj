@@ -88,6 +88,7 @@
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */; };
 		CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */; };
+		CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */; };
@@ -183,6 +184,7 @@
 		CEBA3B3A26A4698B00159B12 /* Alert-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert-extenshion.swift"; sourceTree = "<group>"; };
 		CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String-extenshion.swift"; sourceTree = "<group>"; };
 		CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
+		CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWithAppleViewController.swift; sourceTree = "<group>"; };
 		CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
 		CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomEditViewController.swift; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				CEA19BF026D7D70900283E91 /* InitialViewController.swift */,
 				CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */,
 				CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */,
+				CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -728,6 +731,7 @@
 				CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */,
 				CE012C3526B6EFD4006CC20E /* NotificationViewController.swift in Sources */,
 				CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */,
+				CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */,
 				CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */,
 				CE1C23CF276DB44600D3CAC8 /* Firestore.swift in Sources */,
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
