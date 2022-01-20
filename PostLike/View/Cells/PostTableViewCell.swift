@@ -122,7 +122,12 @@ final class PostTableViewCell: UITableViewCell{
             singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String)) { image, err, _, _ in
                 if err == nil {
                     let height = image!.size.height * self.singlePostImageView.frame.size.width / image!.size.width
-                    self.underHeight.constant = height
+                    if height >= 450 {
+                        self.underHeight.constant = 450
+                    }else{
+                        self.underHeight.constant = height
+                    }
+                    
                 }
             }
             singlePostImageView.addGestureRecognizer(tapGesture)
