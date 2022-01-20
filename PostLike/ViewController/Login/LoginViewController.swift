@@ -74,6 +74,7 @@ final class LoginViewController: UIViewController{
             self.loginMenuBackView.isHidden = true
             self.doneButtonBackView.isHidden = false
             self.buttonConstraint.constant = rect.height
+            self.alertLabelHeight.constant = 0
             self.view.layoutIfNeeded()
         }
     }
