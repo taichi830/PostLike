@@ -7,15 +7,24 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+import GoogleSignIn
 
 final class InitialViewController: UIViewController {
-
+    
     
     @IBOutlet private weak var backView: UIView!
-    @IBOutlet private weak var createAccountButton: UIButton!
+    
+    @IBOutlet weak var signUpWithAppleButton: UIButton!
+    
+    @IBOutlet weak var signUpWithGoogleButton: UIButton!
+    
+    @IBOutlet private weak var signUpWithEmailButton: UIButton!
+    
     @IBOutlet private weak var loginButton: UIButton!
+    
     @IBOutlet private weak var agreeTextView: UITextView!{
         didSet{
             agreeTextView.isScrollEnabled = false
@@ -39,22 +48,40 @@ final class InitialViewController: UIViewController {
         }
     }
     
+//    fileprivate var currentNonce: String?
+    private let signUpWithAppleVC = SignUpWithAppleViewController()
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        createAccountButton.layer.cornerRadius = 28
-        createAccountButton.layer.shadowColor = UIColor.black.cgColor
-        createAccountButton.layer.shadowRadius = 4
-        createAccountButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        createAccountButton.layer.shadowOpacity = 0.3
         
-        loginButton.layer.cornerRadius = 30
+        signUpWithGoogleButton.layer.cornerRadius = 27
+        signUpWithGoogleButton.layer.shadowColor = UIColor.black.cgColor
+        signUpWithGoogleButton.layer.shadowRadius = 4
+        signUpWithGoogleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        signUpWithGoogleButton.layer.shadowOpacity = 0.2
+        
+        signUpWithAppleButton.layer.cornerRadius = 27
+        signUpWithAppleButton.layer.shadowColor = UIColor.black.cgColor
+        signUpWithAppleButton.layer.shadowRadius = 4
+        signUpWithAppleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        signUpWithAppleButton.layer.shadowOpacity = 0.2
+        
+        signUpWithEmailButton.layer.cornerRadius = 27
+        signUpWithEmailButton.layer.shadowColor = UIColor.black.cgColor
+        signUpWithEmailButton.layer.shadowRadius = 4
+        signUpWithEmailButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        signUpWithEmailButton.layer.shadowOpacity = 0.2
+        
+        loginButton.layer.cornerRadius = 27
         loginButton.layer.shadowColor = UIColor.black.cgColor
         loginButton.layer.shadowRadius = 4
         loginButton.layer.shadowOffset = CGSize(width: 0, height: 1)
         loginButton.layer.shadowOpacity = 0.2
+        
+        
+        
         
         if Auth.auth().currentUser?.isEmailVerified == false{
             let confirmVC = self.storyboard?.instantiateViewController(withIdentifier: "confirm") as! ComfirmEmailViewController
@@ -66,7 +93,19 @@ final class InitialViewController: UIViewController {
     }
     
     
-
+    
+    @IBAction func didTapRegisterWithGoogleButton(_ sender: Any) {
+        signUpWithGoogle()
+    }
+    
+    
+    @IBAction func didTapRegisterWithAppleButton(_ sender: Any) {
+        signUpWithAppleVC.vc = self
+        signUpWithAppleVC.startSignInWithAppleFlow()
+    }
+    
+    
+    
     @IBAction private func createAccount(_ sender: Any) {
         let registerVC = storyboard?.instantiateViewController(withIdentifier: "register") as! RegisterViewController
         navigationController?.pushViewController(registerVC, animated: true)
@@ -77,8 +116,34 @@ final class InitialViewController: UIViewController {
         navigationController?.pushViewController(loginVC, animated: true)
     }
     
-
+    
 }
+
+
+
+
+
+//SignUpWithGoogle
+extension InitialViewController {
+    private func signUpWithGoogle() {
+        guard let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String else {return}
+        self.startIndicator()
+        Auth.signInWithGoogle(vc: self, fcmToken: fcmToken) { [weak self] err in
+            if let err = err {
+                print("err:",err)
+                self?.dismissIndicator()
+                return
+            }
+            print("成功!!!")
+            self?.dismissIndicator()
+            let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+            let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+            vc.selectedIndex = 0
+            self?.present(vc, animated: false, completion: nil)
+        }
+    }
+}
+
 
 
 extension InitialViewController: UITextViewDelegate {
