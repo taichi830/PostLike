@@ -293,25 +293,9 @@ extension CommentViewController: UITableViewDelegate,UITableViewDataSource{
         let comment = cell.commentLabel
         comment?.text = commentsArray[indexPath.row].text
         
-        let createTime = cell.timeLabel!
-        let timestamp = commentsArray[indexPath.row].createdAt
-        let dt = timestamp.dateValue()
-        let dt2 = Date()
-        let cal = Calendar(identifier: .gregorian)
-        let diff = cal.dateComponents([.day,.hour,.minute,.second], from: dt, to: dt2)
-        let day = diff.day
-        let hour = diff.hour
-        let minute = diff.minute
-        let second = diff.second
-        if minute == 0 {
-            createTime.text = "\(second?.description ?? "")秒前"
-        }else if hour == 0 && minute != 0{
-            createTime.text = "\(minute?.description ?? "")分前"
-        }else if day == 0 && hour != 0 {
-            createTime.text = "\(hour?.description ?? "")時間前"
-        }else if day != 0 {
-            createTime.text = "\(day?.description ?? "")日前"
-        }
+        let createdAtLabel = cell.timeLabel!
+        let createdAt = commentsArray[indexPath.row].createdAt.dateValue()
+        createdAtLabel.text = UILabel().createdAtString(createdAt: createdAt)
         
         return cell
         
