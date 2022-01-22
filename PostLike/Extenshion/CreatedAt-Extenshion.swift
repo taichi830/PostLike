@@ -10,9 +10,8 @@ import Foundation
 import UIKit
 
 extension UILabel {
-    func dateString(dateValue:Date) -> String {
+    func createdAtString(createdAt:Date) -> String {
         let now = Date()
-        let createdAt = dateValue
         let diff = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: createdAt, to: now)
         if diff.year == 0 && diff.month == 0 && diff.day == 0 && diff.hour == 0 && diff.minute == 0 && diff.second != 0 {
           return "\(diff.second ?? 0)秒前"
