@@ -92,6 +92,7 @@
 		CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */; };
 		CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */; };
 		CECA9F1F279BD3CD0059939B /* PostLikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */; };
+		CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */; };
@@ -214,6 +215,7 @@
 		CECA9F1C279BD3CD0059939B /* PostLikeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PostLikeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeTests.swift; sourceTree = "<group>"; };
 		CECA9F20279BD3CD0059939B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatedAt-Extenshion.swift"; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
 		CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowIndicator-extenshion.swift"; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */,
 				CE2E27E0276AD36E002D0E41 /* NavigationPush-extenshion.swift */,
 				CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */,
+				CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -904,6 +907,7 @@
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
+				CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
 				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,
