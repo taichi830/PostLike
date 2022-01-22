@@ -7,27 +7,47 @@
 //
 
 import XCTest
+@testable import PostLike_Dev
 
 class PostLikeTests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func diff(timeInterval: TimeInterval) -> String {
+        let now = Date()
+        let date = Date(timeInterval: timeInterval, since: now)
+        let text = UILabel().dateString(dateValue: date)
+        return text
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testASecondAgo() throws {
+        XCTAssertEqual(diff(timeInterval: -1), "1秒前")
     }
-
+    
+    func testAMinuteAgo() {
+        XCTAssertEqual(diff(timeInterval: -60), "1分前")
+    }
+    
+    func testAnHourAgo() {
+        XCTAssertEqual(diff(timeInterval: -60*60), "1時間前")
+    }
+    
+    func testADayAgo() {
+        XCTAssertEqual(diff(timeInterval: -60*60*24), "1日前")
+    }
+    
+    func testAMonthAgo() {
+        XCTAssertEqual(diff(timeInterval: -60*60*24*31), "1ヶ月前")
+    }
+    
+    func testAYearAgo() {
+        XCTAssertEqual(diff(timeInterval: -60*60*24*365), "1年前")
+    }
+    
 }
