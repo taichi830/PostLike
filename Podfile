@@ -29,6 +29,11 @@
 
   use_frameworks!
   install_pods
+  
+  target 'PostLikeTests' do
+    pod 'Firebase'
+  end
+  
 
  end  
  
