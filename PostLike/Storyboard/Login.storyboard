@@ -197,7 +197,6 @@
                                 <rect key="frame" x="30" y="130" width="354" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="27" id="HDg-u2-fF2"/>
-                                    <constraint firstAttribute="width" constant="315" id="oIy-3X-NzS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="24"/>
                                 <nil key="textColor"/>
