@@ -50,24 +50,24 @@ final class CommentHeaderView: UIView {
         
         commentLabel.text = comment
         
-        let timestamp = date
-        let dt = timestamp.dateValue()
-        let dt2 = Date()
-        let cal = Calendar(identifier: .gregorian)
-        let diff = cal.dateComponents([.day,.hour,.minute,.second], from: dt, to: dt2)
-        let day = diff.day
-        let hour = diff.hour
-        let minute = diff.minute
-        let second = diff.second
-        if day == 0 && hour == 0 && minute == 0    {
-            createdAtLabel!.text = "\(second?.description ?? "")秒前"
-        }else if day == 0 && hour == 0 && minute != 0{
-            createdAtLabel!.text = "\(minute?.description ?? "")分前"
-        }else if day == 0 && hour != 0 {
-            createdAtLabel!.text = "\(hour?.description ?? "")時間前"
-        }else if day != 0 {
-            createdAtLabel!.text = "\(day?.description ?? "")日前"
-        }
+        let createdAt = date.dateValue()
+        createdAtLabel.text = UILabel().createdAtString(createdAt: createdAt)
+//        let dt2 = Date()
+//        let cal = Calendar(identifier: .gregorian)
+//        let diff = cal.dateComponents([.day,.hour,.minute,.second], from: dt, to: dt2)
+//        let day = diff.day
+//        let hour = diff.hour
+//        let minute = diff.minute
+//        let second = diff.second
+//        if day == 0 && hour == 0 && minute == 0    {
+//            createdAtLabel!.text = "\(second?.description ?? "")秒前"
+//        }else if day == 0 && hour == 0 && minute != 0{
+//            createdAtLabel!.text = "\(minute?.description ?? "")分前"
+//        }else if day == 0 && hour != 0 {
+//            createdAtLabel!.text = "\(hour?.description ?? "")時間前"
+//        }else if day != 0 {
+//            createdAtLabel!.text = "\(day?.description ?? "")日前"
+//        }
         
     }
 
