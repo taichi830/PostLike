@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseFirestore
 import FirebaseAuth
 import RxSwift
 import RxCocoa
+import GoogleSignIn
 
-final class LoginViewController: UIViewController {
+final class LoginViewController: UIViewController{
     
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
@@ -20,9 +22,18 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var alertView: UILabel!
     @IBOutlet private weak var alertLabelHeight: NSLayoutConstraint!
     @IBOutlet private weak var eyeButton: UIButton!
+    @IBOutlet weak var signInWithAppleButton: UIButton!
+    @IBOutlet weak var signInWithGoogleButton: UIButton!
+    @IBOutlet weak var loginMenuBackView: UIView!
+    @IBOutlet weak var doneButtonBackView: UIView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
+    
     
     private let loginViewModel = LoginViewModel()
     private let disposeBag = DisposeBag()
+    private let signUpWithAppleVC = SignUpWithAppleViewController()
+    fileprivate var currentNonce: String?
     
     
     
@@ -31,13 +42,64 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         
-        emailTextField.becomeFirstResponder()
         eyeButton.tintColor = .lightGray
         alertView.layer.cornerRadius = 5
         doneButton.layer.cornerRadius = 20
         
+        signInWithAppleButton.layer.cornerRadius = 20
+        signInWithGoogleButton.layer.cornerRadius = 20
+        
         setupBinds()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    
+    @objc private func keybordWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String:Any] else {
+            return
+        }
+        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        
+        guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        
+        
+        UIView.animate(withDuration: duration) {
+            self.loginMenuBackView.isHidden = true
+            self.doneButtonBackView.isHidden = false
+            self.bottomConstraint.constant = rect.height - self.view.safeAreaInsets.bottom + 30
+            self.alertLabelHeight.constant = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    
+    @objc private func keybordWillHide(_ notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String:Any] else {
+            return
+        }
+        
+        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        
+        UIView.animate(withDuration: duration) {
+            self.loginMenuBackView.isHidden = false
+            self.doneButtonBackView.isHidden = true
+            self.bottomConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }
+        
+    }
+    
+    
+    
     
     
     @IBAction private func pushEyeButton(_ sender: Any) {
@@ -80,6 +142,9 @@ final class LoginViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        
+        
+        
         passwordTextField.rx.text
             .asDriver()
             .drive { [weak self] text in
@@ -87,6 +152,9 @@ final class LoginViewController: UIViewController {
                     .onNext(text ?? "")
             }
             .disposed(by: disposeBag)
+        
+        
+        
         
         loginViewModel.validLoginDriver
             .drive { [weak self] validAll in
@@ -98,13 +166,37 @@ final class LoginViewController: UIViewController {
         
         
         
-        
         doneButton.rx.tap
             .asDriver()
             .drive { [weak self] _ in
                 self?.login()
             }
             .disposed(by: disposeBag)
+        
+        
+        
+        
+        
+        signInWithGoogleButton.rx.tap
+            .asDriver()
+            .drive { [weak self] _ in
+                self?.signUpWithGoogle()
+            }
+            .disposed(by: disposeBag)
+        
+        
+        signInWithAppleButton.rx.tap
+            .asDriver()
+            .drive { [weak self] _ in
+                self?.signUpWithAppleVC.vc = self!
+                self?.signUpWithAppleVC.startSignInWithAppleFlow()
+            }
+            .disposed(by: disposeBag)
+        
+        
+        
+        
+        
         
     }
     
@@ -116,7 +208,7 @@ final class LoginViewController: UIViewController {
         startIndicator()
         self.view.endEditing(true)
         //ログイン
-        Auth.login(email: emailTextField.text ?? "", password: passwordTextField.text ?? "") { bool, err in
+        Auth.signInWithEmail(email: emailTextField.text ?? "", password: passwordTextField.text ?? "") { bool, err in
             if let err = err {
                 self.dismissIndicator()
                 self.alertLabelHeight.constant = 42
@@ -159,3 +251,26 @@ final class LoginViewController: UIViewController {
     
     
 }
+
+
+//SignInWithGoogle
+extension LoginViewController {
+    private func signUpWithGoogle() {
+        guard let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String else {return}
+        self.startIndicator()
+        Auth.signInWithGoogle(vc: self, fcmToken: fcmToken) { [weak self] err in
+            if let err = err {
+                print("err:",err)
+                self?.dismissIndicator()
+                return
+            }
+            print("成功!!!")
+            self?.dismissIndicator()
+            let storyBoard = UIStoryboard(name: "BaseTabBar", bundle: nil)
+            let vc = storyBoard.instantiateViewController(identifier: "baseTab") as! UITabBarController
+            vc.selectedIndex = 0
+            self?.present(vc, animated: false, completion: nil)
+        }
+    }
+}
+

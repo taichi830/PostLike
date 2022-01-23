@@ -12,6 +12,7 @@ import FirebaseMessaging
 import FirebaseDynamicLinks
 import GoogleMobileAds
 import UserNotifications
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate{
@@ -117,9 +118,21 @@ extension AppDelegate: MessagingDelegate {
         // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
     
+    
+    
+    
     func application(application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    
+    
+    @available(iOS 9.0, *)
+    func application(_ application: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any])
+      -> Bool {
+      return GIDSignIn.sharedInstance.handle(url)
     }
     
 

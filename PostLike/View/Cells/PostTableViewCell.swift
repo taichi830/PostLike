@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 final class PostTableViewCell: UITableViewCell{
     
@@ -72,6 +73,11 @@ final class PostTableViewCell: UITableViewCell{
     }
     
     
+    override func prepareForReuse() {
+        underHeight.constant = 210 * underView.frame.width / 340
+    }
+    
+    
     func setContent(contents:Contents,likeContensArray:[Contents]){
         //ユーザー画像をセット
         if contents.userImage != "" {
@@ -103,7 +109,7 @@ final class PostTableViewCell: UITableViewCell{
         if contents.mediaArray[0] == "" {
             underHeight.constant = 0
         }else{
-            underHeight.constant = 210 * underView.frame.width / 339
+            underHeight.constant = 210 * underView.frame.width / 340
         }
         
         
@@ -113,7 +119,17 @@ final class PostTableViewCell: UITableViewCell{
             postImageView2.isHidden = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
             singlePostImageView.isHidden = false
-            singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String), completed: nil)
+            singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String)) { image, err, _, _ in
+                if err == nil {
+                    let height = image!.size.height * self.singlePostImageView.frame.size.width / image!.size.width
+                    if height >= 450 {
+                        self.underHeight.constant = 450
+                    }else{
+                        self.underHeight.constant = height
+                    }
+                    
+                }
+            }
             singlePostImageView.addGestureRecognizer(tapGesture)
         }else if contents.mediaArray.count == 2 {
             
@@ -157,29 +173,8 @@ final class PostTableViewCell: UITableViewCell{
         
         
         //投稿から何日経ったかを算出
-        let now = Date()
         let createdAt = contents.createdAt.dateValue()
-        let diff = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: createdAt, to: now)
-        if diff.year == 0 && diff.month == 0 && diff.day == 0 && diff.hour == 0 && diff.minute == 0 && diff.second != 0 {
-            self.createdAt.text = "\(diff.second ?? 0)秒前"
-            
-        }else if diff.year == 0 && diff.month == 0 && diff.day == 0 && diff.hour == 0 && diff.minute != 0 {
-            self.createdAt.text = "\(diff.minute ?? 0)分前"
-            
-        }else if diff.year == 0 && diff.month == 0 && diff.day == 0 && diff.hour != 0{
-            self.createdAt.text = "\(diff.hour ?? 0)時間前"
-            
-        }else if diff.year == 0 && diff.month == 0 && diff.day != 0 {
-            self.createdAt.text = "\(diff.day ?? 0)日前"
-            
-        }else if diff.year == 0 && diff.month != 0 {
-            self.createdAt.text = "\(diff.month ?? 0)ヶ月前"
-            
-        }else if diff.year != 0 {
-            self.createdAt.text = "\(diff.year ?? 0)年前"
-        }
-        
-        
+        self.createdAt.text = UILabel().createdAtString(createdAt: createdAt)
         
         
         
