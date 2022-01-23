@@ -26,7 +26,7 @@ final class LoginViewController: UIViewController{
     @IBOutlet weak var signInWithGoogleButton: UIButton!
     @IBOutlet weak var loginMenuBackView: UIView!
     @IBOutlet weak var doneButtonBackView: UIView!
-    @IBOutlet weak var buttonConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     
     
@@ -73,7 +73,7 @@ final class LoginViewController: UIViewController{
         UIView.animate(withDuration: duration) {
             self.loginMenuBackView.isHidden = true
             self.doneButtonBackView.isHidden = false
-            self.buttonConstraint.constant = rect.height
+            self.bottomConstraint.constant = rect.height - self.view.safeAreaInsets.bottom + 30
             self.alertLabelHeight.constant = 0
             self.view.layoutIfNeeded()
         }
@@ -92,7 +92,7 @@ final class LoginViewController: UIViewController{
         UIView.animate(withDuration: duration) {
             self.loginMenuBackView.isHidden = false
             self.doneButtonBackView.isHidden = true
-            self.buttonConstraint.constant = 0
+            self.bottomConstraint.constant = 0
             self.view.layoutIfNeeded()
         }
         
