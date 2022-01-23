@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		430FC9E19118A99B56BE2C5C /* Pods_PostLike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97086B01C8A0E0585C71C7D8 /* Pods_PostLike.framework */; };
+		6AC541B13928E92ECE8974C9 /* Pods_PostLike_PostLikeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00215EF591118EDE7263601 /* Pods_PostLike_PostLikeTests.framework */; };
 		CE012C0B26B6EFD4006CC20E /* Alert-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBA3B3A26A4698B00159B12 /* Alert-extenshion.swift */; };
 		CE012C0C26B6EFD4006CC20E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB53ADA26539B010099E606 /* FirstViewController.swift */; };
 		CE012C0D26B6EFD4006CC20E /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE12E55126423CB800A2765C /* BaseTabBarController.swift */; };
@@ -89,6 +90,9 @@
 		CEBD5B32274F6CAC00E2FB83 /* String-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */; };
 		CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */; };
 		CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */; };
+		CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */; };
+		CECA9F1F279BD3CD0059939B /* PostLikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */; };
+		CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */; };
@@ -99,6 +103,23 @@
 		CEFAC38A2774DFF100739549 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFAC3892774DFF100739549 /* Auth.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CECA9F12279BBBA10059939B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE18881B25205A24001C687C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE012C0826B6EFD4006CC20E;
+			remoteInfo = PostLike;
+		};
+		CECA9F21279BD3CD0059939B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE18881B25205A24001C687C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE012C0826B6EFD4006CC20E;
+			remoteInfo = PostLike;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		12F7656ADFAAB771F765E9C0 /* Pods-postLike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-postLike.debug.xcconfig"; path = "Target Support Files/Pods-postLike/Pods-postLike.debug.xcconfig"; sourceTree = "<group>"; };
 		3F2C704BFFA040F8959A0D42 /* Pods-PostLike.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike.staging.xcconfig"; path = "Target Support Files/Pods-PostLike/Pods-PostLike.staging.xcconfig"; sourceTree = "<group>"; };
@@ -107,6 +128,7 @@
 		97086B01C8A0E0585C71C7D8 /* Pods_PostLike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PostLike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E7EF7448711919A6EB4D589 /* Pods-PostLike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike.release.xcconfig"; path = "Target Support Files/Pods-PostLike/Pods-PostLike.release.xcconfig"; sourceTree = "<group>"; };
 		B54853F2678F5303418A54F7 /* Pods-PostLike_develop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike_develop.debug.xcconfig"; path = "Target Support Files/Pods-PostLike_develop/Pods-PostLike_develop.debug.xcconfig"; sourceTree = "<group>"; };
+		C8DBB1E1821E896EB8767A81 /* Pods-PostLike-PostLikeTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike-PostLikeTests.staging.xcconfig"; path = "Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests.staging.xcconfig"; sourceTree = "<group>"; };
 		CE012C5B26B6EFD4006CC20E /* PostLike Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PostLike Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0BE2692659F7E900A419BE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE12E54E264186E700A2765C /* postLike.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = postLike.entitlements; sourceTree = "<group>"; };
@@ -187,6 +209,13 @@
 		CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWithAppleViewController.swift; sourceTree = "<group>"; };
 		CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
 		CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomEditViewController.swift; sourceTree = "<group>"; };
+		CECA9F0D279BBBA10059939B /* PostLikeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PostLikeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeUITests.swift; sourceTree = "<group>"; };
+		CECA9F11279BBBA10059939B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CECA9F1C279BD3CD0059939B /* PostLikeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PostLikeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeTests.swift; sourceTree = "<group>"; };
+		CECA9F20279BD3CD0059939B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatedAt-Extenshion.swift"; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
 		CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowIndicator-extenshion.swift"; sourceTree = "<group>"; };
@@ -201,6 +230,9 @@
 		CEFAC3872772CB8E00739549 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		CEFAC3892774DFF100739549 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		D2CB292E52BB16F49AE10808 /* Pods-PostLike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike.debug.xcconfig"; path = "Target Support Files/Pods-PostLike/Pods-PostLike.debug.xcconfig"; sourceTree = "<group>"; };
+		DFB97E001F1E2DBE9629D555 /* Pods-PostLike-PostLikeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike-PostLikeTests.debug.xcconfig"; path = "Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E2F6CF86B13615A67ECC7833 /* Pods-PostLike-PostLikeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostLike-PostLikeTests.release.xcconfig"; path = "Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests.release.xcconfig"; sourceTree = "<group>"; };
+		F00215EF591118EDE7263601 /* Pods_PostLike_PostLikeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PostLike_PostLikeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +244,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CECA9F0A279BBBA10059939B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CECA9F19279BD3CD0059939B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AC541B13928E92ECE8974C9 /* Pods_PostLike_PostLikeTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -219,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				97086B01C8A0E0585C71C7D8 /* Pods_PostLike.framework */,
+				F00215EF591118EDE7263601 /* Pods_PostLike_PostLikeTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -233,6 +281,9 @@
 				9E7EF7448711919A6EB4D589 /* Pods-PostLike.release.xcconfig */,
 				B54853F2678F5303418A54F7 /* Pods-PostLike_develop.debug.xcconfig */,
 				711959CFA40A8A7621958107 /* Pods-PostLike_develop.release.xcconfig */,
+				DFB97E001F1E2DBE9629D555 /* Pods-PostLike-PostLikeTests.debug.xcconfig */,
+				C8DBB1E1821E896EB8767A81 /* Pods-PostLike-PostLikeTests.staging.xcconfig */,
+				E2F6CF86B13615A67ECC7833 /* Pods-PostLike-PostLikeTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -250,6 +301,8 @@
 			isa = PBXGroup;
 			children = (
 				CE18882525205A24001C687C /* PostLike */,
+				CECA9F0E279BBBA10059939B /* PostLikeUITests */,
+				CECA9F1D279BD3CD0059939B /* PostLikeTests */,
 				CE18882425205A24001C687C /* Products */,
 				8B3A40957A9FD59BEC899966 /* Pods */,
 				643D5E94C92238BB422721B0 /* Frameworks */,
@@ -260,6 +313,8 @@
 			isa = PBXGroup;
 			children = (
 				CE012C5B26B6EFD4006CC20E /* PostLike Dev.app */,
+				CECA9F0D279BBBA10059939B /* PostLikeUITests.xctest */,
+				CECA9F1C279BD3CD0059939B /* PostLikeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -362,6 +417,7 @@
 				CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */,
 				CE2E27E0276AD36E002D0E41 /* NavigationPush-extenshion.swift */,
 				CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */,
+				CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -505,6 +561,24 @@
 			path = "HTML Files";
 			sourceTree = "<group>";
 		};
+		CECA9F0E279BBBA10059939B /* PostLikeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */,
+				CECA9F11279BBBA10059939B /* Info.plist */,
+			);
+			path = PostLikeUITests;
+			sourceTree = "<group>";
+		};
+		CECA9F1D279BD3CD0059939B /* PostLikeTests */ = {
+			isa = PBXGroup;
+			children = (
+				CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */,
+				CECA9F20279BD3CD0059939B /* Info.plist */,
+			);
+			path = PostLikeTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -529,15 +603,64 @@
 			productReference = CE012C5B26B6EFD4006CC20E /* PostLike Dev.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CECA9F0C279BBBA10059939B /* PostLikeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CECA9F17279BBBA10059939B /* Build configuration list for PBXNativeTarget "PostLikeUITests" */;
+			buildPhases = (
+				CECA9F09279BBBA10059939B /* Sources */,
+				CECA9F0A279BBBA10059939B /* Frameworks */,
+				CECA9F0B279BBBA10059939B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CECA9F13279BBBA10059939B /* PBXTargetDependency */,
+			);
+			name = PostLikeUITests;
+			productName = PostLikeUITests;
+			productReference = CECA9F0D279BBBA10059939B /* PostLikeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		CECA9F1B279BD3CD0059939B /* PostLikeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CECA9F23279BD3CD0059939B /* Build configuration list for PBXNativeTarget "PostLikeTests" */;
+			buildPhases = (
+				92F96B13CEE38FE7C5551F07 /* [CP] Check Pods Manifest.lock */,
+				CECA9F18279BD3CD0059939B /* Sources */,
+				CECA9F19279BD3CD0059939B /* Frameworks */,
+				CECA9F1A279BD3CD0059939B /* Resources */,
+				E7D872F185A9414C08557EC0 /* [CP] Embed Pods Frameworks */,
+				AD8EC081BF511DB637257636 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CECA9F22279BD3CD0059939B /* PBXTargetDependency */,
+			);
+			name = PostLikeTests;
+			productName = PostLikeTests;
+			productReference = CECA9F1C279BD3CD0059939B /* PostLikeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		CE18881B25205A24001C687C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1170;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = taichi;
+				TargetAttributes = {
+					CECA9F0C279BBBA10059939B = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = CE012C0826B6EFD4006CC20E;
+					};
+					CECA9F1B279BD3CD0059939B = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = CE012C0826B6EFD4006CC20E;
+					};
+				};
 			};
 			buildConfigurationList = CE18881E25205A24001C687C /* Build configuration list for PBXProject "PostLike" */;
 			compatibilityVersion = "Xcode 9.3";
@@ -554,6 +677,8 @@
 			projectRoot = "";
 			targets = (
 				CE012C0826B6EFD4006CC20E /* PostLike */,
+				CECA9F0C279BBBA10059939B /* PostLikeUITests */,
+				CECA9F1B279BD3CD0059939B /* PostLikeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -588,9 +713,62 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CECA9F0B279BBBA10059939B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CECA9F1A279BD3CD0059939B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		92F96B13CEE38FE7C5551F07 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PostLike-PostLikeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AD8EC081BF511DB637257636 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		CE012C0926B6EFD4006CC20E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -664,6 +842,23 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n  cp \"${PROJECT_DIR}/${PROJECT_NAME}/Configs/GoogleService-Info.Develop.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"    \nelse\n  cp \"${PROJECT_DIR}/${PROJECT_NAME}/Configs/GoogleService-Info.Release.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nfi\n";
 		};
+		E7D872F185A9414C08557EC0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PostLike-PostLikeTests/Pods-PostLike-PostLikeTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -712,6 +907,7 @@
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
+				CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
 				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,
@@ -741,7 +937,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CECA9F09279BBBA10059939B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CECA9F18279BD3CD0059939B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CECA9F1F279BD3CD0059939B /* PostLikeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CECA9F13279BBBA10059939B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE012C0826B6EFD4006CC20E /* PostLike */;
+			targetProxy = CECA9F12279BBBA10059939B /* PBXContainerItemProxy */;
+		};
+		CECA9F22279BD3CD0059939B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE012C0826B6EFD4006CC20E /* PostLike */;
+			targetProxy = CECA9F21279BD3CD0059939B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CE18882C25205A24001C687C /* Home.storyboard */ = {
@@ -1020,6 +1245,126 @@
 			};
 			name = Staging;
 		};
+		CECA9F14279BBBA10059939B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6NHLT8T59;
+				INFOPLIST_FILE = PostLikeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.taichiApp.PostLikeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PostLike;
+			};
+			name = Debug;
+		};
+		CECA9F15279BBBA10059939B /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6NHLT8T59;
+				INFOPLIST_FILE = PostLikeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.taichiApp.PostLikeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PostLike;
+			};
+			name = Staging;
+		};
+		CECA9F16279BBBA10059939B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6NHLT8T59;
+				INFOPLIST_FILE = PostLikeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.taichiApp.PostLikeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PostLike;
+			};
+			name = Release;
+		};
+		CECA9F24279BD3CD0059939B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DFB97E001F1E2DBE9629D555 /* Pods-PostLike-PostLikeTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6NHLT8T59;
+				INFOPLIST_FILE = PostLikeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.taichiApp.PostLikeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PostLike Dev.app/PostLike Dev";
+			};
+			name = Debug;
+		};
+		CECA9F25279BD3CD0059939B /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C8DBB1E1821E896EB8767A81 /* Pods-PostLike-PostLikeTests.staging.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6NHLT8T59;
+				INFOPLIST_FILE = PostLikeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.taichiApp.PostLikeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PostLike Dev.app/PostLike Dev";
+			};
+			name = Staging;
+		};
+		CECA9F26279BD3CD0059939B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2F6CF86B13615A67ECC7833 /* Pods-PostLike-PostLikeTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6NHLT8T59;
+				INFOPLIST_FILE = PostLikeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.taichiApp.PostLikeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PostLike Dev.app/PostLike Dev";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1039,6 +1384,26 @@
 				CE18883525205A25001C687C /* Debug */,
 				CE721BC3271830B10023C7F3 /* Staging */,
 				CE18883625205A25001C687C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CECA9F17279BBBA10059939B /* Build configuration list for PBXNativeTarget "PostLikeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CECA9F14279BBBA10059939B /* Debug */,
+				CECA9F15279BBBA10059939B /* Staging */,
+				CECA9F16279BBBA10059939B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CECA9F23279BD3CD0059939B /* Build configuration list for PBXNativeTarget "PostLikeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CECA9F24279BD3CD0059939B /* Debug */,
+				CECA9F25279BD3CD0059939B /* Staging */,
+				CECA9F26279BD3CD0059939B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

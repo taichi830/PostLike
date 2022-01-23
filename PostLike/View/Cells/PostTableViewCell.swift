@@ -173,29 +173,8 @@ final class PostTableViewCell: UITableViewCell{
         
         
         //投稿から何日経ったかを算出
-        let now = Date()
         let createdAt = contents.createdAt.dateValue()
-        let diff = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: createdAt, to: now)
-        if diff.year == 0 && diff.month == 0 && diff.day == 0 && diff.hour == 0 && diff.minute == 0 && diff.second != 0 {
-            self.createdAt.text = "\(diff.second ?? 0)秒前"
-            
-        }else if diff.year == 0 && diff.month == 0 && diff.day == 0 && diff.hour == 0 && diff.minute != 0 {
-            self.createdAt.text = "\(diff.minute ?? 0)分前"
-            
-        }else if diff.year == 0 && diff.month == 0 && diff.day == 0 && diff.hour != 0{
-            self.createdAt.text = "\(diff.hour ?? 0)時間前"
-            
-        }else if diff.year == 0 && diff.month == 0 && diff.day != 0 {
-            self.createdAt.text = "\(diff.day ?? 0)日前"
-            
-        }else if diff.year == 0 && diff.month != 0 {
-            self.createdAt.text = "\(diff.month ?? 0)ヶ月前"
-            
-        }else if diff.year != 0 {
-            self.createdAt.text = "\(diff.year ?? 0)年前"
-        }
-        
-        
+        self.createdAt.text = UILabel().createdAtString(createdAt: createdAt)
         
         
         
