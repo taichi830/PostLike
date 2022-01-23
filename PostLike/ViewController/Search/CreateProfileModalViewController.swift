@@ -125,9 +125,8 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
         
         
         UIView.animate(withDuration: duration) {
-            let y = self.backView.frame.origin.y
-            self.backView.frame.origin.y = y - (rect.height-50)
             self.bottomConstraint.constant = rect.height - 50
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -143,8 +142,8 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
         }
         
         UIView.animate(withDuration: duration) {
-            self.backView.frame.origin.y = 369
             self.bottomConstraint.constant = 0
+            self.view.layoutIfNeeded()
         }
     }
     
