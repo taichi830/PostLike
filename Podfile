@@ -20,6 +20,7 @@
   pod 'Google-Mobile-Ads-SDK'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'GoogleSignIn'
 
  end
  
@@ -28,6 +29,11 @@
 
   use_frameworks!
   install_pods
+  
+  target 'PostLikeTests' do
+    pod 'Firebase'
+  end
+  
 
  end  
  
