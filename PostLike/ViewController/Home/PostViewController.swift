@@ -8,9 +8,12 @@
 
 import UIKit
 import DKImagePickerController
-import FirebaseFirestore
-import FirebaseAuth
-import FirebaseStorage
+import Firebase
+import RxSwift
+import RxCocoa
+//import FirebaseFirestore
+//import FirebaseAuth
+//import FirebaseStorage
 
 final class PostViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
     
@@ -29,6 +32,8 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     private var photoArray:[UIImage] = []
     private var photoUrl :[String] = []
+    private let postViewModel = PostViewModel()
+    private let disposeBag = DisposeBag()
     var passedRoomTitle = String()
     var passedDocumentID = String()
     var passedUserImageUrl = String()
@@ -50,6 +55,7 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
         buttonView.frame.size.width = self.view.frame.size.width
         
         postButton.layer.cornerRadius = 20
+        postButton.backgroundColor = .systemGray4
         
         profileImage.layer.cornerRadius = 18
         if passedUserImageUrl != "" {
@@ -61,6 +67,8 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
         
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        setupBind()
         
         
     }
@@ -80,6 +88,25 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     
+    private func setupBind() {
+        
+        textView.rx.text
+            .asDriver()
+            .drive { [weak self] text in
+                self?.postViewModel.postTextInPut.onNext(text ?? "")
+            }
+            .disposed(by: disposeBag)
+        
+        postViewModel.validPostDriver
+            .drive { [weak self] bool in
+                self?.postButton.isEnabled = bool
+                self?.postButton.backgroundColor = bool ? .red : .systemGray4
+            }
+            .disposed(by: disposeBag)
+ 
+    }
+    
+    
     
     
     func showAlbum(){
@@ -91,6 +118,7 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
         pickerController.showsCancelButton = true
         pickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
+                self.postViewModel.photoArrayInPut.onNext(assets)
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                         self.photoArray.append(image!)
@@ -155,6 +183,7 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     @objc func deleteImage(_ sender:UIButton){
+        self.postViewModel.photoArrayInPut.onNext([])
         self.photoArray.remove(at: -sender.tag)
         photoTableView.reloadData()
     }
@@ -309,18 +338,15 @@ final class PostViewController: UIViewController,UITableViewDelegate,UITableView
     
     
     @IBAction private func postButton(_ sender: Any) {
-        if textView.text != "" || photoArray.isEmpty != true {
-            startIndicator()
-            textView.resignFirstResponder()
-            let uid = Auth.auth().currentUser!.uid
-            let documentID = NSUUID().uuidString
-            let batch = Firestore.firestore().batch()
-            if photoArray.isEmpty == true {
-                postBatch(uid: uid, documentID: documentID, batch: batch)
-                
-            }else{
-                creatFireStorage(uid: uid, documentID: documentID, batch: batch)
-            }
+        startIndicator()
+        textView.resignFirstResponder()
+        let uid = Auth.auth().currentUser!.uid
+        let documentID = NSUUID().uuidString
+        let batch = Firestore.firestore().batch()
+        if photoArray.isEmpty == true {
+            postBatch(uid: uid, documentID: documentID, batch: batch)
+        }else{
+            creatFireStorage(uid: uid, documentID: documentID, batch: batch)
         }
     }
     
