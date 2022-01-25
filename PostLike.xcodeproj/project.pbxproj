@@ -93,6 +93,7 @@
 		CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */; };
 		CECA9F1F279BD3CD0059939B /* PostLikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */; };
 		CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */; };
+		CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F2B279E94740059939B /* PostViewModel.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */; };
@@ -216,6 +217,7 @@
 		CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeTests.swift; sourceTree = "<group>"; };
 		CECA9F20279BD3CD0059939B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatedAt-Extenshion.swift"; sourceTree = "<group>"; };
+		CECA9F2B279E94740059939B /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
 		CED4902026ED024900582742 /* ShowIndicator-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowIndicator-extenshion.swift"; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 			children = (
 				CE2E27D427606659002D0E41 /* RegisterViewModel.swift */,
 				CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */,
+				CECA9F2B279E94740059939B /* PostViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -908,6 +911,7 @@
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
 				CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */,
+				CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
 				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,
