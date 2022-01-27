@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-final class PostTableViewCell: UITableViewCell{
+final class FeedTableViewCell: UITableViewCell{
     
     
     
