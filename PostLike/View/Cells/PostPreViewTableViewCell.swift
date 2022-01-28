@@ -38,7 +38,7 @@ class PostPreViewTableViewCell: UITableViewCell {
 
     
     private func didTapDeleteButton() {
-        deleteButton.rx.
+//        deleteButton.rx.
     }
     
 }

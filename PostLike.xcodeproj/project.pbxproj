@@ -88,6 +88,7 @@
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
 		CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */; };
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
+		CEAFFF6827A42DBE004E1EB4 /* SectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAFFF6727A42DBE004E1EB4 /* SectionModel.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String-extenshion.swift */; };
@@ -206,6 +207,7 @@
 		CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalMenuViewController.swift; sourceTree = "<group>"; };
 		CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		CEAA5C812520D56700755F90 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		CEAFFF6727A42DBE004E1EB4 /* SectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionModel.swift; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
 		CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 				CE77EF5926E67EEF00154886 /* User.swift */,
 				CE77EF5C26E67EEF00154886 /* Response.swift */,
 				CE79ED32279FC8B40047ABEF /* PostDefaultAPI.swift */,
+				CEAFFF6727A42DBE004E1EB4 /* SectionModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -890,6 +893,7 @@
 				CE1C23C8276B946000D3CAC8 /* SearchTableViewCell.swift in Sources */,
 				CE012C0D26B6EFD4006CC20E /* BaseTabBarController.swift in Sources */,
 				CE77EF6326E67EEF00154886 /* Response.swift in Sources */,
+				CEAFFF6827A42DBE004E1EB4 /* SectionModel.swift in Sources */,
 				CE012C0E26B6EFD4006CC20E /* RoomListViewController.swift in Sources */,
 				CE012C1026B6EFD4006CC20E /* DeleteRoomViewController.swift in Sources */,
 				CE012C1326B6EFD4006CC20E /* RoomCollectionViewCell.swift in Sources */,
