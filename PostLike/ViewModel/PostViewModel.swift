@@ -84,13 +84,17 @@ final class PostViewModel {
                 }
             }
             .disposed(by: disposeBag)
-        
-        
-        
-        
-        
-        
-        
+    
+    }
+    
+    
+    
+    
+    
+    func remove(row:Int) {
+        var items = try! photoArrayOutPut.value()
+        items.remove(at: row)
+        photoArrayOutPut.onNext(items)
     }
 
     

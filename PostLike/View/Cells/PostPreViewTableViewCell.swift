@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class PostPreViewTableViewCell: UITableViewCell {
+final class PostPreViewTableViewCell: UITableViewCell {
     
     
     @IBOutlet weak var postImageView: UIImageView!
@@ -37,8 +37,12 @@ class PostPreViewTableViewCell: UITableViewCell {
     }
 
     
-    private func didTapDeleteButton() {
-//        deleteButton.rx.
+    func didTapDeleteButton(viewModel:PostViewModel) {
+        let tableView = superview as!
+            UITableView
+        let tappedIndexPath = tableView.indexPath(for: self)
+        guard let row = tappedIndexPath?.row else { return }
+        viewModel.remove(row: row)
     }
     
 }
