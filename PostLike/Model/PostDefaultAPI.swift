@@ -11,19 +11,17 @@ import Firebase
 import RxSwift
 
 protocol PostAPI {
-    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String) -> Single<Bool>
+    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String,imageArray:[UIImage]) -> Single<Bool>
 }
 
 final class PostDefaultAPI: PostAPI {
     
-    var imageArray = [UIImage]()
-    
-    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String) -> Single<Bool> {
+    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String,imageArray:[UIImage]) -> Single<Bool> {
         return Single.create { [weak self] completable in
             
             let batch = Firestore.firestore().batch()
 
-            if self?.imageArray.isEmpty == true {
+            if imageArray.isEmpty == true {
                 self?.createPostWhenNoImages(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, media: [""], batch: batch)
                 batch.commit { err in
                     if let err = err {
@@ -33,7 +31,7 @@ final class PostDefaultAPI: PostAPI {
                     }
                 }
             }else {
-                Storage.addPostImagesToStrage(imagesArray: self!.imageArray) { bool, urls in
+                Storage.addPostImagesToStrage(imagesArray: imageArray) { bool, urls in
                     switch bool {
                     case false:
                         print("err")

@@ -18,7 +18,7 @@ final class PostViewModel {
     
     //observable
     var postTextOutPut = PublishSubject<String>()
-    var photoArrayOutPut = BehaviorSubject<[DKAsset]>.init(value: [])
+    var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
     var validPostSubject = BehaviorSubject<Bool>.init(value: false)
     var postCompletedSubject = BehaviorSubject<Bool>.init(value: true)
     
@@ -27,15 +27,32 @@ final class PostViewModel {
         postTextOutPut.asObserver()
         
     }
-    var photoArrayInPut:AnyObserver<[DKAsset]> {
+    var photoArrayInPut:AnyObserver<[UIImage]> {
         photoArrayOutPut.asObserver()
     }
     
     var validPostDriver:Driver<Bool> = Driver.never()
     var postedDriver:Driver<Bool> = Driver.never()
     
+    
+    
+    
     init(input:(postButtonTap:Signal<()>,text:Driver<String>),userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
         
+        
+        PostButtonValidation()
+        post(postButtonTap: input.postButtonTap, text: input.text, userName: userName, userImage: userImage, passedUid: passedUid, roomID: roomID, postAPI: postAPI)
+ 
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    private func PostButtonValidation() {
         validPostDriver = validPostSubject
             .asDriver(onErrorDriveWith: Driver.empty())
         
@@ -58,19 +75,28 @@ final class PostViewModel {
                 self.validPostSubject.onNext(bool)
             }
             .disposed(by: disposeBag)
-        
-        
-        
-        
-        
-        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private func post(postButtonTap:Signal<()>,text:Driver<String>,userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
         postedDriver = postCompletedSubject.asDriver(onErrorJustReturn: true)
-        
-        input.postButtonTap
+        let imageArrayObservable = photoArrayOutPut
             .asObservable()
-            .withLatestFrom(input.text)
-            .flatMapLatest{ text -> Single<Bool> in
-                return  postAPI.post(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID)
+        let textObservable = text.asObservable()
+        let combineObservable = Observable.combineLatest(imageArrayObservable, textObservable)
+        
+        postButtonTap
+            .asObservable()
+            .withLatestFrom(combineObservable)
+            .flatMapLatest { (imageArray,text) -> Single<Bool> in
+                return postAPI.post(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, imageArray: imageArray)
             }
             .subscribe { [weak self] bool in
                 switch bool {
@@ -84,8 +110,11 @@ final class PostViewModel {
                 }
             }
             .disposed(by: disposeBag)
-    
     }
+    
+    
+    
+    
     
     
     

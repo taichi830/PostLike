@@ -174,7 +174,14 @@ final class PostViewController: UIViewController{
         pickerController.allowSelectAll = true
         pickerController.showsCancelButton = true
         pickerController.didSelectAssets = {(assets: [DKAsset]) in
-            self.postViewModel.photoArrayInPut.onNext(assets)
+            for asset in assets {
+                asset.fetchFullScreenImage { image, info in
+                    if var item = try? self.postViewModel.photoArrayOutPut.value() {
+                        item.append(image!)
+                        self.postViewModel.photoArrayInPut.onNext(item)
+                    }
+                }
+            }
         }
         pickerController.modalPresentationStyle = .fullScreen
         pickerController.UIDelegate = CustomUIDelegate()
@@ -241,10 +248,11 @@ final class PostViewController: UIViewController{
         photoTableView.register(UINib(nibName: "PostPreViewTableViewCell", bundle: nil), forCellReuseIdentifier: "PostPreViewTableViewCell")
         postViewModel.photoArrayOutPut.bind(to: photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,dkAsset,cell in
             
-            dkAsset.fetchFullScreenImage { image, info in
-                cell.setUpCell(image: image!)
-            }
-            
+            cell.setUpCell(image: dkAsset)
+//            dkAsset.fetchFullScreenImage { image, info in
+//
+//            }
+//
             cell.deleteButton.rx.tap.subscribe { [weak self] _ in
                 cell.didTapDeleteButton(viewModel: self!.postViewModel)
             }
