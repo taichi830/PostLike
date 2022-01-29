@@ -1133,9 +1133,6 @@
                                         <state key="normal" title="投稿">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="postButton:" destination="UWT-9g-DGF" eventType="touchUpInside" id="eXk-L7-uug"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
