@@ -154,7 +154,7 @@ final class EnteredRoomContentViewController: UIViewController{
         contentsTableView.delegate = self
         contentsTableView.dataSource = self
         contentsTableView.tableHeaderView =  headerView
-        contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
+        contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         contentsTableView.contentInsetAdjustmentBehavior = .never
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
         contentsTableView.addGestureRecognizer(swipeGesture)
@@ -405,7 +405,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = contentsTableView.dequeueReusableCell(withIdentifier: "postTable")  as! PostTableViewCell
+        let cell = contentsTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell")  as! FeedTableViewCell
         
         cell.tableViewCellDelegate = self
         

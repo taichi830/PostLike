@@ -56,7 +56,7 @@
                                 <rect key="frame" x="0.0" y="89" width="375" height="689"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postTable" rowHeight="121" id="M1z-7L-gkC" customClass="PostTableViewCell" customModule="PostLike">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postTable" rowHeight="121" id="M1z-7L-gkC" customClass="FeedTableViewCell" customModule="PostLike">
                                         <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="121"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="M1z-7L-gkC" id="cIS-QA-fBI">
@@ -869,7 +869,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="375" id="sYE-uO-Tka" customClass="PostTableViewCell" customModule="PostLike" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="375" id="sYE-uO-Tka" customClass="FeedTableViewCell" customModule="PostLike" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="375"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sYE-uO-Tka" id="q2g-KR-gGO">
@@ -1023,9 +1023,6 @@
                                         <state key="normal" image="multiply" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="thin"/>
                                         </state>
-                                        <connections>
-                                            <action selector="cancelButton:" destination="UWT-9g-DGF" eventType="touchUpInside" id="Mno-XC-mNK"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1091,32 +1088,6 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="472" id="Loc-Q8-y9D"/>
                                 </constraints>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="237" id="ngM-M0-99r">
-                                        <rect key="frame" x="0.0" y="24.333333969116211" width="375" height="237"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ngM-M0-99r" id="lwx-r9-4Kt">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="237"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="O95-u1-wvp">
-                                                    <rect key="frame" x="7" y="11" width="361" height="221"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="221" id="pYn-fO-7hI"/>
-                                                    </constraints>
-                                                </imageView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstItem="O95-u1-wvp" firstAttribute="top" secondItem="lwx-r9-4Kt" secondAttribute="top" constant="11" id="9NO-8X-AB3"/>
-                                                <constraint firstItem="O95-u1-wvp" firstAttribute="leading" secondItem="lwx-r9-4Kt" secondAttribute="leading" constant="7" id="DMb-QH-MDp"/>
-                                                <constraint firstAttribute="bottom" secondItem="O95-u1-wvp" secondAttribute="bottom" constant="5" id="RM5-8i-Vxo"/>
-                                                <constraint firstAttribute="trailing" secondItem="O95-u1-wvp" secondAttribute="trailing" constant="7" id="ozp-1Y-wCD"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </tableViewCell>
-                                </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" id="HGY-lR-goc">
                                 <rect key="frame" x="0.0" y="386" width="375" height="75"/>
@@ -1126,26 +1097,20 @@
                                         <rect key="frame" x="10" y="14" width="164" height="48"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OV7-cq-2yt">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OV7-cq-2yt">
                                                 <rect key="frame" x="7" y="9" width="35" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" image="photo" catalog="system">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="ultraLight"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="albumButton:" destination="UWT-9g-DGF" eventType="touchUpInside" id="HEz-ro-1RN"/>
-                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myc-VZ-VnY">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myc-VZ-VnY">
                                                 <rect key="frame" x="45" y="10" width="111" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="写真を投稿する">
                                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="albumButton2:" destination="UWT-9g-DGF" eventType="touchUpInside" id="rTX-o4-7cl"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1168,9 +1133,6 @@
                                         <state key="normal" title="投稿">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="postButton:" destination="UWT-9g-DGF" eventType="touchUpInside" id="eXk-L7-uug"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1199,6 +1161,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backButton" destination="756-Ew-7oH" id="GmN-8a-FWD"/>
                         <outlet property="buttonView" destination="HGY-lR-goc" id="jEo-mP-ZQR"/>
                         <outlet property="personImage" destination="VZD-PB-2tO" id="blg-Cm-IgF"/>
                         <outlet property="photoTableView" destination="ykV-o5-LlK" id="g4H-e4-2WU"/>
@@ -1207,6 +1170,7 @@
                         <outlet property="postTitleLabel" destination="NhC-QY-FfH" id="4YV-4R-TMe"/>
                         <outlet property="profileImage" destination="CUX-4J-zRN" id="rJ0-mn-Tva"/>
                         <outlet property="profileName" destination="wHH-P0-tv0" id="LBY-Q5-Kw8"/>
+                        <outlet property="showAlubumButton" destination="XA8-vN-Etx" id="uId-Pv-gV5"/>
                         <outlet property="textView" destination="a2n-iE-Oi7" id="CAG-AW-hid"/>
                     </connections>
                 </viewController>
