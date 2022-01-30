@@ -66,7 +66,7 @@ final class RoomDetailViewController: UIViewController {
         
         self.contentsTableView.delegate = self
         self.contentsTableView.dataSource = self
-        self.contentsTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
+        self.contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         self.contentsTableView.contentInsetAdjustmentBehavior = .never
         let refleshControl = CustomRefreshControl()
         self.contentsTableView.refreshControl = refleshControl
@@ -391,7 +391,7 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = contentsTableView.dequeueReusableCell(withIdentifier: "postTable", for: indexPath) as! PostTableViewCell
+        let cell = contentsTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as! FeedTableViewCell
         
         
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)

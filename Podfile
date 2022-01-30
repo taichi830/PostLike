@@ -20,6 +20,7 @@
   pod 'Google-Mobile-Ads-SDK'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'RxDataSources'
   pod 'GoogleSignIn'
 
  end
