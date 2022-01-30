@@ -255,10 +255,7 @@ final class PostViewController: UIViewController{
         postViewModel.photoArrayOutPut.bind(to: photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,dkAsset,cell in
             
             cell.setUpCell(image: dkAsset)
-//            dkAsset.fetchFullScreenImage { image, info in
-//
-//            }
-//
+            
             cell.deleteButton.rx.tap.subscribe { [weak self] _ in
                 cell.didTapDeleteButton(viewModel: self!.postViewModel)
             }
