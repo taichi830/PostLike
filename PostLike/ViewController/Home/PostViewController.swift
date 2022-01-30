@@ -131,11 +131,17 @@ final class PostViewController: UIViewController{
     
     private func didTapPostButton() {
         
+        postButton.rx.tap.subscribe { [weak self] _ in
+            self?.startIndicator()
+        }
+        .disposed(by: disposeBag)
+        
         //投稿完了通知
         postViewModel.postedDriver
             .drive { [weak self] bool in
                 switch bool {
                 case true:
+                    self?.dismissIndicator()
                     self?.dismiss(animated: true, completion: nil)
                 case false:
                     print("false!!!!!!!!!!!!!")
