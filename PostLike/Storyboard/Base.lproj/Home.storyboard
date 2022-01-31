@@ -1093,28 +1093,15 @@
                                 <rect key="frame" x="0.0" y="386" width="375" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" id="XA8-vN-Etx">
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myc-VZ-VnY">
                                         <rect key="frame" x="10" y="14" width="164" height="48"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OV7-cq-2yt">
-                                                <rect key="frame" x="7" y="9" width="35" height="31"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <state key="normal" image="photo" catalog="system">
-                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="ultraLight"/>
-                                                </state>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="myc-VZ-VnY">
-                                                <rect key="frame" x="45" y="10" width="111" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="写真を投稿する">
-                                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                    </view>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="164" id="khG-d2-LkW"/>
+                                        </constraints>
+                                        <state key="normal">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxb-oT-yaA">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
                                         <color key="backgroundColor" systemColor="systemGray4Color"/>
@@ -1138,11 +1125,14 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="gy3-Qw-cDv" secondAttribute="bottom" constant="17" id="HzK-c6-Lg6"/>
+                                    <constraint firstItem="myc-VZ-VnY" firstAttribute="leading" secondItem="HGY-lR-goc" secondAttribute="leading" constant="10" id="TTl-oM-SMH"/>
                                     <constraint firstItem="dxb-oT-yaA" firstAttribute="leading" secondItem="HGY-lR-goc" secondAttribute="leading" id="XWM-co-bkb"/>
                                     <constraint firstItem="dxb-oT-yaA" firstAttribute="top" secondItem="HGY-lR-goc" secondAttribute="top" id="aPZ-tf-2g9"/>
+                                    <constraint firstAttribute="bottom" secondItem="myc-VZ-VnY" secondAttribute="bottom" constant="13" id="hU9-eU-rLn"/>
                                     <constraint firstItem="gy3-Qw-cDv" firstAttribute="top" secondItem="dxb-oT-yaA" secondAttribute="bottom" constant="17" id="s0y-ME-6qA"/>
                                     <constraint firstAttribute="trailing" secondItem="gy3-Qw-cDv" secondAttribute="trailing" constant="10" id="uL5-E5-Clh"/>
                                     <constraint firstAttribute="trailing" secondItem="dxb-oT-yaA" secondAttribute="trailing" id="vwe-wx-k7L"/>
+                                    <constraint firstItem="myc-VZ-VnY" firstAttribute="top" secondItem="dxb-oT-yaA" secondAttribute="bottom" constant="13" id="y8f-gh-vJn"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1170,13 +1160,13 @@
                         <outlet property="postTitleLabel" destination="NhC-QY-FfH" id="4YV-4R-TMe"/>
                         <outlet property="profileImage" destination="CUX-4J-zRN" id="rJ0-mn-Tva"/>
                         <outlet property="profileName" destination="wHH-P0-tv0" id="LBY-Q5-Kw8"/>
-                        <outlet property="showAlubumButton" destination="XA8-vN-Etx" id="uId-Pv-gV5"/>
+                        <outlet property="showAlbumButton" destination="myc-VZ-VnY" id="Ys1-hx-Ssc"/>
                         <outlet property="textView" destination="a2n-iE-Oi7" id="CAG-AW-hid"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="whu-ik-S9Y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9359" y="-1097"/>
+            <point key="canvasLocation" x="9357.6000000000004" y="-1097.2906403940888"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wHN-Ae-OgJ">
@@ -1203,7 +1193,6 @@
         <image name="multiply" catalog="system" width="128" height="111"/>
         <image name="person.3.fill" catalog="system" width="128" height="61"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <image name="photo" catalog="system" width="128" height="93"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
