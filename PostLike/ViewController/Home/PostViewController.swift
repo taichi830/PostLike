@@ -25,15 +25,27 @@ final class PostViewController: UIViewController{
     @IBOutlet private weak var profileName: UILabel!
     @IBOutlet private weak var postContentView: UIView!
     @IBOutlet private weak var personImage: UIImageView!
-    @IBOutlet private weak var showAlubumButton: UIView!
+//    @IBOutlet private weak var showAlubumButton: UIView!
     @IBOutlet private weak var backButton: UIButton!
+    @IBOutlet private weak var showAlbumButton: UIButton! {
+        didSet {
+            showAlbumButton.setTitle("写真を投稿する", for: .normal)
+            showAlbumButton.setImage(UIImage(systemName: "photo"), for: .normal)
+            showAlbumButton.tintColor = .lightGray
+            showAlbumButton.imageView?.contentMode = .scaleToFill
+            showAlbumButton.contentHorizontalAlignment = .fill
+            showAlbumButton.contentVerticalAlignment = .fill
+            showAlbumButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 15)
+            showAlbumButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
+            
+        }
+    }
     
     
     
     private var photoArray:[UIImage] = []
     private var photoUrl :[String] = []
     private var postViewModel:PostViewModel!
-    private let model = PostDefaultAPI()
     private let disposeBag = DisposeBag()
     var passedRoomTitle = String()
     var passedDocumentID = String()
@@ -74,7 +86,7 @@ final class PostViewController: UIViewController{
     
     
     private func setupBinds() {
-        self.postViewModel = PostViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), text: textView.rx.text.orEmpty.asDriver()), userName: passedUserName, userImage: passedUserImageUrl, passedUid: passedHostUid, roomID: passedDocumentID, postAPI: model)
+        self.postViewModel = PostViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), text: textView.rx.text.orEmpty.asDriver(), albumButtonTap: showAlbumButton.rx.tap.asSignal()), userName: passedUserName, userImage: passedUserImageUrl, passedUid: passedHostUid, roomID: passedDocumentID, postAPI: PostDefaultAPI())
         
         textViewDidChange()
         postValidateCheck()
@@ -172,9 +184,9 @@ final class PostViewController: UIViewController{
     
     
     
-    private func showAlbum(){
+    private func showAlbum(count:Int){
         let pickerController = DKImagePickerController()
-        pickerController.maxSelectableCount = 2
+        pickerController.maxSelectableCount = 2 - count
         pickerController.sourceType = .photo
         pickerController.assetType = .allPhotos
         pickerController.allowSelectAll = true
@@ -202,13 +214,21 @@ final class PostViewController: UIViewController{
     
     
     private func didTapAlubumButton() {
-        let tapGesture = UITapGestureRecognizer()
-        tapGesture.rx.event.subscribe { [weak self] _ in
-            self?.showAlbum()
-        }
-        .disposed(by: disposeBag)
         
-        showAlubumButton.addGestureRecognizer(tapGesture)
+        postViewModel.validAddImageDriver
+            .drive { [weak self] bool in
+                print(bool)
+                self?.showAlbumButton.isEnabled = bool
+                
+            }
+            .disposed(by: disposeBag)
+        
+        postViewModel.imageCountDriver
+            .drive { [weak self] count in
+                print(count)
+                self?.showAlbum(count: count)
+            }
+            .disposed(by: disposeBag)
     }
     
     
