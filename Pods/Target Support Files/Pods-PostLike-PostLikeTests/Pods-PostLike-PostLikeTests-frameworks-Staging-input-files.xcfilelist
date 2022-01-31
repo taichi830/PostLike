@@ -27,3 +27,5 @@ ${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework
 ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework
 ${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework
+${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework
+${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework
