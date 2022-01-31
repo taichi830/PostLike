@@ -14,13 +14,15 @@ import RxCocoa
 final class PostViewModel {
     
     private let disposeBag = DisposeBag()
-    private let storageModel = PostDefaultAPI()
     
     //observable
     var postTextOutPut = PublishSubject<String>()
     var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
+    
     var validPostSubject = BehaviorSubject<Bool>.init(value: false)
+    var validAddImageSubject = BehaviorSubject<Bool>.init(value: true)
     var postCompletedSubject = BehaviorSubject<Bool>.init(value: true)
+    var imageArrayCountSubject = BehaviorSubject<Int>.init(value: 0)
     
     //observer
     var postTextInPut:AnyObserver<String> {
@@ -32,15 +34,18 @@ final class PostViewModel {
     }
     
     var validPostDriver:Driver<Bool> = Driver.never()
+    var validAddImageDriver:Driver<Bool> = Driver.never()
     var postedDriver:Driver<Bool> = Driver.never()
+    var imageCountDriver:Driver<Int> = Driver.never()
     
     
     
     
-    init(input:(postButtonTap:Signal<()>,text:Driver<String>),userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
+    init(input:(postButtonTap:Signal<()>,text:Driver<String>,albumButtonTap:Signal<()>),userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
         
         
         PostButtonValidation()
+        alubumButtonValidation(alubumButtonTap: input.albumButtonTap)
         post(postButtonTap: input.postButtonTap, text: input.text, userName: userName, userImage: userImage, passedUid: passedUid, roomID: roomID, postAPI: postAPI)
  
     }
@@ -75,6 +80,42 @@ final class PostViewModel {
                 self.validPostSubject.onNext(bool)
             }
             .disposed(by: disposeBag)
+    }
+    
+    
+    
+    private func alubumButtonValidation(alubumButtonTap:Signal<()>) {
+        validAddImageDriver = validAddImageSubject
+            .asSharedSequence(onErrorDriveWith: Driver.empty())
+        
+        let validAddImage = photoArrayOutPut
+            .asObservable()
+            .map { imageArray -> Bool in
+                return imageArray.count < 2
+            }
+            .share(replay: 1)
+        
+        let imageArrayCountObservable = photoArrayOutPut
+            .asObservable()
+            .map { imageArray -> Int in
+                return imageArray.count
+            }
+            .share(replay: 1)
+        
+        validAddImage.subscribe { [weak self] bool in
+                self?.validAddImageSubject.onNext(bool)
+            }
+            .disposed(by: disposeBag)
+
+        
+        imageCountDriver = imageArrayCountSubject.asDriver(onErrorDriveWith: Driver.empty())
+        alubumButtonTap.asObservable()
+            .withLatestFrom(imageArrayCountObservable)
+            .subscribe { [weak self] count in
+                self?.imageArrayCountSubject.onNext(count)
+            }
+            .disposed(by: disposeBag)
+            
     }
     
     
