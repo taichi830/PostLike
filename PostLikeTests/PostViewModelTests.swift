@@ -15,32 +15,52 @@ import RxBlocking
 
 class PostViewModelTests: XCTestCase {
     
+    let disposeBag = DisposeBag()
+    let scheduler = TestScheduler(initialClock: 0)
+    var albumButtonTapEvent: Signal<()>!
+    var postButtonEvent: Signal<()>!
+    var textEvent: Driver<String>!
+    var appendImageEvent: Driver<[UIImage]>!
+    var viewModel: PostViewModel!
     
-
-    func postValidationTest() throws {
-        let disposeBag = DisposeBag()
+    
+    override func setUpWithError() throws {
         
-        let scheduler = TestScheduler(initialClock: 0)
-        
-        let tapEvent = scheduler.createHotObservable([
-            .next(0, ()),
-        ]).asSignal(onErrorSignalWith: Signal.empty())
-        
-        let textEvent = scheduler.createHotObservable([
+        textEvent = scheduler.createHotObservable([
             .next(10, ""),
             .next(20, "hello"),
             .next(40, "hello")
         ]).asDriver(onErrorDriveWith: Driver.empty())
         
-        let appendImageEvent = scheduler.createHotObservable([
+        
+        albumButtonTapEvent = scheduler.createHotObservable([
+            .next(40, ()),
+            .next(50, ())
+        ]).asSignal(onErrorSignalWith: Signal.empty())
+        
+        
+        
+        postButtonEvent = scheduler.createHotObservable([
+            .next(0, ()),
+        ]).asSignal(onErrorSignalWith: Signal.empty())
+        
+        
+        
+        viewModel = PostViewModel(input: (postButtonTap: postButtonEvent, text: textEvent, albumButtonTap: albumButtonTapEvent), userName: "", userImage: "", passedUid: "", roomID: "", postAPI: PostDefaultAPI())
+        
+        
+        
+    }
+    
+    //投稿時のバリデーションをテスト
+    func testPostValidation() throws {
+        
+        appendImageEvent = scheduler.createHotObservable([
             .next(30, [UIImage()]),
         ]).asDriver(onErrorDriveWith: Driver.empty())
         
-        
         let isPostable = scheduler.createObserver(Bool.self)
-        
-        let viewModel = PostViewModel(input: (postButtonTap: tapEvent, text: textEvent, albumButtonTap: tapEvent), userName: "", userImage: "", passedUid: "", roomID: "", postAPI: PostDefaultAPI())
-        
+    
         textEvent.drive(viewModel.postTextInPut).disposed(by: disposeBag)
         appendImageEvent.drive(viewModel.photoArrayInPut).disposed(by: disposeBag)
         viewModel.validPostDriver.drive(isPostable).disposed(by: disposeBag)
@@ -52,12 +72,66 @@ class PostViewModelTests: XCTestCase {
             .next(10, false),//どちらも空
             .next(20, true),//文字のみ
             .next(30, true),//写真のみ
-            .next(40, true)//文字と写真
+            .next(40, true),//文字と写真
+            
                  
         ])
         
         
     }
+    
+    
+    //アルバムを表示するボタンのバリデーションをテスト
+    func testAlbumButtonValidation() throws {
+        
+        appendImageEvent = scheduler.createHotObservable([
+            .next(30, [UIImage()]),
+            .next(40, [UIImage(),UIImage()])
+        ]).asDriver(onErrorDriveWith: Driver.empty())
+        
+        
+        let isTapable = scheduler.createObserver(Bool.self)
+        
+        appendImageEvent.drive(viewModel.photoArrayInPut).disposed(by: disposeBag)
+        viewModel.validAddImageDriver.drive(isTapable).disposed(by: disposeBag)
+        
+        scheduler.start()
+        
+        XCTAssertEqual(isTapable.events, [
+            .next(0, true),
+            .next(30, true),
+            .next(40, false)
+        ])
+        
+        
+    }
+    
+    
+    //写真配列のカウントをテスト
+    func testImageArrayCount() {
+        
+        appendImageEvent = scheduler.createHotObservable([
+            .next(30, [UIImage()]),
+            .next(40, [UIImage(),UIImage()])
+        ]).asDriver(onErrorDriveWith: Driver.empty())
+        
+        
+        let countDriver = scheduler.createObserver(Int.self)
+        
+        appendImageEvent.drive(viewModel.photoArrayInPut).disposed(by: disposeBag)
+        viewModel.imageCountDriver.drive(countDriver).disposed(by: disposeBag)
+
+        scheduler.start()
+
+        XCTAssertEqual(countDriver.events, [
+            .next(0, 0),
+            .next(40, 1),
+            .next(50, 2)
+        ])
+        
+        
+    }
+    
 
 
 
