@@ -94,7 +94,7 @@
 		CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */; };
 		CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */; };
 		CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */; };
-		CECA9F1F279BD3CD0059939B /* PostLikeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */; };
+		CECA9F1F279BD3CD0059939B /* CreatedAtExtenshionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F1E279BD3CD0059939B /* CreatedAtExtenshionTests.swift */; };
 		CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */; };
 		CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F2B279E94740059939B /* PostViewModel.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
@@ -221,7 +221,7 @@
 		CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeUITests.swift; sourceTree = "<group>"; };
 		CECA9F11279BBBA10059939B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CECA9F1C279BD3CD0059939B /* PostLikeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PostLikeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeTests.swift; sourceTree = "<group>"; };
+		CECA9F1E279BD3CD0059939B /* CreatedAtExtenshionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedAtExtenshionTests.swift; sourceTree = "<group>"; };
 		CECA9F20279BD3CD0059939B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatedAt-Extenshion.swift"; sourceTree = "<group>"; };
 		CECA9F2B279E94740059939B /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
@@ -587,7 +587,7 @@
 		CECA9F1D279BD3CD0059939B /* PostLikeTests */ = {
 			isa = PBXGroup;
 			children = (
-				CECA9F1E279BD3CD0059939B /* PostLikeTests.swift */,
+				CECA9F1E279BD3CD0059939B /* CreatedAtExtenshionTests.swift */,
 				CEFD9C1427A8457600DAD4C2 /* PostViewModelTests.swift */,
 				CECA9F20279BD3CD0059939B /* Info.plist */,
 			);
@@ -969,7 +969,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEFD9C1527A8457600DAD4C2 /* PostViewModelTests.swift in Sources */,
-				CECA9F1F279BD3CD0059939B /* PostLikeTests.swift in Sources */,
+				CECA9F1F279BD3CD0059939B /* CreatedAtExtenshionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
