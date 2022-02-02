@@ -9,7 +9,7 @@
 import XCTest
 @testable import PostLike_Dev
 
-class PostLikeTests: XCTestCase {
+class CreatedAtExtenshionTests: XCTestCase {
 
     override func setUpWithError() throws {
         
@@ -22,7 +22,7 @@ class PostLikeTests: XCTestCase {
     func diff(timeInterval: TimeInterval) -> String {
         let now = Date()
         let date = Date(timeInterval: timeInterval, since: now)
-        let text = UILabel().dateString(dateValue: date)
+        let text = UILabel().createdAtString(createdAt: date)
         return text
     }
     
