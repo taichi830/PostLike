@@ -85,6 +85,7 @@ final class PostViewModel {
     
     
     private func alubumButtonValidation(alubumButtonTap:Signal<()>) {
+        
         validAddImageDriver = validAddImageSubject
             .asSharedSequence(onErrorDriveWith: Driver.empty())
         
@@ -95,6 +96,15 @@ final class PostViewModel {
             }
             .share(replay: 1)
         
+        validAddImage.subscribe { [weak self] bool in
+                self?.validAddImageSubject.onNext(bool)
+            }
+            .disposed(by: disposeBag)
+        
+
+        
+        imageCountDriver = imageArrayCountSubject.asDriver(onErrorDriveWith: Driver.empty())
+        
         let imageArrayCountObservable = photoArrayOutPut
             .asObservable()
             .map { imageArray -> Int in
@@ -102,13 +112,6 @@ final class PostViewModel {
             }
             .share(replay: 1)
         
-        validAddImage.subscribe { [weak self] bool in
-                self?.validAddImageSubject.onNext(bool)
-            }
-            .disposed(by: disposeBag)
-
-        
-        imageCountDriver = imageArrayCountSubject.asDriver(onErrorDriveWith: Driver.empty())
         alubumButtonTap.asObservable()
             .withLatestFrom(imageArrayCountObservable)
             .subscribe { [weak self] count in
@@ -127,6 +130,7 @@ final class PostViewModel {
     
     
     private func post(postButtonTap:Signal<()>,text:Driver<String>,userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
+        
         postedDriver = postCompletedSubject.asDriver(onErrorJustReturn: true)
         let imageArrayObservable = photoArrayOutPut
             .asObservable()
