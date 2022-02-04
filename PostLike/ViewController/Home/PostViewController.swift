@@ -101,6 +101,7 @@ final class PostViewController: UIViewController{
         didTapBackButton()
         keybordNotifications()
         setUpTableView()
+        tapGesture()
     }
     
     
@@ -216,15 +217,12 @@ final class PostViewController: UIViewController{
         
         postViewModel.validAddImageDriver
             .drive { [weak self] bool in
-                print(bool)
                 self?.showAlbumButton.isEnabled = bool
-                
             }
             .disposed(by: disposeBag)
         
         postViewModel.imageCountDriver
             .drive { [weak self] count in
-                print(count)
                 self?.showAlbum(count: count)
             }
             .disposed(by: disposeBag)
@@ -289,10 +287,14 @@ final class PostViewController: UIViewController{
     
  
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if photoTableView.isDragging == true {
-            textView.resignFirstResponder()
-        }
+    func tapGesture() {
+        let tapGesture = UITapGestureRecognizer()
+        tapGesture.rx.event
+            .subscribe { [weak self] _ in
+                self?.textView.resignFirstResponder()
+            }
+            .disposed(by: disposeBag)
+        view.addGestureRecognizer(tapGesture)
     }
   
  
