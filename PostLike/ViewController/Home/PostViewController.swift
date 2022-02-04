@@ -8,7 +8,6 @@
 
 import UIKit
 import DKImagePickerController
-import Firebase
 import RxSwift
 import RxCocoa
 
@@ -16,22 +15,25 @@ final class PostViewController: UIViewController{
     
     
     
-    @IBOutlet private weak var textView: LinkTextView!
-    @IBOutlet private weak var photoTableView: UITableView!
-    @IBOutlet private weak var buttonView: UIView!
-    @IBOutlet private weak var postButton: UIButton!
-    @IBOutlet private weak var postTitleLabel: UILabel!
-    @IBOutlet private weak var profileImage: UIImageView!
-    @IBOutlet private weak var profileName: UILabel!
-    @IBOutlet private weak var postContentView: UIView!
-    @IBOutlet private weak var personImage: UIImageView!
-//    @IBOutlet private weak var showAlubumButton: UIView!
-    @IBOutlet private weak var backButton: UIButton!
+    
+    @IBOutlet private weak var postButton: UIButton! {
+        didSet {
+            postButton.layer.cornerRadius = 20
+            postButton.backgroundColor = .systemGray4
+        }
+    }
+    
+    @IBOutlet private weak var profileImage: UIImageView! {
+        didSet {
+            profileImage.layer.cornerRadius = profileImage.frame.size.height/2
+        }
+    }
+    
     @IBOutlet private weak var showAlbumButton: UIButton! {
         didSet {
             showAlbumButton.setTitle("写真を投稿する", for: .normal)
             showAlbumButton.setImage(UIImage(systemName: "photo"), for: .normal)
-            showAlbumButton.tintColor = .lightGray
+            showAlbumButton.tintColor = .systemGray4
             showAlbumButton.imageView?.contentMode = .scaleToFill
             showAlbumButton.contentHorizontalAlignment = .fill
             showAlbumButton.contentVerticalAlignment = .fill
@@ -40,6 +42,15 @@ final class PostViewController: UIViewController{
             
         }
     }
+    @IBOutlet private weak var textView: LinkTextView!
+    @IBOutlet private weak var buttonView: UIView!
+    @IBOutlet private weak var photoTableView: UITableView!
+    @IBOutlet private weak var postTitleLabel: UILabel!
+    @IBOutlet private weak var profileName: UILabel!
+    @IBOutlet private weak var postContentView: UIView!
+    @IBOutlet private weak var personImage: UIImageView!
+    @IBOutlet private weak var backButton: UIButton!
+    
     
     
     
@@ -63,10 +74,6 @@ final class PostViewController: UIViewController{
         
         buttonView.frame.size.width = self.view.frame.size.width
         
-        postButton.layer.cornerRadius = 20
-        postButton.backgroundColor = .systemGray4
-        
-        profileImage.layer.cornerRadius = 18
         if passedUserImageUrl != "" {
             profileImage.sd_setImage(with: URL(string: passedUserImageUrl), completed: nil)
             personImage.image = UIImage()
@@ -75,7 +82,6 @@ final class PostViewController: UIViewController{
         profileName.text = passedUserName
         
         setupBinds()
-        
         
     }
     
@@ -95,6 +101,7 @@ final class PostViewController: UIViewController{
         didTapBackButton()
         keybordNotifications()
         setUpTableView()
+        tapGesture()
     }
     
     
@@ -120,13 +127,6 @@ final class PostViewController: UIViewController{
     
     private func postValidateCheck() {
         //投稿文または写真があれば投稿できるようにする
-        textView.rx.text
-            .asDriver()
-            .drive { [weak self] text in
-                self?.postViewModel.postTextInPut.onNext(text ?? "")
-            }
-            .disposed(by: disposeBag)
-        
         postViewModel.validPostDriver
             .drive { [weak self] bool in
                 self?.postButton.isEnabled = bool
@@ -217,15 +217,12 @@ final class PostViewController: UIViewController{
         
         postViewModel.validAddImageDriver
             .drive { [weak self] bool in
-                print(bool)
                 self?.showAlbumButton.isEnabled = bool
-                
             }
             .disposed(by: disposeBag)
         
         postViewModel.imageCountDriver
             .drive { [weak self] count in
-                print(count)
                 self?.showAlbum(count: count)
             }
             .disposed(by: disposeBag)
@@ -290,10 +287,14 @@ final class PostViewController: UIViewController{
     
  
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if photoTableView.isDragging == true {
-            textView.resignFirstResponder()
-        }
+    func tapGesture() {
+        let tapGesture = UITapGestureRecognizer()
+        tapGesture.rx.event
+            .subscribe { [weak self] _ in
+                self?.textView.resignFirstResponder()
+            }
+            .disposed(by: disposeBag)
+        view.addGestureRecognizer(tapGesture)
     }
   
  
