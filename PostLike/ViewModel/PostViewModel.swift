@@ -15,7 +15,6 @@ final class PostViewModel {
     
     private let disposeBag = DisposeBag()
     
-    //observable
     var postTextOutPut = PublishSubject<String>()
     var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
     
@@ -24,10 +23,9 @@ final class PostViewModel {
     var postCompletedSubject = BehaviorSubject<Bool>.init(value: true)
     var imageArrayCountSubject = BehaviorSubject<Int>.init(value: 0)
     
-    //observer
+    
     var postTextInPut:AnyObserver<String> {
         postTextOutPut.asObserver()
-        
     }
     var photoArrayInPut:AnyObserver<[UIImage]> {
         photoArrayOutPut.asObserver()
@@ -44,7 +42,7 @@ final class PostViewModel {
     init(input:(postButtonTap:Signal<()>,text:Driver<String>,albumButtonTap:Signal<()>),userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
         
         
-        PostButtonValidation()
+        PostButtonValidation(text: input.text)
         alubumButtonValidation(alubumButtonTap: input.albumButtonTap)
         post(postButtonTap: input.postButtonTap, text: input.text, userName: userName, userImage: userImage, passedUid: passedUid, roomID: roomID, postAPI: postAPI)
  
@@ -57,23 +55,21 @@ final class PostViewModel {
     
     
     
-    private func PostButtonValidation() {
+    private func PostButtonValidation(text:Driver<String>) {
         validPostDriver = validPostSubject
-            .asDriver(onErrorDriveWith: Driver.empty())
+            .asDriver(onErrorJustReturn: false)
         
-        let validPostText = postTextOutPut
+        let validPostText = text
             .asObservable()
             .map { text -> Bool in
                 return text != ""
             }
-            .share(replay: 1)
             
         let validPhotoArray = photoArrayOutPut
             .asObservable()
             .map { photos -> Bool in
                 return photos != []
             }
-            .share(replay: 1)
         
         Observable.combineLatest(validPostText, validPhotoArray) { $0 || $1 }
             .subscribe { bool in
@@ -87,14 +83,13 @@ final class PostViewModel {
     private func alubumButtonValidation(alubumButtonTap:Signal<()>) {
         
         validAddImageDriver = validAddImageSubject
-            .asSharedSequence(onErrorDriveWith: Driver.empty())
+            .asDriver(onErrorJustReturn: false)
         
         let validAddImage = photoArrayOutPut
             .asObservable()
             .map { imageArray -> Bool in
                 return imageArray.count < 2
             }
-            .share(replay: 1)
         
         validAddImage.subscribe { [weak self] bool in
                 self?.validAddImageSubject.onNext(bool)
@@ -110,7 +105,6 @@ final class PostViewModel {
             .map { imageArray -> Int in
                 return imageArray.count
             }
-            .share(replay: 1)
         
         alubumButtonTap.asObservable()
             .withLatestFrom(imageArrayCountObservable)
@@ -131,7 +125,7 @@ final class PostViewModel {
     
     private func post(postButtonTap:Signal<()>,text:Driver<String>,userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
         
-        postedDriver = postCompletedSubject.asDriver(onErrorJustReturn: true)
+        postedDriver = postCompletedSubject.asDriver(onErrorJustReturn: false)
         let imageArrayObservable = photoArrayOutPut
             .asObservable()
         let textObservable = text.asObservable()
