@@ -9,7 +9,7 @@
 import XCTest
 @testable import PostLike_Dev
 
-class PostLikeTests: XCTestCase {
+class CreatedAtExtenshionTests: XCTestCase {
 
     override func setUpWithError() throws {
         

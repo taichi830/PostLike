@@ -17,7 +17,7 @@ protocol PostAPI {
 final class PostDefaultAPI: PostAPI {
     
     func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String,imageArray:[UIImage]) -> Single<Bool> {
-        return Single.create { [weak self] completable in
+        return Single.create { [weak self] single in
             
             let batch = Firestore.firestore().batch()
 
@@ -25,9 +25,9 @@ final class PostDefaultAPI: PostAPI {
                 self?.createPostWhenNoImages(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, media: [""], batch: batch)
                 batch.commit { err in
                     if let err = err {
-                        completable(.failure(err))
+                        single(.failure(err))
                     }else{
-                        completable(.success(true))
+                        single(.success(true))
                     }
                 }
             }else {
@@ -39,9 +39,9 @@ final class PostDefaultAPI: PostAPI {
                         self?.postBatch(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, media: urls, batch: batch)
                         batch.commit { err in
                             if let err = err {
-                                completable(.failure(err))
+                                single(.failure(err))
                             }else{
-                                completable(.success(true))
+                                single(.success(true))
                             }
                         }
                         
