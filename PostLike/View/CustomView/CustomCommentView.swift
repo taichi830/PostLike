@@ -31,7 +31,7 @@ final class CustomCommentView: UIView {
     @IBOutlet weak var postButton: UIButton!
     
     private let disposeBag = DisposeBag()
-    private var viewModel:CommentViewModel!
+    private var viewModel:InputCommentViewModel!
     
     
     override init(frame: CGRect) {
@@ -53,7 +53,7 @@ final class CustomCommentView: UIView {
     }
     
     func setupBinds() {
-        self.viewModel = CommentViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), commentText: commentTextView.rx.text.orEmpty.asDriver()))
+        self.viewModel = InputCommentViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), commentText: commentTextView.rx.text.orEmpty.asDriver()))
         
         //プレスホルダーが入っていたらtextColorをlightgrayにする
         viewModel.isPlaceholderDriver.drive { [weak self] bool in
