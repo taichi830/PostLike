@@ -48,7 +48,14 @@ final class CommentHeaderView: UIView {
             personImageView.image = UIImage(systemName: "person.fill")
         }
         
-        commentLabel.text = comment
+        if comment == "" {
+            commentLabel.textColor = .lightGray
+            commentLabel.text = "投稿文はありません"
+        }else{
+            commentLabel.textColor = .label
+            commentLabel.text = comment
+        }
+        
         
         let createdAt = date.dateValue()
         createdAtLabel.text = UILabel().createdAtString(createdAt: createdAt)
