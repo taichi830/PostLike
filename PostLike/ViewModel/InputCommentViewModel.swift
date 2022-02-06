@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class CommentViewModel {
+final class InputCommentViewModel {
     private let dispoedBag = DisposeBag()
     
     var validPostSubject = BehaviorSubject<Bool>.init(value: false)
