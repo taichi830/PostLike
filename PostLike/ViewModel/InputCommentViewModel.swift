@@ -9,59 +9,41 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Firebase
 
 final class InputCommentViewModel {
+    
     private let dispoedBag = DisposeBag()
-    
-    var validPostSubject = BehaviorSubject<Bool>.init(value: false)
     var validPostDriver:Driver<Bool> = Driver.never()
+    var userInfoDriver: Driver<Contents> = Driver.never()
+    var isJoined: Driver<Bool> = Driver.never()
     
-    var isEmpty = BehaviorSubject<Bool>.init(value: false)
-    var isEmptyDriver:Driver<Bool> = Driver.never()
-    
-    var isPlaceholder = BehaviorSubject<Bool>.init(value: true)
-    var isPlaceholderDriver:Driver<Bool> = Driver.never()
-    
-    init(input:(postButtonTap:Signal<()>,commentText:Driver<String>)) {
+    init(input:(postButtonTap:Signal<()>,commentText:Driver<String>),userListner:UserListner,roomID:String) {
         
         //投稿ボタンのバリデーション
-        validPostDriver = validPostSubject.asDriver(onErrorJustReturn: false)
-        isEmptyDriver = isEmpty.asDriver(onErrorJustReturn: true)
-        isPlaceholderDriver = isPlaceholder.asDriver(onErrorJustReturn: true)
-        
-        let emptyCheck = input.commentText
-            .asObservable()
+        validPostDriver = input.commentText.asObservable()
             .map { text -> Bool in
-                text != ""
+                text != "" && text != "コメントを入力する"
             }
+            .asDriver(onErrorJustReturn: false)
         
-        let textCheck = input.commentText
-            .asObservable()
-            .map { text -> Bool in
-                text != "コメントを入力する"
-            }
+        //プロフィール情報を取得
+        let userListner = userListner.createUserListner(roomID: roomID)
         
-        emptyCheck.asObservable()
-            .subscribe { [weak self] bool in
-                self?.isEmpty.onNext(!bool)
-            }
-            .disposed(by: dispoedBag)
+        isJoined = userListner.map({ content -> Bool in
+            return content.isJoined != false
+        })
+        .asDriver(onErrorJustReturn: false)
         
-        textCheck.asObservable()
-            .subscribe { [weak self] bool in
-                self?.isPlaceholder.onNext(!bool)
-            }
-            .disposed(by: dispoedBag)
-        
-        Observable.combineLatest(emptyCheck, textCheck) { $0 || $1 }
-            .subscribe { [weak self] bool in
-                self?.validPostSubject.onNext(bool)
-            }
-            .disposed(by: dispoedBag)
-        
+        userInfoDriver = userListner
+            .debounce(.milliseconds(1000), scheduler: MainScheduler.instance)
+            .asDriver(onErrorJustReturn: Contents(dic: ["isJoined" : false]))
         
         
     }
+    
+    
+   
     
     
 }
