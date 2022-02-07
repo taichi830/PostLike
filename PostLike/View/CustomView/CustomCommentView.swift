@@ -52,19 +52,25 @@ final class CustomCommentView: UIView {
         }
     }
     
-    func setupBinds() {
-        self.viewModel = InputCommentViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), commentText: commentTextView.rx.text.orEmpty.asDriver()))
-        
-        //プレスホルダーが入っていたらtextColorをlightgrayにする
-        viewModel.isPlaceholderDriver.drive { [weak self] bool in
-            print("isPlaceHolder:",bool)
-            self?.commentTextView.textColor = bool ? .lightGray : .label
-        }
-        .disposed(by: disposeBag)
+    func setupBinds(roomID:String) {
+        viewModel = InputCommentViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), commentText: commentTextView.rx.text.orEmpty.asDriver()), userListner: UserDefaultLisner(), roomID: roomID)
         
         //バリデーションチェック
         viewModel.validPostDriver.drive { [weak self] bool in
+            print("isValid:",bool)
             self?.postButton.isEnabled = bool
+            self?.postButton.tintColor = bool ? .blue : .magenta
+        }
+        .disposed(by: disposeBag)
+        
+        //プロフィール画像を取得
+        viewModel.userInfoDriver.drive { [weak self] content in
+            self?.profileImageView.sd_setImage(with: URL(string: content.userImage), completed: nil)
+        }
+        .disposed(by: disposeBag)
+        
+        viewModel.isJoined.drive { [weak self] bool in
+            self?.commentTextView.isEditable = bool
         }
         .disposed(by: disposeBag)
         
