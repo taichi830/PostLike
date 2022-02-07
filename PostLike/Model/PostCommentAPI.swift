@@ -11,20 +11,22 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-protocol postComment {
-    func postComment(userName:String,userImage:String,text:String,roomID:String,postID:String,documentID:String,roomName:String,passedUid:String,mediaArray:[String]) -> Single<Bool>
+protocol PostComment {
+    func postComment(userName:String,userImage:String,text:String,roomID:String,postID:String,roomName:String,passedUid:String,mediaArray:[String]) -> Single<Bool>
 }
 
-final class PostCommentAPI: postComment {
+final class PostCommentAPI: PostComment {
     
-    func postComment(userName:String,userImage:String,text:String,roomID:String,postID:String,documentID:String,roomName:String,passedUid:String,mediaArray:[String]) -> Single<Bool> {
+    func postComment(userName:String,userImage:String,text:String,roomID:String,postID:String,roomName:String,passedUid:String,mediaArray:[String]) -> Single<Bool> {
         return Single.create { [weak self] single in
             let batch = Firestore.firestore().batch()
+            let documentID = NSUUID().uuidString
             self?.createComment(userName: userName, userImage: userImage, text: text, roomID: roomID, postID: postID, documentID: documentID, batch: batch)
-            self?.incrementCommentCount(passedUid: passedUid, roomID: roomID, documentID: documentID, mediaArray: mediaArray, batch: batch)
+            self?.incrementCommentCount(passedUid: passedUid, roomID: roomID, postID: postID, mediaArray: mediaArray, batch: batch)
             self?.giveNotification(userName: userName, userImage: userImage, roomName: roomName, postID: postID, roomID: roomID, documentID: documentID, passedUid: passedUid, batch: batch)
             batch.commit { err in
                 if let err = err {
+                    print("err:",err)
                     single(.failure(err))
                 }else{
                     single(.success(true))
@@ -59,10 +61,10 @@ final class PostCommentAPI: postComment {
     }
     
     
-    private func incrementCommentCount(passedUid:String,roomID:String,documentID:String,mediaArray:[String],batch:WriteBatch){
-        Firestore.increaseCommentCount(uid: passedUid, roomID: roomID, documentID: documentID, batch: batch)
+    private func incrementCommentCount(passedUid:String,roomID:String,postID:String,mediaArray:[String],batch:WriteBatch){
+        Firestore.increaseCommentCount(uid: passedUid, roomID: roomID, documentID: postID, batch: batch)
         if mediaArray[0] != "" {
-            Firestore.increaseMediaPostCommentCount(roomID: roomID, documentID: documentID, batch: batch)
+            Firestore.increaseMediaPostCommentCount(roomID: roomID, documentID: postID, batch: batch)
         }
     }
     

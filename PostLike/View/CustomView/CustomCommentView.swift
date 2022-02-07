@@ -42,7 +42,6 @@ final class CustomCommentView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         loadNib()
-        didTapPostButton()
     }
 
     private func loadNib() {
@@ -52,8 +51,9 @@ final class CustomCommentView: UIView {
         }
     }
     
-    func setupBinds(roomID:String) {
-        viewModel = InputCommentViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), commentText: commentTextView.rx.text.orEmpty.asDriver()), userListner: UserDefaultLisner(), roomID: roomID)
+    func setupBinds(roomID: String, postID: String, roomName: String, passedUid: String, mediaArray: [String]) {
+        
+        viewModel = InputCommentViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), commentText: commentTextView.rx.text.orEmpty.asDriver()), postComment: PostCommentAPI(), userListner: UserDefaultLisner(), roomID: roomID, postID: postID, roomName: roomName, passedUid: passedUid, mediaArray: mediaArray)
         
         //バリデーションチェック
         viewModel.validPostDriver.drive { [weak self] bool in
@@ -69,8 +69,14 @@ final class CustomCommentView: UIView {
         }
         .disposed(by: disposeBag)
         
+        //ルームに参加中かチェック
         viewModel.isJoined.drive { [weak self] bool in
             self?.commentTextView.isEditable = bool
+        }
+        .disposed(by: disposeBag)
+        
+        viewModel.isPosted.drive { bool in
+            print("bool",bool)
         }
         .disposed(by: disposeBag)
         
@@ -85,14 +91,5 @@ final class CustomCommentView: UIView {
         .disposed(by: disposeBag)
     }
     
-    
-    
-    
-    private func didTapPostButton() {
-        postButton.rx.tap.subscribe {  _ in
-            print("tapped!!!!!!!!!!!!!!!!!!!!")
-        }
-        .disposed(by: disposeBag)
-    }
     
 }

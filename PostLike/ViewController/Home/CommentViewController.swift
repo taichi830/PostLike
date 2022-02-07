@@ -48,7 +48,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
         
         setupHeaderView()
 
-        backView.setupBinds(roomID: passedRoomID)
+        backView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
         backView.didStartEditing()
         textViewDidChange()
         showKeyBoard()
