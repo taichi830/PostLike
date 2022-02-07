@@ -25,17 +25,24 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     var passedDocumentID = String()
     var passedMediaArray = Array<String>()
     var passedRoomID = String()
-    private var commentsArray = [Contents]()
-    private var user:Contents?
     private var label = MessageLabel()
     private let disposeBag = DisposeBag()
     private var viewModel:CommentViewModel!
+    private lazy var indicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .medium
+        indicator.color = .lightGray
+        indicator.hidesWhenStopped = true
+        indicator.center = self.view.center
+        self.view.addSubview(indicator)
+        return indicator
+    }()
     
     
     
     
     @IBOutlet private weak var commentTableView: UITableView!
-    @IBOutlet weak var backView: CustomCommentView!
+    @IBOutlet weak var customCommentView: CustomCommentView!
     @IBOutlet weak var messageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var messageViewButtomConstraint: NSLayoutConstraint!
     
@@ -48,8 +55,8 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
         
         setupHeaderView()
 
-        backView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
-        backView.didStartEditing()
+        customCommentView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
+        customCommentView.didStartEditing()
         textViewDidChange()
         showKeyBoard()
         hideKeyboard()
@@ -87,15 +94,18 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     private func textViewDidChange() {
-
-        backView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
-            let size:CGSize = self!.backView.commentTextView.sizeThatFits(self!.backView.commentTextView.frame.size)
+        customCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
+            let size:CGSize = self!.customCommentView.commentTextView.sizeThatFits(self!.customCommentView.commentTextView.frame.size)
             self?.messageViewHeight.constant = size.height + 40
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
         })
         .disposed(by: disposeBag)
     }
+    
+    
+    
+    
     
     private func showKeyBoard() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification, object: nil).subscribe { [weak self] notificationEvent in
@@ -119,6 +129,8 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     }
     
     
+    
+    
     private func hideKeyboard() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification, object: nil)
             .subscribe({ [weak self] _ in
@@ -128,6 +140,8 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
             })
             .disposed(by: disposeBag)
     }
+    
+    
     
     
     
@@ -141,79 +155,37 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     
-    
-    
 
-    
-    
-     
-    
-    
-
-//    private func createComment(documentID:String,batch:WriteBatch){
-//        let uid = Auth.auth().currentUser!.uid
-//        let dic =  [
-//            "userName":user?.userName ?? "",
-//            "userImage":user?.userImage ?? "",
-//            "text":commentTextView.text ?? "",
-//            "createdAt":Timestamp(),
-//            "documentID":documentID,
-//            "roomID":passedRoomID,
-//            "postID":passedDocumentID,
-//            "uid":uid,
-//            "likeCount":0,
-//            "commentCount":0]
-//            as [String:Any]
-//        Firestore.createComment(uid: uid, roomID: passedRoomID, documentID: documentID, dic: dic, batch: batch)
-//
-//    }
-    
-    
-    
-    
-    private func incrementCommentCount(batch:WriteBatch){
-        Firestore.increaseCommentCount(uid: passedUid, roomID: passedRoomID, documentID: passedDocumentID, batch: batch)
-        if passedMediaArray[0] != "" {
-            Firestore.increaseMediaPostCommentCount(roomID: passedRoomID, documentID: passedDocumentID, batch: batch)
-        }
-    }
-    
-    
-    
-    private func giveNotification(documentID:String,batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let dic = [
-            "userName":user?.userName ?? "",
-            "userImage":user?.userImage ?? "",
-            "uid":uid,
-            "roomName":passedRoomName,
-            "createdAt":Timestamp(),
-            "postID":passedDocumentID,
-            "roomID":passedRoomID,
-            "documentID":documentID,
-            "type":"comment"] as [String:Any]
-        Firestore.createNotification(uid: passedUid, myuid: uid, documentID: documentID, dic: dic, batch: batch)
-    }
-    
     
     private func fetchComments() {
+        indicator.startAnimating()
         viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedDocumentID)
+        
+        //itemsが空かチェック
+        viewModel.isEmpty.drive { [weak self] bool in
+            if bool == true {
+                self?.indicator.stopAnimating()
+                self?.label.setupLabel(view: self!.view, y: self!.view.center.y - 100)
+                self?.label.text = "コメントがありません"
+                self?.commentTableView.addSubview(self!.label)
+            }else{
+                self?.label.text = ""
+            }
+        }
+        .disposed(by: disposeBag)
+        
+        //itemsをtableViewにバインド
         viewModel.items
-            .drive( commentTableView.rx.items(cellIdentifier: "commentCell", cellType: CommentTableViewCell.self)) { row, item, cell in
-                print("item:",item)
+            .drive( commentTableView.rx.items(cellIdentifier: "commentCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
                 cell.userImage.layer.cornerRadius = cell.userImage.frame.height/2
                 if item.userImage != "" {
+                    self?.indicator.stopAnimating()
                     cell.userImage.sd_setImage(with: URL(string: item.userImage), completed: nil)
-                }else{
                     cell.personView.image = UIImage()
                 }
-                
                 cell.commentLabel.text = item.text
-                
-                
                 cell.userName.text = item.userName
                 cell.timeLabel.text = UILabel().createdAtString(createdAt: item.createdAt.dateValue())
-                
             }
             .disposed(by: disposeBag)
     }
@@ -231,7 +203,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
 extension CommentViewController:UIScrollViewDelegate{
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if commentTableView.isDragging == true{
-            self.backView.commentTextView.resignFirstResponder()
+            self.customCommentView.commentTextView.resignFirstResponder()
         }
     }
 }
