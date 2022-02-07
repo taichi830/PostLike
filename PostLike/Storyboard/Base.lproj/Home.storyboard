@@ -441,8 +441,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="backView" destination="lNr-BB-MCd" id="Wef-R8-F7w"/>
                         <outlet property="commentTableView" destination="qSM-PU-esT" id="waA-6O-0j0"/>
+                        <outlet property="customCommentView" destination="lNr-BB-MCd" id="UjC-37-alj"/>
                         <outlet property="messageViewButtomConstraint" destination="kZ0-fH-xJk" id="sra-p4-i2w"/>
                         <outlet property="messageViewHeight" destination="AVZ-UN-AMk" id="LCZ-es-LnP"/>
                     </connections>

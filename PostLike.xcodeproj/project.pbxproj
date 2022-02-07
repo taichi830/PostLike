@@ -67,6 +67,11 @@
 		CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */; };
 		CE2E27DF276A3AFB002D0E41 /* AccountSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */; };
 		CE2E27E1276AD36E002D0E41 /* NavigationPush-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27E0276AD36E002D0E41 /* NavigationPush-extenshion.swift */; };
+		CE3F4DCA27AFEC5500780BEE /* InputCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */; };
+		CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */; };
+		CE3F4DCE27B032D200780BEE /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCD27B032D200780BEE /* CommentViewModel.swift */; };
+		CE3F4DD027B0C04000780BEE /* PostCommentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCF27B0C04000780BEE /* PostCommentAPI.swift */; };
+		CE3F4DD227B0E61E00780BEE /* UserListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DD127B0E61E00780BEE /* UserListner.swift */; };
 		CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */; };
 		CE5D0C23270715100019F9D5 /* GoogleService-Info.Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0C22270715100019F9D5 /* GoogleService-Info.Release.plist */; };
 		CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */; };
@@ -83,6 +88,8 @@
 		CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */; };
 		CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */; };
 		CE854BDB275B34730089BEF4 /* CommonModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE854BDA275B34730089BEF4 /* CommonModal.swift */; };
+		CE8EB72927AF8D080036DBF0 /* CustomCommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8EB72827AF8D080036DBF0 /* CustomCommentView.xib */; };
+		CE8EB72B27AF8EC20036DBF0 /* CustomCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8EB72A27AF8EC20036DBF0 /* CustomCommentView.swift */; };
 		CEA19BED26D631C800283E91 /* Array-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* Array-extenshion.swift */; };
 		CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */; };
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
@@ -164,6 +171,11 @@
 		CE33BA5826637D1B001EC04B /* TabImage-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-extenshion.swift"; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
+		CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCommentViewModel.swift; sourceTree = "<group>"; };
+		CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentListner.swift; sourceTree = "<group>"; };
+		CE3F4DCD27B032D200780BEE /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
+		CE3F4DCF27B0C04000780BEE /* PostCommentAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentAPI.swift; sourceTree = "<group>"; };
+		CE3F4DD127B0E61E00780BEE /* UserListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListner.swift; sourceTree = "<group>"; };
 		CE409DA8256D57B9002ED7E8 /* RoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewController.swift; sourceTree = "<group>"; };
 		CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComfirmEmailViewController.swift; sourceTree = "<group>"; };
 		CE45BEE82679A94C00564F3F /* SearchResultHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultHeaderView.xib; sourceTree = "<group>"; };
@@ -197,6 +209,8 @@
 		CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomHeaderView.swift; sourceTree = "<group>"; };
 		CE854BDA275B34730089BEF4 /* CommonModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonModal.swift; sourceTree = "<group>"; };
+		CE8EB72827AF8D080036DBF0 /* CustomCommentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCommentView.xib; sourceTree = "<group>"; };
+		CE8EB72A27AF8EC20036DBF0 /* CustomCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCommentView.swift; sourceTree = "<group>"; };
 		CE967139265AAE1700E7820F /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		CEA19BEC26D631C800283E91 /* Array-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array-extenshion.swift"; sourceTree = "<group>"; };
 		CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomHeaderView.xib; sourceTree = "<group>"; };
@@ -417,6 +431,8 @@
 				CE2E27D427606659002D0E41 /* RegisterViewModel.swift */,
 				CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */,
 				CECA9F2B279E94740059939B /* PostViewModel.swift */,
+				CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */,
+				CE3F4DCD27B032D200780BEE /* CommentViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -443,6 +459,9 @@
 				CE77EF5926E67EEF00154886 /* User.swift */,
 				CE77EF5C26E67EEF00154886 /* Response.swift */,
 				CE79ED32279FC8B40047ABEF /* PostDefaultAPI.swift */,
+				CE3F4DCF27B0C04000780BEE /* PostCommentAPI.swift */,
+				CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */,
+				CE3F4DD127B0E61E00780BEE /* UserListner.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -543,6 +562,15 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		CE8EB72727AF8CBB0036DBF0 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				CE8EB72827AF8D080036DBF0 /* CustomCommentView.xib */,
+				CE8EB72A27AF8EC20036DBF0 /* CustomCommentView.swift */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
 		CEAA5C7D2520D34500755F90 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -560,6 +588,7 @@
 		CEAA5C7E2520D34E00755F90 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CE8EB72727AF8CBB0036DBF0 /* CustomView */,
 				CE1C23C4276B1D9400D3CAC8 /* Cells */,
 				CE1C23C3276B1D8D00D3CAC8 /* HeaderViews */,
 			);
@@ -710,6 +739,7 @@
 				CE012C4626B6EFD4006CC20E /* FeedTableViewCell.xib in Resources */,
 				CE1C23C9276B946000D3CAC8 /* SearchTableViewCell.xib in Resources */,
 				CE79ED3727A2E78C0047ABEF /* PostPreViewTableViewCell.xib in Resources */,
+				CE8EB72927AF8D080036DBF0 /* CustomCommentView.xib in Resources */,
 				CE5D0C23270715100019F9D5 /* GoogleService-Info.Release.plist in Resources */,
 				CE012C4726B6EFD4006CC20E /* Assets.xcassets in Resources */,
 				CE012C4826B6EFD4006CC20E /* NativeAdTableViewCell.xib in Resources */,
@@ -885,6 +915,7 @@
 				CEFAC38A2774DFF100739549 /* Auth.swift in Sources */,
 				CE2E27E1276AD36E002D0E41 /* NavigationPush-extenshion.swift in Sources */,
 				CE012C0B26B6EFD4006CC20E /* Alert-extenshion.swift in Sources */,
+				CE3F4DCE27B032D200780BEE /* CommentViewModel.swift in Sources */,
 				CE77EF5F26E67EEF00154886 /* Contents.swift in Sources */,
 				CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */,
 				CE77EF6226E67EEF00154886 /* Room.swift in Sources */,
@@ -893,7 +924,9 @@
 				CE1C23C8276B946000D3CAC8 /* SearchTableViewCell.swift in Sources */,
 				CE012C0D26B6EFD4006CC20E /* BaseTabBarController.swift in Sources */,
 				CE77EF6326E67EEF00154886 /* Response.swift in Sources */,
+				CE8EB72B27AF8EC20036DBF0 /* CustomCommentView.swift in Sources */,
 				CE012C0E26B6EFD4006CC20E /* RoomListViewController.swift in Sources */,
+				CE3F4DD027B0C04000780BEE /* PostCommentAPI.swift in Sources */,
 				CE012C1026B6EFD4006CC20E /* DeleteRoomViewController.swift in Sources */,
 				CE012C1326B6EFD4006CC20E /* RoomCollectionViewCell.swift in Sources */,
 				CE012C1426B6EFD4006CC20E /* CommentViewController.swift in Sources */,
@@ -916,6 +949,7 @@
 				CE012C1E26B6EFD4006CC20E /* CustomRefreshController.swift in Sources */,
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
+				CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */,
 				CE77EF6026E67EEF00154886 /* User.swift in Sources */,
 				CE012C2126B6EFD4006CC20E /* ProfileEditViewController.swift in Sources */,
 				CE012C2326B6EFD4006CC20E /* JoinedRoomViewController.swift in Sources */,
@@ -936,6 +970,7 @@
 				CE77EF6426E67EEF00154886 /* AppDelegate.swift in Sources */,
 				CE012C3226B6EFD4006CC20E /* HomeViewController.swift in Sources */,
 				CE2E27D527606659002D0E41 /* RegisterViewModel.swift in Sources */,
+				CE3F4DD227B0E61E00780BEE /* UserListner.swift in Sources */,
 				CE012C3326B6EFD4006CC20E /* CreateRoomViewController.swift in Sources */,
 				CE1C23CB276C5CE800D3CAC8 /* MessageLabel.swift in Sources */,
 				CE2E27DF276A3AFB002D0E41 /* AccountSettingViewController.swift in Sources */,
@@ -951,6 +986,7 @@
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
 				CE79ED3627A2E78C0047ABEF /* PostPreViewTableViewCell.swift in Sources */,
 				CEFAC3882772CB8E00739549 /* Storage.swift in Sources */,
+				CE3F4DCA27AFEC5500780BEE /* InputCommentViewModel.swift in Sources */,
 				CE012C3C26B6EFD4006CC20E /* RoomDetailViewController.swift in Sources */,
 				CE012C3E26B6EFD4006CC20E /* CreateModeratorProfileViewController.swift in Sources */,
 			);
