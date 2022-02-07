@@ -57,9 +57,8 @@ final class CustomCommentView: UIView {
         
         //バリデーションチェック
         viewModel.validPostDriver.drive { [weak self] bool in
-            print("isValid:",bool)
             self?.postButton.isEnabled = bool
-            self?.postButton.tintColor = bool ? .blue : .magenta
+            self?.postButton.tintColor = .blue
         }
         .disposed(by: disposeBag)
         
@@ -75,8 +74,13 @@ final class CustomCommentView: UIView {
         }
         .disposed(by: disposeBag)
         
-        viewModel.isPosted.drive { bool in
-            print("bool",bool)
+        //投稿完了通知を受け取る
+        viewModel.isPosted.drive { [weak self] bool in
+            if bool == true {
+                self?.commentTextView.text = "コメントを入力する"
+                self?.commentTextView.textColor = .lightGray
+                self?.commentTextView.resignFirstResponder()
+            }
         }
         .disposed(by: disposeBag)
         
