@@ -29,6 +29,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     private var user:Contents?
     private var label = MessageLabel()
     private let disposeBag = DisposeBag()
+    private var viewModel:CommentViewModel!
     
     
     
@@ -42,29 +43,22 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        commentTableView.delegate = self
-        commentTableView.dataSource = self
         commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "commentCell")
         commentTableView.rowHeight = UITableView.automaticDimension
         
         setupHeaderView()
 
-        backView.setupBinds()
+        backView.setupBinds(roomID: passedRoomID)
         backView.didStartEditing()
         textViewDidChange()
         showKeyBoard()
         hideKeyboard()
+        fetchComments()
        
     }
     
     
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchComments()
-//        fetchUserInfo()
-    }
+
     
     
     
@@ -145,50 +139,11 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     
-    @IBAction private func sendButton(_ sender: Any) {
-//        if commentTextView.text == "" || commentTextView.text == "コメントを入力する" {
-//            return
-//        }else{
-//            let documentID = NSUUID().uuidString
-//            let batch = Firestore.firestore().batch()
-//            createComment(documentID: documentID, batch: batch)
-//            incrementCommentCount(batch: batch)
-//            giveNotification(documentID: documentID,batch: batch)
-//            batch.commit { err in
-//                if let err = err {
-//                    print("false\(err)")
-//                    let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-//                        self.dismissIndicator()
-//                    }
-//                    self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-//                    return
-//                }else{
-//                    self.fetchComments()
-//                    self.commentTextView.text = ""
-//                }
-//            }
-//        }
-    }
     
     
     
     
-//    private func fetchUserInfo(){
-//        Firestore.fetchUserInfo(roomID: passedRoomID) { userInfo in
-//            if userInfo.isJoined == false {
-//                self.commentTextView.text = "ルームに参加するとコメントできます"
-//                self.commentTextView.isEditable = false
-//                self.sendButton.isEnabled = false
-//                self.sendButton.setTitleColor(.lightGray, for: .normal)
-//            }
-//            self.user = userInfo
-//            if userInfo.userImage != "" {
-//                self.myImage.sd_setImage(with: URL(string: userInfo.userImage), completed: nil)
-//                self.personImage2.image = UIImage()
-//            }
-//
-//        }
-//    }
+
     
     
      
@@ -238,29 +193,31 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
             "documentID":documentID,
             "type":"comment"] as [String:Any]
         Firestore.createNotification(uid: passedUid, myuid: uid, documentID: documentID, dic: dic, batch: batch)
-//        if uid != passedUid {
-//            
-//        }
     }
     
     
-    
-    
-    private func fetchComments(){
-        self.commentsArray.removeAll()
-        Firestore.fetchComments(documentID: passedDocumentID) { comments in
-            if comments.isEmpty == true {
-                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
-                self.label.text = "コメントがありません"
-                self.commentTableView.addSubview(self.label)
-            }else {
-                self.label.text = ""
-                self.commentsArray.append(contentsOf: comments)
-                self.commentTableView.reloadData()
+    private func fetchComments() {
+        viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedDocumentID)
+        viewModel.items
+            .drive( commentTableView.rx.items(cellIdentifier: "commentCell", cellType: CommentTableViewCell.self)) { row, item, cell in
+                print("item:",item)
+                cell.userImage.layer.cornerRadius = cell.userImage.frame.height/2
+                if item.userImage != "" {
+                    cell.userImage.sd_setImage(with: URL(string: item.userImage), completed: nil)
+                }else{
+                    cell.personView.image = UIImage()
+                }
+                
+                cell.commentLabel.text = item.text
+                
+                
+                cell.userName.text = item.userName
+                cell.timeLabel.text = UILabel().createdAtString(createdAt: item.createdAt.dateValue())
+                
             }
-            
-        }
+            .disposed(by: disposeBag)
     }
+    
     
     
     
@@ -268,41 +225,6 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
 
 
 
-extension CommentViewController: UITableViewDelegate,UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return commentsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = commentTableView.dequeueReusableCell(withIdentifier: "commentCell") as! CommentTableViewCell
-        
-        let userName = cell.userName
-        userName?.text = commentsArray[indexPath.row].userName
-        
-        let userImage = cell.userImage
-        userImage?.layer.cornerRadius = 20
-        if commentsArray[indexPath.row].userImage != "" {
-            userImage?.sd_setImage(with: URL(string: commentsArray[indexPath.row].userImage), completed: nil)
-            cell.personView.image = UIImage()
-            
-        }
-        
-        let comment = cell.commentLabel
-        comment?.text = commentsArray[indexPath.row].text
-        
-        let createdAtLabel = cell.timeLabel!
-        let createdAt = commentsArray[indexPath.row].createdAt.dateValue()
-        createdAtLabel.text = UILabel().createdAtString(createdAt: createdAt)
-        
-        return cell
-        
-        
-    }
-    
-    
-    
-}
 
 
 
