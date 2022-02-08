@@ -21,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HsM-4O-U2z">
-                    <rect key="frame" x="8" y="20" width="40" height="40"/>
+                    <rect key="frame" x="14" y="20" width="40" height="40"/>
                     <color key="backgroundColor" systemColor="systemGray5Color"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="c0G-gL-PH7"/>
@@ -29,7 +29,7 @@
                     </constraints>
                 </imageView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FKk-sE-prn">
-                    <rect key="frame" x="56" y="20" width="302" height="40"/>
+                    <rect key="frame" x="62" y="20" width="296" height="40"/>
                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="u6W-yP-Vda"/>
@@ -58,7 +58,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="HsM-4O-U2z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="7mJ-vB-h0g"/>
+                <constraint firstItem="HsM-4O-U2z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="14" id="7mJ-vB-h0g"/>
                 <constraint firstAttribute="trailing" secondItem="Ag4-BC-SOI" secondAttribute="trailing" id="Cqz-Yk-DA3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="HsM-4O-U2z" secondAttribute="bottom" constant="20" id="J7j-sg-NJy"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="FKk-sE-prn" secondAttribute="bottom" constant="20" id="QD3-gE-lu0"/>
