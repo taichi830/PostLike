@@ -43,8 +43,8 @@ final class CommentViewController: UIViewController {
     
     @IBOutlet private weak var commentTableView: UITableView!
     @IBOutlet weak var inputCommentView: InputCommentView!
-    @IBOutlet weak var messageViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var messageViewButtomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var inputCommentViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var inputCommentViewBottomConstraint: NSLayoutConstraint!
     
     
     override func viewDidLoad() {
@@ -56,10 +56,11 @@ final class CommentViewController: UIViewController {
         setupHeaderView()
 
         inputCommentView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
+        
         inputCommentView.didStartEditing()
         textViewDidChange()
-        showKeyBoard()
-        hideKeyboard()
+        keyboardWillShowNotification()
+        keyboardWillHideNotification()
         fetchComments()
        
     }
@@ -96,7 +97,7 @@ final class CommentViewController: UIViewController {
     private func textViewDidChange() {
         inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
             if let size:CGSize = self?.inputCommentView.commentTextView.sizeThatFits(self!.inputCommentView.commentTextView.frame.size) {
-                self?.messageViewHeight.constant = size.height + 40
+                self?.inputCommentViewHeight.constant = size.height + 40
                 self?.view.setNeedsLayout()
                 self?.view.layoutIfNeeded()
             }
@@ -109,7 +110,7 @@ final class CommentViewController: UIViewController {
     
     
     
-    private func showKeyBoard() {
+    private func keyboardWillShowNotification() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification, object: nil).subscribe { [weak self] notificationEvent in
             guard let notification = notificationEvent.element else { return }
             guard let userInfo = notification.userInfo as? [String:Any] else {
@@ -122,7 +123,7 @@ final class CommentViewController: UIViewController {
                 return
             }
             UIView.animate(withDuration: duration) {
-                self?.messageViewButtomConstraint.constant = -rect.height + self!.view.safeAreaInsets.bottom
+                self?.inputCommentViewBottomConstraint.constant = -rect.height + self!.view.safeAreaInsets.bottom
                 self?.view.setNeedsLayout()
                 self?.view.layoutIfNeeded()
             }
@@ -133,10 +134,10 @@ final class CommentViewController: UIViewController {
     
     
     
-    private func hideKeyboard() {
+    private func keyboardWillHideNotification() {
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification, object: nil)
             .subscribe({ [weak self] _ in
-                self?.messageViewButtomConstraint.constant = 0
+                self?.inputCommentViewBottomConstraint.constant = 0
                 self?.view.setNeedsLayout()
                 self?.view.layoutIfNeeded()
             })

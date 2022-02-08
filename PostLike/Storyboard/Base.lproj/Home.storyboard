@@ -443,8 +443,8 @@
                     <connections>
                         <outlet property="commentTableView" destination="qSM-PU-esT" id="waA-6O-0j0"/>
                         <outlet property="inputCommentView" destination="lNr-BB-MCd" id="UjC-37-alj"/>
-                        <outlet property="messageViewButtomConstraint" destination="kZ0-fH-xJk" id="sra-p4-i2w"/>
-                        <outlet property="messageViewHeight" destination="AVZ-UN-AMk" id="LCZ-es-LnP"/>
+                        <outlet property="inputCommentViewBottomConstraint" destination="kZ0-fH-xJk" id="sra-p4-i2w"/>
+                        <outlet property="inputCommentViewHeight" destination="AVZ-UN-AMk" id="LCZ-es-LnP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8QX-64-XeI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
