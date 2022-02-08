@@ -41,7 +41,7 @@ class InputCommentViewModelTests: XCTestCase {
         .asSignal(onErrorSignalWith: Signal.empty())
         
         //viewModelを初期化
-        viewModel = InputCommentViewModel(input: (postButtonTap: postButtonEvent, commentText: commentEvent), postComment: PostCommentAPI(), userListner: UserDefaultLisner(), roomID: "LpDA3GOy9H2GIqP9cIOH", postID: "", roomName: "", passedUid: "", mediaArray: [""])
+        viewModel = InputCommentViewModel(input: (postButtonTap: postButtonEvent, commentText: commentEvent), postComment: PostCommentAPI(), userListner: UserDefaultLisner(), roomID: "o6jfqts3TpDHW1PKVcUr", postID: "", roomName: "", passedUid: "", mediaArray: [""])
         
     }
 
@@ -62,17 +62,8 @@ class InputCommentViewModelTests: XCTestCase {
     
     //プロフィール情報の取得テスト
     func testFetchProfileInfo() {
-        
-//        let userInfo = sheduler.createObserver(Contents.self)
-//        viewModel.userInfoDriver.drive(userInfo).disposed(by: disposeBag)
-//        
-//        let isJoined = sheduler.createObserver(Bool.self)
-//        viewModel.isJoined.drive(isJoined).disposed(by: disposeBag)
-//        
-//        sheduler.start()
-//        
-        
-        
+        //参加中のルームかチェック
+        XCTAssertEqual(try viewModel.isJoined.toBlocking().first(), true)
     }
 
 }
