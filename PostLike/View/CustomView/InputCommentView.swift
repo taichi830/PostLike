@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class CustomCommentView: UIView {
+final class InputCommentView: UIView {
     
     
     @IBOutlet weak var profileImageView: UIImageView!{
