@@ -50,7 +50,7 @@ final class CommentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "commentCell")
+        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentTableViewCell")
         commentTableView.rowHeight = UITableView.automaticDimension
         
         setupHeaderView()
@@ -176,7 +176,7 @@ final class CommentViewController: UIViewController {
         
         //itemsをtableViewにバインド
         viewModel.items
-            .drive( commentTableView.rx.items(cellIdentifier: "commentCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
+            .drive( commentTableView.rx.items(cellIdentifier: "CommentTableViewCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
                 cell.setupCell(item: item, indicator: self!.indicator)
             }
             .disposed(by: disposeBag)
