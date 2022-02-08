@@ -11,7 +11,7 @@ import Firebase
 import RxSwift
 import RxCocoa
 
-final class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate {
+final class CommentViewController: UIViewController {
     
     
     
@@ -177,15 +177,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
         //itemsをtableViewにバインド
         viewModel.items
             .drive( commentTableView.rx.items(cellIdentifier: "commentCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
-                cell.userImage.layer.cornerRadius = cell.userImage.frame.height/2
-                if item.userImage != "" {
-                    self?.indicator.stopAnimating()
-                    cell.userImage.sd_setImage(with: URL(string: item.userImage), completed: nil)
-                    cell.personView.image = UIImage()
-                }
-                cell.commentLabel.text = item.text
-                cell.userName.text = item.userName
-                cell.timeLabel.text = UILabel().createdAtString(createdAt: item.createdAt.dateValue())
+                cell.setupCell(item: item, indicator: self!.indicator)
             }
             .disposed(by: disposeBag)
     }
