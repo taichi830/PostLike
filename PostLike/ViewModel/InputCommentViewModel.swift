@@ -16,7 +16,7 @@ final class InputCommentViewModel {
     private let dispoedBag = DisposeBag()
     var validPostDriver:Driver<Bool> = Driver.never()
     var userInfoDriver: Driver<Contents> = Driver.never()
-    var isJoined: Driver<Bool> = Driver.never()
+    var isJoined: Driver<Bool>
     let isPosted: Driver<Bool>
     
     init(input:(postButtonTap:Signal<()>,commentText:Driver<String>),postComment:PostComment,userListner:UserListner,roomID: String, postID: String, roomName: String, passedUid: String, mediaArray: [String]) {
