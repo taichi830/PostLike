@@ -27,7 +27,9 @@ final class UserDefaultLisner: UserListner {
                     observer.onError(err)
                     return
                 }
-                guard let snapshot = snapshot, let dic = snapshot.data() else { return }
+                guard let snapshot = snapshot, let dic = snapshot.data() else { observer.onNext(Contents.init(dic: ["isJoined" : false]))
+                    return
+                }
                 let content = Contents.init(dic: dic)
                 observer.onNext(content)
             })
