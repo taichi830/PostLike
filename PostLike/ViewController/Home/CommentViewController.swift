@@ -42,7 +42,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     @IBOutlet private weak var commentTableView: UITableView!
-    @IBOutlet weak var customCommentView: CustomCommentView!
+    @IBOutlet weak var inputCommentView: InputCommentView!
     @IBOutlet weak var messageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var messageViewButtomConstraint: NSLayoutConstraint!
     
@@ -55,8 +55,8 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
         
         setupHeaderView()
 
-        customCommentView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
-        customCommentView.didStartEditing()
+        inputCommentView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
+        inputCommentView.didStartEditing()
         textViewDidChange()
         showKeyBoard()
         hideKeyboard()
@@ -94,8 +94,8 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     
     
     private func textViewDidChange() {
-        customCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
-            let size:CGSize = self!.customCommentView.commentTextView.sizeThatFits(self!.customCommentView.commentTextView.frame.size)
+        inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
+            let size:CGSize = self!.inputCommentView.commentTextView.sizeThatFits(self!.inputCommentView.commentTextView.frame.size)
             self?.messageViewHeight.constant = size.height + 40
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
@@ -203,7 +203,7 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
 extension CommentViewController:UIScrollViewDelegate{
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if commentTableView.isDragging == true{
-            self.customCommentView.commentTextView.resignFirstResponder()
+            self.inputCommentView.commentTextView.resignFirstResponder()
         }
     }
 }
