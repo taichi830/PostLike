@@ -20,7 +20,7 @@ final class CommentTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-//        userImage.layer.cornerRadius = 20
+        self.userImage.layer.cornerRadius = self.userImage.frame.height/2
         
     }
 
@@ -28,6 +28,21 @@ final class CommentTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setupCell(item:Contents,indicator:UIActivityIndicatorView) {
+        
+        indicator.stopAnimating()
+        if item.userImage != "" {
+            self.userImage.sd_setImage(with: URL(string: item.userImage), completed: nil)
+            self.personView.image = UIImage()
+        }else{
+            self.userImage.image = UIImage()
+            self.personView.image = UIImage(systemName: "person.fill")
+        }
+        self.commentLabel.text = item.text
+        self.userName.text = item.userName
+        self.timeLabel.text = UILabel().createdAtString(createdAt: item.createdAt.dateValue())
     }
     
     
