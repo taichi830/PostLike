@@ -96,12 +96,11 @@ final class CommentViewController: UIViewController {
     
     private func textViewDidChange() {
         inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
-            if let size:CGSize = self?.inputCommentView.commentTextView.sizeThatFits(self!.inputCommentView.commentTextView.frame.size) {
-                self?.inputCommentViewHeight.constant = size.height + 40
-                self?.view.setNeedsLayout()
-                self?.view.layoutIfNeeded()
-            }
-            
+            guard let inputCommentView = self?.inputCommentView else { return }
+            let size:CGSize = inputCommentView.commentTextView.sizeThatFits(inputCommentView.commentTextView.frame.size)
+            self?.inputCommentViewHeight.constant = size.height + 40
+            self?.view.setNeedsLayout()
+            self?.view.layoutIfNeeded()
         })
         .disposed(by: disposeBag)
     }
