@@ -95,10 +95,12 @@ final class CommentViewController: UIViewController {
     
     private func textViewDidChange() {
         inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
-            let size:CGSize = self!.inputCommentView.commentTextView.sizeThatFits(self!.inputCommentView.commentTextView.frame.size)
-            self?.messageViewHeight.constant = size.height + 40
-            self?.view.setNeedsLayout()
-            self?.view.layoutIfNeeded()
+            if let size:CGSize = self?.inputCommentView.commentTextView.sizeThatFits(self!.inputCommentView.commentTextView.frame.size) {
+                self?.messageViewHeight.constant = size.height + 40
+                self?.view.setNeedsLayout()
+                self?.view.layoutIfNeeded()
+            }
+            
         })
         .disposed(by: disposeBag)
     }
@@ -177,7 +179,9 @@ final class CommentViewController: UIViewController {
         //itemsをtableViewにバインド
         viewModel.items
             .drive( commentTableView.rx.items(cellIdentifier: "CommentTableViewCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
-                cell.setupCell(item: item, indicator: self!.indicator)
+                if let indicator = self?.indicator {
+                    cell.setupCell(item: item, indicator: indicator)
+                }
             }
             .disposed(by: disposeBag)
     }
