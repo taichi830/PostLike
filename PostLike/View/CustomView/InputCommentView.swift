@@ -45,7 +45,7 @@ final class InputCommentView: UIView {
     }
 
     private func loadNib() {
-        if let view = UINib(nibName: "CustomCommentView", bundle: nil).instantiate(withOwner: self, options: nil)[0] as? UIView{
+        if let view = UINib(nibName: "InputCommentView", bundle: nil).instantiate(withOwner: self, options: nil)[0] as? UIView{
             view.frame = self.bounds
             self.addSubview(view)
         }
