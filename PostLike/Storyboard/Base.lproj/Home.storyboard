@@ -418,7 +418,7 @@
                                     <constraint firstAttribute="trailing" secondItem="geA-ZZ-qQj" secondAttribute="trailing" constant="20" id="wBX-CY-6kq"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNr-BB-MCd" customClass="CustomCommentView" customModule="PostLike" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNr-BB-MCd" customClass="InputCommentView" customModule="PostLike" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="698" width="375" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="AVZ-UN-AMk"/>
@@ -442,7 +442,7 @@
                     </view>
                     <connections>
                         <outlet property="commentTableView" destination="qSM-PU-esT" id="waA-6O-0j0"/>
-                        <outlet property="customCommentView" destination="lNr-BB-MCd" id="UjC-37-alj"/>
+                        <outlet property="inputCommentView" destination="lNr-BB-MCd" id="UjC-37-alj"/>
                         <outlet property="messageViewButtomConstraint" destination="kZ0-fH-xJk" id="sra-p4-i2w"/>
                         <outlet property="messageViewHeight" destination="AVZ-UN-AMk" id="LCZ-es-LnP"/>
                     </connections>

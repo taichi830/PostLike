@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CustomCommentView" customModule="PostLike" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InputCommentView" customModule="PostLike" customModuleProvider="target">
             <connections>
                 <outlet property="commentTextView" destination="FKk-sE-prn" id="pam-Lk-qBm"/>
                 <outlet property="postButton" destination="w4e-nD-0RW" id="Wnn-Nc-Xys"/>
