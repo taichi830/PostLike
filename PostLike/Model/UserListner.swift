@@ -18,7 +18,7 @@ protocol UserListner {
 final class UserDefaultLisner: UserListner {
     private var listner: ListenerRegistration?
     func createUserListner(roomID: String) -> Observable<Contents> {
-        return.create { observer in
+        return Observable.create { observer in
             let uid = Auth.auth().currentUser!.uid
             let db = Firestore.firestore()
             self.listner = db.collection("users").document(uid).collection("rooms").document(roomID).addSnapshotListener({ snapshot, err in
