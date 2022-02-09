@@ -15,7 +15,7 @@ final class InputCommentViewModel {
     
     private let dispoedBag = DisposeBag()
     
-    var validPostDriver:Driver<Bool> = Driver.never()
+    var isPostable:Driver<Bool> = Driver.never()
     var userInfoDriver: Driver<Contents> = Driver.never()
     var isJoined: Driver<Bool>
     
@@ -31,7 +31,7 @@ final class InputCommentViewModel {
     init(input:(postButtonTap:Signal<()>,commentText:Driver<String>),postComment:PostComment,userListner:UserListner,roomID: String, postID: String, roomName: String, passedUid: String, mediaArray: [String]) {
         
         //投稿ボタンのバリデーション
-        validPostDriver = input.commentText.asObservable()
+        isPostable = input.commentText.asObservable()
             .map { text -> Bool in
                 text != "" && text != "コメントを入力する"
             }
