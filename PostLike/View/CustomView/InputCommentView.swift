@@ -74,6 +74,11 @@ final class InputCommentView: UIView {
         }
         .disposed(by: disposeBag)
         
+        //エラー通知を受け取る
+        viewModel.postError.drive { err in
+            print("err:",err)
+        }
+        
         //投稿完了通知を受け取る
         viewModel.isPosted.drive { [weak self] bool in
             if bool == true {
