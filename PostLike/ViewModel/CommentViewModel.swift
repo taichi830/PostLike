@@ -20,7 +20,7 @@ final class CommentViewModel {
         let listner = commentListner.createListner(documentID: documentID)
         
         items = listner
-            .debounce(.milliseconds(1000), scheduler: MainScheduler.instance)
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: [])
         
         isEmpty = listner.map { contents -> Bool in

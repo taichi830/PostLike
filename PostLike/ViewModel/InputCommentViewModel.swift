@@ -44,7 +44,7 @@ final class InputCommentViewModel {
         })
         .asDriver(onErrorJustReturn: false)
         userInfoDriver = userListner
-            .debounce(.milliseconds(1000), scheduler: MainScheduler.instance)
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: Contents(dic: ["isJoined" : false]))
         
         
