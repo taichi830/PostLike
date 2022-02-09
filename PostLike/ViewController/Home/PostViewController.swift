@@ -157,6 +157,10 @@ final class PostViewController: UIViewController{
                     self?.dismiss(animated: true, completion: nil)
                 case false:
                     print("false!!!!!!!!!!!!!")
+                    let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self?.dismissIndicator()
+                    }
+                    self?.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 }
                 
             }
