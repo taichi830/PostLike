@@ -56,7 +56,7 @@ final class InputCommentView: UIView {
         viewModel = InputCommentViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), commentText: commentTextView.rx.text.orEmpty.asDriver()), postComment: PostCommentAPI(), userListner: UserDefaultLisner(), roomID: roomID, postID: postID, roomName: roomName, passedUid: passedUid, mediaArray: mediaArray)
         
         //バリデーションチェック
-        viewModel.validPostDriver.drive { [weak self] bool in
+        viewModel.isPostable.drive { [weak self] bool in
             self?.postButton.isEnabled = bool
             self?.postButton.tintColor = .blue
         }
