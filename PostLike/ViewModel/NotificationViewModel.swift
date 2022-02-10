@@ -14,15 +14,17 @@ import Firebase
 final class NotificationViewModel: NSObject {
     
     let items: Driver<[Contents]>
-    var isEmpty: Driver<Bool>
+    let isEmpty: Driver<Bool>
 
     init(notificationListner: NotificationListner) {
         
-        items = notificationListner.items
+        let listner = notificationListner.items
+        
+        items = listner
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: [])
         
-        isEmpty = notificationListner.items
+        isEmpty = listner
             .map { contents -> Bool in
                 return contents.isEmpty
             }
