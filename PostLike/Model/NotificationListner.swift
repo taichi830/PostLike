@@ -1,8 +1,8 @@
 //
-//  CommentListner.swift
+//  NotificationListner.swift
 //  PostLike
 //
-//  Created by taichi on 2022/02/07.
+//  Created by taichi on 2022/02/09.
 //  Copyright © 2022 taichi. All rights reserved.
 //
 
@@ -11,18 +11,20 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-protocol CommentListner {
-    func createListner(documentID:String) -> Observable<[Contents]>
+protocol NotificationListner {
+    var items: Observable<[Contents]> { get }
 }
 
-final class CommentDefaultListner: NSObject,CommentListner {
+final class NotificationDefaultListner: NSObject,NotificationListner {
+    
+    lazy var items = { createNotificationListner() }()
     private var listner: ListenerRegistration?
     
-    internal func createListner(documentID:String) -> Observable<[Contents]> {
+    private func createNotificationListner() -> Observable<[Contents]> {
         return Observable.create { observer in
+            let uid = Auth.auth().currentUser!.uid 
             let db = Firestore.firestore()
-            
-            self.listner = db.collectionGroup("comments").whereField("postID", isEqualTo: documentID).order(by: "createdAt", descending: true).addSnapshotListener({ querySnapshot, err in
+            self.listner = db.collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).addSnapshotListener({ querySnapshot, err in
                 guard let querySnapshot = querySnapshot else { return }
                 if let err = err {
                     observer.onError(err)
@@ -30,8 +32,8 @@ final class CommentDefaultListner: NSObject,CommentListner {
                 }
                 let documents = querySnapshot.documents.map { snapshot -> Contents in
                     let dic = snapshot.data()
-                    let content = Contents(dic: dic)
-                    return content
+                    let notification = Contents(dic: dic)
+                    return notification
                 }
                 observer.onNext(documents)
             })
@@ -39,8 +41,6 @@ final class CommentDefaultListner: NSObject,CommentListner {
                 self.listner?.remove()
             }
         }
-        
-        
     }
     
     
