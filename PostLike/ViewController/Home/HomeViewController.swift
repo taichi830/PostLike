@@ -216,15 +216,11 @@ final class HomeViewController: UIViewController{
         self.timeLineContents.removeAll()
         Firestore.fetchTimeLinePosts { querySnapshot, contents, uids, documentIDs in
             if self.joinedRoomsArray.count == 0 {
-                self.label.setupLabel(view: self.view, y: self.view.center.y)
-                self.label.text = "ルームを作成、探して参加しよう！"
-                self.timeLineTableView.addSubview(self.label)
+                self.label.setup(text: "ルームを作成、探して参加しよう！", at: self.timeLineTableView)
                 completion([])
                 
             } else if contents.count == 0 {
-                self.label.setupLabel(view: self.view, y: self.view.center.y)
-                self.label.text = "投稿がまだありません"
-                self.timeLineTableView.addSubview(self.label)
+                self.label.setup(text: "投稿がまだありません。", at: self.timeLineTableView)
                 self.timeLineTableView.refreshControl?.endRefreshing()
                 completion([])
                 
@@ -247,7 +243,6 @@ final class HomeViewController: UIViewController{
     private func fetchModeratorPosts(){
         fetchTimelinePosts(completion: { timeLineContents in
             if timeLineContents.isEmpty == true {
-//                self.tableViewItems.removeAll()
                 self.timeLineTableView.reloadData()
                 self.timeLineTableView.refreshControl?.endRefreshing()
                 self.dismissIndicator()

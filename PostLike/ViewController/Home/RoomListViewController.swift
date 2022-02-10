@@ -27,9 +27,7 @@ final class RoomListViewController: UIViewController,UITableViewDelegate,UITable
         
         if passedFollwedRoomArray.isEmpty == true {
             let label = MessageLabel()
-            label.setupLabel(view: self.view, y: self.view.center.y - 100)
-            label.text = "参加しているルームはありません"
-            roomListTableView.addSubview(label)
+            label.setup(text: "参加しているルームはありません。", at: self.view)
         }
 
       
