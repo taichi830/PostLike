@@ -12,32 +12,34 @@ import RxCocoa
 import Firebase
 
 protocol NotificationListner {
-    func createNotificationListner() -> Observable<[Contents]>
+    var items: Observable<[Contents]> { get }
 }
 
-final class NotificationDefaultListner: NotificationListner {
+final class NotificationDefaultListner: NSObject,NotificationListner {
+    
+    lazy var items = { createNotificationListner() }()
     private var listner: ListenerRegistration?
-    func createNotificationListner() -> Observable<[Contents]> {
-        return Observable.create { [weak self] observer in
-            let uid = Auth.auth().currentUser?.uid ?? ""
+    
+    private func createNotificationListner() -> Observable<[Contents]> {
+        return Observable.create { observer in
+            let uid = Auth.auth().currentUser!.uid 
             let db = Firestore.firestore()
-            self?.listner = db.collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).addSnapshotListener({ querySnapshot, err in
+            self.listner = db.collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).addSnapshotListener({ querySnapshot, err in
+                guard let querySnapshot = querySnapshot else { fatalError("querySnapshot is nil") }
                 if let err = err {
                     observer.onError(err)
                     return
                 }
-                guard let querySnapshot = querySnapshot else { fatalError("querySnapshot is nil") }
                 let documents = querySnapshot.documents.map { snapshot -> Contents in
                     let dic = snapshot.data()
-                    let notification = Contents.init(dic: dic)
+                    let notification = Contents(dic: dic)
                     return notification
                 }
                 observer.onNext(documents)
                 observer.onCompleted()
             })
-            
             return Disposables.create {
-                self?.listner?.remove()
+                self.listner?.remove()
             }
         }
     }

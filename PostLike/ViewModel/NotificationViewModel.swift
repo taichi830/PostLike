@@ -11,19 +11,22 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-final class NotificationViewModel {
-    let items: Driver<[Contents]>
-    let isEmpty: Driver<Bool>
+final class NotificationViewModel: NSObject {
     
+    let items: Driver<[Contents]>
+    var isEmpty: Driver<Bool>
+
     init(notificationListner: NotificationListner) {
-        let listner = notificationListner.createNotificationListner()
-        items = listner
+        
+        items = notificationListner.items
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: [])
         
-        isEmpty = listner.map { contents -> Bool in
-            return contents.isEmpty
-        }
-        .asDriver(onErrorJustReturn: true)
+        isEmpty = notificationListner.items
+            .map { contents -> Bool in
+                return contents.isEmpty
+            }
+            .asDriver(onErrorJustReturn: true)
+            
     }
 }
