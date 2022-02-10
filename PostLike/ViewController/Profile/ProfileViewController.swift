@@ -97,7 +97,7 @@ final class ProfileViewController: UIViewController {
         profileTableView.delegate = self
         profileTableView.dataSource = self
         profileTableView.tableHeaderView = headerView
-        profileTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
+        profileTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
     }
     
     
@@ -295,7 +295,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        let cell = profileTableView.dequeueReusableCell(withIdentifier: "postTable")  as! PostTableViewCell
+        let cell = profileTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell")  as! FeedTableViewCell
         
         cell.tableViewCellDelegate = self
         

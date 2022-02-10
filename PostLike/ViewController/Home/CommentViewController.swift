@@ -7,10 +7,11 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseAuth
+import Firebase
+import RxSwift
+import RxCocoa
 
-final class CommentViewController: UIViewController,UITextFieldDelegate,UITextViewDelegate {
+final class CommentViewController: UIViewController {
     
     
     
@@ -19,64 +20,57 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     var passedUserName = String()
     var passedComment = String()
     var passedDate = Timestamp()
-    var passedMyImage = UIImage()
     var passedUid = String()
     var passedRoomName = String()
     var passedDocumentID = String()
     var passedMediaArray = Array<String>()
     var passedRoomID = String()
-    private var commentsArray = [Contents]()
-    private var user:Contents?
     private var label = MessageLabel()
+    private let disposeBag = DisposeBag()
+    private var viewModel:CommentViewModel!
+    private lazy var indicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .medium
+        indicator.color = .lightGray
+        indicator.hidesWhenStopped = true
+        indicator.center = self.view.center
+        self.view.addSubview(indicator)
+        return indicator
+    }()
     
     
     
-    @IBOutlet private weak var myImage: UIImageView!
-    @IBOutlet private weak var backView: UIView!
-    @IBOutlet private weak var commentTextView: UITextView!
-    @IBOutlet private weak var sendButton: UIButton!
+    
     @IBOutlet private weak var commentTableView: UITableView!
-    @IBOutlet private weak var personImage2: UIImageView!
-    
-    
-    
+    @IBOutlet weak var inputCommentView: InputCommentView!
+    @IBOutlet weak var inputCommentViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var inputCommentViewBottomConstraint: NSLayoutConstraint!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        commentTableView.delegate = self
-        commentTableView.dataSource = self
-        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "commentCell")
+        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentTableViewCell")
         commentTableView.rowHeight = UITableView.automaticDimension
         
-        setHeaderView()
+        setupHeaderView()
+
+        inputCommentView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
         
-        commentTextView.delegate = self
-        commentTextView.layer.cornerRadius = 5
-        commentTextView.text = "コメントを入力する"
-        commentTextView.textColor = .lightGray
-        
-        myImage.layer.cornerRadius = 18
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        inputCommentView.didStartEditing()
+        textViewDidChange()
+        keyboardWillShowNotification()
+        keyboardWillHideNotification()
+        fetchComments()
        
     }
     
     
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchComments()
-        fetchUserInfo()
-    }
+
     
     
     
-    private func setHeaderView(){
-        
+    private func setupHeaderView(){
         let headerView = CommentHeaderView()
         headerView.setupHeaderView(userName: passedUserName, userImageUrl: passedUserImage, comment: passedComment, date: passedDate)
         self.commentTableView.tableHeaderView = headerView
@@ -89,6 +83,9 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
         }
     }
     
+    
+    
+    
 
     
     @IBAction private func backButton(_ sender: Any) {
@@ -96,173 +93,99 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
     }
     
     
-
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-       
-        if commentTextView.text == "コメントを入力する" {
-            commentTextView.text = ""
-        }
-        commentTextView.textColor = .black
-        
-    }
-    
-
-    
-    
-    @objc private func keybordWillShow(_ notification: Notification) {
-        
-        guard let userInfo = notification.userInfo as? [String:Any] else {
-            return
-        }
-        guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
-            return
-        }
-        guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-           return
-         }
-
-        UIView.animate(withDuration: duration) {
-            self.backView.frame.origin.y = self.view.frame.height - (rect.size.height + self.backView.frame.size.height)
-        }
+    private func textViewDidChange() {
+        inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
+            guard let inputCommentView = self?.inputCommentView else { return }
+            let size:CGSize = inputCommentView.commentTextView.sizeThatFits(inputCommentView.commentTextView.frame.size)
+            self?.inputCommentViewHeight.constant = size.height + 40
+            self?.view.setNeedsLayout()
+            self?.view.layoutIfNeeded()
+        })
+        .disposed(by: disposeBag)
     }
     
     
     
     
     
-    
-    @objc private func keybordWillHide(_ notification: Notification) {
-        self.backView.frame.origin.y = self.view.frame.size.height - (self.backView.frame.size.height+self.view.safeAreaInsets.bottom)
+    private func keyboardWillShowNotification() {
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification, object: nil).subscribe { [weak self] notificationEvent in
+            guard let notification = notificationEvent.element else { return }
+            guard let userInfo = notification.userInfo as? [String:Any] else {
+                return
+            }
+            guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+                return
+            }
+            guard let rect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+                return
+            }
+            UIView.animate(withDuration: duration) {
+                self?.inputCommentViewBottomConstraint.constant = -rect.height + self!.view.safeAreaInsets.bottom
+                self?.view.setNeedsLayout()
+                self?.view.layoutIfNeeded()
+            }
+        }
+        .disposed(by: disposeBag)
     }
+    
+    
+    
+    
+    private func keyboardWillHideNotification() {
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification, object: nil)
+            .subscribe({ [weak self] _ in
+                self?.inputCommentViewBottomConstraint.constant = 0
+                self?.view.setNeedsLayout()
+                self?.view.layoutIfNeeded()
+            })
+            .disposed(by: disposeBag)
+    }
+    
     
     
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        commentTextView.resignFirstResponder()
+        self.view.endEditing(true)
     }
     
     
     
     
     
-    @IBAction private func sendButton(_ sender: Any) {
-        if commentTextView.text == "" || commentTextView.text == "コメントを入力する" {
-            return
-        }else{
-            let documentID = NSUUID().uuidString
-            let batch = Firestore.firestore().batch()
-            createComment(documentID: documentID, batch: batch)
-            incrementCommentCount(batch: batch)
-            giveNotification(documentID: documentID,batch: batch)
-            batch.commit { err in
-                if let err = err {
-                    print("false\(err)")
-                    let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                        self.dismissIndicator()
-                    }
-                    self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                    return
-                }else{
-                    self.fetchComments()
-                    self.commentTextView.text = ""
+    
+    
+
+    
+    private func fetchComments() {
+        indicator.startAnimating()
+        viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedDocumentID)
+        
+        //itemsが空かチェック
+        viewModel.isEmpty.drive { [weak self] bool in
+            if bool == true {
+                self?.indicator.stopAnimating()
+                self?.label.setupLabel(view: self!.view, y: self!.view.center.y - 100)
+                self?.label.text = "コメントがありません"
+                self?.commentTableView.addSubview(self!.label)
+            }else{
+                self?.label.text = ""
+            }
+        }
+        .disposed(by: disposeBag)
+        
+        //itemsをtableViewにバインド
+        viewModel.items
+            .drive( commentTableView.rx.items(cellIdentifier: "CommentTableViewCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
+                if let indicator = self?.indicator {
+                    cell.setupCell(item: item, indicator: indicator)
                 }
             }
-        }
+            .disposed(by: disposeBag)
     }
     
-    
-    
-    
-    private func fetchUserInfo(){
-        Firestore.fetchUserInfo(roomID: passedRoomID) { userInfo in
-            if userInfo.isJoined == false {
-                self.commentTextView.text = "ルームに参加するとコメントできます"
-                self.commentTextView.isEditable = false
-                self.sendButton.isEnabled = false
-                self.sendButton.setTitleColor(.lightGray, for: .normal)
-            }
-            self.user = userInfo
-            if userInfo.userImage != "" {
-                self.myImage.sd_setImage(with: URL(string: userInfo.userImage), completed: nil)
-                self.personImage2.image = UIImage()
-            }
-            
-        }
-    }
-    
-    
-     
-    
-    
-
-    private func createComment(documentID:String,batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let dic =  [
-            "userName":user?.userName ?? "",
-            "userImage":user?.userImage ?? "",
-            "text":commentTextView.text ?? "",
-            "createdAt":Timestamp(),
-            "documentID":documentID,
-            "roomID":passedRoomID,
-            "postID":passedDocumentID,
-            "uid":uid,
-            "likeCount":0,
-            "commentCount":0]
-            as [String:Any]
-        Firestore.createComment(uid: uid, roomID: passedRoomID, documentID: documentID, dic: dic, batch: batch)
-
-    }
-    
-    
-    
-    
-    private func incrementCommentCount(batch:WriteBatch){
-        Firestore.increaseCommentCount(uid: passedUid, roomID: passedRoomID, documentID: passedDocumentID, batch: batch)
-        if passedMediaArray[0] != "" {
-            Firestore.increaseMediaPostCommentCount(roomID: passedRoomID, documentID: passedDocumentID, batch: batch)
-        }
-    }
-    
-    
-    
-    private func giveNotification(documentID:String,batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let dic = [
-            "userName":user?.userName ?? "",
-            "userImage":user?.userImage ?? "",
-            "uid":uid,
-            "roomName":passedRoomName,
-            "createdAt":Timestamp(),
-            "postID":passedDocumentID,
-            "roomID":passedRoomID,
-            "documentID":documentID,
-            "type":"comment"] as [String:Any]
-        Firestore.createNotification(uid: passedUid, myuid: uid, documentID: documentID, dic: dic, batch: batch)
-//        if uid != passedUid {
-//            
-//        }
-    }
-    
-    
-    
-    
-    private func fetchComments(){
-        self.commentsArray.removeAll()
-        Firestore.fetchComments(documentID: passedDocumentID) { comments in
-            if comments.isEmpty == true {
-                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
-                self.label.text = "コメントがありません"
-                self.commentTableView.addSubview(self.label)
-            }else {
-                self.label.text = ""
-                self.commentsArray.append(contentsOf: comments)
-                self.commentTableView.reloadData()
-            }
-            
-        }
-    }
     
     
     
@@ -270,48 +193,13 @@ final class CommentViewController: UIViewController,UITextFieldDelegate,UITextVi
 
 
 
-extension CommentViewController: UITableViewDelegate,UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return commentsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = commentTableView.dequeueReusableCell(withIdentifier: "commentCell") as! CommentTableViewCell
-        
-        let userName = cell.userName
-        userName?.text = commentsArray[indexPath.row].userName
-        
-        let userImage = cell.userImage
-        userImage?.layer.cornerRadius = 20
-        if commentsArray[indexPath.row].userImage != "" {
-            userImage?.sd_setImage(with: URL(string: commentsArray[indexPath.row].userImage), completed: nil)
-            cell.personView.image = UIImage()
-            
-        }
-        
-        let comment = cell.commentLabel
-        comment?.text = commentsArray[indexPath.row].text
-        
-        let createdAtLabel = cell.timeLabel!
-        let createdAt = commentsArray[indexPath.row].createdAt.dateValue()
-        createdAtLabel.text = UILabel().createdAtString(createdAt: createdAt)
-        
-        return cell
-        
-        
-    }
-    
-    
-    
-}
 
 
 
 extension CommentViewController:UIScrollViewDelegate{
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if commentTableView.isDragging == true{
-            commentTextView.resignFirstResponder()
+            self.inputCommentView.commentTextView.resignFirstResponder()
         }
     }
 }
