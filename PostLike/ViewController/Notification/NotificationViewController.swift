@@ -56,6 +56,13 @@ final class NotificationViewController: UIViewController {
         
         viewModel.isEmpty.drive { [weak self] bool in
             self?.latestLabel.isHidden = bool
+            if bool == true {
+                self?.label.setupLabel(view: self!.view, y: self!.view.center.y - 100)
+                self?.label.text = "コメントがありません"
+                self?.notificationTableView.addSubview(self!.label)
+            }else{
+                self?.label.text = ""
+            }
         }
         .disposed(by: disposeBag)
     }
