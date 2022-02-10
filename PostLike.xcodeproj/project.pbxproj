@@ -94,6 +94,10 @@
 		CEA19BED26D631C800283E91 /* Array-extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* Array-extenshion.swift */; };
 		CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */; };
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
+		CEA2EAC127B408C8000AD484 /* NotificationListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA2EAC027B408C8000AD484 /* NotificationListner.swift */; };
+		CEA2EAC327B410BD000AD484 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA2EAC227B410BD000AD484 /* NotificationViewModel.swift */; };
+		CEA2EAC627B4134C000AD484 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA2EAC427B4134C000AD484 /* NotificationTableViewCell.swift */; };
+		CEA2EAC727B4134C000AD484 /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA2EAC527B4134C000AD484 /* NotificationTableViewCell.xib */; };
 		CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */; };
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
@@ -217,6 +221,10 @@
 		CEA19BEC26D631C800283E91 /* Array-extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array-extenshion.swift"; sourceTree = "<group>"; };
 		CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomHeaderView.xib; sourceTree = "<group>"; };
 		CEA19BF026D7D70900283E91 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		CEA2EAC027B408C8000AD484 /* NotificationListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListner.swift; sourceTree = "<group>"; };
+		CEA2EAC227B410BD000AD484 /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
+		CEA2EAC427B4134C000AD484 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		CEA2EAC527B4134C000AD484 /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
 		CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdTableViewCell.swift; sourceTree = "<group>"; };
 		CEA431C92604FC7C000FD842 /* NativeAdTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NativeAdTableViewCell.xib; sourceTree = "<group>"; };
 		CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeightImageView.swift; sourceTree = "<group>"; };
@@ -399,6 +407,8 @@
 				CE1C23C6276B946000D3CAC8 /* SearchTableViewCell.swift */,
 				CE79ED3427A2E78C0047ABEF /* PostPreViewTableViewCell.swift */,
 				CE79ED3527A2E78C0047ABEF /* PostPreViewTableViewCell.xib */,
+				CEA2EAC427B4134C000AD484 /* NotificationTableViewCell.swift */,
+				CEA2EAC527B4134C000AD484 /* NotificationTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -435,6 +445,7 @@
 				CECA9F2B279E94740059939B /* PostViewModel.swift */,
 				CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */,
 				CE3F4DCD27B032D200780BEE /* CommentViewModel.swift */,
+				CEA2EAC227B410BD000AD484 /* NotificationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -464,6 +475,7 @@
 				CE3F4DCF27B0C04000780BEE /* PostCommentAPI.swift */,
 				CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */,
 				CE3F4DD127B0E61E00780BEE /* UserListner.swift */,
+				CEA2EAC027B408C8000AD484 /* NotificationListner.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -735,6 +747,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEA2EAC727B4134C000AD484 /* NotificationTableViewCell.xib in Resources */,
 				CE199F7526DD159B009F1B7E /* index.html in Resources */,
 				CE012C4326B6EFD4006CC20E /* BaseTabBar.storyboard in Resources */,
 				CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */,
@@ -949,7 +962,9 @@
 				CED4902126ED024900582742 /* ShowIndicator-extenshion.swift in Sources */,
 				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
 				CE012C1D26B6EFD4006CC20E /* EnteredRoomContentViewController.swift in Sources */,
+				CEA2EAC127B408C8000AD484 /* NotificationListner.swift in Sources */,
 				CE012C1E26B6EFD4006CC20E /* CustomRefreshController.swift in Sources */,
+				CEA2EAC627B4134C000AD484 /* NotificationTableViewCell.swift in Sources */,
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
 				CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */,
@@ -980,6 +995,7 @@
 				CE77EF6526E67EEF00154886 /* SceneDelegate.swift in Sources */,
 				CE012C3426B6EFD4006CC20E /* FeedTableViewCell.swift in Sources */,
 				CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */,
+				CEA2EAC327B410BD000AD484 /* NotificationViewModel.swift in Sources */,
 				CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */,
 				CE012C3526B6EFD4006CC20E /* NotificationViewController.swift in Sources */,
 				CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */,
