@@ -128,7 +128,7 @@ final class HomeViewController: UIViewController{
     private func setupTableView(){
         timeLineTableView.delegate = self
         timeLineTableView.dataSource = self
-        timeLineTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
+        timeLineTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postTable")
         timeLineTableView.showsVerticalScrollIndicator = true
         timeLineTableView.register(UINib(nibName: "NativeAdTableViewCell", bundle: nil), forCellReuseIdentifier: "nativeAdCell")
         timeLineTableView.tableHeaderView = headerView
@@ -396,7 +396,7 @@ extension HomeViewController: UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let timeLineContent = tableViewItems[safe: indexPath.row] as? Contents{
-            let cell = timeLineTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as! FeedTableViewCell
+            let cell = timeLineTableView.dequeueReusableCell(withIdentifier: "postTable", for: indexPath) as! PostTableViewCell
             
             cell.tableViewCellDelegate = self
             

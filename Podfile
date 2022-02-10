@@ -20,7 +20,6 @@
   pod 'Google-Mobile-Ads-SDK'
   pod 'RxSwift'
   pod 'RxCocoa'
-  pod 'RxDataSources'
   pod 'GoogleSignIn'
 
  end
@@ -33,8 +32,6 @@
   
   target 'PostLikeTests' do
     pod 'Firebase'
-    pod 'RxBlocking', '6.5.0'
-    pod 'RxTest', '6.5.0'
   end
   
 

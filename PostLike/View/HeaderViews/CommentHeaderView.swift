@@ -48,17 +48,26 @@ final class CommentHeaderView: UIView {
             personImageView.image = UIImage(systemName: "person.fill")
         }
         
-        if comment == "" {
-            commentLabel.textColor = .lightGray
-            commentLabel.text = "投稿文はありません"
-        }else{
-            commentLabel.textColor = .label
-            commentLabel.text = comment
-        }
-        
+        commentLabel.text = comment
         
         let createdAt = date.dateValue()
         createdAtLabel.text = UILabel().createdAtString(createdAt: createdAt)
+//        let dt2 = Date()
+//        let cal = Calendar(identifier: .gregorian)
+//        let diff = cal.dateComponents([.day,.hour,.minute,.second], from: dt, to: dt2)
+//        let day = diff.day
+//        let hour = diff.hour
+//        let minute = diff.minute
+//        let second = diff.second
+//        if day == 0 && hour == 0 && minute == 0    {
+//            createdAtLabel!.text = "\(second?.description ?? "")秒前"
+//        }else if day == 0 && hour == 0 && minute != 0{
+//            createdAtLabel!.text = "\(minute?.description ?? "")分前"
+//        }else if day == 0 && hour != 0 {
+//            createdAtLabel!.text = "\(hour?.description ?? "")時間前"
+//        }else if day != 0 {
+//            createdAtLabel!.text = "\(day?.description ?? "")日前"
+//        }
         
     }
 

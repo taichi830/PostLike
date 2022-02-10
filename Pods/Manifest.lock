@@ -4,8 +4,7 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - CropViewController (2.6.1)
-  - Differentiator (5.0.0)
+  - CropViewController (2.6.0)
   - DKCamera (1.6.7)
   - DKImagePickerController (4.3.2):
     - DKImagePickerController/Camera (= 4.3.2)
@@ -206,23 +205,15 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - PromisesObjC (1.2.12)
-  - RxBlocking (6.5.0):
-    - RxSwift (= 6.5.0)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
-  - RxDataSources (5.0.0):
-    - Differentiator (~> 5.0)
-    - RxCocoa (~> 6.0)
-    - RxSwift (~> 6.0)
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
-  - RxTest (6.5.0):
-    - RxSwift (= 6.5.0)
-  - SDWebImage (5.12.3):
-    - SDWebImage/Core (= 5.12.3)
-  - SDWebImage/Core (5.12.3)
+  - SDWebImage (5.12.2):
+    - SDWebImage/Core (= 5.12.2)
+  - SDWebImage/Core (5.12.2)
   - SwiftyGif (5.4.2)
 
 DEPENDENCIES:
@@ -239,18 +230,14 @@ DEPENDENCIES:
   - Google-Mobile-Ads-SDK
   - GoogleSignIn
   - InstantSearchClient
-  - RxBlocking (= 6.5.0)
   - RxCocoa
-  - RxDataSources
   - RxSwift
-  - RxTest (= 6.5.0)
   - SDWebImage
 
 SPEC REPOS:
   trunk:
     - AppAuth
     - CropViewController
-    - Differentiator
     - DKCamera
     - DKImagePickerController
     - DKPhotoGallery
@@ -275,12 +262,9 @@ SPEC REPOS:
     - InstantSearchClient
     - nanopb
     - PromisesObjC
-    - RxBlocking
     - RxCocoa
-    - RxDataSources
     - RxRelay
     - RxSwift
-    - RxTest
     - SDWebImage
     - SwiftyGif
 
@@ -296,8 +280,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  CropViewController: 58fb440f30dac788b129d2a1f24cffdcb102669c
-  Differentiator: e8497ceab83c1b10ca233716d547b9af21b9344d
+  CropViewController: 7093b39ec3cb508531b22d35773e06cecd7378d8
   DKCamera: a902b66921fca14b7a75266feb8c7568aa7caa71
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
@@ -323,15 +306,12 @@ SPEC CHECKSUMS:
   InstantSearchClient: cd4b41f46bed82c1b12c759c76b733f7ed6dd8c2
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  RxBlocking: 04b5fd28bb5ea49f7d64b80db8bbfe50d9cc1c7d
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
-  RxDataSources: aa47cc1ed6c500fa0dfecac5c979b723542d79cf
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
-  RxTest: eb2d23adefc5a5ebf5779c7792fa3edfe6ebcc17
-  SDWebImage: 53179a2dba77246efa8a9b85f5c5b21f8f43e38f
+  SDWebImage: 240e5c12b592fb1268c1d03b8c90d90e8c2ffe82
   SwiftyGif: dec758a9dd3d278e5a855dbf279bf062c923c387
 
-PODFILE CHECKSUM: 8ae22e75614a1119b61116a476f3cc00d0d702fc
+PODFILE CHECKSUM: 6e7e17e3beac40a7204a79b14e65d48515201fac
 
 COCOAPODS: 1.11.2
