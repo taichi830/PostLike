@@ -36,7 +36,6 @@ final class NotificationDefaultListner: NSObject,NotificationListner {
                     return notification
                 }
                 observer.onNext(documents)
-                observer.onCompleted()
             })
             return Disposables.create {
                 self.listner?.remove()
