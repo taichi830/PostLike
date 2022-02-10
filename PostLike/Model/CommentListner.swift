@@ -23,7 +23,7 @@ final class CommentDefaultListner: NSObject,CommentListner {
             let db = Firestore.firestore()
             
             self.listner = db.collectionGroup("comments").whereField("postID", isEqualTo: documentID).order(by: "createdAt", descending: true).addSnapshotListener({ querySnapshot, err in
-                guard let querySnapshot = querySnapshot else { fatalError("querySnapshot is nil") }
+                guard let querySnapshot = querySnapshot else { return }
                 if let err = err {
                     observer.onError(err)
                     return
