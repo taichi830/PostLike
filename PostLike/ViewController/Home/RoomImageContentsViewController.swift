@@ -20,6 +20,7 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     var passedRoomName = String()
     private var imagesArray = [Contents]()
     private var lastDocument:QueryDocumentSnapshot?
+    private let label = MessageLabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,12 +70,7 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
         self.imagesArray.removeAll()
         Firestore.fetchImageContents(roomID: passedRoomID) { querySnapshot, contents in
             if contents.isEmpty == true {
-                let label = UILabel(frame: CGRect(x: 0, y: self.imageCollecionView.frame.size.height/2, width: self.view.frame.width, height: 20))
-                    label.text = "投稿がありません"
-                    label.textAlignment = .center
-                    label.textColor = .lightGray
-                    label.font = UIFont.systemFont(ofSize: 17)
-                    self.imageCollecionView.addSubview(label)
+                self.label.setup(text: "投稿がありません。", at: self.imageCollecionView)
             }else{
                 self.imagesArray.append(contentsOf: contents)
                 self.lastDocument = querySnapshot.documents.last
@@ -131,6 +127,8 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
         let doubleSquareView = cell.viewWithTag(2) as! UIImageView
         if imagesArray[indexPath.row].mediaArray.count >= 2 {
             doubleSquareView.image = UIImage(systemName: "square.fill.on.square.fill")
+        }else{
+            doubleSquareView.image = UIImage()
         }
         
         return cell

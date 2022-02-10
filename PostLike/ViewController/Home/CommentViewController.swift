@@ -167,9 +167,7 @@ final class CommentViewController: UIViewController {
         viewModel.isEmpty.drive { [weak self] bool in
             if bool == true {
                 self?.indicator.stopAnimating()
-                self?.label.setupLabel(view: self!.view, y: self!.view.center.y - 100)
-                self?.label.text = "コメントがありません"
-                self?.commentTableView.addSubview(self!.label)
+                self?.label.setup(text: "コメントがありません。", at: self!.commentTableView)
             }else{
                 self?.label.text = ""
             }

@@ -25,6 +25,14 @@ final class MessageLabel: UILabel{
         self.font = UIFont.systemFont(ofSize: 17, weight: .regular)
     }
     
+    func setup(text: String, at: UIView){
+        self.frame = CGRect(x: 0, y: at.frame.height/2, width: at.frame.size.width, height: 30)
+        self.textColor = .lightGray
+        self.textAlignment = .center
+        self.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        self.text = text
+        at.addSubview(self)
+    }
     
     
     

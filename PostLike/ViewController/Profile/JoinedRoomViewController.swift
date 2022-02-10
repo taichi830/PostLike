@@ -58,9 +58,11 @@ final class JoinedRoomViewController: UIViewController{
         joinedRoomsArray.removeAll()
         Firestore.fetchJoinedRooms { contents in
             if contents.isEmpty == true {
-                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
-                self.label.text = "参加しているルームはありません"
-                self.myRoomCollectionView.addSubview(self.label)
+                self.label.setup(text: "参加しているルームはありません。", at: self.myRoomCollectionView)
+                self.myRoomCollectionView.reloadData()
+//                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
+//                self.label.text = "参加しているルームはありません"
+//                self.myRoomCollectionView.addSubview(self.label)
             }else {
                 self.label.text = ""
                 self.joinedRoomsArray.append(contentsOf: contents)
