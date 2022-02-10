@@ -25,7 +25,7 @@ final class NotificationDefaultListner: NSObject,NotificationListner {
             let uid = Auth.auth().currentUser!.uid 
             let db = Firestore.firestore()
             self.listner = db.collection("users").document(uid).collection("notifications").order(by: "createdAt", descending: true).limit(to: 10).addSnapshotListener({ querySnapshot, err in
-                guard let querySnapshot = querySnapshot else { fatalError("querySnapshot is nil") }
+                guard let querySnapshot = querySnapshot else { return }
                 if let err = err {
                     observer.onError(err)
                     return
