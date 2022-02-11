@@ -334,10 +334,7 @@ final class EnteredRoomContentViewController: UIViewController{
     private func fetchContents(_ completed: @escaping() -> Void){
         Firestore.fetchRoomContents(roomID: passedDocumentID, viewController: self) { querySnapshot,contents,uids,documentIDs  in
             if contents.isEmpty == true {
-                self.label.setupLabel(view: self.view, y: self.view.center.y)
-                self.label.text = "投稿がまだありません"
-                self.contentsTableView.addSubview(self.label)
-                self.contentsTableView.reloadData()
+                self.label.setup(text: "投稿がまだありません。", at: self.contentsTableView)
                 completed()
             }else{
                 self.label.text = ""

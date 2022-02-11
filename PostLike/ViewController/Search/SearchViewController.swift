@@ -111,7 +111,7 @@ final class SearchViewController: UIViewController {
             if contents.isEmpty == true {
                 self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
                 self.historyTableView.addSubview(self.label)
-                self.label.text = "ルームを検索、作成してみよう"
+                self.label.text = "ルームを検索、作成してみよう！"
             }else{
                 self.label.removeFromSuperview()
                 self.historyArray.append(contentsOf: contents)
@@ -324,7 +324,7 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
             self.historyTableView.reloadData()
             if self.historyArray.isEmpty == true {
                 self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
-                self.label.text = "ルームを検索、作成してみよう"
+                self.label.text = "ルームを検索、作成してみよう！"
                 self.historyTableView.addSubview(self.label)
             }
         }
