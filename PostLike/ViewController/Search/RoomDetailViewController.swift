@@ -41,12 +41,9 @@ final class RoomDetailViewController: UIViewController {
     
     private var label = MessageLabel()
     private var contentsArray = [Contents]()
-//    private var reportedUsersArray = [Contents]()
-//    private var reportedContentsArray = [Contents]()
     private var likeContentsArray = [Contents]()
     private var joinedRoom:Contents?
     private var roomInfo:Room?
-//    private var memberCount:Room?
     private var lastDocument:QueryDocumentSnapshot?
     private lazy var indicator:UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
@@ -322,10 +319,7 @@ final class RoomDetailViewController: UIViewController {
         self.contentsArray.removeAll()
         Firestore.fetchRoomContents(roomID: passedDocumentID, viewController: self) { querySnapshot, contents, uids, documentIDs in
             if contents.isEmpty == true {
-                self.label.setupLabel(view: self.view, y: self.view.center.y)
-                self.label.text = "投稿がまだありません"
-                self.contentsTableView.addSubview(self.label)
-                self.contentsTableView.reloadData()
+                self.label.setup(text: "投稿がまだありません。", at: self.contentsTableView)
                 completed()
             }else{
                 self.label.text = ""
