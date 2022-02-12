@@ -9,6 +9,7 @@
 import Foundation
 
 extension String {
+    //urlを検出
     var urlsFromRegexs: [String] {
         let pattern = "(http://|https://){1}[0-9a-zA-Z\\.\\-/:!#$%&@=?_]+"
         let regex = try! NSRegularExpression(pattern:pattern, options:[])

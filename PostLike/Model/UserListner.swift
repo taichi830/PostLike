@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import Firebase
+import FirebaseFirestore
 
 protocol UserListner {
     func createUserListner(roomID:String) -> Observable<Contents>

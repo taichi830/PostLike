@@ -11,7 +11,7 @@ import Firebase
 import AuthenticationServices
 import CryptoKit
 
-final class SignUpWithAppleViewController:NSObject,ASAuthorizationControllerDelegate,ASAuthorizationControllerPresentationContextProviding {
+ class SignUpWithAppleViewController:NSObject,ASAuthorizationControllerDelegate,ASAuthorizationControllerPresentationContextProviding {
     
     fileprivate var currentNonce: String?
     var vc = UIViewController()

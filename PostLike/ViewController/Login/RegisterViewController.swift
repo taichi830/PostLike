@@ -43,6 +43,8 @@ final class RegisterViewController: UIViewController {
         alertView.layer.cornerRadius = 5
         nextButton.layer.cornerRadius = 16
         
+        self.setSwipeBackGesture()
+        
         
         
     }
