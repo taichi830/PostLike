@@ -90,6 +90,8 @@ final class RoomDetailViewController: UIViewController {
         
         fetchRoomInfo()
         
+        self.setSwipeBackGesture()
+        
     }
     
     

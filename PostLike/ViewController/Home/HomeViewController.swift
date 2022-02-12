@@ -27,7 +27,7 @@ protocol TableViewCellDelegate:AnyObject {
 }
 
 
-final class HomeViewController: UIViewController{
+final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     
     
     
@@ -59,7 +59,7 @@ final class HomeViewController: UIViewController{
         startIndicator()
         fetchModeratorPosts()
         fetchJoinedRoom()
-        
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     

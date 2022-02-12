@@ -26,6 +26,7 @@ final class SetPassWordViewController: UIViewController {
         passWordTextField.becomeFirstResponder()
         doneButton.layer.cornerRadius = 20
         eyeButton.tintColor = .lightGray
+        self.setSwipeBackGesture()
         
     }
     

@@ -20,6 +20,7 @@ final class ResetPasswordViewController: UIViewController {
         super.viewDidLoad()
         doneButton.layer.cornerRadius = 20
         emailTextField.delegate = self
+        self.setSwipeBackGesture()
     }
     
     

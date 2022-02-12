@@ -18,6 +18,8 @@ final class TermOfUseViewController: UIViewController {
         super.viewDidLoad()
 
         loadAddressURL()
+        
+        self.setSwipeBackGesture()
        
     }
     

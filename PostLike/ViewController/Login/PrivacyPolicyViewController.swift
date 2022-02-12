@@ -19,6 +19,8 @@ final class PrivacyPolicyViewController: UIViewController{
         super.viewDidLoad()
         loadAddressURL()
         
+        self.setSwipeBackGesture()
+        
     }
     
     

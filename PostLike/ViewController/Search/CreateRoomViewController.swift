@@ -47,7 +47,7 @@ final class CreateRoomViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        
+        self.setSwipeBackGesture()
         
         
         
