@@ -68,6 +68,7 @@ final class EnteredRoomContentViewController: UIViewController{
             self.contentsTableView.reloadData()
         }
         setupHeaderView()
+        self.setSwipeBackGesture()
         
         
         
@@ -156,8 +157,6 @@ final class EnteredRoomContentViewController: UIViewController{
         contentsTableView.tableHeaderView =  headerView
         contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         contentsTableView.contentInsetAdjustmentBehavior = .never
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
-        contentsTableView.addGestureRecognizer(swipeGesture)
         let refleshControl = CustomRefreshControl()
         contentsTableView.refreshControl = refleshControl
         contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
@@ -166,10 +165,6 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    
-    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
-        navigationController?.popViewController(animated: true)
-    }
     
     
     

@@ -33,7 +33,6 @@ final class LoginViewController: UIViewController{
     private let loginViewModel = LoginViewModel()
     private let disposeBag = DisposeBag()
     private let signUpWithAppleVC = SignUpWithAppleViewController()
-    fileprivate var currentNonce: String?
     
     
     
@@ -54,6 +53,8 @@ final class LoginViewController: UIViewController{
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.setSwipeBackGesture()
     }
     
     

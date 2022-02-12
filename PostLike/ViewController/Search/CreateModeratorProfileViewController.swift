@@ -49,6 +49,8 @@ final class CreateModeratorProfileViewController: UIViewController {
         
         userNameTextField.delegate = self
         userNameTextField.layer.borderColor = UIColor.systemGray5.cgColor
+        
+        self.setSwipeBackGesture()
     }
 
     

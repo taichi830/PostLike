@@ -59,8 +59,7 @@ final class ProfileViewController: UIViewController {
         self.profileTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
         
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
-        profileTableView.addGestureRecognizer(swipeGesture)
+        self.setSwipeBackGesture()
         
     }
     
@@ -77,9 +76,6 @@ final class ProfileViewController: UIViewController {
     
     
     
-    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
-        navigationController?.popViewController(animated: true)
-    }
     
     
     

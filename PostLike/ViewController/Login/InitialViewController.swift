@@ -12,7 +12,7 @@ import FirebaseFirestore
 import FirebaseAuth
 import GoogleSignIn
 
-final class InitialViewController: UIViewController {
+final class InitialViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     @IBOutlet private weak var backView: UIView!
@@ -48,7 +48,6 @@ final class InitialViewController: UIViewController {
         }
     }
     
-//    fileprivate var currentNonce: String?
     private let signUpWithAppleVC = SignUpWithAppleViewController()
     
     
@@ -79,6 +78,9 @@ final class InitialViewController: UIViewController {
         loginButton.layer.shadowRadius = 4
         loginButton.layer.shadowOffset = CGSize(width: 0, height: 1)
         loginButton.layer.shadowOpacity = 0.2
+        
+        
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         
         

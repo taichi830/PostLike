@@ -12,7 +12,7 @@ import FirebaseAuth
 import InstantSearchClient
 
 
-final class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private enum TableType:String {
         case history
@@ -72,6 +72,8 @@ final class SearchViewController: UIViewController {
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     

@@ -43,6 +43,8 @@ final class AccountSettingViewController: UIViewController {
         settingMenuTableView.separatorStyle = .singleLine
         
         fetchUserInfo()
+        
+        self.setSwipeBackGesture()
     }
     
     

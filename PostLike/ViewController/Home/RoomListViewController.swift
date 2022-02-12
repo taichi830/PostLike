@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class RoomListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+final class RoomListViewController: UIViewController {
    
 
     
@@ -24,21 +24,29 @@ final class RoomListViewController: UIViewController,UITableViewDelegate,UITable
         
         roomListTableView.delegate = self
         roomListTableView.dataSource = self
+        self.setSwipeBackGesture()
         
         if passedFollwedRoomArray.isEmpty == true {
             let label = MessageLabel()
             label.setup(text: "参加しているルームはありません。", at: self.view)
         }
-
-      
     }
-    
    
+    
+    
     
     @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     
+    
+    
+   
+}
+
+
+
+extension RoomListViewController: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         passedFollwedRoomArray.count
@@ -75,8 +83,5 @@ final class RoomListViewController: UIViewController,UITableViewDelegate,UITable
         enteredVC.passedDocumentID = passedFollwedRoomArray[indexPath.row].documentID
         navigationController?.pushViewController(enteredVC, animated: true)
     }
-       
     
-
-   
 }
