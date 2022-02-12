@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 
-final class JoinedRoomViewController: UIViewController{
+final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDelegate{
     
     
     @IBOutlet private weak var myRoomCollectionView: UICollectionView!
@@ -28,6 +28,7 @@ final class JoinedRoomViewController: UIViewController{
         myRoomCollectionView.delegate = self
         myRoomCollectionView.dataSource = self
         collectionItenSize()
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     

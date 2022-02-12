@@ -25,8 +25,6 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(swiped(_:)))
-        imageCollecionView.addGestureRecognizer(swipeGesture)
         imageCollecionView.delegate = self
         imageCollecionView.dataSource = self
         
@@ -36,6 +34,7 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
         
         collectionSize()
         fetchImages()
+        self.setSwipeBackGesture()
     }
     
     
@@ -51,9 +50,6 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     
     
     
-    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
-        navigationController?.popViewController(animated: true)
-    }
     
     
     

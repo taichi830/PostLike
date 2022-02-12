@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import RxSwift
 import RxCocoa
+import FirebaseFirestore
 
 final class CommentViewController: UIViewController {
     
