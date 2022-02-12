@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import Firebase
+import FirebaseFirestore
 
 protocol NotificationListner {
     var items: Observable<[Contents]> { get }

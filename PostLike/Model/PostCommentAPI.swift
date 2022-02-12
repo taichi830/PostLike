@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import Firebase
+import FirebaseFirestore
 
 protocol PostComment {
     func postComment(userName:String,userImage:String,text:String,roomID:String,postID:String,roomName:String,passedUid:String,mediaArray:[String]) -> Single<Bool>
