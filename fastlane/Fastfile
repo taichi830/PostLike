@@ -10,9 +10,7 @@ platform :ios do
    )
    release_branch = "release/#{version}"
    sh "git checkout -b #{release_branch}" 
-   commit_version_bump(
-    message: 'Version Bump'
-   )
+   git_commit(path: "PostLike/Info.plist", message: "Bump to #{version}")
    push_to_git_remote
    create_pull_request(
      api_bearer: ENV['GITHUB_TOKEN'],
