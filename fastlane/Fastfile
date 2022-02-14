@@ -1,0 +1,25 @@
+
+default_platform(:ios)
+
+platform :ios do
+  desc "version up"
+  lane :prepare_release do |options|
+    version = increment_version_number(
+      bump_type: options[:bump_type]
+    )
+   release_branch = "release/#{version}"
+   sh "git checkout -b #{release_branch}" 
+   git_commit(path: "PostLike.xcodeproj/project.pbxproj", message: "Bump to #{version}")
+   push_to_git_remote
+   create_pull_request(
+     api_bearer: ENV['GITHUB_TOKEN']
+     title: "Merge release branch #{version} to main"
+     base: main 
+   )
+   create_pull_request(
+     api_bearer: ENV['GITHUB_TOKEN']
+     title: "Merge release branch #{version} to develop"
+     base: develop
+   )
+  end
+end
