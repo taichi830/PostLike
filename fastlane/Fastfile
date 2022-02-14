@@ -4,7 +4,7 @@ default_platform(:ios)
 platform :ios do
   desc "version up"
   lane :prepare_release do |options|
-   ensure_git_status_clean
+
    version = increment_version_number(
       bump_type: options[:bump_type]
    )
