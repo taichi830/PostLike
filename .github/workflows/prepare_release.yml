@@ -21,10 +21,7 @@ jobs:
           ref: develop
 
       - name: Increment and commit version
-        env: 
-          XCODE_VERSION: '12.5'
         run: |
-          xcode select $XCODE_VERSION
           bundle install
           bundle exec fastlane prepare_release
           bump_type: ${{ github.event.inputs.bump_type }}
