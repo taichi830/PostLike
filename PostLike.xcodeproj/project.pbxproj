@@ -1080,6 +1080,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "PostLike Dev";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -1106,6 +1107,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = PostLike;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -1318,6 +1320,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "PostLike Staging";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Staging;
 		};
