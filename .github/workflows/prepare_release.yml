@@ -12,7 +12,7 @@ on:
 jobs:
   prepare_release:
   
-    runs-on: [self-hosted, macos-latest]
+    runs-on: macos-latest
 
     steps:
       
