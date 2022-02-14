@@ -1067,7 +1067,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1.2.5;
 				DEVELOPMENT_TEAM = X6NHLT8T59;
-				INFOPLIST_FILE = "$(SRCROOT)/PostLike/Info.plist";
+				INFOPLIST_FILE = PostLike/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1094,7 +1094,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1.2.5;
 				DEVELOPMENT_TEAM = X6NHLT8T59;
-				INFOPLIST_FILE = "$(SRCROOT)/PostLike/Info.plist";
+				INFOPLIST_FILE = PostLike/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1307,7 +1307,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1.2.5;
 				DEVELOPMENT_TEAM = X6NHLT8T59;
-				INFOPLIST_FILE = "$(SRCROOT)/PostLike/Info.plist";
+				INFOPLIST_FILE = PostLike/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
