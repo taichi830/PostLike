@@ -21,5 +21,4 @@ platform :ios do
      title: "Merge release branch #{version} to develop"
      base: develop
    )
-  end
 end
