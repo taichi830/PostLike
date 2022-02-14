@@ -14,11 +14,13 @@ platform :ios do
    git_commit(path: ".", message: "Bump to #{version}")
    push_to_git_remote
    create_pull_request(
+　　　repo: "taichi830/PostLike"
      api_bearer: ENV['GITHUB_TOKEN'],
      title: "Merge release branch #{version} to main",
      base: "main"
    )
    create_pull_request(
+     repo: "taichi830/PostLike"
      api_bearer: ENV['GITHUB_TOKEN'],
      title: "Merge release branch #{version} to develop",
      base: "develop"
