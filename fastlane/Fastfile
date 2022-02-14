@@ -6,7 +6,8 @@ platform :ios do
   lane :prepare_release do |options|
 
    version = increment_version_number(
-      bump_type: options[:bump_type]
+      bump_type: options[:bump_type],
+      xcodeproj: "PostLike/PostLike.xcodeproj"
    )
    release_branch = "release/#{version}"
    sh "git checkout -b #{release_branch}" 
