@@ -99,7 +99,7 @@ final class CommentViewController: UIViewController {
         inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
             guard let inputCommentView = self?.inputCommentView else { return }
             let size:CGSize = inputCommentView.commentTextView.sizeThatFits(inputCommentView.commentTextView.frame.size)
-            self?.inputCommentViewHeight.constant = size.height + 40
+            self?.inputCommentViewHeight.constant = size.height + 21
             self?.view.setNeedsLayout()
             self?.view.layoutIfNeeded()
         })
