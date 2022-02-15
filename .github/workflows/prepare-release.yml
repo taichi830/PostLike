@@ -25,7 +25,7 @@ jobs:
       
         run: |
           bundle install
-          bundle exec fastlane prepare_release bump_type: ${{ github.event.inputs.bump_type }}
+          bundle exec fastlane prepare_release bump_type:${{ github.event.inputs.bump_type }}
 
           
           
