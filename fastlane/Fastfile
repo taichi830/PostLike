@@ -16,13 +16,15 @@ platform :ios do
    create_pull_request(
      repo: "taichi830/PostLike",
      api_bearer: ENV['GITHUB_TOKEN'],
-     title: "Merge release branch #{version} to main",
+     title: "#{version}",
+　　　body: "Merge release branch #{version} to main",
      base: "main"
    )
    create_pull_request(
      repo: "taichi830/PostLike",
      api_bearer: ENV['GITHUB_TOKEN'],
-     title: "Merge release branch #{version} to develop",
+     title: "#{version}",
+     body: "Merge release branch #{version} to develop",
      base: "develop"
    )
  end
