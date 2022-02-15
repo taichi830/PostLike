@@ -23,9 +23,9 @@ jobs:
 
       - name: Increment and commit version
         run: |
-          echo "bump_type: ${{ github.event.inputs.bump_type }}"
           bundle install
           bundle exec fastlane prepare_release
+          bump_type: ${{ github.event.inputs.bump_type }}
           
           
           
