@@ -15,17 +15,17 @@ platform :ios do
    push_to_git_remote
    create_pull_request(
      repo: "taichi830/PostLike",
-     api_bearer: ENV['GITHUB_TOKEN'],
      title: "#{version}",
-     body: "Merge release branch #{version} to main",
-     base: "main"
+     head: release_branch,
+     base: "main",
+     body: "Merge release branch #{version} to main"
    )
    create_pull_request(
      repo: "taichi830/PostLike",
-     api_bearer: ENV['GITHUB_TOKEN'],
      title: "#{version}",
-     body: "Merge release branch #{version} to develop",
-     base: "develop"
+     head: release_branch,
+     base: "develop",
+     body: "Merge release branch #{version} to develop"
    )
  end
 end
