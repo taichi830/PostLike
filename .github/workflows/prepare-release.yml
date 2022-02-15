@@ -12,6 +12,8 @@ jobs:
   prepare_release:
   
     runs-on: macos-latest
+    env:  
+      GITHUB_TOKEN: ${{ secrets.PERSONAL_API_TOKEN }}
 
     steps:
       
