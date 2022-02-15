@@ -379,7 +379,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qSM-PU-esT">
-                                <rect key="frame" x="0.0" y="86" width="375" height="612"/>
+                                <rect key="frame" x="0.0" y="86" width="375" height="632"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jpo-jZ-jT2">
@@ -419,9 +419,9 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lNr-BB-MCd" customClass="InputCommentView" customModule="PostLike" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="698" width="375" height="80"/>
+                                <rect key="frame" x="0.0" y="718" width="375" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="AVZ-UN-AMk"/>
+                                    <constraint firstAttribute="height" constant="60" id="AVZ-UN-AMk"/>
                                 </constraints>
                             </view>
                         </subviews>
