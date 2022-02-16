@@ -874,9 +874,12 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ttz-hL-rcU">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ttz-hL-rcU">
                                         <rect key="frame" x="17" y="8" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="568-MH-LMv"/>
+                                            <constraint firstAttribute="width" constant="30" id="xbg-JL-VNR"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="chevron.left" catalog="system">
@@ -892,9 +895,12 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBY-lv-joV">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBY-lv-joV">
                                         <rect key="frame" x="328" y="8" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="3Fn-bl-B17"/>
+                                            <constraint firstAttribute="width" constant="30" id="5sR-ez-sgr"/>
+                                        </constraints>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="ellipsis" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="regular"/>
@@ -906,7 +912,13 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Ttz-hL-rcU" secondAttribute="bottom" constant="8" id="2zv-K3-A7j"/>
+                                    <constraint firstAttribute="bottom" secondItem="NBY-lv-joV" secondAttribute="bottom" constant="8" id="F7i-Io-B9V"/>
+                                    <constraint firstItem="Ttz-hL-rcU" firstAttribute="top" secondItem="lVb-mQ-RRP" secondAttribute="top" constant="8" id="JQn-RF-XhN"/>
+                                    <constraint firstItem="Ttz-hL-rcU" firstAttribute="leading" secondItem="lVb-mQ-RRP" secondAttribute="leading" constant="17" id="cfN-dg-ys1"/>
+                                    <constraint firstAttribute="trailing" secondItem="NBY-lv-joV" secondAttribute="trailing" constant="17" id="rRL-Id-VXc"/>
                                     <constraint firstAttribute="height" constant="46" id="w3Y-tb-Ql7"/>
+                                    <constraint firstItem="NBY-lv-joV" firstAttribute="top" secondItem="lVb-mQ-RRP" secondAttribute="top" constant="8" id="z7f-cN-J3j"/>
                                 </constraints>
                             </view>
                         </subviews>
