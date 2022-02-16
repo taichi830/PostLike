@@ -41,7 +41,7 @@ platform :ios do
   sync_code_signing(type: "appstore") 
   build_app(workspace: "PostLike.xcworkspace", scheme: "PostLike-release")
   upload_to_app_store(
-    username: {taicloud0803@icloud.com}
+    username: {taicloud0803@icloud.com},
     skip_screenshots: true,
     skip_metadata: true,
     force: true
