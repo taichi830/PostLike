@@ -1077,7 +1077,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.taichiApp.PostLike.${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "PostLike Dev";
-				PROVISIONING_PROFILE_SPECIFIER = "PostLike Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.taichiApp.PostLike..develop";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1104,7 +1104,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) ";
 				PRODUCT_BUNDLE_IDENTIFIER = com.postlike.PostLike;
 				PRODUCT_NAME = PostLike;
-				PROVISIONING_PROFILE_SPECIFIER = PostLike;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.postlike.PostLike";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
