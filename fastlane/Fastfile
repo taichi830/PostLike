@@ -14,7 +14,7 @@ platform :ios do
    git_commit(path: ".", message: "Bump to #{version}")
    push_to_git_remote
    create_pull_request(
-     api_token: ENV['PERSONAL_API_TOKEN'],
+     api_token: ENV['GITHUB_TOKEN'],
      repo: "taichi830/PostLike",
      title: "#{version}",
      head: release_branch,
@@ -22,7 +22,7 @@ platform :ios do
      body: "Merge release branch #{version} to main"
    )
    create_pull_request(
-     api_token: ENV['PERSONAL_API_TOKEN'],
+     api_token: ENV['GITHUB_TOKEN'],
      repo: "taichi830/PostLike",
      title: "#{version}",
      head: release_branch,
