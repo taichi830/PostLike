@@ -14,7 +14,7 @@ platform :ios do
    git_commit(path: ".", message: "Bump to #{version}")
    push_to_git_remote
    create_pull_request(
-     api_token: ENV['GITHUB_TOKEN'],
+     api_token: ENV['PERSONAL_API_TOKEN'],
      repo: "taichi830/PostLike",
      title: "#{version}",
      head: release_branch,
@@ -22,7 +22,7 @@ platform :ios do
      body: "Merge release branch #{version} to main"
    )
    create_pull_request(
-     api_token: ENV['GITHUB_TOKEN'],
+     api_token: ENV['PERSONAL_API_TOKEN'],
      repo: "taichi830/PostLike",
      title: "#{version}",
      head: release_branch,
@@ -34,8 +34,8 @@ platform :ios do
 
 
 　
-　desc "submit to appstore"
-  lane :release do
+　desc "release to appstore"
+  lane :release_to_appstore do
     begin
       bump_build_version_with_commit
       build_to_release
