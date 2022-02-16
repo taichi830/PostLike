@@ -21,6 +21,24 @@ jobs:
           release_name: v${{ step.extract_version.outputs.version }}
           default: false
           prerelease: false
+  
+  submit:
+    runs-on: [macOS]
+    steps:
+    - uses: actions/checkout@v2
+    - name: release app
+      run: |
+        bundle install
+        bundle exec fastlane release
+
+  
+  
+  
+  
+  
+  
+  
+  
           
           
           
