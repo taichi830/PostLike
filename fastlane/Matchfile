@@ -1,0 +1,8 @@
+git_url("https://github.com/taichi830/Profiles_Storage.git")
+
+storage_mode("git")
+
+type("appstore")
+  app_identifier("com.postlike.PostLike")
+  username("taicloud0803@icloud.com") 
+
