@@ -36,18 +36,61 @@ platform :ios do
 　
 　desc "submit to appstore"
   lane :release do
-  increment_build_number(
-    xcodeproj: "PostLike.xcodeproj"
+    begin
+      bump_build_version_with_commit
+      build_to_release
+      deliver
+    end
+ end
+ 
+
+ # Private
+
+ private_lane :build_to_release do
+  create_keychain_for_CI if is_ci
+  match(
+    type: appstore,
+    readonly: is_ci,
+    keychain_name: "postlike_keychain",
+    keychain_password: ENV["MATCH_PASSWORD"],
+  ) 
+  disable_automatic_code_signing(
+    use_automatic_signing: false,
+    targets: ["PostLike"],
+    code_sign_identity: "iPhone Distribution",
+    team_id: ENV["TEAM_ID"],
+    profile_name: "taichiro fukuda"
   )
-  git_commit(path: ".", message: "Version Bump")
-  build_app(workspace: "PostLike.xcworkspace", scheme: "PostLike_release")
-  upload_to_app_store(
-    username: "taicloud0803@icloud.com",
-    skip_screenshots: true,
-    skip_metadata: true,
-    force: true
+  gym(
+    workspace: "PostLike.xcworkspace",
+    configuration: "Release",
+    scheme: "PostLike_release",
+    export_method: "app-store",
   )
  end
+
+ private_lane :bump_build_version_with_commit do
+   increment_build_number(
+     xcodeproj: "PostLike.xcodeproj"
+   )
+   git_commit(path: ".", message: "Version Bump")
+ end
+
+
+ private_lane :create_keychain_for_CI do
+   create_keychain(
+     name: "postlike_keychain",
+     password: ENV["MATCH_PASSWORD"],
+     default_keychain: true,
+     unlock: true,
+     timeout: 3600,
+     lock_when_sleeps: false
+   )
+ end
+
+ 
+
+
 
 
 
