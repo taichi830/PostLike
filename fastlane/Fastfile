@@ -40,8 +40,7 @@ platform :ios do
       bump_build_version_with_commit
       build_to_release
       deliver
-    end
- end
+  end
  
 
  # Private
