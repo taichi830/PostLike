@@ -33,14 +33,12 @@ platform :ios do
 
 
 
-　
-　desc "release to appstore"
+
+  desc "release to appstore"
   lane :release_to_appstore do
-    begin
-      bump_build_version_with_commit
-      build_to_release
-      deliver
-    end
+     bump_build_version_with_commit
+     build_to_release
+     deliver
   end
  
 
