@@ -8,7 +8,7 @@ on:
 
 jobs:
   tag_release: 
-    runs-on: [macOS]
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Extract version
