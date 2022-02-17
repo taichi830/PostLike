@@ -29,7 +29,10 @@ jobs:
     - name: release app
       run: |
         bundle install
-        bundle exec fastlane release
+        bundle exec fastlane release_to_appstore
+      env:
+        TEAM_ID: ${{ secrets.TEAM_ID }}
+        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
   
   
