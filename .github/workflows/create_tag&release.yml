@@ -15,6 +15,7 @@ jobs:
         run: echo "##[set-output name=version;]$(/usr/libexec/PulishBuddy -c 'print":CFBundleShortVersionString"' path/Info.plist)"
         id: extract_version
       - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_API_TOKEN }}
