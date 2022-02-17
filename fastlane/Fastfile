@@ -29,7 +29,7 @@ platform :ios do
      base: "develop",
      body: "Merge release branch #{version} to develop"
    )
- end
+  end
 
 
 
