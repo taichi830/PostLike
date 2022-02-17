@@ -8,7 +8,7 @@ on:
 
 jobs:
   tag_release: 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Extract version
@@ -20,8 +20,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_API_TOKEN }}
         with:
-          tag_name: ${{ github.event.pull_request.title }}
-          release_name: v${{ github.event.pull_request.title }}
+          tag_name: ${{ steps.extract_version.outputs.version }}
+          release_name: v${{ steps.extract_version.outputs.version }}
           draft: false
           prerelease: false
   
