@@ -51,6 +51,8 @@ jobs:
 
         eval $(ssh-agent)
         ssh-add "$SSH_PATH/id_rsa"
+      env:
+        PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: release app
       run: |
         bundle install
