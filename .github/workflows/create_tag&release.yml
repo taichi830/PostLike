@@ -4,6 +4,7 @@ name: Create tag & release
 # Controls when the workflow will run
 on:
   push:
+    branches: [main]
     tags:
       - 'v*.*.*'
 
@@ -13,7 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Extract version
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+        run: |
+             VERSION=$(echo ${{ github.ref }} | sed -e "s#refs/tags/##g")
+             echo ::set-output name=version::$VERSION
         id: extract_version
       - name: Create Release
         id: create_release
