@@ -43,6 +43,7 @@ jobs:
         touch "$SSH_PATH/known_hosts"
 
         echo "$PRIVATE_KEY" > "$SSH_PATH/id_rsa"
+        sed -i -e "s#\\\\n#\n#g" $SSH_PATH/id_rsa
 
         chmod 700 "$SSH_PATH"
         ssh-keyscan github.com >> ~/.ssh/known_hosts
