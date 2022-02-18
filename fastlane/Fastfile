@@ -38,7 +38,12 @@ platform :ios do
   lane :release_to_appstore do
      bump_build_version_with_commit
      build_to_release
-     deliver
+     deliver(
+       submit_for_review: false,
+       force: true,
+       skip_screenshots: true,
+       skip_metadata: true
+     )
   end
  
 
@@ -47,7 +52,7 @@ platform :ios do
  private_lane :build_to_release do
   create_keychain_for_CI if is_ci
   match(
-    type: appstore,
+    type: "appstore",
     readonly: is_ci,
     keychain_name: "postlike_keychain",
     keychain_password: ENV["MATCH_PASSWORD"],
