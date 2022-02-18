@@ -3,11 +3,9 @@ name: Create tag & release
 
 # Controls when the workflow will run
 on:
-  pull_request:
-   branches:
-     - main
-   types:
-     - closed
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   tag_release: 
@@ -15,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Extract version
-        run: echo ::set-output name=version::$(/usr/libexec/PulishBuddy -c 'print":CFBundleShortVersionString"' path/Info.plist)
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
         id: extract_version
       - name: Create Release
         id: create_release
