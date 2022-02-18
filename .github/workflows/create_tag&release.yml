@@ -11,13 +11,13 @@ on:
 
 jobs:
   tag_release: 
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Extract version
         run: |
-             echo "${{ github.event.pull_request.head.ref }}' | sed 's/release\///"
-             echo "::set-output name=version::${{ github.event.pull_request.head.ref }}' | sed 's/release\///"
+             echo '${{ github.event.pull_request.head.ref }}' | sed 's/release\///'
+             echo "##[set-output name=version;]'${{ github.event.pull_request.head.ref }}' | sed 's/release\///'"
         id: extract_version
       - name: Create Release
         id: create_release
