@@ -47,7 +47,7 @@ jobs:
         cp -f ./config ~/.ssh/config
 
         # .ssh/id_rsa の作成
-        echo ${SSH_KEY} > ~/.ssh/id_rsa
+        echo ${PRIVATE_KEY} > ~/.ssh/id_rsa
         sed -i -e "s#\\\\n#\n#g" ~/.ssh/id_rsa
 
         ＃ .ssh/id_rsa のアクセス制限
