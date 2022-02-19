@@ -62,6 +62,7 @@ jobs:
       env:
         TEAM_ID: ${{ secrets.TEAM_ID }}
         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        APPLE_ID: ${{ secrets.APPLE_ID }}
 
   
   
