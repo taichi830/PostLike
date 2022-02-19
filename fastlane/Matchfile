@@ -1,4 +1,4 @@
-git_url("https://github.com/taichi830/Profiles_Storage")
+git_url("git@github.com:taichi830/Profiles_Storage.git")
 
 storage_mode("git")
 
