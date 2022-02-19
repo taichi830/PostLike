@@ -62,7 +62,7 @@ platform :ios do
     targets: ["PostLike"],
     code_sign_identity: "iPhone Distribution",
     team_id: ENV["TEAM_ID"],
-    profile_name: "taichiro fukuda"
+    profile_name: "match AppStore com.postlike.PostLike"
   )
   gym(
     workspace: "PostLike.xcworkspace",
