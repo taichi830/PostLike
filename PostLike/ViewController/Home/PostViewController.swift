@@ -102,6 +102,7 @@ final class PostViewController: UIViewController{
         keybordNotifications()
         setUpTableView()
         tapGesture()
+        didScrollTableView()
     }
     
     
@@ -133,6 +134,20 @@ final class PostViewController: UIViewController{
                 self?.postButton.backgroundColor = bool ? .red : .systemGray4
             }
             .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    private func didScrollTableView() {
+        photoTableView.rx.didEndDragging.subscribe { [weak self] _ in
+            self?.textView.resignFirstResponder()
+        }
+        .disposed(by: disposeBag)
     }
     
     
