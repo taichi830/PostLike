@@ -65,6 +65,7 @@ jobs:
         APPLE_ID: ${{ secrets.APPLE_ID }}
         ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
         ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        ASC_KEY_CONTENT: ${{ secrets.ASC_KEY_CONTENT }}
 
   
   
