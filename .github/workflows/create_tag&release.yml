@@ -63,6 +63,8 @@ jobs:
         TEAM_ID: ${{ secrets.TEAM_ID }}
         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         APPLE_ID: ${{ secrets.APPLE_ID }}
+        FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
 
   
   
