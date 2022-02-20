@@ -4,5 +4,5 @@ storage_mode("git")
 
 type("appstore")
   app_identifier("com.postlike.PostLike")
-  username("taicloud0803@icloud.com") 
+  username(ENV["APPLE_ID"]) 
 
