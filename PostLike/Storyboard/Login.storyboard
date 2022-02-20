@@ -1039,9 +1039,8 @@
                                             <action selector="back:" destination="GbP-5s-Yjy" eventType="touchUpInside" id="bhn-GF-fSU"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="プライバシーポリシー" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKk-nT-3Ff">
-                                        <rect key="frame" x="73" y="0.0" width="228" height="42"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="プライバシーポリシー" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKk-nT-3Ff">
+                                        <rect key="frame" x="120.33333333333333" y="0.0" width="173.33333333333337" height="42"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1049,6 +1048,9 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="hKk-nT-3Ff" firstAttribute="top" secondItem="d6r-4M-hLg" secondAttribute="top" id="EVV-Mo-SHC"/>
+                                    <constraint firstAttribute="bottom" secondItem="hKk-nT-3Ff" secondAttribute="bottom" id="F7Z-RG-o4A"/>
+                                    <constraint firstItem="hKk-nT-3Ff" firstAttribute="centerX" secondItem="d6r-4M-hLg" secondAttribute="centerX" id="PVX-wp-hPO"/>
                                     <constraint firstAttribute="height" constant="42" id="fcg-5f-kdg"/>
                                 </constraints>
                             </view>
