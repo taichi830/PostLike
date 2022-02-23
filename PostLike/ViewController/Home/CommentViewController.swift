@@ -63,6 +63,7 @@ final class CommentViewController: UIViewController {
         keyboardWillShowNotification()
         keyboardWillHideNotification()
         fetchComments()
+        didScrollTableView()
        
     }
     
@@ -156,6 +157,17 @@ final class CommentViewController: UIViewController {
     
     
     
+    private func didScrollTableView() {
+        commentTableView.rx.didEndDragging.subscribe { [weak self] _ in
+            self?.inputCommentView.commentTextView.resignFirstResponder()
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
     
     
 
@@ -195,10 +207,10 @@ final class CommentViewController: UIViewController {
 
 
 
-extension CommentViewController:UIScrollViewDelegate{
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if commentTableView.isDragging == true{
-            self.inputCommentView.commentTextView.resignFirstResponder()
-        }
-    }
-}
+//extension CommentViewController:UIScrollViewDelegate{
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if commentTableView.isDragging == true{
+//            self.inputCommentView.commentTextView.resignFirstResponder()
+//        }
+//    }
+//}
