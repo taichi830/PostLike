@@ -890,10 +890,13 @@
                                             <action selector="backButton:" destination="iVt-jJ-wNd" eventType="touchUpInside" id="Owe-nN-sAX"/>
                                         </connections>
                                     </button>
-                                    <view alpha="0.40000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eTv-D9-LAN">
+                                    <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eTv-D9-LAN">
                                         <rect key="frame" x="328" y="8" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="BEX-cG-hJd"/>
+                                            <constraint firstAttribute="width" constant="30" id="asW-kU-py6"/>
+                                        </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBY-lv-joV">
                                         <rect key="frame" x="328" y="8" width="30" height="30"/>
@@ -914,10 +917,13 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="Ttz-hL-rcU" secondAttribute="bottom" constant="8" id="2zv-K3-A7j"/>
                                     <constraint firstAttribute="bottom" secondItem="NBY-lv-joV" secondAttribute="bottom" constant="8" id="F7i-Io-B9V"/>
+                                    <constraint firstAttribute="trailing" secondItem="eTv-D9-LAN" secondAttribute="trailing" constant="17" id="HkT-fm-oLi"/>
                                     <constraint firstItem="Ttz-hL-rcU" firstAttribute="top" secondItem="lVb-mQ-RRP" secondAttribute="top" constant="8" id="JQn-RF-XhN"/>
                                     <constraint firstItem="Ttz-hL-rcU" firstAttribute="leading" secondItem="lVb-mQ-RRP" secondAttribute="leading" constant="17" id="cfN-dg-ys1"/>
+                                    <constraint firstItem="eTv-D9-LAN" firstAttribute="top" secondItem="lVb-mQ-RRP" secondAttribute="top" constant="8" id="cqA-oq-NAT"/>
                                     <constraint firstAttribute="trailing" secondItem="NBY-lv-joV" secondAttribute="trailing" constant="17" id="rRL-Id-VXc"/>
                                     <constraint firstAttribute="height" constant="46" id="w3Y-tb-Ql7"/>
+                                    <constraint firstAttribute="bottom" secondItem="eTv-D9-LAN" secondAttribute="bottom" constant="8" id="xRU-0g-MOe"/>
                                     <constraint firstItem="NBY-lv-joV" firstAttribute="top" secondItem="lVb-mQ-RRP" secondAttribute="top" constant="8" id="z7f-cN-J3j"/>
                                 </constraints>
                             </view>
