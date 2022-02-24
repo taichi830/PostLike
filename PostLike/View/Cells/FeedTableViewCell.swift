@@ -73,10 +73,6 @@ final class FeedTableViewCell: UITableViewCell{
     }
     
     
-//    override func prepareForReuse() {
-//        underHeight.constant = 210 * underView.frame.width / 340
-//    }
-//
     
     func setContent(contents:Contents,likeContensArray:[Contents]){
         //ユーザー画像をセット
