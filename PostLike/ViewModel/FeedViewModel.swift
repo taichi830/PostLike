@@ -9,21 +9,33 @@
 import RxSwift
 import RxCocoa
 
-final class FeedViewMode {
+final class FeedViewModel {
+    private let disposeBag = DisposeBag()
     let items: Driver<[Contents]>
     let isEmpty: Driver<Bool>
+    let likes: Driver<[Contents]>
     
-    init(feedContentsListner: FeedContentsListner, roomID: String) {
-        let listner = feedContentsListner.fetchFeedContents(roomID: roomID)
+    
+    init(feedContentsListner: FeedContentsListner, likeListner: LikeListner, userListner: UserListner, roomID: String) {
+        let feedListner = feedContentsListner.fetchFeedContents(roomID: roomID)
         
-        items = listner
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+        items = feedListner
+            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: [])
         
-        isEmpty = listner.map({ contents -> Bool in
+        isEmpty = feedListner.map({ contents -> Bool in
             return contents.isEmpty
         })
         .asDriver(onErrorJustReturn: true)
+        
+        
+        
+        likes = items.asObservable()
+            .concatMap { contents -> Observable<[Contents]> in
+                return likeListner.fetchLikes(contents: contents)
+                    .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            }
+            .asDriver(onErrorJustReturn: [])
     }
     
 }
