@@ -14,8 +14,9 @@ final class RoomHeaderViewModel {
     private let disposeBag = DisposeBag()
     let userInfo: Driver<Contents>
     let isJoined: Driver<Bool>
+    let roomInfo: Driver<Room>
     
-    init(userListner: UserListner, roomID: String) {
+    init(userListner: UserListner, roomInfoListner: RoomInfoListner, roomID: String) {
         let listner = userListner.createUserListner(roomID: roomID)
         
         userInfo = listner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
@@ -26,6 +27,14 @@ final class RoomHeaderViewModel {
                 return content.isJoined
             }
             .asDriver(onErrorJustReturn: false)
+        
+        
+        let roomInfoListner = roomInfoListner.fetchRoomInfo(roomID: roomID)
+        
+        roomInfo = roomInfoListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            .asDriver(onErrorDriveWith: Driver.empty())
+        
+        
     }
 }
 
