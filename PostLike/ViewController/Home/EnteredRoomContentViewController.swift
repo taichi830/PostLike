@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import FirebaseFirestore
 import FirebaseAuth
 
@@ -53,6 +55,8 @@ final class EnteredRoomContentViewController: UIViewController{
         roomImageView.addSubview(indicator)
         return indicator
     }()
+    private let disposeBag = DisposeBag()
+    var viewModel: FeedViewModel!
     
     
     
@@ -61,28 +65,18 @@ final class EnteredRoomContentViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), roomID: passedDocumentID)
+        headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
         setupTableView()
-        startIndicator()
-        fetchContents {
-            self.dismissIndicator()
-            self.contentsTableView.reloadData()
-        }
-        setupHeaderView()
         self.setSwipeBackGesture()
+        fetchFeedContents()
+        tableViewDidScroll()
         
-        
+        fetchMemberCount()
         
         
     }
     
-    
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchProfileInfo()
-        roomExistCheck()
-    }
     
     
     
@@ -97,63 +91,10 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    private func setupHeaderView() {
-        let tapGesure:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapMyprofile(_:)))
-        tapGesure.delegate = self
-        headerView.myProfileImageView.layer.cornerRadius = 15
-        headerView.myProfileImageView.isUserInteractionEnabled = true
-        headerView.myProfileImageView.addGestureRecognizer(tapGesure)
-        
-        headerView.imageCollectionButton.addTarget(self, action: #selector(tappedImageCollectionButton(_:)), for: .touchUpInside)
-        headerView.postButton.addTarget(self, action: #selector(tappedPostButton(_:)), for: .touchUpInside)
-    }
-    
-    
-    
-    
-    
-    @objc private func tappedImageCollectionButton(_ sender:UIButton){
-        let imageVC = storyboard?.instantiateViewController(withIdentifier: "images") as! RoomImageContentsViewController
-        imageVC.passedRoomID = passedDocumentID
-        imageVC.passedRoomName = headerView.roomNameLabel.text ?? ""
-        navigationController?.pushViewController(imageVC, animated: true)
-    }
-    
-    
-    
-    
-    
-    @objc private func tappedPostButton(_ sender:UIButton){
-        let postVC = storyboard?.instantiateViewController(withIdentifier: "postVC") as! PostViewController
-        postVC.passedRoomTitle = self.headerView.roomNameLabel.text!
-        postVC.passedDocumentID = self.roomInfo?.documentID ?? ""
-        postVC.passedHostUid = self.roomInfo?.moderator ?? ""
-        postVC.passedUserImageUrl = self.joinedRoom?.userImage ?? ""
-        postVC.passedUserName = self.joinedRoom?.userName ?? ""
-        present(postVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    
-    @objc private func tapMyprofile(_ sender: UITapGestureRecognizer){
-        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let myproVC = storyboard.instantiateViewController(withIdentifier: "myproVC") as! ProfileViewController
-        myproVC.passedDocumentID = passedDocumentID
-        myproVC.passedModerator = roomInfo?.moderator ?? ""
-        navigationController?.pushViewController(myproVC, animated: true)
-    }
-    
-    
-    
-    
     
     
     
     private func setupTableView(){
-        contentsTableView.delegate = self
-        contentsTableView.dataSource = self
         contentsTableView.tableHeaderView =  headerView
         contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         contentsTableView.contentInsetAdjustmentBehavior = .never
@@ -175,13 +116,7 @@ final class EnteredRoomContentViewController: UIViewController{
         indicator.startAnimating()
         self.contentsArray.removeAll()
         self.likeContentsArray.removeAll()
-        roomExistCheck()
-        fetchProfileInfo()
-        fetchContents {
-            self.contentsTableView.refreshControl?.endRefreshing()
-            self.indicator.stopAnimating()
-            self.contentsTableView.reloadData()
-        }
+//        roomExistCheck()
     }
     
     
@@ -211,59 +146,6 @@ final class EnteredRoomContentViewController: UIViewController{
         modalMenuVC.passedRoomImage = roomImageView.image ?? UIImage()
         present(modalMenuVC, animated: true, completion: nil)
     }
-    
-    
-    
-    
-    
-    private func fetchProfileInfo(){
-        Firestore.isJoinedCheck(roomID: passedDocumentID) { joinedRoom in
-            if joinedRoom?.isJoined == false {
-                self.headerView.postButton.isEnabled = false
-                self.headerView.postButton.tintColor = .lightGray
-                self.headerView.myProfileImageView.isUserInteractionEnabled = false
-                self.headerView.memberLabel.text = "このルームから退出しました"
-            }else {
-                self.joinedRoom = joinedRoom
-                if joinedRoom?.userImage == "" {
-                    self.headerView.myProfileImageView.image = UIImage(systemName: "person.fill")
-                }else{
-                    self.headerView.myProfileImageView.sd_setImage(with: URL(string: joinedRoom?.userImage ?? ""), completed: nil)
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    private func roomExistCheck(){
-        Firestore.fetchRoomInfo(roomID: passedDocumentID) { roomInfo in
-            if roomInfo?.documentID == "" {
-                self.headerView.postButton.isEnabled = false
-                self.headerView.postButton.tintColor = .lightGray
-                self.headerView.myProfileImageView.isUserInteractionEnabled = false
-                self.headerView.memberLabel.text = "このルームは削除されました"
-            }else {
-                self.roomInfo = roomInfo
-                self.fetchMemberCount()
-                self.roomImageView.sd_setImage(with: URL(string: self.roomInfo?.roomImage ?? ""), completed: nil)
-                self.headerView.bluredImageView.sd_setImage(with: URL(string: self.roomInfo?.roomImage ?? ""), completed: nil)
-                
-                self.headerView.roomNameLabel.text = self.roomInfo?.roomName
-                self.headerView.roomNameLabel.adjustsFontSizeToFitWidth = true
-                self.headerView.roomNameLabel.minimumScaleFactor = 0.8
-                
-                self.topRoomNameLabel.text = self.roomInfo?.roomName
-                self.topRoomNameLabel.adjustsFontSizeToFitWidth = true
-                self.topRoomNameLabel.minimumScaleFactor = 0.8
-            }
-        }
-    }
-    
-    
-    
     
     
     
@@ -305,73 +187,26 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    private func fetchLikeContents(documentIDs:[String],_ completed: @escaping() -> Void){
-        Firestore.fetchLikeContents(documentIDs: documentIDs) { contents in
-            self.likeContentsArray.append(contentsOf: contents)
-            completed()
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchContents(_ completed: @escaping() -> Void){
-        Firestore.fetchRoomContents(roomID: passedDocumentID, viewController: self) { querySnapshot,contents,uids,documentIDs  in
-            if contents.isEmpty == true {
-                self.label.setup(text: "投稿がまだありません。", at: self.contentsTableView)
-                completed()
-            }else{
-                self.label.text = ""
-                self.lastDocument = querySnapshot.documents.last
-                self.contentsArray.append(contentsOf: contents)
-                self.fetchReportedUsers(uids: uids) {
-                    self.fetchReportedContents(documentIDs: documentIDs) {
-                        self.fetchLikeContents(documentIDs: documentIDs) {
-                            completed()
-                        }
-                    }
-                }
+    private func fetchFeedContents() {
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), roomID: passedDocumentID)
+        
+        viewModel.isEmpty
+            .drive { bool in
+                print("bool:", bool)
             }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchMoreContetns(){
-        guard let lastDocument = lastDocument else {return}
-        Firestore.fetchMoreRoomContents(roomID: passedDocumentID, lastDocument: lastDocument) { querySnapshot,contents,uids,documentIDs  in
-            if contents.isEmpty == false {
-                self.lastDocument = querySnapshot.documents.last
-                self.contentsArray.append(contentsOf: contents)
-                self.fetchReportedUsers(uids: uids) {
-                    self.fetchReportedContents(documentIDs: documentIDs) {
-                        self.fetchLikeContents(documentIDs: documentIDs) {
-                            self.contentsTableView.reloadData()
-                        }
-                    }
-                }
+            .disposed(by: disposeBag)
+        
+        viewModel.items.drive(contentsTableView.rx.items(cellIdentifier: "FeedTableViewCell", cellType: FeedTableViewCell.self)) { [weak self] (row,item,cell) in
+            cell.tableViewCellDelegate = self
+            self?.viewModel.likes.drive { likes in
+                cell.setContent(contents: item, likeContensArray: likes)
             }
+            .disposed(by: self!.disposeBag)
+            
         }
+        .disposed(by: disposeBag)
+        
+        
     }
     
     
@@ -383,39 +218,27 @@ final class EnteredRoomContentViewController: UIViewController{
 
 
 
-extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataSource{
+extension EnteredRoomContentViewController {
     
     
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    private func tableViewDidScroll() {
+        contentsTableView.rx.didScroll
+            .withLatestFrom(contentsTableView.rx.contentOffset)
+            .map { [weak self] point in
+                if point.y <= 0 {
+                    self?.headerViewHeight.constant = -(point.y - 180)
+                    self?.headerViewTopConstraint.constant = 0
+                }else{
+                    self?.headerViewHeight.constant = 180
+                    self?.headerViewTopConstraint.constant = -point.y
+                }
+                //下にスクロールに合わせて徐々にblurをかける
+                self?.topBlurEffect.alpha = -0.7 + (point.y - 50) / 50
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
         
-        if contentsArray.count == 0 {
-            return 0
-        }else{
-            return contentsArray.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = contentsTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell")  as! FeedTableViewCell
         
-        cell.tableViewCellDelegate = self
-        
-        cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
-        
-        
-        return cell
-    }
-    
-    
-    
-    
-    
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (indexPath.row + 1 == self.contentsArray.count - 8) && self.contentsArray.count == 10 {
-            fetchMoreContetns()
-        }
     }
     
     
@@ -669,33 +492,5 @@ extension EnteredRoomContentViewController:UIViewControllerTransitioningDelegate
 
 
 
-extension EnteredRoomContentViewController:UIScrollViewDelegate,UIGestureRecognizerDelegate{
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y <= 0 {
-            self.headerViewHeight.constant = -(scrollView.contentOffset.y - 180)
-            self.headerViewTopConstraint.constant = 0
-        }else{
-            self.headerViewHeight.constant = 180
-            self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
-        }
-        
-        //下にスクロールに合わせて徐々にblurをかける
-        topBlurEffect.alpha = -0.7 + (scrollView.contentOffset.y - 50)/50
-        
-        
-    }
-    
-    
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
-    
-    
-    
-    
-    
-    
-}
+
+
