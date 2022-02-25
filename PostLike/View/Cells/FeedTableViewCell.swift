@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import SDWebImage
+//import SDWebImage
+import RxSwift
+//import RxCocoa
 
 final class FeedTableViewCell: UITableViewCell{
     
@@ -31,6 +33,8 @@ final class FeedTableViewCell: UITableViewCell{
     @IBOutlet weak var roomNameLabel: UILabel!
     
     weak var tableViewCellDelegate:TableViewCellDelegate?
+    private let disposeBag = DisposeBag()
+    private var viewModel: FeedTableViewModel!
     
     
     
@@ -73,6 +77,12 @@ final class FeedTableViewCell: UITableViewCell{
     }
     
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        underHeight.constant = 210 * underView.frame.width / 340
+    }
+    
+    
     
     func setContent(contents:Contents,likeContensArray:[Contents]){
         //ユーザー画像をセット
@@ -109,7 +119,7 @@ final class FeedTableViewCell: UITableViewCell{
         }
         
         
-        if contents.mediaArray.count == 1 && contents.mediaArray[0] != "" {
+        if contents.mediaArray.count == 1 {
             singlePostImageView.isHidden = false
             postImageView.isHidden = true
             postImageView2.isHidden = true
@@ -146,10 +156,11 @@ final class FeedTableViewCell: UITableViewCell{
         if likeCheck.isEmpty == true {
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
             likeButton.tintColor = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)
+            contents.isLiked = false
         }else {
             likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             likeButton.tintColor = .red
-            
+            contents.isLiked = true
         }
         
         
@@ -165,6 +176,16 @@ final class FeedTableViewCell: UITableViewCell{
         
         
     }
+    
+    
+    func setupBinds(content: Contents, roomID: String) {
+        viewModel = FeedTableViewModel(likeButtonTap: likeButton.rx.tap.asSignal(), createLikes: CreateDefaultLikes(), content: content, userInfoListner: UserDefaultLisner(), roomID: roomID)
+        
+    }
+    
+    
+    
+    
     
    
     

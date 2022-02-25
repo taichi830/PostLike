@@ -30,6 +30,7 @@ final class Contents{
     let type:String
     let roomID:String
     let uid:String
+    var isLiked: Bool = false
     
 
    
