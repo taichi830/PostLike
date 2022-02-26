@@ -188,7 +188,7 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     private func fetchFeedContents() {
-        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), roomID: passedDocumentID)
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
         
         viewModel.isEmpty
             .drive { bool in
@@ -201,7 +201,6 @@ final class EnteredRoomContentViewController: UIViewController{
                 cell.setContent(contents: item, likeContensArray: likes)
             }
             .disposed(by: self!.disposeBag)
-            
         }
         .disposed(by: disposeBag)
         

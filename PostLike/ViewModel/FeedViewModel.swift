@@ -16,12 +16,10 @@ final class FeedViewModel {
     let likes: Driver<[Contents]>
     
     
-    init(feedContentsListner: FeedContentsListner, likeListner: LikeListner, userListner: UserListner, roomID: String) {
+    init(feedContentsListner: FeedContentsListner, likeListner: LikeListner, userListner: UserListner, reportListner: ReportListner, roomID: String) {
         let feedListner = feedContentsListner.fetchFeedContents(roomID: roomID)
         
-        items = feedListner
-            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
-            .asDriver(onErrorJustReturn: [])
+    
         
         isEmpty = feedListner.map({ contents -> Bool in
             return contents.isEmpty
@@ -29,13 +27,55 @@ final class FeedViewModel {
         .asDriver(onErrorJustReturn: true)
         
         
+        let items2 = feedListner
+            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
         
-        likes = items.asObservable()
+        
+        likes = items2.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return likeListner.fetchLikes(contents: contents)
                     .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
             }
             .asDriver(onErrorJustReturn: [])
+        
+        
+        
+        
+        let reportedUsers = items2.asObservable()
+            .concatMap { contents -> Observable<[Contents]> in
+                return reportListner.fetchReportedUsers(contents: contents)
+                    .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            }
+        
+        let reportedContents = items2.asObservable()
+            .concatMap { contents -> Observable<[Contents]> in
+                return reportListner.fetchReportedContents(contents: contents)
+                    .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            }
+        
+        items = Observable.combineLatest(items2, reportedUsers, reportedContents)
+            .map { (items,users,contents) -> [Contents] in
+                print("items:",items.count,"users:",users.count,"contents:",contents.count)
+                return items.filter { item -> Bool in
+                    !users.contains(where: { user in
+                        item.uid == user.uid
+                    }) &&
+                    !contents.contains(where: { content in
+                        item.documentID == content.documentID
+                    })
+                }
+            }
+            .asDriver(onErrorJustReturn: [])
+            
+            
+    
     }
+    
+    
+    
+    
+    
+    
+    
     
 }
