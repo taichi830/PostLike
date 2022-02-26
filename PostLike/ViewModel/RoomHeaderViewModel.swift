@@ -15,13 +15,12 @@ final class RoomHeaderViewModel {
     let userInfo: Driver<Contents>
     let isJoined: Driver<Bool>
     let roomInfo: Driver<Room>
+    let memberCount: Driver<Room>
     
     init(userListner: UserListner, roomInfoListner: RoomInfoListner, roomID: String) {
-        let listner = userListner.createUserListner(roomID: roomID)
-        
-        userInfo = listner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+        let userInfoListner = userListner.createUserListner(roomID: roomID)
+        userInfo = userInfoListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
             .asDriver(onErrorDriveWith: Driver.empty())
-        
         isJoined = userInfo.asObservable()
             .map { content -> Bool in
                 return content.isJoined
@@ -29,10 +28,16 @@ final class RoomHeaderViewModel {
             .asDriver(onErrorJustReturn: false)
         
         
-        let roomInfoListner = roomInfoListner.fetchRoomInfo(roomID: roomID)
-        
-        roomInfo = roomInfoListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+        let roomListner = roomInfoListner.fetchRoomInfo(roomID: roomID)
+        roomInfo = roomListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
             .asDriver(onErrorDriveWith: Driver.empty())
+        
+        let memberCountListner = roomInfoListner.fetchMemberCount(roomID: roomID)
+        memberCount = memberCountListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+            .asDriver(onErrorDriveWith: Driver.empty())
+        
+        
+        
         
         
     }
