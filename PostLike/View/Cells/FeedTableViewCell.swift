@@ -77,10 +77,6 @@ final class FeedTableViewCell: UITableViewCell{
     }
     
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        underHeight.constant = 210 * underView.frame.width / 340
-    }
     
     
     
@@ -119,28 +115,28 @@ final class FeedTableViewCell: UITableViewCell{
         }
         
         
-        if contents.mediaArray.count == 1 {
+        if contents.mediaArray.count == 1 && contents.mediaArray[0] != "" {
             singlePostImageView.isHidden = false
             postImageView.isHidden = true
             postImageView2.isHidden = true
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
-            singlePostImageView.isHidden = false
+//            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
+//            singlePostImageView.isHidden = false
             singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0]), completed: nil)
-            singlePostImageView.addGestureRecognizer(tapGesture)
+//            singlePostImageView.addGestureRecognizer(tapGesture)
         }else if contents.mediaArray.count == 2 {
             
             singlePostImageView.isHidden = true
             postImageView.isHidden = false
             postImageView2.isHidden = false
             
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
-            let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
+//            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
+//            let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
             
             postImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String), completed: nil)
-            postImageView.addGestureRecognizer(tapGesture)
+//            postImageView.addGestureRecognizer(tapGesture)
             
             postImageView2.sd_setImage(with: URL(string: contents.mediaArray[1] as String), completed: nil)
-            postImageView2.addGestureRecognizer(tapGesture2)
+//            postImageView2.addGestureRecognizer(tapGesture2)
         }
         
         
@@ -178,8 +174,66 @@ final class FeedTableViewCell: UITableViewCell{
     }
     
     
-    func setupBinds(content: Contents, roomID: String) {
+    func setupBinds(content: Contents, roomID: String, vc: UIViewController) {
         viewModel = FeedTableViewModel(likeButtonTap: likeButton.rx.tap.asSignal(), createLikes: CreateDefaultLikes(), content: content, userInfoListner: UserDefaultLisner(), roomID: roomID)
+        didTapCommentButton(content: content, vc: vc)
+        didTapPhotos(content: content, vc: vc)
+        
+    }
+    
+    
+    
+    private func didTapCommentButton(content: Contents, vc: UIViewController) {
+        commentButton.rx.tap
+            .subscribe { _ in
+                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                let commentVC = storyboard.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
+                commentVC.passedContent = content
+                vc.present(commentVC, animated: true, completion: nil)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    private func didTapPhotos(content: Contents, vc: UIViewController) {
+        let tapGesture = UITapGestureRecognizer()
+        tapGesture.rx.event
+            .subscribe { _ in
+                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
+                showImageVC.passedContent = content
+                showImageVC.tappedNumber = 1
+                vc.present(showImageVC, animated: true, completion: nil)
+            }
+            .disposed(by: disposeBag)
+        
+        
+        
+        
+        
+        if content.mediaArray.count == 1 {
+
+            singlePostImageView.addGestureRecognizer(tapGesture)
+
+        }else if content.mediaArray.count == 2 {
+            
+            postImageView.addGestureRecognizer(tapGesture)
+            
+            let tapGesture2 = UITapGestureRecognizer()
+            tapGesture2.rx.event
+                .subscribe { _ in
+                    let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                    let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
+                    showImageVC.passedContent = content
+                    showImageVC.tappedNumber = 2
+                    vc.present(showImageVC, animated: true, completion: nil)
+                }
+                .disposed(by: disposeBag)
+            postImageView2.addGestureRecognizer(tapGesture2)
+            
+        }
+        
+        
         
     }
     

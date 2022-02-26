@@ -35,7 +35,8 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     var passedUserImage = String()
     var passedRoomID = String()
     var passedDocumentID = String()
-    private var contentInfo:Contents?
+    var passedContent =  Contents(dic: [:])
+    var tappedNumber = Int()
     
     
     
@@ -60,16 +61,16 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     
     
     private func setContents(){
-        self.userImage.layer.cornerRadius = 19
-        if passedUserImage != "" {
-            self.userImage.sd_setImage(with: URL(string: passedUserImage), completed: nil)
+        userImage.layer.cornerRadius = 19
+        if passedContent.userImage != "" {
+            self.userImage.sd_setImage(with: URL(string: passedContent.userImage), completed: nil)
             personImage.image = UIImage()
         }else{
             personImage.image = UIImage(systemName: "person.fill")
         }
-        self.userName.text = passedUserName
-        self.textLabel.text = passedText
-        self.bluredImage.sd_setImage(with: URL(string: self.passedMedia[0] ), completed: nil)
+        self.userName.text = passedContent.userName
+        self.textLabel.text = passedContent.text
+        self.bluredImage.sd_setImage(with: URL(string: passedContent.mediaArray[0] ), completed: nil)
     }
     
     
@@ -92,30 +93,36 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     private func createScrollView(){
         let viewHeight = self.view.frame.height - (self.view.safeAreaInsets.top + self.view.safeAreaInsets.bottom)
         imageScrollView.frame = CGRect(x: 0, y: self.view.safeAreaInsets.top, width: self.view.frame.width, height: viewHeight)
-        imageScrollView.contentSize = CGSize(width: Int(view.frame.width)*passedMedia.count, height: Int(viewHeight))
+        imageScrollView.contentSize = CGSize(width: Int(view.frame.width) * passedContent.mediaArray.count, height: Int(viewHeight))
         imageScrollView.isPagingEnabled = true
         imageScrollView.showsHorizontalScrollIndicator = false
         imageScrollView.backgroundColor = .clear
+        if tappedNumber == 1 {
+            imageScrollView.contentOffset.x = 0
+        }else if tappedNumber == 2 {
+            imageScrollView.contentOffset.x = self.view.frame.width
+        }
+        
     }
     
     
     
     
     private func pasteImage(){
-        if passedMedia.count == 1 {
+        if passedContent.mediaArray.count == 1 {
             let fImageView = FlexibleHeightImageView()
-            fImageView.imageUrl = passedMedia[0]
+            fImageView.imageUrl = passedContent.mediaArray[0]
             fImageView.x = 0
             imageScrollView.addSubview(fImageView)
             
-        } else if passedMedia.count == 2 {
+        } else if passedContent.mediaArray.count == 2 {
             let firstImageView = FlexibleHeightImageView()
-            firstImageView.imageUrl = passedMedia[0]
+            firstImageView.imageUrl = passedContent.mediaArray[0]
             firstImageView.x = 0
             imageScrollView.addSubview(firstImageView)
             
             let secondImageView = FlexibleHeightImageView()
-            secondImageView.imageUrl = passedMedia[1]
+            secondImageView.imageUrl = passedContent.mediaArray[1]
             secondImageView.x = self.view.frame.width
             imageScrollView.addSubview(secondImageView)
         }
