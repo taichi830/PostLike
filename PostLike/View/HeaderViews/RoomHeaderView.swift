@@ -86,6 +86,13 @@ final class RoomHeaderView: UIView {
                 topRoomNameLabel.minimumScaleFactor = 0.8
             }
             .disposed(by: disposeBag)
+        
+        //メンバーカウントをバインド
+        viewModel.memberCount
+            .drive { [weak self] memberCount in
+                self?.memberLabel.text = "メンバー \(String(describing: memberCount.numberOfMember))人"
+            }
+            .disposed(by: disposeBag)
     }
     
     
