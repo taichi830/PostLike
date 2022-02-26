@@ -26,6 +26,7 @@ final class CommentViewController: UIViewController {
     var passedDocumentID = String()
     var passedMediaArray = Array<String>()
     var passedRoomID = String()
+    var passedContent = Contents(dic: ["" : ""])
     private var label = MessageLabel()
     private let disposeBag = DisposeBag()
     private var viewModel:CommentViewModel!
@@ -56,7 +57,7 @@ final class CommentViewController: UIViewController {
         
         setupHeaderView()
 
-        inputCommentView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
+        inputCommentView.setupBinds(roomID: passedContent.roomID, postID: passedContent.documentID, roomName: passedContent.roomName, passedUid: passedContent.uid, mediaArray: passedContent.mediaArray)
         
         inputCommentView.didStartEditing()
         textViewDidChange()
@@ -74,7 +75,7 @@ final class CommentViewController: UIViewController {
     
     private func setupHeaderView(){
         let headerView = CommentHeaderView()
-        headerView.setupHeaderView(userName: passedUserName, userImageUrl: passedUserImage, comment: passedComment, date: passedDate)
+        headerView.setupHeaderView(userName: passedContent.userName, userImageUrl: passedContent.userImage, comment: passedContent.text, date: passedContent.createdAt)
         self.commentTableView.tableHeaderView = headerView
         if let tableHeaderView = self.commentTableView.tableHeaderView {
             tableHeaderView.setNeedsLayout()
@@ -174,7 +175,7 @@ final class CommentViewController: UIViewController {
     
     private func fetchComments() {
         indicator.startAnimating()
-        viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedDocumentID)
+        viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedContent.documentID)
         
         //itemsが空かチェック
         viewModel.isEmpty.drive { [weak self] bool in

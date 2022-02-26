@@ -72,7 +72,7 @@ final class EnteredRoomContentViewController: UIViewController{
         fetchFeedContents()
         tableViewDidScroll()
         
-        fetchMemberCount()
+//        fetchMemberCount()
         
         
     }
@@ -151,11 +151,11 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    private func fetchMemberCount(){
-        Firestore.fetchRoomMemberCount(roomID: passedDocumentID) { memberCount in
-            self.headerView.memberLabel.text = "メンバー \(String(describing: memberCount.numberOfMember))人"
-        }
-    }
+//    private func fetchMemberCount(){
+//        Firestore.fetchRoomMemberCount(roomID: passedDocumentID) { memberCount in
+//            self.headerView.memberLabel.text = "メンバー \(String(describing: memberCount.numberOfMember))人"
+//        }
+//    }
     
     
     
@@ -192,13 +192,11 @@ final class EnteredRoomContentViewController: UIViewController{
         
         viewModel.isEmpty
             .drive { bool in
-                print("bool:", bool)
             }
             .disposed(by: disposeBag)
         
         viewModel.items.drive(contentsTableView.rx.items(cellIdentifier: "FeedTableViewCell", cellType: FeedTableViewCell.self)) { [weak self] (row,item,cell) in
-//            cell.tableViewCellDelegate = self
-            cell.setupBinds(content: item, roomID: self!.passedDocumentID)
+            cell.setupBinds(content: item, roomID: self!.passedDocumentID, vc: self!)
             self?.viewModel.likes.drive { likes in
                 cell.setContent(contents: item, likeContensArray: likes)
             }
@@ -388,6 +386,10 @@ extension EnteredRoomContentViewController {
 
 
 extension EnteredRoomContentViewController:TableViewCellDelegate {
+    func pushedCommentButton(row: Int) {
+        
+    }
+    
     func reportButton(row: Int) {
         let modalMenuVC = storyboard!.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
@@ -401,15 +403,15 @@ extension EnteredRoomContentViewController:TableViewCellDelegate {
     }
     
     func tappedPostImageView(row: Int) {
-        let showImageVC = storyboard?.instantiateViewController(identifier: "showImage") as! ShowImageViewController
-        showImageVC.passedMedia = contentsArray[row].mediaArray
-        showImageVC.passedUid = contentsArray[row].uid
-        showImageVC.passedText = contentsArray[row].text
-        showImageVC.passedRoomID = contentsArray[row].roomID
-        showImageVC.passedDocumentID = contentsArray[row].documentID
-        showImageVC.passedUserName = contentsArray[row].userName
-        showImageVC.passedUserImage = contentsArray[row].userImage
-        present(showImageVC, animated: true, completion: nil)
+//        let showImageVC = storyboard?.instantiateViewController(identifier: "showImage") as! ShowImageViewController
+//        showImageVC.passedMedia = contentsArray[row].mediaArray
+//        showImageVC.passedUid = contentsArray[row].uid
+//        showImageVC.passedText = contentsArray[row].text
+//        showImageVC.passedRoomID = contentsArray[row].roomID
+//        showImageVC.passedDocumentID = contentsArray[row].documentID
+//        showImageVC.passedUserName = contentsArray[row].userName
+//        showImageVC.passedUserImage = contentsArray[row].userImage
+//        present(showImageVC, animated: true, completion: nil)
     }
     
     func pushLikeButton(row: Int, sender: UIButton, countLabel: UILabel) {
@@ -438,18 +440,10 @@ extension EnteredRoomContentViewController:TableViewCellDelegate {
     
     
     
-    func pushedCommentButton(row: Int) {
-        let cLVC = storyboard?.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
-        cLVC.passedUserImage = contentsArray[row].userImage
-        cLVC.passedUserName = contentsArray[row].userName
-        cLVC.passedComment = contentsArray[row].text
-        cLVC.passedDate = contentsArray[row].createdAt
-        cLVC.passedDocumentID = contentsArray[row].documentID
-        cLVC.passedRoomID = contentsArray[row].roomID
-        cLVC.passedUid = contentsArray[row].uid
-        cLVC.passedMediaArray = contentsArray[row].mediaArray
-        
-        present(cLVC, animated: true, completion: nil)
+    func pushedCommentButton(content: Contents, vc: UIViewController) {
+        let commentVC = storyboard?.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
+        commentVC.passedContent = content
+        vc.present(commentVC, animated: true, completion: nil)
     }
     
     
