@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 //import RxCocoa
 
-final class FeedTableViewCell: UITableViewCell{
+final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDelegate{
     
     
     
@@ -178,6 +178,7 @@ final class FeedTableViewCell: UITableViewCell{
         viewModel = FeedTableViewModel(likeButtonTap: likeButton.rx.tap.asSignal(), createLikes: CreateDefaultLikes(), content: content, userInfoListner: UserDefaultLisner(), roomID: roomID)
         didTapCommentButton(content: content, vc: vc)
         didTapPhotos(content: content, vc: vc)
+        didTapDotsButton(content: content, vc: vc)
         
     }
     
@@ -232,11 +233,24 @@ final class FeedTableViewCell: UITableViewCell{
             postImageView2.addGestureRecognizer(tapGesture2)
             
         }
-        
-        
-        
     }
     
+    
+    private func didTapDotsButton(content: Contents, vc: UIViewController) {
+        reportButton.rx.tap
+            .subscribe { _ in
+                let storyboard = UIStoryboard(name: "Home", bundle: nil)
+                let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+                modalMenuVC.modalPresentationStyle = .custom
+                modalMenuVC.transitioningDelegate = vc as? UIViewControllerTransitioningDelegate
+                modalMenuVC.passedViewController = vc
+                modalMenuVC.passedType = "post"
+                modalMenuVC.passedModalType = .post
+                modalMenuVC.passedContent = content
+                vc.present(modalMenuVC, animated: true, completion: nil)
+            }
+            .disposed(by: disposeBag)
+    }
     
     
     
