@@ -243,9 +243,6 @@
                                 <state key="normal" title="報告する">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <connections>
-                                    <action selector="sendReport:" destination="T4t-9w-aNL" eventType="touchUpInside" id="ezu-BJ-YAD"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Jtf-lv-1Dn"/>
