@@ -65,16 +65,11 @@ final class EnteredRoomContentViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), roomID: passedDocumentID)
         headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
         setupTableView()
         self.setSwipeBackGesture()
         fetchFeedContents()
         tableViewDidScroll()
-        
-//        fetchMemberCount()
-        
-        
     }
     
     
@@ -95,6 +90,8 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     private func setupTableView(){
+        contentsTableView.delegate = self
+        contentsTableView.dataSource = self
         contentsTableView.tableHeaderView =  headerView
         contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         contentsTableView.contentInsetAdjustmentBehavior = .never
@@ -116,7 +113,6 @@ final class EnteredRoomContentViewController: UIViewController{
         indicator.startAnimating()
         self.contentsArray.removeAll()
         self.likeContentsArray.removeAll()
-//        roomExistCheck()
     }
     
     
@@ -148,75 +144,29 @@ final class EnteredRoomContentViewController: UIViewController{
     }
     
     
-    
-    
-    
-//    private func fetchMemberCount(){
-//        Firestore.fetchRoomMemberCount(roomID: passedDocumentID) { memberCount in
-//            self.headerView.memberLabel.text = "メンバー \(String(describing: memberCount.numberOfMember))人"
-//        }
-//    }
-    
-    
-    
-    private func fetchReportedContents(documentIDs:[String],_ completed: @escaping() -> Void){
-        Firestore.fetchReportedContents(documentIDs: documentIDs) { contents in
-            for content in contents {
-                self.contentsArray.removeAll {
-                    $0.documentID == content.documentID
-                }
-            }
-            completed()
-        }
-    }
-    
-    
-    
-    
-    
-    private func fetchReportedUsers(uids:[String],_ completed: @escaping() -> Void){
-        Firestore.fetchReportedUsers(uids: uids) { contents in
-            for content in contents {
-                self.contentsArray.removeAll { element in
-                    element.uid == content.uid && element.roomID == content.roomID
-                }
-            }
-            completed()
-        }
-    }
-    
-    
-    
     private func fetchFeedContents() {
         viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
         
-        viewModel.isEmpty
-            .drive { bool in
-            }
-            .disposed(by: disposeBag)
         
-        viewModel.items.drive(contentsTableView.rx.items(cellIdentifier: "FeedTableViewCell", cellType: FeedTableViewCell.self)) { [weak self] (row,item,cell) in
-            cell.setupBinds(content: item, roomID: self!.passedDocumentID, vc: self!)
-            self?.viewModel.likes.drive { likes in
-                cell.setContent(contents: item, likeContensArray: likes)
-            }
-            .disposed(by: self!.disposeBag)
+        viewModel.items.drive { [weak self] contents in
+            self?.contentsArray.removeAll()
+            self?.contentsArray.append(contentsOf: contents)
+            self?.contentsTableView.reloadData()
         }
         .disposed(by: disposeBag)
+        
+        viewModel.likes.drive { [weak self] likes in
+            self?.likeContentsArray.removeAll()
+            self?.likeContentsArray.append(contentsOf: likes)
+            self?.contentsTableView.reloadData()
+        }
+        .disposed(by: disposeBag)
+
         
         
     }
     
     
-    
-    
-}
-
-
-
-
-
-extension EnteredRoomContentViewController {
     
     
     private func tableViewDidScroll() {
@@ -243,141 +193,23 @@ extension EnteredRoomContentViewController {
     
     
     
-    //MARK: いいねした時の処理
-//    private func createLikeContents(row:Int,batch:WriteBatch){
-//        let myuid = Auth.auth().currentUser!.uid
-//        let uid = contentsArray[row].uid
-//        let timestamp = Timestamp()
-//        let documentID = contentsArray[row].documentID
-//        let postedAt = contentsArray[row].createdAt
-//        let dic = [
-//            "media": contentsArray[row].mediaArray,
-//            "text":contentsArray[row].text,
-//            "userImage":contentsArray[row].userImage,
-//            "userName":contentsArray[row].userName,
-//            "documentID":documentID,
-//            "roomID":passedDocumentID,
-//            "createdAt":timestamp,
-//            "uid":uid,
-//            "postedAt":postedAt,
-//            "myUid":myuid
-//        ] as [String:Any]
-//
-//        Firestore.createLikedPost(myuid: myuid, documentID: documentID, dic: dic, batch: batch)
-//    }
+}
+
+
+
+
+
+extension EnteredRoomContentViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return contentsArray.count
+    }
     
-    
-    
-//    private func updateLikeCount(row:Int,batch:WriteBatch){
-//        let myuid = Auth.auth().currentUser!.uid
-//        let uid = contentsArray[row].uid
-//        let documentID = contentsArray[row].documentID
-//        let roomID = contentsArray[row].roomID
-//        let mediaArray = contentsArray[row].mediaArray[0]
-//        Firestore.increaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaArray, batch: batch)
-//    }
-    
-    
-    
-//    private func giveNotification(row:Int,batch:WriteBatch){
-//        let uid = contentsArray[row].uid
-//        let myuid = Auth.auth().currentUser!.uid
-//        let postID = contentsArray[row].documentID
-//        let documentID = "\(myuid)-\(postID)"
-//        let dic = [
-//            "userName":joinedRoom?.userName ?? "",
-//            "userImage":joinedRoom?.userImage ?? "",
-//            "uid":myuid,
-//            "roomName":self.roomInfo!.roomName,
-//            "createdAt":Timestamp(),
-//            "postID":postID,
-//            "roomID":contentsArray[row].roomID,
-//            "documentID":documentID,
-//            "type":"like"
-//        ] as [String:Any]
-//        Firestore.createNotification(uid: uid, myuid: myuid, documentID: documentID, dic: dic, batch: batch)
-//    }
-    
-    
-    
-//    private func likeBatch(row:Int){
-//        let batch = Firestore.firestore().batch()
-//        createLikeContents(row: row, batch: batch)
-//        updateLikeCount(row: row, batch: batch)
-//        giveNotification(row: row, batch: batch)
-//        batch.commit { err in
-//            if let err = err {
-//                print("false\(err)")
-//                return
-//            }else{
-//                print("scucces")
-//                let likedContent = self.contentsArray[row]
-//                self.likeContentsArray.append(likedContent)
-//            }
-//        }
-//    }
-//
-    
-    
-    
-    
-    
-    //MARK: いいねをやめた時の処理
-//    private func deleteLikeContents(row:Int,batch:WriteBatch){
-//        let uid = Auth.auth().currentUser!.uid
-//        let documentID = contentsArray[row].documentID
-//        Firestore.deleteLikedPost(uid: uid, documentID: documentID, batch: batch)
-//    }
-    
-    
-    
-//    private func deleteLikeCount(row:Int,batch:WriteBatch){
-//        let myuid = Auth.auth().currentUser!.uid
-//        let uid = contentsArray[row].uid
-//        let documentID = contentsArray[row].documentID
-//        let roomID = contentsArray[row].roomID
-//        let mediaArray = contentsArray[row].mediaArray[0]
-//        Firestore.decreaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaArray, batch: batch)
-//    }
-//
-//
-//
-//    private func deleteNotification(row:Int,batch:WriteBatch){
-//        let uid = contentsArray[row].uid
-//        let myuid = Auth.auth().currentUser!.uid
-//        let postID = contentsArray[row].documentID
-//        let documentID = "\(myuid)-\(postID)"
-//        Firestore.deleteNotification(uid: uid, myuid: myuid, documentID: documentID, batch: batch)
-//    }
-//
-//
-//    private func deleteLikeBatch(row:Int){
-//        let batch = Firestore.firestore().batch()
-//        let documentID = contentsArray[row].documentID
-//        deleteLikeContents(row: row, batch: batch)
-//        deleteLikeCount(row: row, batch: batch)
-//        deleteNotification(row: row, batch: batch)
-//        batch.commit { err in
-//            if let err = err {
-//                print("false\(err)")
-//                return
-//            }else{
-//                print("scucces")
-//                self.likeContentsArray.removeAll(where: {$0.documentID == documentID})
-//            }
-//        }
-//    }
-//
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell") as! FeedTableViewCell
+        cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self)
+        cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
+        return cell
+    }
 }
 
 
@@ -390,15 +222,15 @@ extension EnteredRoomContentViewController:TableViewCellDelegate {
     }
     
     func reportButton(row: Int) {
-        let modalMenuVC = storyboard!.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
-        modalMenuVC.modalPresentationStyle = .custom
-        modalMenuVC.transitioningDelegate = self
-        modalMenuVC.passedDocumentID = contentsArray[row].documentID
-        modalMenuVC.passedRoomID = contentsArray[row].roomID
-        modalMenuVC.passedUid = contentsArray[row].uid
-        modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = "post"
-        present(modalMenuVC, animated: true, completion: nil)
+//        let modalMenuVC = storyboard!.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+//        modalMenuVC.modalPresentationStyle = .custom
+//        modalMenuVC.transitioningDelegate = self
+//        modalMenuVC.passedDocumentID = contentsArray[row].documentID
+//        modalMenuVC.passedRoomID = contentsArray[row].roomID
+//        modalMenuVC.passedUid = contentsArray[row].uid
+//        modalMenuVC.passedViewController = self
+//        modalMenuVC.passedType = "post"
+//        present(modalMenuVC, animated: true, completion: nil)
     }
     
     func tappedPostImageView(row: Int) {
@@ -437,15 +269,6 @@ extension EnteredRoomContentViewController:TableViewCellDelegate {
 //        }
     }
     
-    
-    
-    func pushedCommentButton(content: Contents, vc: UIViewController) {
-        let commentVC = storyboard?.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
-        commentVC.passedContent = content
-        vc.present(commentVC, animated: true, completion: nil)
-    }
-    
-    
 }
 
 
@@ -456,18 +279,18 @@ extension EnteredRoomContentViewController:TableViewCellDelegate {
 
 extension EnteredRoomContentViewController:RemoveContentsDelegate{
     func removeMutedContent(documentID:String) {
-        self.contentsArray.removeAll { content in
-            return content.documentID == documentID
-        }
-        self.contentsTableView.reloadData()
+//        self.contentsArray.removeAll { content in
+//            return content.documentID == documentID
+//        }
+//        self.contentsTableView.reloadData()
     }
     
     
     func removeBlockedUserContents(uid:String,roomID:String){
-        self.contentsArray.removeAll { content in
-            return content.uid == uid && content.roomID == roomID
-        }
-        self.contentsTableView.reloadData()
+//        self.contentsArray.removeAll { content in
+//            return content.uid == uid && content.roomID == roomID
+//        }
+//        self.contentsTableView.reloadData()
     }
 }
 

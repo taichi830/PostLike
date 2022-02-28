@@ -33,7 +33,7 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     @IBOutlet weak var roomNameLabel: UILabel!
     
     weak var tableViewCellDelegate:TableViewCellDelegate?
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     private var viewModel: FeedTableViewModel!
     
     
@@ -74,6 +74,12 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+    
+    
+    
+    override func prepareForReuse() {
+        self.disposeBag = DisposeBag()
     }
     
     
@@ -119,24 +125,16 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
             singlePostImageView.isHidden = false
             postImageView.isHidden = true
             postImageView2.isHidden = true
-//            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
-//            singlePostImageView.isHidden = false
             singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0]), completed: nil)
-//            singlePostImageView.addGestureRecognizer(tapGesture)
         }else if contents.mediaArray.count == 2 {
             
             singlePostImageView.isHidden = true
             postImageView.isHidden = false
             postImageView2.isHidden = false
             
-//            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
-//            let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(tappedPostImageView(_:)))
-            
             postImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String), completed: nil)
-//            postImageView.addGestureRecognizer(tapGesture)
             
             postImageView2.sd_setImage(with: URL(string: contents.mediaArray[1] as String), completed: nil)
-//            postImageView2.addGestureRecognizer(tapGesture2)
         }
         
         
