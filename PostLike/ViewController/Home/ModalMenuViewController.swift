@@ -211,18 +211,14 @@ final class ModalMenuViewController: UIViewController{
                 
             case .mute:
                 let reportVC = self?.storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-                reportVC.passedDocumentID = self?.passedContent.documentID ?? ""
-                reportVC.passedRoomID = self?.passedContent.roomID ?? ""
-                reportVC.passedUid = self?.passedContent.uid ?? ""
+                reportVC.passedContent = self!.passedContent
                 reportVC.reportType = .post
                 reportVC.removeContentsDelegate = self?.passedViewController as? RemoveContentsDelegate
                 self?.present(reportVC, animated: true,completion: nil)
                 
             case .block:
                 let reportVC = self?.storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-                reportVC.passedDocumentID = self?.passedContent.documentID ?? ""
-                reportVC.passedRoomID = self?.passedContent.roomID ?? ""
-                reportVC.passedUid = self?.passedContent.uid ?? ""
+                reportVC.passedContent = self!.passedContent
                 reportVC.reportType = .user
                 reportVC.removeContentsDelegate = self?.passedViewController as? RemoveContentsDelegate
                 self?.present(reportVC, animated: true, completion: nil)
@@ -232,9 +228,7 @@ final class ModalMenuViewController: UIViewController{
                 
             case .report:
                 let reportVC = self?.storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-                reportVC.passedDocumentID = self?.passedContent.documentID ?? ""
-                reportVC.passedRoomID = self?.passedContent.roomID ?? ""
-                reportVC.passedUid = self?.passedContent.uid ?? ""
+                reportVC.passedContent = self!.passedContent
                 reportVC.reportType = .room
                 self?.present(reportVC, animated: true, completion: nil)
                 
