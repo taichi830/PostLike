@@ -37,7 +37,10 @@ final class ReportDefaultListner: ReportListner {
                     let content = Contents(dic: dic)
                     return content
                 }
-                observer.onNext(contents)
+                let filteredArray = contents.filter { content in
+                    content.type == "user"
+                }
+                observer.onNext(filteredArray)
                 
             }
             return Disposables.create {
@@ -65,7 +68,10 @@ final class ReportDefaultListner: ReportListner {
                     let content = Contents(dic: dic)
                     return content
                 }
-                observer.onNext(contents)
+                let filteredArray = contents.filter { content in
+                    content.type == "post"
+                }
+                observer.onNext(filteredArray)
             }
             return Disposables.create {
                 self.reportedContentsListner?.remove()
