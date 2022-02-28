@@ -12,50 +12,46 @@ import RxCocoa
 final class FeedViewModel {
     private let disposeBag = DisposeBag()
     let items: Driver<[Contents]>
-    let isEmpty: Driver<Bool>
     let likes: Driver<[Contents]>
     
     
     init(feedContentsListner: FeedContentsListner, likeListner: LikeListner, userListner: UserListner, reportListner: ReportListner, roomID: String) {
-        let feedListner = feedContentsListner.fetchFeedContents(roomID: roomID)
-        
-    
-        
-        isEmpty = feedListner.map({ contents -> Bool in
-            return contents.isEmpty
-        })
-        .asDriver(onErrorJustReturn: true)
         
         
-        let items2 = feedListner
-            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+        let fetchiItems = feedContentsListner.fetchFeedContents(roomID: roomID)
+            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
         
         
-        likes = items2.asObservable()
+        //いいねした投稿を取得
+        likes = fetchiItems.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return likeListner.fetchLikes(contents: contents)
-                    .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
             .asDriver(onErrorJustReturn: [])
         
         
         
-        
-        let reportedUsers = items2.asObservable()
+        //報告したユーザーを取得
+        let reportedUsers = fetchiItems.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedUsers(contents: contents)
-                    .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
-        let reportedContents = items2.asObservable()
+        
+        //報告した投稿を取得
+        let reportedContents = fetchiItems.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedContents(contents: contents)
-                    .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
-        items = Observable.combineLatest(items2, reportedUsers, reportedContents)
+        
+        
+        //報告した投稿をremoveする
+        items = Observable.combineLatest(fetchiItems, reportedUsers, reportedContents)
             .map { (items,users,contents) -> [Contents] in
-                print("items:",items.count,"users:",users.count,"contents:",contents.count)
                 return items.filter { item -> Bool in
                     !users.contains(where: { user in
                         item.uid == user.uid
