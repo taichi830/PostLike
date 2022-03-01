@@ -44,9 +44,19 @@ final class RoomInfoDefaultListner: RoomInfoListner {
                     observer.onError(err)
                     return
                 }
-                guard let dic = snapshot?.data() else { return }
-                let room = Room(dic: dic)
-                observer.onNext(room)
+                if snapshot == nil {
+                    let room = Room(dic: [:])
+                    room.isDeleted = true
+                    observer.onNext(room)
+                }else {
+                    let dic = snapshot?.data() ?? [:]
+                    let room = Room(dic: dic)
+                    room.isDeleted = false
+                    observer.onNext(room)
+                }
+                
+                
+                
             })
             return Disposables.create {
                 self.roomInfoListner?.remove()

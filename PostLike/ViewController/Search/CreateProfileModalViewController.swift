@@ -22,6 +22,7 @@ final class CreateProfileModalViewController: UIViewController {
     @IBOutlet private weak var backView: UIView!
     @IBOutlet private weak var clearView: UIView!
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+    var passedUserInfo = Contents(dic: [:])
     
     
     
@@ -33,6 +34,8 @@ final class CreateProfileModalViewController: UIViewController {
         super.viewDidLoad()
 
         profileImageView.layer.cornerRadius = 60
+        profileImageView.sd_setImage(with: URL(string: passedUserInfo.userImage), completed: nil)
+        
         callAlubmButton.layer.cornerRadius = 20
         callAlubmButton.layer.borderWidth = 5
         callAlubmButton.layer.borderColor = UIColor.white.cgColor
@@ -41,6 +44,7 @@ final class CreateProfileModalViewController: UIViewController {
         doneButton.isEnabled = false
         
         userNameTextField.delegate = self
+        userNameTextField.text = passedUserInfo.userName
         
         backView.layer.cornerRadius = 10
         

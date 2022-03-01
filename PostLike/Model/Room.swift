@@ -18,6 +18,7 @@ final class Room{
     let roomID:String
     let roomIntro:String
     let moderator:String
+    var isDeleted = false
     
     init(dic: [String:Any]) {
         
