@@ -117,6 +117,7 @@
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */; };
+		CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */; };
 		CEE5BD9227C63E09004FD20A /* FeedContentsListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */; };
 		CEE5BD9427C644C9004FD20A /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */; };
 		CEE5BD9627C653AA004FD20A /* LikeListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9527C653AA004FD20A /* LikeListner.swift */; };
@@ -268,6 +269,7 @@
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
 		CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowIndicator-Extenshion.swift"; sourceTree = "<group>"; };
 		CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImageContentsViewController.swift; sourceTree = "<group>"; };
+		CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListner.swift; sourceTree = "<group>"; };
 		CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContentsListner.swift; sourceTree = "<group>"; };
 		CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		CEE5BD9527C653AA004FD20A /* LikeListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListner.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				CEE5BD9527C653AA004FD20A /* LikeListner.swift */,
 				CE54339027CC96F000A1A786 /* ReportListner.swift */,
 				CEE5BD9927C7CA15004FD20A /* RoomInfoListner.swift */,
+				CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1041,6 +1044,7 @@
 				CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */,
 				CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */,
 				CE1C23CF276DB44600D3CAC8 /* Firestore.swift in Sources */,
+				CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */,
 				CE54339827CC97CE00A1A786 /* ReportTableViewCell.swift in Sources */,
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
 				CE79ED3627A2E78C0047ABEF /* PostPreViewTableViewCell.swift in Sources */,
