@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 import FirebaseFirestore
 import FirebaseAuth
 
@@ -20,14 +21,16 @@ final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDeleg
     
     private var joinedRoomsArray = [Contents]()
     private var label = MessageLabel()
+    private var viewModel: RoomViewModel!
+    private let disposeBag = DisposeBag()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         myRoomCollectionView.delegate = self
         myRoomCollectionView.dataSource = self
         collectionItenSize()
+        fetchProfileRoom()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
@@ -36,7 +39,7 @@ final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchProfileRoom()
+        
         
     }
     
@@ -56,20 +59,38 @@ final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDeleg
     
     
     private func fetchProfileRoom(){
-        joinedRoomsArray.removeAll()
-        Firestore.fetchJoinedRooms { contents in
-            if contents.isEmpty == true {
-                self.label.setup(text: "参加しているルームはありません。", at: self.myRoomCollectionView)
-                self.myRoomCollectionView.reloadData()
+        viewModel = RoomViewModel(roomListner: RoomDefaultListner())
+        viewModel.rooms
+            .drive { [weak self] rooms in
+                self?.joinedRoomsArray.removeAll()
+                self?.joinedRoomsArray.append(contentsOf: rooms)
+                self?.myRoomCollectionView.reloadData()
+            }
+            .disposed(by: disposeBag)
+        viewModel.isEmpty
+            .drive { [weak self] bool in
+                if bool == true {
+                    self?.label.setup(text: "参加しているルームはありません。", at: self!.myRoomCollectionView)
+                }else {
+                    self?.label.text = ""
+                }
+            }
+            .disposed(by: disposeBag)
+        
+//        joinedRoomsArray.removeAll()
+//        Firestore.fetchJoinedRooms { contents in
+//            if contents.isEmpty == true {
+//                self.label.setup(text: "参加しているルームはありません。", at: self.myRoomCollectionView)
+//                self.myRoomCollectionView.reloadData()
 //                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
 //                self.label.text = "参加しているルームはありません"
 //                self.myRoomCollectionView.addSubview(self.label)
-            }else {
-                self.label.text = ""
-                self.joinedRoomsArray.append(contentsOf: contents)
-                self.myRoomCollectionView.reloadData()
-            }
-        }
+//            }else {
+//                self.label.text = ""
+//                self.joinedRoomsArray.append(contentsOf: contents)
+//                self.myRoomCollectionView.reloadData()
+//            }
+//        }
     }
     
     
