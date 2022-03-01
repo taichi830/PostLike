@@ -90,6 +90,7 @@ final class ModalMenuViewController: UIViewController{
     var passedRoomIntro = String()
     var passedRoomImage = UIImage()
     var passedImageUrl = [String]()
+    var passedRoomInfo = Room(dic: [:])
     var passedModalType = ModalType(rawValue: "")
     var passedContent = Contents(dic: [:])
     weak var deletePostDelegate:DeletePostDelegate?
@@ -108,8 +109,6 @@ final class ModalMenuViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        menuTableView.delegate = self
-//        menuTableView.dataSource = self
         self.transitioningDelegate = self
         clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.viewDidTouch)))
         backView.layer.cornerRadius = 10
@@ -165,9 +164,9 @@ final class ModalMenuViewController: UIViewController{
         shareLink.androidParameters?.minimumVersion = .zero
         
         shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-        shareLink.socialMetaTagParameters?.title = passedRoomName
-        shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
-        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
+        shareLink.socialMetaTagParameters?.title = passedRoomInfo.roomName
+        shareLink.socialMetaTagParameters?.descriptionText = passedRoomInfo.roomIntro
+        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomInfo.roomImage)
         shareLink.shorten { url, warnings, err in
             if err != nil {
                 return
@@ -178,7 +177,7 @@ final class ModalMenuViewController: UIViewController{
                     }
                 }
                 guard let url = url else {return}
-                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomName, roomImage: self.passedRoomImage)]
+                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomInfo.roomName, roomImage: self.passedRoomImage)]
                 let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
                 self.present(activityViewController, animated: true, completion: nil)
             }

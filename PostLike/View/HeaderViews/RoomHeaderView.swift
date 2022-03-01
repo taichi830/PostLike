@@ -12,19 +12,20 @@ import RxCocoa
 
 final class RoomHeaderView: UIView {
     
-    @IBOutlet weak var bluredImageView: UIImageView!
-    @IBOutlet weak var roomNameLabel: UILabel!
-    @IBOutlet weak var memberLabel: UILabel!
-    @IBOutlet weak var myProfileImageView: UIImageView! {
+    @IBOutlet private weak var bluredImageView: UIImageView!
+    @IBOutlet private weak var roomNameLabel: UILabel!
+    @IBOutlet private weak var memberLabel: UILabel!
+    @IBOutlet private weak var myProfileImageView: UIImageView! {
         didSet {
             myProfileImageView.layer.cornerRadius = myProfileImageView.frame.height/2
         }
     }
-    @IBOutlet weak var imageCollectionButton: UIButton!
-    @IBOutlet weak var postButton: UIButton!
+    @IBOutlet private weak var imageCollectionButton: UIButton!
+    @IBOutlet private weak var postButton: UIButton!
     
     private let disposeBag = DisposeBag()
     private var viewModel: RoomHeaderViewModel!
+    var roomInfo: Room?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -75,6 +76,9 @@ final class RoomHeaderView: UIView {
         viewModel.roomInfo
             .drive { [weak self] roomInfo in
                 roomImageView.sd_setImage(with: URL(string: roomInfo.roomImage), completed: nil)
+                
+                self?.roomInfo = roomInfo
+                
                 self?.bluredImageView.sd_setImage(with: URL(string: roomInfo.roomImage), completed: nil)
                 
                 self?.roomNameLabel.text = roomInfo.roomName
