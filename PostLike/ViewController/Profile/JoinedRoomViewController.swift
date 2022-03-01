@@ -15,7 +15,7 @@ import FirebaseAuth
 final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDelegate{
     
     
-    @IBOutlet private weak var myRoomCollectionView: UICollectionView!
+    @IBOutlet private weak var roomCollectionView: UICollectionView!
     
     
     
@@ -27,21 +27,11 @@ final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        myRoomCollectionView.delegate = self
-        myRoomCollectionView.dataSource = self
-        collectionItenSize()
+        setupCollectionView()
         fetchProfileRoom()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-    }
     
     
     
@@ -55,6 +45,14 @@ final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDeleg
     
 
     
+    private func setupCollectionView() {
+        roomCollectionView.delegate = self
+        roomCollectionView.dataSource = self
+        let nib = UINib(nibName: "RoomCollectionViewCell", bundle: .main)
+        roomCollectionView.register(nib, forCellWithReuseIdentifier: "myroomCell")
+        collectionItenSize()
+    }
+    
     
     
     
@@ -64,33 +62,18 @@ final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDeleg
             .drive { [weak self] rooms in
                 self?.joinedRoomsArray.removeAll()
                 self?.joinedRoomsArray.append(contentsOf: rooms)
-                self?.myRoomCollectionView.reloadData()
+                self?.roomCollectionView.reloadData()
             }
             .disposed(by: disposeBag)
         viewModel.isEmpty
             .drive { [weak self] bool in
                 if bool == true {
-                    self?.label.setup(text: "参加しているルームはありません。", at: self!.myRoomCollectionView)
+                    self?.label.setup(text: "参加しているルームはありません。", at: self!.roomCollectionView)
                 }else {
                     self?.label.text = ""
                 }
             }
             .disposed(by: disposeBag)
-        
-//        joinedRoomsArray.removeAll()
-//        Firestore.fetchJoinedRooms { contents in
-//            if contents.isEmpty == true {
-//                self.label.setup(text: "参加しているルームはありません。", at: self.myRoomCollectionView)
-//                self.myRoomCollectionView.reloadData()
-//                self.label.setupLabel(view: self.view, y: self.view.center.y - 100)
-//                self.label.text = "参加しているルームはありません"
-//                self.myRoomCollectionView.addSubview(self.label)
-//            }else {
-//                self.label.text = ""
-//                self.joinedRoomsArray.append(contentsOf: contents)
-//                self.myRoomCollectionView.reloadData()
-//            }
-//        }
     }
     
     
@@ -111,11 +94,11 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
     private func collectionItenSize(){
         //セルの大きさと間隔
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: (self.view.frame.width - 55)/2, height: 150)
+        layout.itemSize = CGSize(width: (self.view.frame.width - 55)/2, height: 140)
         layout.minimumLineSpacing = 20
         layout.minimumInteritemSpacing = 15
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
-        myRoomCollectionView.collectionViewLayout = layout
+        roomCollectionView.collectionViewLayout = layout
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -124,48 +107,17 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = myRoomCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        let cell = roomCollectionView.dequeueReusableCell(withReuseIdentifier: "myroomCell", for: indexPath) as! RoomCollectionViewCell
         
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.systemGray5.cgColor
-        cell.layer.cornerRadius = 10
-        
-        
-        let roomName = cell.viewWithTag(2) as! UILabel
-        let roomImageView = cell.viewWithTag(5) as! UIImageView
-        
-        let text:String = " \(joinedRoomsArray[indexPath.row].roomName)"
-        let font:UIFont = .systemFont(ofSize: 17, weight: .semibold)
-        let size = CGSize(width: 10, height: 10)
-        
-        let attachment = NSTextAttachment()
-        let image = UIImage(named: "redCircle")
-        attachment.image = image
-        
-        let y = (font.capHeight-size.height).rounded() / 2
-        attachment.bounds.origin = CGPoint(x: 0, y: y)
-        attachment.bounds.size = size
-        
-        let imageAttribute = NSAttributedString(attachment: attachment)
-        let mutableString = NSMutableAttributedString(string: text)
-        mutableString.insert(imageAttribute, at: 0)
-        
-        roomName.attributedText = mutableString
-        roomName.adjustsFontSizeToFitWidth = true
-        roomName.minimumScaleFactor = 0.7
-        
-        let uid = Auth.auth().currentUser!.uid
-        if joinedRoomsArray[indexPath.row].moderator == uid{
-            roomName.attributedText = mutableString
+        cell.roomName.text = joinedRoomsArray[indexPath.row].roomName
+        if joinedRoomsArray[indexPath.row].roomImage != "" {
+            cell.roomImage.sd_setImage(with: URL(string: joinedRoomsArray[indexPath.row].roomImage), completed: nil)
+            cell.personImage.image = UIImage()
         }else{
-            roomName.text = joinedRoomsArray[indexPath.row].roomName
+            cell.roomImage.image = UIImage()
+            cell.roomImage.backgroundColor = .systemGray6
+            cell.personImage.image = UIImage(systemName: "person.3.fill")
         }
-        
-        
-
-        roomImageView.sd_setImage(with: URL(string: joinedRoomsArray[indexPath.row].roomImage), completed: nil)
-        
-        
         return cell
         
     }
