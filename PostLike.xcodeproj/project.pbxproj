@@ -118,6 +118,7 @@
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
 		CED4902126ED024900582742 /* ShowIndicator-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */; };
 		CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */; };
+		CEE256BE27CE748D007BF9E6 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */; };
 		CEE5BD9227C63E09004FD20A /* FeedContentsListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */; };
 		CEE5BD9427C644C9004FD20A /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */; };
 		CEE5BD9627C653AA004FD20A /* LikeListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9527C653AA004FD20A /* LikeListner.swift */; };
@@ -270,6 +271,7 @@
 		CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowIndicator-Extenshion.swift"; sourceTree = "<group>"; };
 		CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImageContentsViewController.swift; sourceTree = "<group>"; };
 		CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListner.swift; sourceTree = "<group>"; };
+		CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
 		CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContentsListner.swift; sourceTree = "<group>"; };
 		CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		CEE5BD9527C653AA004FD20A /* LikeListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListner.swift; sourceTree = "<group>"; };
@@ -474,6 +476,7 @@
 				CE54339227CC976C00A1A786 /* FeedTableViewModel.swift */,
 				CE54339427CC979E00A1A786 /* CreateLikes.swift */,
 				CEE5BD9727C76F78004FD20A /* RoomHeaderViewModel.swift */,
+				CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1023,6 +1026,7 @@
 				CE54339327CC976C00A1A786 /* FeedTableViewModel.swift in Sources */,
 				CE79ED33279FC8B40047ABEF /* PostDefaultAPI.swift in Sources */,
 				CE012C2F26B6EFD4006CC20E /* TabImage-Extenshion.swift in Sources */,
+				CEE256BE27CE748D007BF9E6 /* RoomViewModel.swift in Sources */,
 				CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */,
 				CE012C3126B6EFD4006CC20E /* CommentTableViewCell.swift in Sources */,
 				CEE5BD9227C63E09004FD20A /* FeedContentsListner.swift in Sources */,
