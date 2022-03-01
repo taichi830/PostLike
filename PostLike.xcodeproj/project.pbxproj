@@ -74,6 +74,11 @@
 		CE3F4DD227B0E61E00780BEE /* UserListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DD127B0E61E00780BEE /* UserListner.swift */; };
 		CE3F4DD427B23F7E00780BEE /* InputCommentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DD327B23F7E00780BEE /* InputCommentViewModelTests.swift */; };
 		CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */; };
+		CE54339127CC96F000A1A786 /* ReportListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339027CC96F000A1A786 /* ReportListner.swift */; };
+		CE54339327CC976C00A1A786 /* FeedTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339227CC976C00A1A786 /* FeedTableViewModel.swift */; };
+		CE54339527CC979E00A1A786 /* CreateLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339427CC979E00A1A786 /* CreateLikes.swift */; };
+		CE54339827CC97CE00A1A786 /* ReportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339627CC97CE00A1A786 /* ReportTableViewCell.swift */; };
+		CE54339927CC97CE00A1A786 /* ReportTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE54339727CC97CE00A1A786 /* ReportTableViewCell.xib */; };
 		CE5D0C23270715100019F9D5 /* GoogleService-Info.Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0C22270715100019F9D5 /* GoogleService-Info.Release.plist */; };
 		CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */; };
 		CE77EF5F26E67EEF00154886 /* Contents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5826E67EEF00154886 /* Contents.swift */; };
@@ -195,6 +200,11 @@
 		CE4B637A2670977200BC356F /* DeleteRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRoomViewController.swift; sourceTree = "<group>"; };
 		CE4F960826CCD25B00213900 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Home.strings; sourceTree = "<group>"; };
 		CE52CD41256E34970032D661 /* CreateRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomViewController.swift; sourceTree = "<group>"; };
+		CE54339027CC96F000A1A786 /* ReportListner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReportListner.swift; path = PostLike/Model/ReportListner.swift; sourceTree = SOURCE_ROOT; };
+		CE54339227CC976C00A1A786 /* FeedTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewModel.swift; sourceTree = "<group>"; };
+		CE54339427CC979E00A1A786 /* CreateLikes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateLikes.swift; path = PostLike/Model/CreateLikes.swift; sourceTree = SOURCE_ROOT; };
+		CE54339627CC97CE00A1A786 /* ReportTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTableViewCell.swift; sourceTree = "<group>"; };
+		CE54339727CC97CE00A1A786 /* ReportTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportTableViewCell.xib; sourceTree = "<group>"; };
 		CE547B1725F7B9540060D1D0 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		CE5648BB25DA2FE900BE3FEE /* ShowImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageViewController.swift; sourceTree = "<group>"; };
 		CE56EF8625B332780057716C /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
@@ -419,6 +429,8 @@
 				CE79ED3527A2E78C0047ABEF /* PostPreViewTableViewCell.xib */,
 				CEA2EAC427B4134C000AD484 /* NotificationTableViewCell.swift */,
 				CEA2EAC527B4134C000AD484 /* NotificationTableViewCell.xib */,
+				CE54339627CC97CE00A1A786 /* ReportTableViewCell.swift */,
+				CE54339727CC97CE00A1A786 /* ReportTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -457,6 +469,8 @@
 				CE3F4DCD27B032D200780BEE /* CommentViewModel.swift */,
 				CEA2EAC227B410BD000AD484 /* NotificationViewModel.swift */,
 				CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */,
+				CE54339227CC976C00A1A786 /* FeedTableViewModel.swift */,
+				CE54339427CC979E00A1A786 /* CreateLikes.swift */,
 				CEE5BD9727C76F78004FD20A /* RoomHeaderViewModel.swift */,
 			);
 			path = ViewModel;
@@ -490,6 +504,7 @@
 				CEA2EAC027B408C8000AD484 /* NotificationListner.swift */,
 				CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */,
 				CEE5BD9527C653AA004FD20A /* LikeListner.swift */,
+				CE54339027CC96F000A1A786 /* ReportListner.swift */,
 				CEE5BD9927C7CA15004FD20A /* RoomInfoListner.swift */,
 			);
 			path = Model;
@@ -777,6 +792,7 @@
 				CE199F7726DE11D9009F1B7E /* termOfUse.html in Resources */,
 				CE012C4926B6EFD4006CC20E /* Login.storyboard in Resources */,
 				CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */,
+				CE54339927CC97CE00A1A786 /* ReportTableViewCell.xib in Resources */,
 				CE012C4A26B6EFD4006CC20E /* SearchResultHeaderView.xib in Resources */,
 				CE012C4B26B6EFD4006CC20E /* ImageCollectionViewCell.xib in Resources */,
 				CE012C4D26B6EFD4006CC20E /* LaunchScreen.storyboard in Resources */,
@@ -984,6 +1000,7 @@
 				CEA2EAC627B4134C000AD484 /* NotificationTableViewCell.swift in Sources */,
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
+				CE54339127CC96F000A1A786 /* ReportListner.swift in Sources */,
 				CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */,
 				CE77EF6026E67EEF00154886 /* User.swift in Sources */,
 				CE012C2126B6EFD4006CC20E /* ProfileEditViewController.swift in Sources */,
@@ -998,7 +1015,9 @@
 				CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
 				CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */,
+				CE54339527CC979E00A1A786 /* CreateLikes.swift in Sources */,
 				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,
+				CE54339327CC976C00A1A786 /* FeedTableViewModel.swift in Sources */,
 				CE79ED33279FC8B40047ABEF /* PostDefaultAPI.swift in Sources */,
 				CE012C2F26B6EFD4006CC20E /* TabImage-Extenshion.swift in Sources */,
 				CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */,
@@ -1022,6 +1041,7 @@
 				CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */,
 				CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */,
 				CE1C23CF276DB44600D3CAC8 /* Firestore.swift in Sources */,
+				CE54339827CC97CE00A1A786 /* ReportTableViewCell.swift in Sources */,
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
 				CE79ED3627A2E78C0047ABEF /* PostPreViewTableViewCell.swift in Sources */,
 				CEFAC3882772CB8E00739549 /* Storage.swift in Sources */,
