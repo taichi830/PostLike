@@ -227,7 +227,8 @@ final class ModalMenuViewController: UIViewController{
                 
             case .report:
                 let reportVC = self?.storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-                reportVC.passedContent = self!.passedContent
+                reportVC.passedContent = self?.passedContent ?? Contents(dic: [:])
+                reportVC.passedRoomInfo = self?.passedRoomInfo ?? Room(dic: [:])
                 reportVC.reportType = .room
                 self?.present(reportVC, animated: true, completion: nil)
                 
