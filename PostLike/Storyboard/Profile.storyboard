@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
-        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,50 +25,7 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cell" id="6ug-qr-W0P">
-                                        <rect key="frame" x="0.0" y="0.0" width="180" height="170"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="r9e-Zy-fmr">
-                                            <rect key="frame" x="0.0" y="0.0" width="180" height="170"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xcr-fW-NET">
-                                                    <rect key="frame" x="0.0" y="0.0" width="180" height="120"/>
-                                                </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zou-ZG-rrT">
-                                                    <rect key="frame" x="0.0" y="120" width="180" height="50"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="roomName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XAe-FE-huB">
-                                                            <rect key="frame" x="7" y="0.0" width="173" height="50"/>
-                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="XAe-FE-huB" secondAttribute="bottom" id="4rz-bh-tLL"/>
-                                                        <constraint firstItem="XAe-FE-huB" firstAttribute="top" secondItem="zou-ZG-rrT" secondAttribute="top" id="IiB-Re-nf6"/>
-                                                        <constraint firstAttribute="height" constant="50" id="N45-6C-fD3"/>
-                                                        <constraint firstAttribute="trailing" secondItem="XAe-FE-huB" secondAttribute="trailing" id="QnN-Cr-tLw"/>
-                                                        <constraint firstItem="XAe-FE-huB" firstAttribute="leading" secondItem="zou-ZG-rrT" secondAttribute="leading" constant="7" id="dSd-Zs-ab9"/>
-                                                    </constraints>
-                                                </view>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="xcr-fW-NET" secondAttribute="trailing" id="BC6-gB-L6W"/>
-                                                <constraint firstAttribute="bottom" secondItem="zou-ZG-rrT" secondAttribute="bottom" id="DVv-hH-xCe"/>
-                                                <constraint firstItem="zou-ZG-rrT" firstAttribute="leading" secondItem="r9e-Zy-fmr" secondAttribute="leading" id="gqQ-t7-MsW"/>
-                                                <constraint firstItem="xcr-fW-NET" firstAttribute="leading" secondItem="r9e-Zy-fmr" secondAttribute="leading" id="kKc-qv-25l"/>
-                                                <constraint firstItem="xcr-fW-NET" firstAttribute="top" secondItem="r9e-Zy-fmr" secondAttribute="top" id="luw-YN-Aoa"/>
-                                                <constraint firstAttribute="trailing" secondItem="zou-ZG-rrT" secondAttribute="trailing" id="w8o-T6-fsh"/>
-                                                <constraint firstItem="zou-ZG-rrT" firstAttribute="top" secondItem="xcr-fW-NET" secondAttribute="bottom" id="zwu-Iv-tVf"/>
-                                            </constraints>
-                                        </collectionViewCellContentView>
-                                        <size key="customSize" width="180" height="170"/>
-                                    </collectionViewCell>
-                                </cells>
+                                <cells/>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d9l-OL-rM9">
                                 <rect key="frame" x="0.0" y="54" width="428" height="45"/>
@@ -121,7 +77,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="coZ-a5-sF3"/>
                     <connections>
-                        <outlet property="myRoomCollectionView" destination="f5Y-yI-gfn" id="vfu-dB-boq"/>
+                        <outlet property="roomCollectionView" destination="f5Y-yI-gfn" id="vfu-dB-boq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eIp-Wp-VDg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
