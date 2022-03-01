@@ -51,6 +51,7 @@ final class ReportViewController: UIViewController  {
     
     private var row = Int()
     var passedContent = Contents(dic: [:])
+    var passedRoomInfo = Room(dic: [:])
     var reportType = ReportType(rawValue: "")
     weak var removeContentsDelegate: RemoveContentsDelegate?
     private let viewModel = ReportViewModel()
@@ -196,6 +197,7 @@ final class ReportViewController: UIViewController  {
                     self?.report(type: "user", documentID: documentID, roomID: roomID, uid: uid, myuid: myuid, field: field, collection: "reportedUsers")
 
                 case .room:
+                    let roomID = self?.passedRoomInfo.documentID ?? ""
                     self?.reportRoom(roomID: roomID, field: field)
                     
                 case .none:
