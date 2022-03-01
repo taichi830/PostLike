@@ -133,12 +133,9 @@ final class EnteredRoomContentViewController: UIViewController{
         let modalMenuVC = storyboard?.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
-        modalMenuVC.passedRoomID = passedDocumentID
+        modalMenuVC.passedModalType = .room
         modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = ModalType.room.rawValue
-        modalMenuVC.passedRoomImageUrl = roomInfo?.roomImage ?? ""
-        modalMenuVC.passedRoomName = roomInfo?.roomName ?? ""
-        modalMenuVC.passedRoomIntro = roomInfo?.roomIntro ?? ""
+        modalMenuVC.passedRoomInfo = headerView.roomInfo ?? Room(dic: [:])
         modalMenuVC.passedRoomImage = roomImageView.image ?? UIImage()
         present(modalMenuVC, animated: true, completion: nil)
     }
