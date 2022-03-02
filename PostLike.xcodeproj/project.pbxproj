@@ -119,6 +119,8 @@
 		CED4902126ED024900582742 /* ShowIndicator-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */; };
 		CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */; };
 		CEE256BE27CE748D007BF9E6 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */; };
+		CEE256C427CE85CA007BF9E6 /* GetProfilePosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256C327CE85CA007BF9E6 /* GetProfilePosts.swift */; };
+		CEE256C627CE8B9D007BF9E6 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256C527CE8B9D007BF9E6 /* ProfileViewModel.swift */; };
 		CEE5BD9227C63E09004FD20A /* FeedContentsListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */; };
 		CEE5BD9427C644C9004FD20A /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */; };
 		CEE5BD9627C653AA004FD20A /* LikeListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9527C653AA004FD20A /* LikeListner.swift */; };
@@ -272,6 +274,8 @@
 		CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImageContentsViewController.swift; sourceTree = "<group>"; };
 		CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListner.swift; sourceTree = "<group>"; };
 		CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
+		CEE256C327CE85CA007BF9E6 /* GetProfilePosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProfilePosts.swift; sourceTree = "<group>"; };
+		CEE256C527CE8B9D007BF9E6 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContentsListner.swift; sourceTree = "<group>"; };
 		CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		CEE5BD9527C653AA004FD20A /* LikeListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListner.swift; sourceTree = "<group>"; };
@@ -477,6 +481,7 @@
 				CE54339427CC979E00A1A786 /* CreateLikes.swift */,
 				CEE5BD9727C76F78004FD20A /* RoomHeaderViewModel.swift */,
 				CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */,
+				CEE256C527CE8B9D007BF9E6 /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -512,6 +517,7 @@
 				CE54339027CC96F000A1A786 /* ReportListner.swift */,
 				CEE5BD9927C7CA15004FD20A /* RoomInfoListner.swift */,
 				CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */,
+				CEE256C327CE85CA007BF9E6 /* GetProfilePosts.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -977,6 +983,7 @@
 				CE1C23C8276B946000D3CAC8 /* SearchTableViewCell.swift in Sources */,
 				CE012C0D26B6EFD4006CC20E /* BaseTabBarController.swift in Sources */,
 				CE77EF6326E67EEF00154886 /* Response.swift in Sources */,
+				CEE256C627CE8B9D007BF9E6 /* ProfileViewModel.swift in Sources */,
 				CE8EB72B27AF8EC20036DBF0 /* InputCommentView.swift in Sources */,
 				CE012C0E26B6EFD4006CC20E /* RoomListViewController.swift in Sources */,
 				CE3F4DD027B0C04000780BEE /* PostCommentAPI.swift in Sources */,
@@ -991,6 +998,7 @@
 				CE012C1826B6EFD4006CC20E /* ImageCollectionViewCell.swift in Sources */,
 				CE199F7E26E221D4009F1B7E /* SetPassWordViewController.swift in Sources */,
 				CEE5BD9A27C7CA15004FD20A /* RoomInfoListner.swift in Sources */,
+				CEE256C427CE85CA007BF9E6 /* GetProfilePosts.swift in Sources */,
 				CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE854BDB275B34730089BEF4 /* CommonModal.swift in Sources */,
