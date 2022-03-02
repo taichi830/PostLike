@@ -39,7 +39,7 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     var passedDocumentID = String()
-    private var label = MessageLabel()
+    private var messageLabel = MessageLabel()
     private var roomInfo:Room?
     private var contentsArray = [Contents]()
     private var likeContentsArray = [Contents]()
@@ -65,11 +65,14 @@ final class EnteredRoomContentViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
         headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
-        setupTableView()
         self.setSwipeBackGesture()
-        fetchFeedContents()
+        setupTableView()
+        emptyCheck()
         tableViewDidScroll()
+        
     }
     
     
@@ -141,10 +144,26 @@ final class EnteredRoomContentViewController: UIViewController{
     }
     
     
+    
+    
+    private func emptyCheck() {
+        viewModel.isEmpty
+            .drive { [weak self] bool in
+                if bool == true {
+                    self?.messageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
+                }else {
+                    self?.messageLabel.text = ""
+                    self?.fetchFeedContents()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
     private func fetchFeedContents() {
-        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
-        
-        
         viewModel.items.drive { [weak self] contents in
             self?.contentsArray.removeAll()
             self?.contentsArray.append(contentsOf: contents)
@@ -203,7 +222,7 @@ extension EnteredRoomContentViewController: UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell") as! FeedTableViewCell
-        cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self)
+        cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self, modalType: .post)
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
         return cell
     }

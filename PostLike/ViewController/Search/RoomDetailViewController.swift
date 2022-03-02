@@ -49,7 +49,7 @@ final class RoomDetailViewController: UIViewController {
     
 
     var passedDocumentID = String()
-    private var label = MessageLabel()
+    private var mssageLabel = MessageLabel()
     private var contentsArray = [Contents]()
     private var likeContentsArray = [Contents]()
     private var joinedRoom:Contents?
@@ -72,10 +72,10 @@ final class RoomDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
         self.setSwipeBackGesture()
         setupTableView()
-        fetchContents()
+        emptyCheck()
         headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: roomName, vc: self, tableView: contentsTableView)
     }
     
@@ -178,12 +178,27 @@ final class RoomDetailViewController: UIViewController {
     
     
     
+    
+    private func emptyCheck() {
+        viewModel.isEmpty
+            .drive { [weak self] bool in
+                if bool == true {
+                    self?.mssageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
+                }else {
+                    self?.mssageLabel.text = ""
+                    self?.fetchContents()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
 
     
     
     
     private func fetchContents(){
-        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
+        
         
         viewModel.items.drive { [weak self] contents in
             self?.contentsArray.removeAll()
@@ -221,7 +236,7 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = contentsTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell", for: indexPath) as! FeedTableViewCell
-        cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self)
+        cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self, modalType: .post)
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
         return cell
     }

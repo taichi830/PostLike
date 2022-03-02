@@ -9,6 +9,7 @@
 import UIKit
 import DKImagePickerController
 import FirebaseFirestore
+import Firebase
 
 final class CreateProfileModalViewController: UIViewController {
     
@@ -23,6 +24,7 @@ final class CreateProfileModalViewController: UIViewController {
     @IBOutlet private weak var clearView: UIView!
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
     var passedUserInfo = Contents(dic: [:])
+    var passedRoomInfo = Room(dic: [:])
     
     
     
