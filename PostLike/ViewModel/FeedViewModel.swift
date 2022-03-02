@@ -13,6 +13,7 @@ final class FeedViewModel {
     private let disposeBag = DisposeBag()
     let items: Driver<[Contents]>
     let likes: Driver<[Contents]>
+    let isEmpty: Driver<Bool>
     
     
     init(feedContentsListner: FeedContentsListner, likeListner: LikeListner, userListner: UserListner, reportListner: ReportListner, roomID: String) {
@@ -20,6 +21,14 @@ final class FeedViewModel {
         
         let fetchiItems = feedContentsListner.fetchFeedContents(roomID: roomID)
             .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
+        
+        
+        //空チェック
+        isEmpty = fetchiItems.asObservable()
+            .map { items -> Bool in
+                return items.isEmpty
+            }
+            .asDriver(onErrorJustReturn: true)
         
         
         //いいねした投稿を取得
