@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
@@ -34,6 +36,9 @@ final class ProfileViewController: UIViewController {
     private var userInfo:Contents?
     private var likeContentsArray = [Contents]()
     private var lastDocument:DocumentSnapshot?
+    private var messageLabel = MessageLabel()
+    private var viewModel: ProfileViewModel!
+    private let disposeBag = DisposeBag()
     
     
     
@@ -46,13 +51,12 @@ final class ProfileViewController: UIViewController {
     
     
     override func viewDidLoad(){
-        
         super.viewDidLoad()
-        
+        let uid = Auth.auth().currentUser!.uid
+        viewModel = ProfileViewModel(getProfilePosts: GetProfileDefaultPosts(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
         createProfileTableView()
         setUpEditButton()
-        fetchPostContents{
-        }
+        emptyCheck()
         
         let refleshControl = UIRefreshControl()
         self.profileTableView.refreshControl = refleshControl
@@ -80,10 +84,10 @@ final class ProfileViewController: UIViewController {
     
     
     @objc private func updateContents(){
-        self.likeContentsArray.removeAll()
-        self.fetchPostContents {
-            self.profileTableView.refreshControl?.endRefreshing()
-        }
+//        self.likeContentsArray.removeAll()
+//        self.fetchPostContents {
+//            self.profileTableView.refreshControl?.endRefreshing()
+//        }
     }
     
     
@@ -142,18 +146,18 @@ final class ProfileViewController: UIViewController {
     
     
     @IBAction private func menuButton(_ sender: Any) {
+        let uid = Auth.auth().currentUser!.uid
         let storyboard = UIStoryboard(name: "Home", bundle: nil)
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
-        let uid = Auth.auth().currentUser!.uid
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
         modalMenuVC.exitRoomDelegate = self
         modalMenuVC.passedRoomID = passedDocumentID
         modalMenuVC.passedViewController = self
         if passedModerator == uid {
-            modalMenuVC.passedType = ModalType.moderator.rawValue
+            modalMenuVC.passedModalType = .moderator
         }else{
-            modalMenuVC.passedType = ModalType.exit.rawValue
+            modalMenuVC.passedModalType = .exit
         }
         present(modalMenuVC, animated: true, completion: nil)
     }
@@ -171,56 +175,70 @@ final class ProfileViewController: UIViewController {
     
     
     
-    private func fetchLikeContents(documentIDs:[String]){
-        Firestore.fetchLikeContents(documentIDs: documentIDs) { contents in
-            self.likeContentsArray.append(contentsOf: contents)
+//    private func fetchLikeContents(documentIDs:[String]){
+//        Firestore.fetchLikeContents(documentIDs: documentIDs) { contents in
+//            self.likeContentsArray.append(contentsOf: contents)
+//        }
+//    }
+    
+    
+    private func fetchContents() {
+        viewModel.profilePosts.drive { [weak self] items in
+            self?.contentsArray.removeAll()
+            self?.contentsArray.append(contentsOf: items)
+            self?.profileTableView.reloadData()
         }
-    }
-    
-    
-    
-    
-    private func fetchPostContents(_ comleted: @escaping() -> Void){
-        self.contentsArray.removeAll()
-        Firestore.fetchUserContents(roomID: passedDocumentID) { contentsArray, querySnapshot in
-            if contentsArray.isEmpty == true {
-                let label = MessageLabel()
-                label.setupLabel(view: self.view, y: self.view.center.y + 50)
-                label.text = "投稿がまだありません"
-                self.profileTableView.addSubview(label)
-                comleted()
-            }else{
-                let documentIDs = contentsArray.map { contents -> String in
-                    return contents.documentID
-                }
-                self.fetchLikeContents(documentIDs: documentIDs)
-                self.contentsArray.append(contentsOf: contentsArray)
-                self.lastDocument = querySnapshot.documents.last
-                self.profileTableView.reloadData()
-                comleted()
+        .disposed(by: disposeBag)
+        
+        viewModel.likes
+            .drive { [weak self] likes in
+                self?.likeContentsArray.removeAll()
+                self?.likeContentsArray.append(contentsOf: likes)
+                self?.profileTableView.reloadData()
             }
-        }
+            .disposed(by: disposeBag)
     }
     
     
     
     
-    
-    
-    private func fetchMoreContents(){
-        guard let lastDocument = self.lastDocument else {return}
-        Firestore.fetchMoreUserContents(roomID: passedDocumentID, lastDocument: lastDocument) { contents, querySnapshot in
-            if contents.isEmpty == false {
-                let documentIDs = contents.map { contents -> String in
-                    return contents.documentID
+    private func emptyCheck(){
+
+        viewModel.isEmpty
+            .drive { [weak self] bool in
+                if bool == true {
+                    self?.messageLabel.setupLabel(view: self!.view, y: self!.view.center.y + 50)
+                    self?.messageLabel.text = "投稿がまだありません"
+                    self?.profileTableView.addSubview(self!.messageLabel)
+                } else {
+                    self?.messageLabel.text = ""
+                    self?.fetchContents()
+                    
                 }
-                self.fetchLikeContents(documentIDs: documentIDs)
-                self.lastDocument = querySnapshot.documents.last
-                self.contentsArray.append(contentsOf: contents)
-                self.profileTableView.reloadData()
             }
-        }
+            .disposed(by: disposeBag)
+        
     }
+    
+    
+    
+    
+    
+    
+//    private func fetchMoreContents(){
+//        guard let lastDocument = self.lastDocument else {return}
+//        Firestore.fetchMoreUserContents(roomID: passedDocumentID, lastDocument: lastDocument) { contents, querySnapshot in
+//            if contents.isEmpty == false {
+//                let documentIDs = contents.map { contents -> String in
+//                    return contents.documentID
+//                }
+//                self.fetchLikeContents(documentIDs: documentIDs)
+//                self.lastDocument = querySnapshot.documents.last
+//                self.contentsArray.append(contentsOf: contents)
+//                self.profileTableView.reloadData()
+//            }
+//        }
+//    }
     
     
     
@@ -292,10 +310,8 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
         
         
         let cell = profileTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell")  as! FeedTableViewCell
-        
-        cell.tableViewCellDelegate = self
-        
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
+        cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self, modalType: .delete)
 
         
         return cell
@@ -307,7 +323,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == contentsArray.count {
-            fetchMoreContents()
+//            fetchMoreContents()
         }
     }
     
@@ -317,81 +333,81 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     //likeBatch
     
-    private func createLikeContents(uid:String,documentID:String,row:Int,batch:WriteBatch){
-        let dic = [
-            "media": contentsArray[row].mediaArray,
-            "text":contentsArray[row].text,
-            "userImage":contentsArray[row].userImage,
-            "userName":contentsArray[row].userName,
-            "documentID":documentID,
-            "roomID":passedDocumentID,
-            "uid":uid,
-            "postedAt":contentsArray[row].createdAt,
-            "createdAt":Timestamp(),
-            "myUid":uid] as [String:Any]
-        Firestore.createLikedPost(myuid: uid, documentID: documentID, dic: dic, batch: batch)
-    }
-    
-    
-    
-    private func updateLikeCount(uid:String,documentID:String,row:Int,batch:WriteBatch){
-        let mediaUrl = contentsArray[row].mediaArray[0]
-        Firestore.increaseLikeCount(uid: uid, myuid: uid, roomID: passedDocumentID, documentID: documentID, mediaUrl: mediaUrl, batch: batch)
-    }
-    
-    
-    
-    private func likeBatch(row:Int){
-        let uid = Auth.auth().currentUser!.uid
-        let documentID = contentsArray[row].documentID
-        let batch = Firestore.firestore().batch()
-        createLikeContents(uid:uid,documentID:documentID,row: row, batch: batch)
-        updateLikeCount(uid:uid,documentID:documentID,row: row, batch: batch)
-        batch.commit()
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //deleteBatch
-    
-    private func decreaseLikeCount(uid:String,documentID:String,row: Int,batch:WriteBatch){
-        let mediaUrl = contentsArray[row].mediaArray[0]
-        Firestore.decreaseLikeCount(uid: uid, myuid: uid, roomID: passedDocumentID, documentID: documentID, mediaUrl: mediaUrl, batch: batch)
-    }
-    
-    
-    
-    
-    private func deleteLikeContents(uid:String,documentID:String,row:Int,batch:WriteBatch){
-        Firestore.deleteLikedPost(uid: uid, documentID: documentID, batch: batch)
-    }
-    
-    
-    
-    
-    private func deleteLikeBatch(row:Int){
-        let uid = Auth.auth().currentUser!.uid
-        let documentID = contentsArray[row].documentID
-        let batch = Firestore.firestore().batch()
-        decreaseLikeCount(uid: uid, documentID: documentID, row: row, batch: batch)
-        deleteLikeContents(uid: uid, documentID: documentID,row: row, batch: batch)
-        batch.commit { err in
-            if let err = err {
-                print("false\(err)")
-                return
-            }else{
-                print("scuccess")
-                self.likeContentsArray.removeAll(where: {$0.documentID == documentID})
-            }
-        }
-    }
+//    private func createLikeContents(uid:String,documentID:String,row:Int,batch:WriteBatch){
+//        let dic = [
+//            "media": contentsArray[row].mediaArray,
+//            "text":contentsArray[row].text,
+//            "userImage":contentsArray[row].userImage,
+//            "userName":contentsArray[row].userName,
+//            "documentID":documentID,
+//            "roomID":passedDocumentID,
+//            "uid":uid,
+//            "postedAt":contentsArray[row].createdAt,
+//            "createdAt":Timestamp(),
+//            "myUid":uid] as [String:Any]
+//        Firestore.createLikedPost(myuid: uid, documentID: documentID, dic: dic, batch: batch)
+//    }
+//
+//
+//
+//    private func updateLikeCount(uid:String,documentID:String,row:Int,batch:WriteBatch){
+//        let mediaUrl = contentsArray[row].mediaArray[0]
+//        Firestore.increaseLikeCount(uid: uid, myuid: uid, roomID: passedDocumentID, documentID: documentID, mediaUrl: mediaUrl, batch: batch)
+//    }
+//
+//
+//
+//    private func likeBatch(row:Int){
+//        let uid = Auth.auth().currentUser!.uid
+//        let documentID = contentsArray[row].documentID
+//        let batch = Firestore.firestore().batch()
+//        createLikeContents(uid:uid,documentID:documentID,row: row, batch: batch)
+//        updateLikeCount(uid:uid,documentID:documentID,row: row, batch: batch)
+//        batch.commit()
+//    }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//    //deleteBatch
+//
+//    private func decreaseLikeCount(uid:String,documentID:String,row: Int,batch:WriteBatch){
+//        let mediaUrl = contentsArray[row].mediaArray[0]
+//        Firestore.decreaseLikeCount(uid: uid, myuid: uid, roomID: passedDocumentID, documentID: documentID, mediaUrl: mediaUrl, batch: batch)
+//    }
+//
+//
+//
+//
+//    private func deleteLikeContents(uid:String,documentID:String,row:Int,batch:WriteBatch){
+//        Firestore.deleteLikedPost(uid: uid, documentID: documentID, batch: batch)
+//    }
+//
+//
+//
+//
+//    private func deleteLikeBatch(row:Int){
+//        let uid = Auth.auth().currentUser!.uid
+//        let documentID = contentsArray[row].documentID
+//        let batch = Firestore.firestore().batch()
+//        decreaseLikeCount(uid: uid, documentID: documentID, row: row, batch: batch)
+//        deleteLikeContents(uid: uid, documentID: documentID,row: row, batch: batch)
+//        batch.commit { err in
+//            if let err = err {
+//                print("false\(err)")
+//                return
+//            }else{
+//                print("scuccess")
+//                self.likeContentsArray.removeAll(where: {$0.documentID == documentID})
+//            }
+//        }
+//    }
     
     
     
@@ -407,113 +423,113 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
 
 
 //MARK: tableViewのデリゲート処理
-extension ProfileViewController:TableViewCellDelegate{
-    func reportButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
-        modalMenuVC.modalPresentationStyle = .custom
-        modalMenuVC.transitioningDelegate = self
-        modalMenuVC.passedDocumentID = contentsArray[row].documentID
-        modalMenuVC.passedRoomID = contentsArray[row].roomID
-        modalMenuVC.passedImageUrl = contentsArray[row].mediaArray
-        modalMenuVC.passedViewController = self
-        modalMenuVC.deletePostDelegate = self
-        modalMenuVC.passedType = ModalType.delete.rawValue
-        present(modalMenuVC, animated: true, completion: nil)
-    }
-    
-    func tappedPostImageView(row: Int) {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
-        showImageVC.passedMedia = contentsArray[row].mediaArray
-        showImageVC.passedUid = contentsArray[row].uid
-        showImageVC.passedText = contentsArray[row].text
-        showImageVC.passedRoomID = contentsArray[row].roomID
-        showImageVC.passedDocumentID = contentsArray[row].documentID
-        showImageVC.passedUserName = contentsArray[row].userName
-        showImageVC.passedUserImage = contentsArray[row].userImage
-        present(showImageVC, animated: true, completion: nil)
-    }
-    
-    func pushLikeButton(row: Int, sender: UIButton, countLabel: UILabel) {
-        if sender.tintColor == UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)  {
-            sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            sender.tintColor = .red
-            likeBatch(row:row)
-            var count = Int(contentsArray[row].likeCount)
-            count += 1
-            countLabel.text = count.description
-            contentsArray[row].likeCount = count
-            
-        }else if sender.tintColor == .red {
-            sender.setImage(UIImage(systemName: "heart"), for: .normal)
-            sender.tintColor = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)
-            deleteLikeBatch(row: row)
-            self.likeContentsArray.removeAll(where: {$0.documentID == contentsArray[row].documentID})
-            var count = Int(countLabel.text!)!
-            if count >= 1{
-                count -= 1
-                countLabel.text = count.description
-                contentsArray[row].likeCount = count
-            }
-        }
-    }
-    
-    func pushedCommentButton(row: Int) {
-        let storyboard = UIStoryboard(name: "Home", bundle: nil)
-        let cLVC = storyboard.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
-        cLVC.passedUserImage = contentsArray[row].userImage
-        cLVC.passedUserName = contentsArray[row].userName
-        cLVC.passedComment = contentsArray[row].text
-        cLVC.passedDate = contentsArray[row].createdAt
-        cLVC.passedDocumentID = contentsArray[row].documentID
-        cLVC.passedRoomID = contentsArray[row].roomID
-        cLVC.passedUid = contentsArray[row].uid
-        cLVC.passedMediaArray = contentsArray[row].mediaArray
-        
-        present(cLVC, animated: true, completion: nil)
-    }
-    
-    
-}
+//extension ProfileViewController:TableViewCellDelegate{
+//    func reportButton(row: Int) {
+//        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//        let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
+//        modalMenuVC.modalPresentationStyle = .custom
+//        modalMenuVC.transitioningDelegate = self
+//        modalMenuVC.passedDocumentID = contentsArray[row].documentID
+//        modalMenuVC.passedRoomID = contentsArray[row].roomID
+//        modalMenuVC.passedImageUrl = contentsArray[row].mediaArray
+//        modalMenuVC.passedViewController = self
+//        modalMenuVC.deletePostDelegate = self
+//        modalMenuVC.passedType = ModalType.delete.rawValue
+//        present(modalMenuVC, animated: true, completion: nil)
+//    }
+//
+//    func tappedPostImageView(row: Int) {
+//        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//        let showImageVC = storyboard.instantiateViewController(identifier: "showImage") as! ShowImageViewController
+//        showImageVC.passedMedia = contentsArray[row].mediaArray
+//        showImageVC.passedUid = contentsArray[row].uid
+//        showImageVC.passedText = contentsArray[row].text
+//        showImageVC.passedRoomID = contentsArray[row].roomID
+//        showImageVC.passedDocumentID = contentsArray[row].documentID
+//        showImageVC.passedUserName = contentsArray[row].userName
+//        showImageVC.passedUserImage = contentsArray[row].userImage
+//        present(showImageVC, animated: true, completion: nil)
+//    }
+//
+//    func pushLikeButton(row: Int, sender: UIButton, countLabel: UILabel) {
+//        if sender.tintColor == UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)  {
+//            sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+//            sender.tintColor = .red
+//            likeBatch(row:row)
+//            var count = Int(contentsArray[row].likeCount)
+//            count += 1
+//            countLabel.text = count.description
+//            contentsArray[row].likeCount = count
+//
+//        }else if sender.tintColor == .red {
+//            sender.setImage(UIImage(systemName: "heart"), for: .normal)
+//            sender.tintColor = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)
+//            deleteLikeBatch(row: row)
+//            self.likeContentsArray.removeAll(where: {$0.documentID == contentsArray[row].documentID})
+//            var count = Int(countLabel.text!)!
+//            if count >= 1{
+//                count -= 1
+//                countLabel.text = count.description
+//                contentsArray[row].likeCount = count
+//            }
+//        }
+//    }
+//
+//    func pushedCommentButton(row: Int) {
+//        let storyboard = UIStoryboard(name: "Home", bundle: nil)
+//        let cLVC = storyboard.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
+//        cLVC.passedUserImage = contentsArray[row].userImage
+//        cLVC.passedUserName = contentsArray[row].userName
+//        cLVC.passedComment = contentsArray[row].text
+//        cLVC.passedDate = contentsArray[row].createdAt
+//        cLVC.passedDocumentID = contentsArray[row].documentID
+//        cLVC.passedRoomID = contentsArray[row].roomID
+//        cLVC.passedUid = contentsArray[row].uid
+//        cLVC.passedMediaArray = contentsArray[row].mediaArray
+//
+//        present(cLVC, animated: true, completion: nil)
+//    }
+//
+//
+//}
 
 
 
 //MARK: 投稿削除時のデリゲート処理
-extension ProfileViewController:DeletePostDelegate{
-
-    
-    
-    func deletePostBatch(documentID:String,imageUrl:[String]){
-        let uid = Auth.auth().currentUser!.uid
-        let batch = Firestore.firestore().batch()
-        let mappedArray = contentsArray.filter { $0.documentID == documentID }
-        Firestore.decreasePostCount(roomID: passedDocumentID, batch: batch)
-        Firestore.decreaseRoomPostCount(roomID: passedDocumentID, batch: batch)
-        Firestore.deletePosts(roomID: passedDocumentID, documentID: documentID, batch: batch)
-        Firestore.deleteModeratorPosts(uid: uid, moderatorUid: passedModerator,roomID: passedDocumentID, documentID: documentID, batch: batch)
-        if mappedArray[0].mediaArray[0] != "" {
-            Firestore.deleteMediaPosts(roomID: passedDocumentID, documentID: documentID, batch: batch)
-        }
-        batch.commit { err in
-            if let err = err {
-                print("false\(err)")
-                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.dismissIndicator()
-                }
-                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-                return
-            }
-            self.contentsArray.removeAll {
-                $0.documentID == mappedArray[0].documentID
-            }
-            if imageUrl[0] != "" {
-                Storage.deleteStrageFile(imageUrl: imageUrl)
-            }
-            self.profileTableView.reloadData()
-        }
-    }
-}
+//extension ProfileViewController:DeletePostDelegate{
+//
+//
+//
+//    func deletePostBatch(documentID:String,imageUrl:[String]){
+//        let uid = Auth.auth().currentUser!.uid
+//        let batch = Firestore.firestore().batch()
+//        let mappedArray = contentsArray.filter { $0.documentID == documentID }
+//        Firestore.decreasePostCount(roomID: passedDocumentID, batch: batch)
+//        Firestore.decreaseRoomPostCount(roomID: passedDocumentID, batch: batch)
+//        Firestore.deletePosts(roomID: passedDocumentID, documentID: documentID, batch: batch)
+//        Firestore.deleteModeratorPosts(uid: uid, moderatorUid: passedModerator,roomID: passedDocumentID, documentID: documentID, batch: batch)
+//        if mappedArray[0].mediaArray[0] != "" {
+//            Firestore.deleteMediaPosts(roomID: passedDocumentID, documentID: documentID, batch: batch)
+//        }
+//        batch.commit { err in
+//            if let err = err {
+//                print("false\(err)")
+//                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+//                    self.dismissIndicator()
+//                }
+//                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+//                return
+//            }
+//            self.contentsArray.removeAll {
+//                $0.documentID == mappedArray[0].documentID
+//            }
+//            if imageUrl[0] != "" {
+//                Storage.deleteStrageFile(imageUrl: imageUrl)
+//            }
+//            self.profileTableView.reloadData()
+//        }
+//    }
+//}
 
 
 
