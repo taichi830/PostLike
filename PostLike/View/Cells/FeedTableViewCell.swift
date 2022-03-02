@@ -172,11 +172,11 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     }
     
     
-    func setupBinds(content: Contents, roomID: String, vc: UIViewController) {
+    func setupBinds(content: Contents, roomID: String, vc: UIViewController, modalType: ModalType) {
         viewModel = FeedTableViewModel(likeButtonTap: likeButton.rx.tap.asSignal(), createLikes: CreateDefaultLikes(), content: content, userInfoListner: UserDefaultLisner(), roomID: roomID)
         didTapCommentButton(content: content, vc: vc)
         didTapPhotos(content: content, vc: vc)
-        didTapDotsButton(content: content, vc: vc)
+        didTapDotsButton(content: content, vc: vc, modalType: modalType)
         
     }
     
@@ -234,7 +234,7 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     }
     
     
-    private func didTapDotsButton(content: Contents, vc: UIViewController) {
+    private func didTapDotsButton(content: Contents, vc: UIViewController, modalType: ModalType) {
         reportButton.rx.tap
             .subscribe { _ in
                 let storyboard = UIStoryboard(name: "Home", bundle: nil)
@@ -242,8 +242,7 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
                 modalMenuVC.modalPresentationStyle = .custom
                 modalMenuVC.transitioningDelegate = vc as? UIViewControllerTransitioningDelegate
                 modalMenuVC.passedViewController = vc
-                modalMenuVC.passedType = "post"
-                modalMenuVC.passedModalType = .post
+                modalMenuVC.passedModalType = modalType
                 modalMenuVC.passedContent = content
                 vc.present(modalMenuVC, animated: true, completion: nil)
             }
