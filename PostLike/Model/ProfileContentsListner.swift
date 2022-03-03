@@ -9,15 +9,16 @@
 import RxSwift
 import FirebaseFirestore
 
-protocol GetProfilePosts {
+protocol ProfileContentsListner {
     func fetchProfilePosts(uid: String, roomID: String) -> Observable<[Contents]>
 }
 
-final class GetProfileDefaultPosts: GetProfilePosts {
+final class ProfileContentsDefaultListner: ProfileContentsListner {
+    private var listner: ListenerRegistration?
     func fetchProfilePosts(uid: String, roomID: String) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
-            db.collection("users").document(uid).collection("rooms").document(roomID).collection("posts").order(by: "createdAt", descending: true).limit(to: 5).getDocuments { (querySnapshot, err) in
+            self.listner = db.collection("users").document(uid).collection("rooms").document(roomID).collection("posts").order(by: "createdAt", descending: true).limit(to: 10).addSnapshotListener { (querySnapshot, err) in
                 if let err = err {
                     print("取得に失敗しました。\(err)")
                     observer.onError(err)
@@ -30,9 +31,10 @@ final class GetProfileDefaultPosts: GetProfilePosts {
                     return content
                 }
                 observer.onNext(documents)
-                observer.onCompleted()
             }
-            return Disposables.create()
+            return Disposables.create {
+                self.listner?.remove()
+            }
         }
     }
     
