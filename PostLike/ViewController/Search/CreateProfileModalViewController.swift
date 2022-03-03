@@ -72,6 +72,7 @@ final class CreateProfileModalViewController: UIViewController {
     
     private func setupBinds() {
         viewModel = CreateProfileViewModel(input: (createButtonTap: doneButton.rx.tap.asSignal(), userName: userNameTextField.rx.text.orEmpty.asDriver()), roomInfo: passedRoomInfo, createProfile: CreateProfile())
+        viewModel.userImageSubject.onNext(profileImageView.image ?? UIImage())
         viewModel.isValidTap
             .drive { [weak self] bool in
                 self?.doneButton.backgroundColor = bool ? .red : .systemGray5

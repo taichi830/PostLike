@@ -16,13 +16,13 @@ final class CreateProfileViewModel {
     var createCompletedSubject = BehaviorSubject<Bool>.init(value: false)
     var createErrorSubject = PublishSubject<Error>()
     
-    var userImageSubject = BehaviorSubject<UIImage>.init(value: UIImage())
+    var userImageSubject = PublishSubject<UIImage>()
     
     
     let isCompleted: Driver<Bool>
     let errorDriver: Driver<Error>
     
-    init(input:(createButtonTap:Signal<()>,userName:Driver<String>),roomInfo: Room, createProfile: CreateProfileBatch) {
+    init(input:(createButtonTap: Signal<()>, userName: Driver<String>), roomInfo: Room, createProfile: CreateProfileBatch) {
         
         // userNameの空チェック
         let userNameValidation = input.userName.asObservable()
