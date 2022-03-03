@@ -53,7 +53,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad(){
         super.viewDidLoad()
         let uid = Auth.auth().currentUser!.uid
-        viewModel = ProfileViewModel(getProfilePosts: GetProfileDefaultPosts(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
+        viewModel = ProfileViewModel(profileContentsListner: ProfileContentsDefaultListner(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
         createProfileTableView()
         setUpEditButton()
         emptyCheck()
@@ -183,7 +183,7 @@ final class ProfileViewController: UIViewController {
     
     
     private func fetchContents() {
-        viewModel.profilePosts.drive { [weak self] items in
+        viewModel.items.drive { [weak self] items in
             self?.contentsArray.removeAll()
             self?.contentsArray.append(contentsOf: items)
             self?.profileTableView.reloadData()
