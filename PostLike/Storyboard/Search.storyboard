@@ -570,9 +570,6 @@
                                         <state key="normal" title="完了">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="done:" destination="YsU-KU-0kL" eventType="touchUpInside" id="U9x-pM-q3z"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
