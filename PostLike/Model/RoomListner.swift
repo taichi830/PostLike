@@ -33,7 +33,6 @@ final class RoomDefaultListner: RoomListner {
                     return content
                 }
                 observer.onNext(documents ?? [])
-                observer.onCompleted()
             }
             return Disposables.create {
                 
