@@ -54,8 +54,9 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         let uid = Auth.auth().currentUser!.uid
         viewModel = ProfileViewModel(profileContentsListner: ProfileContentsDefaultListner(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
+        headerView.setupHeaderView(roomID: passedDocumentID, passedUid: passedModerator, titleName: titleName, vc: self)
         createProfileTableView()
-        setUpEditButton()
+//        setUpEditButton()
         emptyCheck()
         
         let refleshControl = UIRefreshControl()
@@ -71,9 +72,9 @@ final class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchUserInfo()
-        fetchPostCount()
-        fetchLikeCount()
+//        fetchUserInfo()
+//        fetchPostCount()
+//        fetchLikeCount()
     }
     
     
@@ -104,43 +105,43 @@ final class ProfileViewController: UIViewController {
     
     
     private func setUpEditButton(){
-        let uid = Auth.auth().currentUser!.uid
-        if passedModerator == uid {
-            headerView.profileEditButton.isHidden = true
-            headerView.hostProfileEditButton.addTarget(self, action: #selector(self.pushProfileEditButton), for: .touchUpInside)
-            headerView.roomEditButton.addTarget(self, action: #selector(self.pushRoomEditButton), for: .touchUpInside)
-        }else{
-            headerView.profileEditButton.addTarget(self, action: #selector(self.pushProfileEditButton), for: .touchUpInside)
-            headerView.editButtonStackView.isHidden = true
+//        let uid = Auth.auth().currentUser!.uid
+//        if passedModerator == uid {
+//            headerView.profileEditButton.isHidden = true
+//            headerView.hostProfileEditButton.addTarget(self, action: #selector(self.pushProfileEditButton), for: .touchUpInside)
+//            headerView.roomEditButton.addTarget(self, action: #selector(self.pushRoomEditButton), for: .touchUpInside)
+//        }else{
+//            headerView.profileEditButton.addTarget(self, action: #selector(self.pushProfileEditButton), for: .touchUpInside)
+//            headerView.editButtonStackView.isHidden = true
             
-        }
+//        }
     }
     
     
     
     
-    @objc private func pushProfileEditButton(){
-        let editVC = storyboard?.instantiateViewController(identifier: "editVC") as! ProfileEditViewController
-        editVC.passedRoomName = titleName.text ?? ""
-        editVC.passedDocumentID = passedDocumentID
-        editVC.passedUserImage = self.userInfo?.userImage ?? ""
-        editVC.passedUserName = self.userInfo?.userName ?? ""
-        editVC.hidesBottomBarWhenPushed = true
-        present(editVC, animated: true, completion: nil)
-    }
+//    @objc private func pushProfileEditButton(){
+//        let editVC = storyboard?.instantiateViewController(identifier: "editVC") as! ProfileEditViewController
+//        editVC.passedRoomName = titleName.text ?? ""
+//        editVC.passedDocumentID = passedDocumentID
+//        editVC.passedUserImage = self.userInfo?.userImage ?? ""
+//        editVC.passedUserName = self.userInfo?.userName ?? ""
+//        editVC.hidesBottomBarWhenPushed = true
+//        present(editVC, animated: true, completion: nil)
+//    }
+//
     
     
     
-    
-    @objc private func pushRoomEditButton(){
-        let roomEditVC = storyboard?.instantiateViewController(identifier: "editRoom") as! RoomEditViewController
-        roomEditVC.passedRoomName = titleName.text ?? ""
-        roomEditVC.passedRoomImage = self.userInfo?.roomImage ?? ""
-        roomEditVC.passedDocumentID = passedDocumentID
-        roomEditVC.hidesBottomBarWhenPushed = true
-        present(roomEditVC, animated: true, completion: nil)
-    }
-    
+//    @objc private func pushRoomEditButton(){
+//        let roomEditVC = storyboard?.instantiateViewController(identifier: "editRoom") as! RoomEditViewController
+//        roomEditVC.passedRoomName = titleName.text ?? ""
+//        roomEditVC.passedRoomImage = self.userInfo?.roomImage ?? ""
+//        roomEditVC.passedDocumentID = passedDocumentID
+//        roomEditVC.hidesBottomBarWhenPushed = true
+//        present(roomEditVC, animated: true, completion: nil)
+//    }
+//    
     
     
     
@@ -242,38 +243,38 @@ final class ProfileViewController: UIViewController {
     
     
     
-    private func fetchPostCount(){
-        Firestore.fetchPostCount(roomID: passedDocumentID) { postCount in
-            self.headerView.postCountLabel.text = postCount.postCount.description
-        }
-    }
+//    private func fetchPostCount(){
+//        Firestore.fetchPostCount(roomID: passedDocumentID) { postCount in
+//            self.headerView.postCountLabel.text = postCount.postCount.description
+//        }
+//    }
+//
+//
+//
+//
+//
+//    private func fetchLikeCount(){
+//        Firestore.fetchLikeCount(roomID: passedDocumentID) { likeCount in
+//            self.headerView.likeCountLabel.text = likeCount.likeCount.description
+//        }
+//    }
     
     
     
     
-    
-    private func fetchLikeCount(){
-        Firestore.fetchLikeCount(roomID: passedDocumentID) { likeCount in
-            self.headerView.likeCountLabel.text = likeCount.likeCount.description
-        }
-    }
-    
-    
-    
-    
-    private func fetchUserInfo(){
-        Firestore.fetchUserInfo(roomID: passedDocumentID) { userInfo in
-            self.userInfo = userInfo
-            self.titleName.adjustsFontSizeToFitWidth = true
-            self.titleName.minimumScaleFactor = 0.9
-            self.titleName.text = userInfo.roomName
-            self.headerView.userNameLabel.text = userInfo.userName
-            if userInfo.userImage != "" {
-                self.headerView.userImageView.sd_setImage(with: URL(string: userInfo.userImage), completed: nil)
-                self.headerView.personImageView.image = UIImage()
-            }
-        }
-    }
+//    private func fetchUserInfo(){
+//        Firestore.fetchUserInfo(roomID: passedDocumentID) { userInfo in
+//            self.userInfo = userInfo
+//            self.titleName.adjustsFontSizeToFitWidth = true
+//            self.titleName.minimumScaleFactor = 0.9
+//            self.titleName.text = userInfo.roomName
+//            self.headerView.userNameLabel.text = userInfo.userName
+//            if userInfo.userImage != "" {
+//                self.headerView.userImageView.sd_setImage(with: URL(string: userInfo.userImage), completed: nil)
+//                self.headerView.personImageView.image = UIImage()
+//            }
+//        }
+//    }
     
     
     

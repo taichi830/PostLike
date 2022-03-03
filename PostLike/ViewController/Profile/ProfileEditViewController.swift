@@ -28,11 +28,12 @@ final class ProfileEditViewController: UIViewController {
     
     
     private var updatedUserImage = UIImage()
-    private var roomDetailInfo:Contents?
-    var passedRoomName = String()
-    var passedDocumentID = String()
-    var passedUserName = String()
-    var passedUserImage = String()
+    var passedUserInfo = Contents(dic: [:])
+//    private var roomDetailInfo:Contents?
+//    var passedRoomName = String()
+//    var passedDocumentID = String()
+//    var passedUserName = String()
+//    var passedUserImage = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,11 +54,11 @@ final class ProfileEditViewController: UIViewController {
     
     
     private func setProfile(){
-        if passedUserImage != "" {
-            userImage.sd_setImage(with: URL(string: passedUserImage), completed: nil)
+        if passedUserInfo.userImage != "" {
+            userImage.sd_setImage(with: URL(string: passedUserInfo.userImage), completed: nil)
             personView.image = UIImage()
         }
-        userNameEditLabel.text = passedUserName
+        userNameEditLabel.text = passedUserInfo.userName
     }
     
     
@@ -98,7 +99,7 @@ final class ProfileEditViewController: UIViewController {
     @IBAction private func changeButton(_ sender: Any) {
         startIndicator()
         if updatedUserImage == UIImage() {
-            updateProfile(userImageUrl: self.passedUserImage)
+            updateProfile(userImageUrl: self.passedUserInfo.userImage)
         }else{
             createUserStrage()
         }
@@ -108,7 +109,7 @@ final class ProfileEditViewController: UIViewController {
     
     private func updateProfile(userImageUrl:String){
         let dic = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
-        Firestore.updateProfileInfo(dic: dic, roomID: passedDocumentID) { bool in
+        Firestore.updateProfileInfo(dic: dic, roomID: passedUserInfo.documentID) { bool in
             if bool == false {
                 let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
                     self.dismissIndicator()
@@ -118,8 +119,8 @@ final class ProfileEditViewController: UIViewController {
             }else{
                 print("firestoreへの保存に成功しました。")
                 self.dismiss(animated: true) {
-                    if self.passedUserImage != "" {
-                        Storage.deleteStrage(roomImageUrl: self.passedUserImage)
+                    if self.passedUserInfo.userImage != "" {
+                        Storage.deleteStrage(roomImageUrl: self.passedUserInfo.userImage)
                     }
                 }
             }

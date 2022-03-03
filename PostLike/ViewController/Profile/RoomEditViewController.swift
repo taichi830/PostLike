@@ -24,11 +24,12 @@ final class RoomEditViewController: UIViewController {
     @IBOutlet private weak var callAlubmButtonBackView: UIView!
     
     
-    var passedRoomName = String()
-    var passedRoomImage = String()
-    var passedDocumentID = String()
+//    var passedRoomName = String()
+//    var passedRoomImage = String()
+//    var passedDocumentID = String()
     var updatedRoomImage = UIImage()
-    var roomInfo:Room?
+//    var roomInfo:Room?
+    var passedUserInfo = Contents(dic: [:])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,8 +49,15 @@ final class RoomEditViewController: UIViewController {
         completeButton.layer.cornerRadius = 23
         
         
+        self.introTextView.text = passedUserInfo.roomIntro
+        self.roomTextField.text = passedUserInfo.roomName
+        if passedUserInfo.roomImage != "" {
+            self.roomImage.sd_setImage(with: URL(string: passedUserInfo.roomImage), completed: nil)
+        }
         
-        fetchRoomIntro()
+        
+        
+//        fetchRoomIntro()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -59,16 +67,16 @@ final class RoomEditViewController: UIViewController {
     
     
     
-    private func fetchRoomIntro(){
-        Firestore.fetchRoomInfo(roomID: passedDocumentID) { roomInfo in
-            self.roomInfo = roomInfo
-            self.introTextView.text = roomInfo?.roomIntro
-            self.roomTextField.text = roomInfo?.roomName
-            if roomInfo?.roomImage != "" {
-                self.roomImage.sd_setImage(with: URL(string: roomInfo?.roomImage ?? ""), completed: nil)
-            }
-        }
-    }
+//    private func fetchRoomIntro(){
+//        Firestore.fetchRoomInfo(roomID: passedDocumentID) { roomInfo in
+//            self.roomInfo = roomInfo
+//            self.introTextView.text = roomInfo?.roomIntro
+//            self.roomTextField.text = roomInfo?.roomName
+//            if roomInfo?.roomImage != "" {
+//                self.roomImage.sd_setImage(with: URL(string: roomInfo?.roomImage ?? ""), completed: nil)
+//            }
+//        }
+//    }
     
     
 
@@ -110,7 +118,7 @@ final class RoomEditViewController: UIViewController {
         Storage.addRoomImageToStrage(roomImage: updatedRoomImage, self: self) { urlString in
             let dic = ["roomImage":urlString,"roomName":self.roomTextField.text ?? "","roomIntro":self.introTextView.text ?? ""] as [String:Any]
             let batch = Firestore.firestore().batch()
-            Firestore.updateRoomInfo(dic: dic, roomID: self.passedDocumentID, batch: batch)
+            Firestore.updateRoomInfo(dic: dic, roomID: self.passedUserInfo.documentID, batch: batch)
             batch.commit { err in
                 if let err = err {
                     print("err:",err)
@@ -122,7 +130,7 @@ final class RoomEditViewController: UIViewController {
                 }else{
                     self.dismiss(animated: true) {
                         if urlString != "" {
-                            Storage.deleteStrage(roomImageUrl: self.roomInfo?.roomImage ?? "")
+                            Storage.deleteStrage(roomImageUrl: self.passedUserInfo.roomImage)
                         }
                     }
                 }
@@ -139,8 +147,11 @@ final class RoomEditViewController: UIViewController {
         startIndicator()
         if updatedRoomImage == UIImage() {
             let batch = Firestore.firestore().batch()
-            let dic = ["roomImage":roomInfo?.roomImage ?? "","roomName":self.roomTextField.text ?? "","roomIntro":self.introTextView.text ?? ""] as [String:Any]
-            Firestore.updateRoomInfo(dic: dic, roomID: passedDocumentID, batch: batch)
+            let dic = [
+                "roomImage":passedUserInfo.roomImage,
+                "roomName":self.roomTextField.text ?? "",
+                "roomIntro":self.introTextView.text ?? ""] as [String:Any]
+            Firestore.updateRoomInfo(dic: dic, roomID: passedUserInfo.documentID, batch: batch)
             batch.commit { err in
                 if err != nil{
                     let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
