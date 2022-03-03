@@ -8,6 +8,7 @@
 
 import UIKit
 import DKImagePickerController
+import RxSwift
 import FirebaseFirestore
 import Firebase
 
@@ -25,6 +26,9 @@ final class CreateProfileModalViewController: UIViewController {
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
     var passedUserInfo = Contents(dic: [:])
     var passedRoomInfo = Room(dic: [:])
+    private var viewModel: CreateProfileViewModel!
+    private let disposeBag = DisposeBag()
+    
     
     
     
@@ -34,6 +38,7 @@ final class CreateProfileModalViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         profileImageView.layer.cornerRadius = 60
         profileImageView.sd_setImage(with: URL(string: passedUserInfo.userImage), completed: nil)
@@ -57,7 +62,43 @@ final class CreateProfileModalViewController: UIViewController {
         
         
         clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.viewDidTouch)))
+        
+        
+        setupBinds()
     }
+    
+    
+    
+    
+    private func setupBinds() {
+        viewModel = CreateProfileViewModel(input: (createButtonTap: doneButton.rx.tap.asSignal(), userName: userNameTextField.rx.text.orEmpty.asDriver()), roomInfo: passedRoomInfo, createProfile: CreateProfile())
+        viewModel.isValidTap
+            .drive { [weak self] bool in
+                self?.doneButton.backgroundColor = bool ? .red : .systemGray5
+                self?.doneButton.isEnabled = bool
+            }
+            .disposed(by: disposeBag)
+        //完了通知を受け取る
+        viewModel.isCompleted
+            .drive { [weak self] bool in
+                if bool == true {
+                    self?.dismiss(animated: true, completion: nil)
+                }
+            }
+            .disposed(by: disposeBag)
+        //エラー通知を受け取る
+        viewModel.errorDriver
+            .drive { [weak self] err in
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self?.dismissIndicator()
+                }
+                self?.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+            }
+        
+    }
+    
+    
+    
     
     
     
@@ -70,9 +111,10 @@ final class CreateProfileModalViewController: UIViewController {
         imagePickerController.showsCancelButton = true
         imagePickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
-                asset.fetchFullScreenImage(completeBlock: { (image, info) in
-                    self.profileImageView.image = image
-                    self.personImageView.image = UIImage()
+                asset.fetchFullScreenImage(completeBlock: { [weak self] (image, info) in
+                    self?.profileImageView.image = image
+                    self?.personImageView.image = UIImage()
+                    self?.viewModel.userImageSubject.onNext(image ?? UIImage())
                 })
             }
         }
@@ -84,19 +126,6 @@ final class CreateProfileModalViewController: UIViewController {
     
     
     
-    
-    @IBAction private func done(_ sender: Any) {
-        modalIndicator(view: self.view)
-        if profileImageView.image == nil {
-            createProfileDelegate?.joinRoomBatch({
-                self.dismiss(animated: true, completion: nil)
-            }, userName: userNameTextField.text!)
-        }else{
-            createProfileDelegate?.createStrageWithBatch({
-                self.dismiss(animated: true, completion: nil)
-            }, userName: userNameTextField.text!, profileImageView: profileImageView)
-        }
-    }
     
     
     @objc private func viewDidTouch(_ sender: UITapGestureRecognizer) {
@@ -153,18 +182,6 @@ extension CreateProfileModalViewController:UITextFieldDelegate{
         }
     }
     
-    
-    
-    
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        if userNameTextField.text?.isEmpty == true {
-            doneButton.isEnabled = false
-            doneButton.backgroundColor = .systemGray5
-        }else{
-            doneButton.isEnabled = true
-            doneButton.backgroundColor = .systemRed
-        }
-    }
     
     
     

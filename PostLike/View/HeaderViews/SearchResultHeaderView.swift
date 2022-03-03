@@ -140,6 +140,7 @@ final class SearchResultHeaderView: UIView {
                     let storyboard = UIStoryboard(name: "Search", bundle: nil)
                     let modalVC = storyboard.instantiateViewController(withIdentifier: "modal") as! CreateProfileModalViewController
                     modalVC.passedUserInfo = userInfo
+                    modalVC.passedRoomInfo = self.roomInfo ?? Room(dic: [:])
                     modalVC.modalPresentationStyle = .custom
                     modalVC.transitioningDelegate = vc as? UIViewControllerTransitioningDelegate
                     vc.present(modalVC, animated: true, completion: nil)
