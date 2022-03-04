@@ -99,6 +99,7 @@
 		CE9A933227CF5EB500D86009 /* CreateProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A933127CF5EB500D86009 /* CreateProfile.swift */; };
 		CE9A933427CF911900D86009 /* CreateProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A933327CF911900D86009 /* CreateProfileViewModel.swift */; };
 		CE9A933627D0AE7700D86009 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A933527D0AE7700D86009 /* ProfileHeaderViewModel.swift */; };
+		CE9A933827D1B27200D86009 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A933727D1B27200D86009 /* HomeViewModel.swift */; };
 		CEA19BED26D631C800283E91 /* Array-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BEC26D631C800283E91 /* Array-Extenshion.swift */; };
 		CEA19BEF26D7D0D500283E91 /* RoomHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */; };
 		CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA19BF026D7D70900283E91 /* InitialViewController.swift */; };
@@ -243,6 +244,7 @@
 		CE9A933127CF5EB500D86009 /* CreateProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfile.swift; sourceTree = "<group>"; };
 		CE9A933327CF911900D86009 /* CreateProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileViewModel.swift; sourceTree = "<group>"; };
 		CE9A933527D0AE7700D86009 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
+		CE9A933727D1B27200D86009 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		CEA19BEC26D631C800283E91 /* Array-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array-Extenshion.swift"; sourceTree = "<group>"; };
 		CEA19BEE26D7D0D500283E91 /* RoomHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomHeaderView.xib; sourceTree = "<group>"; };
 		CEA19BF026D7D70900283E91 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
@@ -490,6 +492,7 @@
 				CEE256C527CE8B9D007BF9E6 /* ProfileViewModel.swift */,
 				CE9A933327CF911900D86009 /* CreateProfileViewModel.swift */,
 				CE9A933527D0AE7700D86009 /* ProfileHeaderViewModel.swift */,
+				CE9A933727D1B27200D86009 /* HomeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1019,6 +1022,7 @@
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
 				CED4902126ED024900582742 /* ShowIndicator-Extenshion.swift in Sources */,
 				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
+				CE9A933827D1B27200D86009 /* HomeViewModel.swift in Sources */,
 				CE012C1D26B6EFD4006CC20E /* EnteredRoomContentViewController.swift in Sources */,
 				CEA2EAC127B408C8000AD484 /* NotificationListner.swift in Sources */,
 				CE012C1E26B6EFD4006CC20E /* CustomRefreshController.swift in Sources */,
