@@ -145,17 +145,6 @@ final class FeedViewModel {
     
     
     
-    func removeLike(content: Contents) {
-        var likes = self.likesRelay.value
-        likes.removeAll { like in
-            like.documentID == content.documentID
-        }
-        self.likesRelay.accept(likes)
-    }
-   
-    
-    
-    
     
     
     

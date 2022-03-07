@@ -19,9 +19,10 @@ final class FeedTableViewModel {
     
     init(likeButtonTap: Signal<()>, createLikes: CreateLikes, content: Contents, userInfoListner: UserListner, roomID: String) {
         
-        let userInfoListner = userInfoListner.createUserListner(roomID: roomID)
-        let userInfo = userInfoListner
+        let userInfo = userInfoListner.createUserListner(roomID: roomID)
             .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+        
+        
         isJoined = userInfo.asObservable()
             .map { userInfo -> Bool in
                 return userInfo.isJoined
@@ -31,11 +32,15 @@ final class FeedTableViewModel {
         
         likeButtonTap.asObservable()
             .withLatestFrom(userInfo)
-            .flatMapLatest { userInfo in
-                return createLikes.createLikes(content: content, userInfo: userInfo)
+            .flatMapLatest { userInfo -> Observable<Contents> in
+                if content.isLiked == true {
+                    return createLikes.deleteLikes(content: content, userInfo: userInfo)
+                }else {
+                    return createLikes.createLikes(content: content, userInfo: userInfo)
+                }
             }
-            .subscribe { bool in
-                
+            .subscribe { item in
+                LatestContentsSubject.shared.latestLikeContents.accept(item)
             }
             .disposed(by: disposedBag)
         

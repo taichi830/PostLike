@@ -171,6 +171,45 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
                 self?.timeLineTableView.reloadData()
             }
             .disposed(by: disposeBag)
+        
+        LatestContentsSubject.shared.latestLikeContents
+            .subscribe { [weak self] contents in
+                guard let element = contents.element else { return }
+                if element.isLiked == true {
+                    self?.likeContentsArray.append(element)
+                    self?.increaseLikeCount(element: element)
+                    self?.timeLineTableView.reloadData()
+                }else {
+                    self?.likeContentsArray.removeAll {
+                        $0.documentID == element.documentID
+                    }
+                    self?.decreaseLikeCount(element: element)
+                    self?.timeLineTableView.reloadData()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    private func increaseLikeCount(element: Contents) {
+        guard let i = tableViewItems.firstIndex(where: { ($0 as! Contents).documentID == element.documentID }) else { return }
+        if let timeLineContent = tableViewItems[safe: i] as? Contents{
+            var count = timeLineContent.likeCount
+            count += 1
+            timeLineContent.likeCount = count
+            timeLineContent.isLiked = true
+        }
+    }
+    
+    private func decreaseLikeCount(element: Contents) {
+        guard let i = tableViewItems.firstIndex(where: { ($0 as! Contents).documentID == element.documentID }) else { return }
+        if let timeLineContent = tableViewItems[safe: i] as? Contents{
+            var count = timeLineContent.likeCount
+            count -= 1
+            timeLineContent.likeCount = count
+            timeLineContent.isLiked = true
+        }
     }
     
     

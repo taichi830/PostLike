@@ -199,7 +199,6 @@ final class RoomDetailViewController: UIViewController {
     
     private func fetchContents(){
         
-        
         viewModel.items.drive { [weak self] contents in
             self?.contentsArray.removeAll()
             self?.contentsArray.append(contentsOf: contents)
@@ -213,10 +212,51 @@ final class RoomDetailViewController: UIViewController {
             self?.contentsTableView.reloadData()
         }
         .disposed(by: disposeBag)
+        
+        
+        LatestContentsSubject.shared.latestLikeContents
+            .subscribe { [weak self] contents in
+                guard let element = contents.element else { return }
+                if element.isLiked == true {
+                    self?.likeContentsArray.append(element)
+                    self?.increaseLikeCount(element: element)
+                    self?.contentsTableView.reloadData()
+                }else {
+                    self?.likeContentsArray.removeAll {
+                        $0.documentID == element.documentID
+                    }
+                    self?.decreaseLikeCount(element: element)
+                    self?.contentsTableView.reloadData()
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
+    
+    
+    private func increaseLikeCount(element: Contents) {
+        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
+            var count = contentsArray[i].likeCount
+            count += 1
+            contentsArray[i].likeCount = count
+            contentsArray[i].isLiked = true
+        }
+    }
+    
+    private func decreaseLikeCount(element: Contents) {
+        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
+            var count = contentsArray[i].likeCount
+            count -= 1
+            contentsArray[i].likeCount = count
+            contentsArray[i].isLiked = true
+        }
+    }
+    
+    
+    
+    
+    
 }
-
 
 
 
