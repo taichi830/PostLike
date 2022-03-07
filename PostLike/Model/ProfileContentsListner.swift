@@ -14,11 +14,10 @@ protocol ProfileContentsListner {
 }
 
 final class ProfileContentsDefaultListner: ProfileContentsListner {
-    private var listner: ListenerRegistration?
     func fetchProfilePosts(uid: String, roomID: String) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
-            self.listner = db.collection("users").document(uid).collection("rooms").document(roomID).collection("posts").order(by: "createdAt", descending: true).limit(to: 10).addSnapshotListener { (querySnapshot, err) in
+            db.collection("users").document(uid).collection("rooms").document(roomID).collection("posts").order(by: "createdAt", descending: true).limit(to: 10).getDocuments { (querySnapshot, err) in
                 if let err = err {
                     print("取得に失敗しました。\(err)")
                     observer.onError(err)
@@ -32,9 +31,7 @@ final class ProfileContentsDefaultListner: ProfileContentsListner {
                 }
                 observer.onNext(documents)
             }
-            return Disposables.create {
-                self.listner?.remove()
-            }
+            return Disposables.create()
         }
     }
     

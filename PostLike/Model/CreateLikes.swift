@@ -12,32 +12,50 @@ import Firebase
 import FirebaseFirestore
 
 protocol CreateLikes {
-    func createLikes(content: Contents, userInfo: Contents) -> Single<Bool>
+    func createLikes(content: Contents, userInfo: Contents) -> Observable<Contents>
+    func deleteLikes(content: Contents, userInfo: Contents) -> Observable<Contents>
 }
 
 final class CreateDefaultLikes: CreateLikes {
-    func createLikes(content: Contents, userInfo: Contents) -> Single<Bool> {
-        return Single.create { [weak self] single in
+    func deleteLikes(content: Contents, userInfo: Contents) -> Observable<Contents> {
+        return Observable.create { [weak self] observer in
             let myuid = Auth.auth().currentUser?.uid ?? ""
             let batch = Firestore.firestore().batch()
-            if content.isLiked == false {
-                self?.createLikeContents(content: content, myuid: myuid, batch: batch)
-                self?.updateLikeCount(content: content, myuid: myuid, batch: batch)
-                self?.giveNotification(content: content, myuid: myuid, userInfo: userInfo, batch: batch)
-            }else {
-                self?.deleteNotification(content: content, myuid: myuid, batch: batch)
-                self?.deleteLikeContents(content: content, batch: batch)
-                self?.deleteLikeCount(content: content, myuid: myuid, batch: batch)
-            }
+            self?.deleteNotification(content: content, myuid: myuid, batch: batch)
+            self?.deleteLikeContents(content: content, batch: batch)
+            self?.deleteLikeCount(content: content, myuid: myuid, batch: batch)
             batch.commit { err in
                 if let err = err {
                     print("err:", err)
-                    single(.failure(err))
+                    observer.onError(err)
                     return
                 }
-                single(.success(true))
+                observer.onNext(content)
+                observer.onCompleted()
             }
             
+            return Disposables.create()
+        }
+    }
+    
+    
+    
+    func createLikes(content: Contents, userInfo: Contents) -> Observable<Contents> {
+        return Observable.create { [weak self] observer in
+            let myuid = Auth.auth().currentUser?.uid ?? ""
+            let batch = Firestore.firestore().batch()
+            self?.createLikeContents(content: content, myuid: myuid, batch: batch)
+            self?.updateLikeCount(content: content, myuid: myuid, batch: batch)
+            self?.giveNotification(content: content, myuid: myuid, userInfo: userInfo, batch: batch)
+            batch.commit { err in
+                if let err = err {
+                    print("err:", err)
+                    observer.onError(err)
+                    return
+                }
+                observer.onNext(content)
+                observer.onCompleted()
+            }
             return Disposables.create()
         }
     }

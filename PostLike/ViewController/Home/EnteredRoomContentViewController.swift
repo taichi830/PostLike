@@ -40,12 +40,8 @@ final class EnteredRoomContentViewController: UIViewController{
     
     var passedDocumentID = String()
     private var messageLabel = MessageLabel()
-    private var roomInfo:Room?
     private var contentsArray = [Contents]()
     private var likeContentsArray = [Contents]()
-    private var joinedRoom:Contents?
-    private var lastDocument:QueryDocumentSnapshot?
-    private var lastLikeDocument:QueryDocumentSnapshot?
     private lazy var indicator:UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         indicator.center = roomImageView.center
@@ -177,9 +173,44 @@ final class EnteredRoomContentViewController: UIViewController{
             self?.contentsTableView.reloadData()
         }
         .disposed(by: disposeBag)
-
         
         
+        
+        LatestContentsSubject.shared.latestLikeContents
+            .subscribe { [weak self] contents in
+                guard let element = contents.element else { return }
+                if element.isLiked == true {
+                    self?.likeContentsArray.append(element)
+                    self?.increaseLikeCount(element: element)
+                    self?.contentsTableView.reloadData()
+                }else {
+                    self?.likeContentsArray.removeAll {
+                        $0.documentID == element.documentID
+                    }
+                    self?.decreaseLikeCount(element: element)
+                    self?.contentsTableView.reloadData()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    private func increaseLikeCount(element: Contents) {
+        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
+            var count = contentsArray[i].likeCount
+            count += 1
+            contentsArray[i].likeCount = count
+            contentsArray[i].isLiked = true
+        }
+    }
+    
+    private func decreaseLikeCount(element: Contents) {
+        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
+            var count = contentsArray[i].likeCount
+            count -= 1
+            contentsArray[i].likeCount = count
+            contentsArray[i].isLiked = true
+        }
     }
     
     
@@ -225,88 +256,6 @@ extension EnteredRoomContentViewController: UITableViewDelegate, UITableViewData
         cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self, modalType: .post)
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
         return cell
-    }
-}
-
-
-
-
-
-extension EnteredRoomContentViewController:TableViewCellDelegate {
-    func pushedCommentButton(row: Int) {
-        
-    }
-    
-    func reportButton(row: Int) {
-//        let modalMenuVC = storyboard!.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
-//        modalMenuVC.modalPresentationStyle = .custom
-//        modalMenuVC.transitioningDelegate = self
-//        modalMenuVC.passedDocumentID = contentsArray[row].documentID
-//        modalMenuVC.passedRoomID = contentsArray[row].roomID
-//        modalMenuVC.passedUid = contentsArray[row].uid
-//        modalMenuVC.passedViewController = self
-//        modalMenuVC.passedType = "post"
-//        present(modalMenuVC, animated: true, completion: nil)
-    }
-    
-    func tappedPostImageView(row: Int) {
-//        let showImageVC = storyboard?.instantiateViewController(identifier: "showImage") as! ShowImageViewController
-//        showImageVC.passedMedia = contentsArray[row].mediaArray
-//        showImageVC.passedUid = contentsArray[row].uid
-//        showImageVC.passedText = contentsArray[row].text
-//        showImageVC.passedRoomID = contentsArray[row].roomID
-//        showImageVC.passedDocumentID = contentsArray[row].documentID
-//        showImageVC.passedUserName = contentsArray[row].userName
-//        showImageVC.passedUserImage = contentsArray[row].userImage
-//        present(showImageVC, animated: true, completion: nil)
-    }
-    
-    func pushLikeButton(row: Int, sender: UIButton, countLabel: UILabel) {
-//        if sender.tintColor == UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)  {
-//            sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-//            sender.tintColor = .red
-//            likeBatch(row:row)
-//            var count = Int(contentsArray[row].likeCount)
-//            count += 1
-//            countLabel.text = count.description
-//            contentsArray[row].likeCount = count
-//
-//        }else if sender.tintColor == .red {
-//            sender.setImage(UIImage(systemName: "heart"), for: .normal)
-//            sender.tintColor = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)
-//            deleteLikeBatch(row: row)
-//            self.likeContentsArray.removeAll(where: {$0.documentID == contentsArray[row].documentID})
-//            var count = Int(countLabel.text!)!
-//            if count >= 1{
-//                count -= 1
-//                countLabel.text = count.description
-//                contentsArray[row].likeCount = count
-//            }
-//        }
-    }
-    
-}
-
-
-
-
-
-
-
-extension EnteredRoomContentViewController:RemoveContentsDelegate{
-    func removeMutedContent(documentID:String) {
-//        self.contentsArray.removeAll { content in
-//            return content.documentID == documentID
-//        }
-//        self.contentsTableView.reloadData()
-    }
-    
-    
-    func removeBlockedUserContents(uid:String,roomID:String){
-//        self.contentsArray.removeAll { content in
-//            return content.uid == uid && content.roomID == roomID
-//        }
-//        self.contentsTableView.reloadData()
     }
 }
 
