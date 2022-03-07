@@ -157,6 +157,15 @@ final class ProfileViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        
+        LatestContentsSubject.shared.latestFeedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.insert(element, at: 0)
+                self?.profileTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
     }
     
     

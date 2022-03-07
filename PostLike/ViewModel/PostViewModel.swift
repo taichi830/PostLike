@@ -20,7 +20,7 @@ final class PostViewModel {
     
     var validPostSubject = BehaviorSubject<Bool>.init(value: false)
     var validAddImageSubject = BehaviorSubject<Bool>.init(value: true)
-    var postCompletedSubject = BehaviorSubject<Bool>.init(value: true)
+    var postCompletedSubject = PublishSubject<Bool>()
     var imageArrayCountSubject = BehaviorSubject<Int>.init(value: 0)
     
     
@@ -35,6 +35,8 @@ final class PostViewModel {
     var validAddImageDriver:Driver<Bool> = Driver.never()
     var postedDriver:Driver<Bool> = Driver.never()
     var imageCountDriver:Driver<Int> = Driver.never()
+    
+    var latestContent: Driver<Contents> = Driver.never()
     
     
     
@@ -152,6 +154,18 @@ final class PostViewModel {
     }
     
     
+    
+    
+    
+    
+    func fetchMyLatestPost(feedListner: FeedContentsListner ,roomID:String) {
+        feedListner.fetchMyLatestPost(roomID: roomID)
+            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
+            .subscribe{ content in
+                LatestContentsSubject.shared.latestFeedContents.accept(content)
+            }
+            .disposed(by: disposeBag)
+    }
     
     
     

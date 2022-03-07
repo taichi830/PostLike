@@ -230,6 +230,16 @@ final class RoomDetailViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        
+        
+        LatestContentsSubject.shared.latestFeedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.insert(element, at: 0)
+                self?.contentsTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
     }
     
     
