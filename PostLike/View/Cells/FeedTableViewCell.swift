@@ -35,11 +35,13 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     weak var tableViewCellDelegate:TableViewCellDelegate?
     private var disposeBag = DisposeBag()
     private var viewModel: FeedTableViewModel!
+    private var feedViewModel: FeedViewModel!
     
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         
         self.selectionStyle = .none
         
@@ -177,7 +179,37 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
         didTapCommentButton(content: content, vc: vc)
         didTapPhotos(content: content, vc: vc)
         didTapDotsButton(content: content, vc: vc, modalType: modalType)
+        didTapLikeButton(content: content)
         
+    }
+    
+    
+    private func didTapLikeButton(content: Contents) {
+        likeButton.rx.tap
+            .subscribe { [weak self] _ in
+                var count = content.likeCount
+                if content.isLiked == false {
+                    count += 1
+                    content.isLiked = true
+                    content.likeCount = count
+                    self?.likeCountLabel.text = count.description
+                    self?.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                    self?.likeButton.tintColor = .red
+
+                } else {
+                    count -= 1
+                    if count >= 0 {
+                        content.isLiked = false
+                        content.likeCount = count
+                        self?.likeCountLabel.text = count.description
+                        self?.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                        self?.likeButton.tintColor = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)
+                        
+                    }
+                }
+                
+            }
+            .disposed(by: disposeBag)
     }
     
     

@@ -16,7 +16,7 @@ protocol LikeListner {
 }
 
 final class LikeDefaultListner: LikeListner {
-    private var listner: ListenerRegistration?
+//    private var listner: ListenerRegistration?
     func fetchLikes(contents: [Contents]) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
@@ -24,7 +24,7 @@ final class LikeDefaultListner: LikeListner {
             let documentIDs = contents.map { Contents -> String in
                 return Contents.documentID
             }
-            self.listner = db.collection("users").document(uid).collection("likes").whereField("documentID", in: documentIDs).limit(to: 10).addSnapshotListener { querySnapshot, err in
+            db.collection("users").document(uid).collection("likes").whereField("documentID", in: documentIDs).limit(to: 10).getDocuments { querySnapshot, err in
                 if let err = err {
                     observer.onError(err)
                     return
@@ -36,12 +36,13 @@ final class LikeDefaultListner: LikeListner {
                     return like
                 }
                 observer.onNext(likes)
-                
+                observer.onCompleted()
             }
             
-            return Disposables.create {
-                self.listner?.remove()
-            }
+            return Disposables.create()
+//            {
+////                self.listner?.remove()
+//            }
         }
     }
     
