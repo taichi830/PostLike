@@ -67,6 +67,7 @@
 		CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */; };
 		CE2E27DF276A3AFB002D0E41 /* AccountSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */; };
 		CE2E27E1276AD36E002D0E41 /* NavigationController-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */; };
+		CE369F5327D59B3A0013EAE2 /* LatestContentsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */; };
 		CE3F4DCA27AFEC5500780BEE /* InputCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */; };
 		CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */; };
 		CE3F4DCE27B032D200780BEE /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCD27B032D200780BEE /* CommentViewModel.swift */; };
@@ -192,6 +193,7 @@
 		CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingViewController.swift; sourceTree = "<group>"; };
 		CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationController-Extenshion.swift"; sourceTree = "<group>"; };
 		CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-Extenshion.swift"; sourceTree = "<group>"; };
+		CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestContentsSubject.swift; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
 		CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCommentViewModel.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				CE9A933327CF911900D86009 /* CreateProfileViewModel.swift */,
 				CE9A933527D0AE7700D86009 /* ProfileHeaderViewModel.swift */,
 				CE9A933727D1B27200D86009 /* HomeViewModel.swift */,
+				CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1074,6 +1077,7 @@
 				CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */,
 				CE54339827CC97CE00A1A786 /* ReportTableViewCell.swift in Sources */,
 				CE9A933427CF911900D86009 /* CreateProfileViewModel.swift in Sources */,
+				CE369F5327D59B3A0013EAE2 /* LatestContentsSubject.swift in Sources */,
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
 				CE79ED3627A2E78C0047ABEF /* PostPreViewTableViewCell.swift in Sources */,
 				CEFAC3882772CB8E00739549 /* Storage.swift in Sources */,
