@@ -10,8 +10,13 @@ import RxSwift
 import RxCocoa
 
 final class FeedTableViewModel {
+    
+    
     private let disposedBag = DisposeBag()
     let isJoined: Driver<Bool>
+    
+    
+    
     init(likeButtonTap: Signal<()>, createLikes: CreateLikes, content: Contents, userInfoListner: UserListner, roomID: String) {
         
         let userInfoListner = userInfoListner.createUserListner(roomID: roomID)
@@ -30,7 +35,7 @@ final class FeedTableViewModel {
                 return createLikes.createLikes(content: content, userInfo: userInfo)
             }
             .subscribe { bool in
-                print("bool", bool)
+                
             }
             .disposed(by: disposedBag)
         
