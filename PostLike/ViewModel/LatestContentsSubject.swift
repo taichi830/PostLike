@@ -9,13 +9,13 @@
 import RxSwift
 import RxCocoa
 
-class LatestContentsSubject {
+final class LatestContentsSubject: NSObject {
     
     static let shared = LatestContentsSubject()
     
     let latestFeedContents = PublishRelay<Contents>()
     let latestLikeContents = PublishRelay<Contents>()
-    
+    let deletedContents = PublishRelay<Contents>()
     
     
 }

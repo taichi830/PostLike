@@ -249,7 +249,9 @@ final class ModalMenuViewController: UIViewController{
                 let alert = UIAlertController(title: "投稿を削除", message: "本当に投稿を削除してもよろしいですか？", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
                     self?.deletePostBatch(documentID: self?.passedContent.documentID ?? "", imageUrl: self?.passedContent.mediaArray ?? [""])
-                    self?.dismiss(animated: true,completion: nil)
+                    self?.dismiss(animated: true,completion: {
+                        LatestContentsSubject.shared.deletedContents.accept(self!.passedContent)
+                    })
                 }))
                 alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
                 self?.present(alert, animated: true, completion: nil)

@@ -166,6 +166,17 @@ final class ProfileViewController: UIViewController {
                 self?.profileTableView.reloadData()
             }
             .disposed(by: disposeBag)
+        
+        
+        LatestContentsSubject.shared.deletedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.removeAll {
+                    $0.documentID == element.documentID
+                }
+                self?.profileTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
     }
     
     
