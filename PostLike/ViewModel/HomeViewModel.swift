@@ -20,12 +20,12 @@ final class HomeViewModel {
     
     
     var itemsSubject = BehaviorRelay<[Contents]>.init(value: [])
-    let feeds: Driver<[Contents]>
+    var feeds: Driver<[Contents]> = Driver.never()
     let isFeedEmpty: Driver<Bool>
     
     
     var likeRelay = BehaviorRelay<[Contents]>.init(value: [])
-    let likes: Driver<[Contents]>
+    var likes: Driver<[Contents]> = Driver.never()
     
     
     var isBottomSubject = BehaviorSubject<Bool>.init(value: false)
@@ -36,6 +36,8 @@ final class HomeViewModel {
     
     
     init(roomListner: RoomListner, feedListner: FeedContentsListner, likeListner: LikeListner, reportListner: ReportListner) {
+        
+        
         rooms = roomListner.fetchRooms()
             .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: [])
@@ -50,50 +52,27 @@ final class HomeViewModel {
         
         
         
-        let moderatorFeedsDocumentIDs = feedListner.fetchModeratorFeedsDocumentIDs()
+        
+        let fetchFeedContents = feedListner.fetchModeratorFeedsDocumentIDs()
             .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
         
-        isFeedEmpty = moderatorFeedsDocumentIDs.asObservable()
+        //空チェック
+        isFeedEmpty = fetchFeedContents.asObservable()
             .map { contents -> Bool in
                 return contents.isEmpty
             }
             .asDriver(onErrorJustReturn: true)
         
-        
-        feeds = itemsSubject.asDriver(onErrorJustReturn: [])
-        likes = likeRelay.asDriver(onErrorJustReturn: [])
-
-        
-        moderatorFeedsDocumentIDs.asObservable()
-            .concatMap { contents -> Observable<[Contents]> in
-                return feedListner.fetchModeratorPosts(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
-            }
+        //いいねした投稿とモデレーターの投稿を取得
+        fetchFeedContents
             .subscribe { [weak self] contents in
-                self?.itemsSubject.accept(contents)
+                guard let element = contents.element else { return }
+                self?.fetchLikes(likeListner: likeListner, contents: element)
+                self?.fetchModeratorPosts(feedListner: feedListner, contents: element)
             }
             .disposed(by: disposeBag)
         
-        
-        
-        moderatorFeedsDocumentIDs.asObservable()
-            .concatMap{ contents -> Observable<[Contents]> in
-                return likeListner.fetchLikes(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
-            }
-            .subscribe { [weak self] likes in
-                self?.likeRelay.accept(likes)
-            }
-            .disposed(by: disposeBag)
-        
-        
 
-
-        
-        
-        
-        
-        
         
         isBottomSubject.asObservable()
             .subscribe { [weak self] _ in
@@ -109,37 +88,42 @@ final class HomeViewModel {
     
     
     
+    private func fetchModeratorPosts(feedListner: FeedContentsListner, contents: [Contents]) {
+        let currentItems = self.itemsSubject.value
+        feeds = itemsSubject.asDriver(onErrorJustReturn: [])
+        feedListner.fetchModeratorPosts(contents: contents)
+            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
+            .subscribe { [weak self] contents in
+                self?.itemsSubject.accept(currentItems + contents)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    private func fetchLikes(likeListner: LikeListner, contents: [Contents]) {
+        let currentLikes = self.likeRelay.value
+        likes = likeRelay.asDriver(onErrorJustReturn: [])
+        likeListner.fetchLikes(contents: contents)
+            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
+            .subscribe { [weak self] likes in
+                self?.likeRelay.accept(currentLikes + likes)
+            }
+            .disposed(by: disposeBag)
+    }
     
     
     
     
     private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: LikeListner) {
-        let currentItems = self.itemsSubject.value
-        let fetchMoreModeratorPosts = feedListner.fetchMoreModeratorPosts()
-        let currentLikes = self.likeRelay.value
-        
-        
-        fetchMoreModeratorPosts.asObservable()
-            .concatMap{ contents -> Observable<[Contents]> in
-                return likeListner.fetchLikes(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
-            }
-            .subscribe { [weak self] likes in
-                self?.likeRelay.accept(currentLikes + likes)
-            }
-            .disposed(by: disposeBag)
-
-
-        fetchMoreModeratorPosts.asObservable()
-            .concatMap { contents -> Observable<[Contents]> in
-                return feedListner.fetchModeratorPosts(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
-            }
+        feedListner.fetchMoreModeratorPosts()
             .subscribe { [weak self] contents in
-                self?.itemsSubject.accept(currentItems + contents)
+                guard let element = contents.element else { return }
+                self?.fetchModeratorPosts(feedListner: feedListner, contents: element)
+                self?.fetchLikes(likeListner: likeListner, contents: element)
             }
             .disposed(by: disposeBag)
-
     }
     
     
