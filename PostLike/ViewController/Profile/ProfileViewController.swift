@@ -108,6 +108,7 @@ final class ProfileViewController: UIViewController {
             modalMenuVC.passedModalType = .moderator
         }else{
             modalMenuVC.passedModalType = .exit
+            modalMenuVC.exitRoomDelegate = self
         }
         present(modalMenuVC, animated: true, completion: nil)
     }
@@ -284,32 +285,32 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
 
 
 
-////MARK: ルーム退出時のデリゲート処理
-//extension ProfileViewController:ExitRoomDelegate{
-//
-//    func exitRoomBatch(){
-//        let batch = Firestore.firestore().batch()
-//        Firestore.exitRoom(documentID: passedDocumentID, batch: batch)
-//        Firestore.decreaseMemberCount(documentID: passedDocumentID, batch: batch)
-//        Firestore.deleteUidFromRoomMateList(documentID: passedDocumentID, batch: batch)
-//        batch.commit { err in
-//            if let err = err {
-//                print("false\(err)")
-//                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-//                    self.dismissIndicator()
-//                }
-//                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-//                return
-//            }else{
-//                self.navigationController?.popViewController(animated: true)
-//            }
-//        }
-//    }
+//MARK: ルーム退出時のデリゲート処理
+extension ProfileViewController:ExitRoomDelegate{
+
+    func exitRoomBatch(){
+        let batch = Firestore.firestore().batch()
+        Firestore.exitRoom(documentID: passedDocumentID, batch: batch)
+        Firestore.decreaseMemberCount(documentID: passedDocumentID, batch: batch)
+        Firestore.deleteUidFromRoomMateList(documentID: passedDocumentID, batch: batch)
+        batch.commit { err in
+            if let err = err {
+                print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                return
+            }else{
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
     
     
     
     
-//}
+}
 
 
 
