@@ -22,6 +22,9 @@ protocol FeedContentsListner {
 
 final class FeedContentsDefaultListner: FeedContentsListner {
     
+    private let limit:Int = 10
+    
+    
     func fetchMyLatestPost(roomID: String) -> Observable<Contents> {
         return Observable.create { observer in
             let uid = Auth.auth().currentUser?.uid ?? ""
@@ -49,7 +52,7 @@ final class FeedContentsDefaultListner: FeedContentsListner {
     func fetchFeedContents(roomID: String) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
-            db.collectionGroup("posts").whereField("roomID", isEqualTo: roomID).order(by: "createdAt", descending: true).limit(to: 10).getDocuments{ querySnapshot, err in
+            db.collectionGroup("posts").whereField("roomID", isEqualTo: roomID).order(by: "createdAt", descending: true).limit(to: self.limit).getDocuments{ querySnapshot, err in
                 if let err = err {
                     observer.onError(err)
                     return
@@ -60,6 +63,7 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                     let contents = Contents(dic: dic)
                     return contents
                 }
+                print("sssssssssssssssssssssssssssssssssssssss")
                 observer.onNext(contents)
                 observer.onCompleted()
             }
@@ -72,13 +76,13 @@ final class FeedContentsDefaultListner: FeedContentsListner {
         return Observable.create { observer in
             let db = Firestore.firestore()
             if let lastDocument = self.lastDocument {
-                db.collectionGroup("posts").whereField("roomID", isEqualTo: roomID).order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: 10).getDocuments { (querySnapshot, err) in
+                db.collectionGroup("posts").whereField("roomID", isEqualTo: roomID).order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: self.limit).getDocuments { (querySnapshot, err) in
                     if let err = err{
                         print("err:", err)
                         observer.onError(err)
                         return
                     }
-                    guard let querySnapshot = querySnapshot else{return}
+                    guard let querySnapshot = querySnapshot else { return }
                     let contents = querySnapshot.documents.map { snapshot -> Contents in
                         let dic = snapshot.data()
                         let content = Contents(dic: dic)
@@ -99,13 +103,11 @@ final class FeedContentsDefaultListner: FeedContentsListner {
     
     
     private var lastModeratorDocument: DocumentSnapshot?
-    
-    
     func fetchModeratorFeedsDocumentIDs() -> Observable<[Contents]> {
         return Observable.create { observer in
             let uid = Auth.auth().currentUser?.uid ?? ""
             let db = Firestore.firestore()
-            db.collection("users").document(uid).collection("feeds").order(by: "createdAt", descending: true).limit(to: 5).getDocuments { querySnapshot, err in
+            db.collection("users").document(uid).collection("feeds").order(by: "createdAt", descending: true).limit(to: self.limit).getDocuments { querySnapshot, err in
                 if let err = err {
                     print("err:", err)
                     observer.onError(err)
@@ -117,6 +119,7 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                     let contents = Contents(dic: dic)
                     return contents
                 }
+                print("sssssssssssssssssssssssssssssssssssssss")
                 self.lastModeratorDocument = lastDocument
                 observer.onNext(documents)
                 observer.onCompleted()
@@ -126,12 +129,14 @@ final class FeedContentsDefaultListner: FeedContentsListner {
     }
     
     
+    
+    
     func fetchMoreModeratorPosts() -> Observable<[Contents]> {
         return Observable.create { observer in
             let uid = Auth.auth().currentUser?.uid ?? ""
             let db = Firestore.firestore()
             if let lastDocument = self.lastModeratorDocument {
-                db.collection("users").document(uid).collection("feeds").order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: 5).getDocuments { querySnapshot, err in
+                db.collection("users").document(uid).collection("feeds").order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: self.limit).getDocuments { querySnapshot, err in
                     if let err = err {
                         print("err:", err)
                         observer.onError(err)
@@ -155,13 +160,15 @@ final class FeedContentsDefaultListner: FeedContentsListner {
     
     
     
+    
+    
     func fetchModeratorPosts(contents: [Contents]) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
             let documentIDs = contents.map {
                 $0.documentID
             }
-            db.collectionGroup("posts").whereField("documentID", in: documentIDs).order(by: "createdAt", descending: true).limit(to: 5).getDocuments { querySnapshot, err in
+            db.collectionGroup("posts").whereField("documentID", in: documentIDs).order(by: "createdAt", descending: true).limit(to: self.limit).getDocuments { querySnapshot, err in
                 if let err = err {
                     print("情報の取得に失敗しました。\(err)")
                     return

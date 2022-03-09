@@ -32,7 +32,7 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     @IBOutlet weak var underHeight: NSLayoutConstraint!
     @IBOutlet weak var roomNameLabel: UILabel!
     
-    weak var tableViewCellDelegate:TableViewCellDelegate?
+//    timeLineContents[i]weak var tableViewCellDelegate:TableViewCellDelegate?
     private var disposeBag = DisposeBag()
     private var viewModel: FeedTableViewModel!
     private var feedViewModel: FeedViewModel!
@@ -280,11 +280,11 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     
     @IBAction func pushLikeButton(_ sender: Any) {
-        let tableView = superview as!
-            UITableView
-        let tappedIndexPath = tableView.indexPath(for: self)
-        let row = tappedIndexPath?.row
-        self.tableViewCellDelegate?.pushLikeButton(row: row!, sender: likeButton, countLabel: likeCountLabel)
+//        let tableView = superview as!
+//            UITableView
+//        let tappedIndexPath = tableView.indexPath(for: self)
+//        let row = tappedIndexPath?.row
+//        self.tableViewCellDelegate?.pushLikeButton(row: row!, sender: likeButton, countLabel: likeCountLabel)
     }
     
     
@@ -292,11 +292,11 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     
     @IBAction func pushCommentButton(_ sender: Any) {
-        let tableView = superview as!
-            UITableView
-        let tappedIndexPath = tableView.indexPath(for: self)
-        let row = tappedIndexPath?.row
-        self.tableViewCellDelegate?.pushedCommentButton(row: row!)
+//        let tableView = superview as!
+//            UITableView
+//        let tappedIndexPath = tableView.indexPath(for: self)
+//        let row = tappedIndexPath?.row
+//        self.tableViewCellDelegate?.pushedCommentButton(row: row!)
     }
     
     
@@ -313,11 +313,11 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     
     @IBAction func pushReportButton(_ sender: Any) {
-        let tableView = superview as!
-            UITableView
-        let tappedIndexPath = tableView.indexPath(for: self)
-        let row = tappedIndexPath?.row
-        tableViewCellDelegate?.reportButton(row: row!)
+//        let tableView = superview as!
+//            UITableView
+//        let tappedIndexPath = tableView.indexPath(for: self)
+//        let row = tappedIndexPath?.row
+//        tableViewCellDelegate?.reportButton(row: row!)
     }
     
     
@@ -325,12 +325,12 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     
     @objc func tappedPostImageView(_ sender: UITapGestureRecognizer) {
-        let tableView = superview as!
-            UITableView
-        let tappedLocation = sender.location(in: tableView)
-        let tappedIndexPath = tableView.indexPathForRow(at: tappedLocation)
-        let tappedRow = tappedIndexPath?.row
-        self.tableViewCellDelegate?.tappedPostImageView(row: tappedRow!)
+//        let tableView = superview as!
+//            UITableView
+//        let tappedLocation = sender.location(in: tableView)
+//        let tappedIndexPath = tableView.indexPathForRow(at: tappedLocation)
+//        let tappedRow = tappedIndexPath?.row
+//        self.tableViewCellDelegate?.tappedPostImageView(row: tappedRow!)
     }
     
     
