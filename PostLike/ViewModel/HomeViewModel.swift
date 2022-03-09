@@ -57,6 +57,7 @@ final class HomeViewModel {
         
         
         
+        
         //feedコレクションから情報を取得
         feedListner.fetchModeratorFeedsDocumentIDs()
             .subscribe { [weak self] contents in
@@ -77,7 +78,7 @@ final class HomeViewModel {
         
         
         //空チェック
-        isFeedEmpty = feedContentsRelay.asObservable()
+        isFeedEmpty = feeds.asObservable()
             .map { contents -> Bool in
                 return contents.isEmpty
             }

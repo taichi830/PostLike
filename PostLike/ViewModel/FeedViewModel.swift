@@ -12,13 +12,18 @@ import RxCocoa
 final class FeedViewModel {
     private let disposeBag = DisposeBag()
     
+    let feedContentsRelay = PublishRelay<[Contents]>()
+    
+    let isLoadingRelay = BehaviorRelay<Bool>.init(value: true)
+    var isLoading: Driver<Bool> = Driver.never()
+    
     var itemsRelay = BehaviorRelay<[Contents]>.init(value: [])
-    let items: Driver<[Contents]>
+    var items: Driver<[Contents]> = Driver.never()
     
     var likesRelay = BehaviorRelay<[Contents]>.init(value: [])
-    let likes: Driver<[Contents]>
+    var likes: Driver<[Contents]> = Driver.never()
     
-    let isEmpty: Driver<Bool>
+    var isEmpty: Driver<Bool> = Driver.never()
     
     var isBottomSubject = BehaviorSubject<Bool>.init(value: false)
     var isBottomObserver: AnyObserver<Bool> {
@@ -29,37 +34,51 @@ final class FeedViewModel {
     init(feedContentsListner: FeedContentsListner, likeListner: LikeListner, userListner: UserListner, reportListner: ReportListner, roomID: String) {
         
         
+        items = itemsRelay.asDriver(onErrorJustReturn: [])
+        likes = likesRelay.asDriver(onErrorJustReturn: [])
+        isLoading = isLoadingRelay.asDriver()
         
-        let fetchiItems = feedContentsListner.fetchFeedContents(roomID: roomID)
-            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
+        
+        
+        
+        
+        
+        feedContentsListner.fetchFeedContents(roomID: roomID)
+            .subscribe { [weak self] contents in
+                guard let element = contents.element else { return }
+                self?.feedContentsRelay.accept(element)
+            }
+            .disposed(by: disposeBag)
+        
+        
+        
         
         //空チェック
-        isEmpty = fetchiItems.asObservable()
+        isEmpty = itemsRelay.asObservable()
             .map { items -> Bool in
                 return items.isEmpty
             }
             .asDriver(onErrorJustReturn: true)
-        items = itemsRelay.asDriver(onErrorJustReturn: [])
-        likes = likesRelay.asDriver(onErrorJustReturn: [])
+        
+        
+        
+        
         
         
         //報告したユーザーを取得
-        let reportedUsers = fetchiItems.asObservable()
+        let reportedUsers = feedContentsRelay.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedUsers(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
-        
         //報告した投稿を取得
-        let reportedContents = fetchiItems.asObservable()
+        let reportedContents = feedContentsRelay.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedContents(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
         //報告した投稿をremoveする
-        Observable.combineLatest(fetchiItems, reportedUsers, reportedContents)
+        Observable.combineLatest(feedContentsRelay, reportedUsers, reportedContents)
             .subscribe { (items,users,contents) in
                 let filteredItems = items.filter { item -> Bool in
                     !users.contains(where: { user in
@@ -73,17 +92,24 @@ final class FeedViewModel {
             }
             .disposed(by: disposeBag)
         
+        
         //いいねした投稿を取得
-        fetchiItems.asObservable()
+        feedContentsRelay.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return likeListner.fetchLikes(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
             .subscribe { [weak self] likes in
                 self?.likesRelay.accept(likes)
             }
             .disposed(by: disposeBag)
- 
+        
+        
+        
+        
+        
+        
+        
+        
         
         isBottomSubject.asObservable()
             .subscribe { [weak self] _ in
@@ -96,27 +122,39 @@ final class FeedViewModel {
     }
     
     
+    
+    
+    
+    
     private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: LikeListner, reportListner: ReportListner, roomID: String) {
+        
         let currentContents = self.itemsRelay.value
         let currentLikes = self.likesRelay.value
-        let fetchMoreContents = feedListner.fetchMorePosts(roomID: roomID)
+        let additionalContents = PublishRelay<[Contents]>()
+        
+        //追加で投稿を取得
+        feedListner.fetchMorePosts(roomID: roomID)
+            .subscribe { contents in
+                additionalContents.accept(contents)
+            }
+            .disposed(by: disposeBag)
         
         //報告したユーザーを取得
-        let reportedUsers = fetchMoreContents.asObservable()
+        let reportedUsers = additionalContents.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedUsers(contents: contents)
                     .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
         //報告した投稿を取得
-        let reportedContents = fetchMoreContents.asObservable()
+        let reportedContents = additionalContents.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedContents(contents: contents)
                     .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
         //報告した投稿をremoveする
-        Observable.combineLatest(fetchMoreContents, reportedUsers, reportedContents)
+        Observable.combineLatest(additionalContents, reportedUsers, reportedContents)
             .subscribe { (items,users,contents) in
                 let filteredItems = items.filter { item -> Bool in
                     !users.contains(where: { user in
@@ -131,7 +169,7 @@ final class FeedViewModel {
             .disposed(by: disposeBag)
         
         //いいねした投稿を取得
-        fetchMoreContents.asObservable()
+        additionalContents.asObservable()
             .concatMap { contents -> Observable<[Contents]> in
                 return likeListner.fetchLikes(contents: contents)
                     .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
@@ -142,6 +180,10 @@ final class FeedViewModel {
             .disposed(by: disposeBag)
         
     }
+    
+    
+    
+    
     
     
     
