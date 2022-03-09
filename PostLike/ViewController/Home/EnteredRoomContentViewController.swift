@@ -66,7 +66,10 @@ final class EnteredRoomContentViewController: UIViewController{
         headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
         self.setSwipeBackGesture()
         setupTableView()
+//        fetchFeedContents()
+//        isLoadingCheck()
         emptyCheck()
+        fetchLatestLikeContent()
         tableViewDidScroll()
         
     }
@@ -142,9 +145,27 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
+    
+    private func isLoadingCheck() {
+        viewModel.isLoading
+            .drive { [weak self] bool in
+                if bool == true {
+                    self?.startIndicator()
+                }else {
+                    self?.dismissIndicator()
+                    self?.emptyCheck()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
     private func emptyCheck() {
         viewModel.isEmpty
             .drive { [weak self] bool in
+                print("aaaaaaaaaaa:", bool)
                 if bool == true {
                     self?.messageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
                 }else {
@@ -173,9 +194,29 @@ final class EnteredRoomContentViewController: UIViewController{
             self?.contentsTableView.reloadData()
         }
         .disposed(by: disposeBag)
-        
-        
-        
+    }
+    
+    
+    
+    
+    
+    //投稿後リアルタイムで自分の投稿を取得
+    private func fetchLatestMyContent() {
+        LatestContentsSubject.shared.latestFeedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.insert(element, at: 0)
+                self?.contentsTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    //他画面でいいねした投稿をリアルタイムで取得
+    private func fetchLatestLikeContent() {
         LatestContentsSubject.shared.latestLikeContents
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
@@ -192,17 +233,11 @@ final class EnteredRoomContentViewController: UIViewController{
                 }
             }
             .disposed(by: disposeBag)
-        
-        
-        
-        LatestContentsSubject.shared.latestFeedContents
-            .subscribe { [weak self] content in
-                guard let element = content.element else { return }
-                self?.contentsArray.insert(element, at: 0)
-                self?.contentsTableView.reloadData()
-            }
-            .disposed(by: disposeBag)
     }
+    
+    
+    
+    
     
     
     private func increaseLikeCount(element: Contents) {
@@ -214,6 +249,11 @@ final class EnteredRoomContentViewController: UIViewController{
         }
     }
     
+    
+    
+    
+    
+    
     private func decreaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
             var count = contentsArray[i].likeCount
@@ -222,6 +262,17 @@ final class EnteredRoomContentViewController: UIViewController{
             contentsArray[i].isLiked = true
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -267,6 +318,15 @@ extension EnteredRoomContentViewController: UITableViewDelegate, UITableViewData
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
         return cell
     }
+    
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if (indexPath.row + 1 == self.contentsArray.count)  {
+            viewModel.isBottomObserver.onNext(true)
+        }
+    }
+    
+    
 }
 
 

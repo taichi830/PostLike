@@ -22,7 +22,7 @@ protocol FeedContentsListner {
 
 final class FeedContentsDefaultListner: FeedContentsListner {
     
-    private let limit:Int = 10
+    private let limit:Int = 2
     
     
     func fetchMyLatestPost(roomID: String) -> Observable<Contents> {
@@ -57,13 +57,13 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                     observer.onError(err)
                     return
                 }
-                guard let querySnapshot = querySnapshot else { return }
+                guard let querySnapshot = querySnapshot, let lastDocument = querySnapshot.documents.last else {return}
                 let contents = querySnapshot.documents.map { snapshot -> Contents in
                     let dic = snapshot.data()
                     let contents = Contents(dic: dic)
                     return contents
                 }
-                print("sssssssssssssssssssssssssssssssssssssss")
+                self.lastDocument = lastDocument
                 observer.onNext(contents)
                 observer.onCompleted()
             }
@@ -82,12 +82,13 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                         observer.onError(err)
                         return
                     }
-                    guard let querySnapshot = querySnapshot else { return }
+                    guard let querySnapshot = querySnapshot, let lastDocument = querySnapshot.documents.last else { return }
                     let contents = querySnapshot.documents.map { snapshot -> Contents in
                         let dic = snapshot.data()
                         let content = Contents(dic: dic)
                         return content
                     }
+                    self.lastDocument = lastDocument
                     observer.onNext(contents)
                     observer.onCompleted()
                 }
@@ -119,7 +120,6 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                     let contents = Contents(dic: dic)
                     return contents
                 }
-                print("sssssssssssssssssssssssssssssssssssssss")
                 self.lastModeratorDocument = lastDocument
                 observer.onNext(documents)
                 observer.onCompleted()
