@@ -53,7 +53,6 @@ final class ReportViewController: UIViewController  {
     var passedContent = Contents(dic: [:])
     var passedRoomInfo = Room(dic: [:])
     var reportType = ReportType(rawValue: "")
-    weak var removeContentsDelegate: RemoveContentsDelegate?
     private let viewModel = ReportViewModel()
     private let disposeBag = DisposeBag()
     
