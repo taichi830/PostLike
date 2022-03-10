@@ -62,15 +62,9 @@ final class EnteredRoomContentViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
-        headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
         self.setSwipeBackGesture()
         setupTableView()
-//        fetchFeedContents()
-//        isLoadingCheck()
-        emptyCheck()
-        fetchLatestLikeContent()
-        tableViewDidScroll()
+        setupBinds()
         
     }
     
@@ -146,18 +140,18 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    private func isLoadingCheck() {
-        viewModel.isLoading
-            .drive { [weak self] bool in
-                if bool == true {
-                    self?.startIndicator()
-                }else {
-                    self?.dismissIndicator()
-                    self?.emptyCheck()
-                }
-            }
-            .disposed(by: disposeBag)
+    private func setupBinds() {
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
+        headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
+        self.startIndicator()
+        emptyCheck()
+        fetchFeedContents()
+        fetchLatestLikeContent()
+        tableViewDidScroll()
     }
+    
+    
+    
     
     
     
@@ -165,7 +159,7 @@ final class EnteredRoomContentViewController: UIViewController{
     private func emptyCheck() {
         viewModel.isEmpty
             .drive { [weak self] bool in
-                print("aaaaaaaaaaa:", bool)
+                self?.dismissIndicator()
                 if bool == true {
                     self?.messageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
                 }else {

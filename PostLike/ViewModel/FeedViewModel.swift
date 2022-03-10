@@ -14,8 +14,8 @@ final class FeedViewModel {
     
     let feedContentsRelay = PublishRelay<[Contents]>()
     
-    let isLoadingRelay = BehaviorRelay<Bool>.init(value: true)
-    var isLoading: Driver<Bool> = Driver.never()
+//    let isLoadingRelay = BehaviorRelay<Bool>.init(value: true)
+//    var isLoading: Driver<Bool> = Driver.never()
     
     var itemsRelay = BehaviorRelay<[Contents]>.init(value: [])
     var items: Driver<[Contents]> = Driver.never()
@@ -36,49 +36,45 @@ final class FeedViewModel {
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])
         likes = likesRelay.asDriver(onErrorJustReturn: [])
-        isLoading = isLoadingRelay.asDriver()
+//        isLoading = isLoadingRelay.asDriver()
         
         
         
-        
-        
-        
-        feedContentsListner.fetchPosts(roomID: roomID)
-            .subscribe { [weak self] contents in
-                guard let element = contents.element else { return }
-                self?.feedContentsRelay.accept(element)
-            }
-            .disposed(by: disposeBag)
-        
-        
-        
+        let fetchPosts = feedContentsListner.fetchPosts(roomID: roomID)
+            .share(replay: 1)
         
         //空チェック
-        isEmpty = itemsRelay.asObservable()
+        isEmpty = fetchPosts.asObservable()
             .map { items -> Bool in
                 return items.isEmpty
             }
             .asDriver(onErrorJustReturn: true)
         
         
-        
-        
+//        fetchPosts
+//            .subscribe { [weak self] contents in
+//                guard let element = contents.element else { return }
+//                self?.feedContentsRelay.accept(element)
+//            }
+//            .disposed(by: disposeBag)
         
         
         //報告したユーザーを取得
-        let reportedUsers = feedContentsRelay.asObservable()
+        let reportedUsers = fetchPosts.asObservable()
+            .filter{ !$0.isEmpty }
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedUsers(contents: contents)
             }
         
         //報告した投稿を取得
-        let reportedContents = feedContentsRelay.asObservable()
+        let reportedContents = fetchPosts.asObservable()
+            .filter{ !$0.isEmpty }
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedContents(contents: contents)
             }
         
         //報告した投稿をremoveする
-        Observable.combineLatest(feedContentsRelay, reportedUsers, reportedContents)
+        Observable.combineLatest(fetchPosts, reportedUsers, reportedContents)
             .subscribe { (items,users,contents) in
                 let filteredItems = items.filter { item -> Bool in
                     !users.contains(where: { user in
@@ -94,7 +90,8 @@ final class FeedViewModel {
         
         
         //いいねした投稿を取得
-        feedContentsRelay.asObservable()
+        fetchPosts.asObservable()
+            .filter{ !$0.isEmpty }
             .concatMap { contents -> Observable<[Contents]> in
                 return likeListner.fetchLikes(contents: contents)
             }
@@ -102,11 +99,6 @@ final class FeedViewModel {
                 self?.likesRelay.accept(likes)
             }
             .disposed(by: disposeBag)
-        
-        
-        
-        
-        
         
         
         
@@ -124,37 +116,41 @@ final class FeedViewModel {
     
     
     
-    
-    
     private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: LikeListner, reportListner: ReportListner, roomID: String) {
         
         let currentContents = self.itemsRelay.value
         let currentLikes = self.likesRelay.value
-        let additionalContents = PublishRelay<[Contents]>()
+        let fetchMorePosts = feedListner.fetchMorePosts(roomID: roomID)
+            .share(replay: 1)
         
-        //追加で投稿を取得
-        feedListner.fetchMorePosts(roomID: roomID)
-            .subscribe { contents in
-                additionalContents.accept(contents)
+        //いいねした投稿を取得
+        fetchMorePosts.asObservable()
+            .filter { !$0.isEmpty }
+            .concatMap { contents -> Observable<[Contents]> in
+                return likeListner.fetchLikes(contents: contents)
+                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
+            }
+            .subscribe { [weak self] likes in
+                self?.likesRelay.accept(currentLikes + likes)
             }
             .disposed(by: disposeBag)
         
         //報告したユーザーを取得
-        let reportedUsers = additionalContents.asObservable()
+        let reportedUsers = fetchMorePosts.asObservable()
+            .filter { !$0.isEmpty }
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedUsers(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
         //報告した投稿を取得
-        let reportedContents = additionalContents.asObservable()
+        let reportedContents = fetchMorePosts.asObservable()
+            .filter { !$0.isEmpty }
             .concatMap { contents -> Observable<[Contents]> in
                 return reportListner.fetchReportedContents(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
         
         //報告した投稿をremoveする
-        Observable.combineLatest(additionalContents, reportedUsers, reportedContents)
+        Observable.combineLatest(fetchMorePosts, reportedUsers, reportedContents)
             .subscribe { (items,users,contents) in
                 let filteredItems = items.filter { item -> Bool in
                     !users.contains(where: { user in
@@ -168,16 +164,7 @@ final class FeedViewModel {
             }
             .disposed(by: disposeBag)
         
-        //いいねした投稿を取得
-        additionalContents.asObservable()
-            .concatMap { contents -> Observable<[Contents]> in
-                return likeListner.fetchLikes(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
-            }
-            .subscribe { [weak self] likes in
-                self?.likesRelay.accept(currentLikes + likes)
-            }
-            .disposed(by: disposeBag)
+        
         
     }
     
