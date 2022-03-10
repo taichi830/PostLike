@@ -43,7 +43,7 @@ final class FeedViewModel {
         
         
         
-        feedContentsListner.fetchFeedContents(roomID: roomID)
+        feedContentsListner.fetchPosts(roomID: roomID)
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
                 self?.feedContentsRelay.accept(element)
