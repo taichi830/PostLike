@@ -22,7 +22,7 @@ protocol FeedContentsListner {
 
 final class FeedContentsDefaultListner: FeedContentsListner {
     
-    private let limit:Int = 2
+    private let limit:Int = 10
     
     
     func fetchMyLatestPost(roomID: String) -> Observable<Contents> {
@@ -57,7 +57,8 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                     observer.onError(err)
                     return
                 }
-                guard let querySnapshot = querySnapshot, let lastDocument = querySnapshot.documents.last else {return}
+                guard let querySnapshot = querySnapshot else { return }
+                let lastDocument = querySnapshot.documents.last
                 let contents = querySnapshot.documents.map { snapshot -> Contents in
                     let dic = snapshot.data()
                     let contents = Contents(dic: dic)
@@ -82,7 +83,8 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                         observer.onError(err)
                         return
                     }
-                    guard let querySnapshot = querySnapshot, let lastDocument = querySnapshot.documents.last else { return }
+                    guard let querySnapshot = querySnapshot else { return }
+                    let lastDocument = querySnapshot.documents.last
                     let contents = querySnapshot.documents.map { snapshot -> Contents in
                         let dic = snapshot.data()
                         let content = Contents(dic: dic)
