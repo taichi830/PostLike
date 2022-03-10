@@ -32,7 +32,6 @@ final class CreateProfileModalViewController: UIViewController {
     
     
     
-    weak var createProfileDelegate: CreateProfileDelegate?
     
     
     
