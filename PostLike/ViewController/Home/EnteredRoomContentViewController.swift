@@ -146,6 +146,7 @@ final class EnteredRoomContentViewController: UIViewController{
         self.startIndicator()
         emptyCheck()
         fetchFeedContents()
+        fetchLatestMyContent()
         fetchLatestLikeContent()
         tableViewDidScroll()
     }
@@ -233,7 +234,7 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    
+    //いいね数をインクリメント
     private func increaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
             var count = contentsArray[i].likeCount
@@ -247,7 +248,7 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    
+    //いいね数をディクリメント
     private func decreaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
             var count = contentsArray[i].likeCount
@@ -256,13 +257,6 @@ final class EnteredRoomContentViewController: UIViewController{
             contentsArray[i].isLiked = true
         }
     }
-    
-    
-    
-    
-    
-    
-    
     
     
     
