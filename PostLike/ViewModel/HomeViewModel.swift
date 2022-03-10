@@ -75,7 +75,7 @@ final class HomeViewModel {
         
         //いいねした投稿とモデレーターの投稿を取得
         fetchFeeds
-            .filter { $0.isEmpty != true }
+            .filter { !$0.isEmpty }
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
                 self?.fetchLikes(likeListner: likeListner, contents: element)
@@ -127,7 +127,7 @@ final class HomeViewModel {
     
     private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: LikeListner) {
         feedListner.fetchMoreModeratorFeeds()
-            .filter { $0.isEmpty != true }
+            .filter { !$0.isEmpty }
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
                 self?.fetchModeratorPosts(feedListner: feedListner, contents: element)
