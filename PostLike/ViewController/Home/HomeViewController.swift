@@ -104,10 +104,10 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     private func setupBinds() {
         viewModel = HomeViewModel(roomListner: RoomDefaultListner(), feedListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), reportListner: ReportDefaultListner())
         startIndicator()
-        roomEmptyCheck()
-        feedEmptyCheck()
         bindRooms()
         bindFeeds()
+        feedEmptyCheck()
+        roomEmptyCheck()
         fetchLatestLikeContents()
     }
     
@@ -183,20 +183,13 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     
     
     
-    
-    
-    
-    
-    
-    
     private func feedEmptyCheck() {
         viewModel.isFeedEmpty
             .drive { [weak self] bool in
+                self?.dismissIndicator()
                 if bool == true {
-                    self?.dismissIndicator()
                     self?.messageLabel.setup(text: "投稿はありません", at: self!.timeLineTableView)
                 }else {
-                    self?.dismissIndicator()
                     self?.messageLabel.text = ""
                 }
             }

@@ -44,9 +44,10 @@ final class HomeViewModel {
     
     init(roomListner: RoomListner, feedListner: FeedContentsListner, likeListner: LikeListner, reportListner: ReportListner) {
         
-        
+        //ルームを取得
         rooms = roomListner.fetchRooms()
             .asDriver(onErrorJustReturn: [])
+        //ルームの空チェック
         isRoomEmpty = rooms.asObservable()
             .map { rooms in
                 return rooms.isEmpty
@@ -58,17 +59,23 @@ final class HomeViewModel {
         
         
         
-        //feedコレクションから情報を取得
-        feedListner.fetchModeratorFeedsDocumentIDs()
-            .subscribe { [weak self] contents in
-                self?.feedContentsRelay.accept(contents)
+        //feedsコレクションを取得
+        let fetchFeeds = feedListner.fetchModeratorFeeds()
+            .share(replay: 1)
+        
+        
+        //空チェック
+        isFeedEmpty = fetchFeeds.asObservable()
+            .map { contents -> Bool in
+                return contents.isEmpty
             }
-            .disposed(by: disposeBag)
+            .asDriver(onErrorJustReturn: true)
         
         
         
         //いいねした投稿とモデレーターの投稿を取得
-        feedContentsRelay
+        fetchFeeds
+            .filter { $0.isEmpty != true }
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
                 self?.fetchLikes(likeListner: likeListner, contents: element)
@@ -77,12 +84,6 @@ final class HomeViewModel {
             .disposed(by: disposeBag)
         
         
-        //空チェック
-        isFeedEmpty = feeds.asObservable()
-            .map { contents -> Bool in
-                return contents.isEmpty
-            }
-            .asDriver(onErrorJustReturn: true)
         
 
         //bottomに到達した際に投稿を追加で取得
@@ -125,7 +126,8 @@ final class HomeViewModel {
     
     
     private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: LikeListner) {
-        feedListner.fetchMoreModeratorPosts()
+        feedListner.fetchMoreModeratorFeeds()
+            .filter { $0.isEmpty != true }
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
                 self?.fetchModeratorPosts(feedListner: feedListner, contents: element)

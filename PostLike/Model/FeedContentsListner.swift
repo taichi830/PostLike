@@ -13,10 +13,10 @@ import FirebaseFirestore
 
 protocol FeedContentsListner {
     func fetchMyLatestPost(roomID: String) -> Observable<Contents>
-    func fetchMoreModeratorPosts() -> Observable<[Contents]>
-    func fetchModeratorFeedsDocumentIDs() -> Observable<[Contents]>
+    func fetchMoreModeratorFeeds() -> Observable<[Contents]>
+    func fetchModeratorFeeds() -> Observable<[Contents]>
     func fetchModeratorPosts(contents: [Contents]) -> Observable<[Contents]>
-    func fetchFeedContents(roomID: String) -> Observable<[Contents]>
+    func fetchPosts(roomID: String) -> Observable<[Contents]>
     func fetchMorePosts(roomID: String) -> Observable<[Contents]>
 }
 
@@ -49,7 +49,7 @@ final class FeedContentsDefaultListner: FeedContentsListner {
     
     
     private var lastDocument: DocumentSnapshot?
-    func fetchFeedContents(roomID: String) -> Observable<[Contents]> {
+    func fetchPosts(roomID: String) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
             db.collectionGroup("posts").whereField("roomID", isEqualTo: roomID).order(by: "createdAt", descending: true).limit(to: self.limit).getDocuments{ querySnapshot, err in
@@ -104,7 +104,7 @@ final class FeedContentsDefaultListner: FeedContentsListner {
     
     
     private var lastModeratorDocument: DocumentSnapshot?
-    func fetchModeratorFeedsDocumentIDs() -> Observable<[Contents]> {
+    func fetchModeratorFeeds() -> Observable<[Contents]> {
         return Observable.create { observer in
             let uid = Auth.auth().currentUser?.uid ?? ""
             let db = Firestore.firestore()
@@ -114,7 +114,8 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                     observer.onError(err)
                     return
                 }
-                guard let querySnapshot = querySnapshot, let lastDocument = querySnapshot.documents.last else { return }
+                guard let querySnapshot = querySnapshot else { return }
+                let lastDocument = querySnapshot.documents.last
                 let documents = querySnapshot.documents.map { snapshot -> Contents in
                     let dic = snapshot.data()
                     let contents = Contents(dic: dic)
@@ -131,7 +132,7 @@ final class FeedContentsDefaultListner: FeedContentsListner {
     
     
     
-    func fetchMoreModeratorPosts() -> Observable<[Contents]> {
+    func fetchMoreModeratorFeeds() -> Observable<[Contents]> {
         return Observable.create { observer in
             let uid = Auth.auth().currentUser?.uid ?? ""
             let db = Firestore.firestore()
@@ -142,7 +143,8 @@ final class FeedContentsDefaultListner: FeedContentsListner {
                         observer.onError(err)
                         return
                     }
-                    guard let querySnapshot = querySnapshot, let lastDocument = querySnapshot.documents.last else { return }
+                    guard let querySnapshot = querySnapshot else { return }
+                    let lastDocument = querySnapshot.documents.last
                     let documents = querySnapshot.documents.map { snapShot -> Contents in
                         let dic = snapShot.data()
                         let contents = Contents(dic: dic)
