@@ -10,14 +10,8 @@ import UIKit
 import RxSwift
 import FirebaseFirestore
 import FirebaseAuth
-import FirebaseStorage
-import DKImagePickerController
 
 
-protocol CreateProfileDelegate:AnyObject {
-    func joinRoomBatch(_ completed: @escaping() -> Void,userName:String)
-    func createStrageWithBatch(_ completed: @escaping() -> Void,userName:String,profileImageView:UIImageView)
-}
 
 final class RoomDetailViewController: UIViewController {
     
@@ -72,11 +66,9 @@ final class RoomDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
+        setupBinds()
         self.setSwipeBackGesture()
         setupTableView()
-        emptyCheck()
-        headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: roomName, vc: self, tableView: contentsTableView)
     }
     
     
@@ -178,6 +170,18 @@ final class RoomDetailViewController: UIViewController {
     
     
     
+    private func setupBinds() {
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
+        headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: roomName, vc: self, tableView: contentsTableView)
+        emptyCheck()
+        fetchLatestMyContent()
+        fetchLatestLikeContent()
+        fetchContents()
+    }
+    
+    
+    
+    
     
     private func emptyCheck() {
         viewModel.isEmpty
@@ -186,7 +190,6 @@ final class RoomDetailViewController: UIViewController {
                     self?.mssageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
                 }else {
                     self?.mssageLabel.text = ""
-                    self?.fetchContents()
                 }
             }
             .disposed(by: disposeBag)
@@ -194,7 +197,6 @@ final class RoomDetailViewController: UIViewController {
     
     
 
-    
     
     
     private func fetchContents(){
@@ -212,8 +214,28 @@ final class RoomDetailViewController: UIViewController {
             self?.contentsTableView.reloadData()
         }
         .disposed(by: disposeBag)
-        
-        
+    }
+    
+    
+    
+    
+    //投稿後リアルタイムで自分の投稿を取得
+    private func fetchLatestMyContent() {
+        LatestContentsSubject.shared.latestFeedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.insert(element, at: 0)
+                self?.contentsTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    //他画面でいいねした投稿をリアルタイムで取得
+    private func fetchLatestLikeContent() {
         LatestContentsSubject.shared.latestLikeContents
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
@@ -230,20 +252,10 @@ final class RoomDetailViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
-        
-        
-        
-        LatestContentsSubject.shared.latestFeedContents
-            .subscribe { [weak self] content in
-                guard let element = content.element else { return }
-                self?.contentsArray.insert(element, at: 0)
-                self?.contentsTableView.reloadData()
-            }
-            .disposed(by: disposeBag)
     }
     
     
-    
+    //いいね数をリアルタイムでインクリメント
     private func increaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
             var count = contentsArray[i].likeCount
@@ -253,6 +265,9 @@ final class RoomDetailViewController: UIViewController {
         }
     }
     
+    
+    
+    //いいね数をリアルタイムでディクリメント
     private func decreaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
             var count = contentsArray[i].likeCount
@@ -261,6 +276,10 @@ final class RoomDetailViewController: UIViewController {
             contentsArray[i].isLiked = true
         }
     }
+    
+    
+    
+    
     
     
     
