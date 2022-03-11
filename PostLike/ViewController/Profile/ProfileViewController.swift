@@ -108,9 +108,6 @@ final class ProfileViewController: UIViewController {
         profileTableView.dataSource = self
         profileTableView.tableHeaderView = headerView
         profileTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
-        let refleshControl = UIRefreshControl()
-        self.profileTableView.refreshControl = refleshControl
-        self.profileTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
     }
     
     
@@ -121,16 +118,36 @@ final class ProfileViewController: UIViewController {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         viewModel = ProfileViewModel(profileContentsListner: ProfileContentsDefaultListner(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
         headerView.setupHeaderView(roomID: passedDocumentID, passedUid: passedModerator, titleName: titleName, vc: self)
+        startIndicator()
         createProfileTableView()
+        reflashTableView()
         emptyCheck()
         fetchContents()
     }
     
     
     
+    
+    private func reflashTableView() {
+        let refreshControl = UIRefreshControl()
+        profileTableView.refreshControl = refreshControl
+        profileTableView.refreshControl?.rx.controlEvent(.valueChanged)
+            .subscribe{ [weak self] _ in
+                self?.viewModel.reflashObserver.onNext(true)
+                self?.profileTableView.refreshControl?.endRefreshing()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    
     private func emptyCheck(){
         viewModel.isEmpty
             .drive { [weak self] bool in
+                self?.dismissIndicator()
                 if bool == true {
                     self?.messageLabel.setupLabel(view: self!.view, y: self!.view.center.y + 50)
                     self?.messageLabel.text = "投稿がまだありません"
