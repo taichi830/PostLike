@@ -52,17 +52,8 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad(){
         super.viewDidLoad()
-        let uid = Auth.auth().currentUser!.uid
-        viewModel = ProfileViewModel(profileContentsListner: ProfileContentsDefaultListner(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
-        headerView.setupHeaderView(roomID: passedDocumentID, passedUid: passedModerator, titleName: titleName, vc: self)
-        createProfileTableView()
-        emptyCheck()
-        
-        
-        
-        
         self.setSwipeBackGesture()
-        
+        setupBinds()
     }
     
     
@@ -75,19 +66,6 @@ final class ProfileViewController: UIViewController {
     
     
     @objc private func updateContents(){
-    }
-    
-    
-    
-    
-    private func createProfileTableView(){
-        profileTableView.delegate = self
-        profileTableView.dataSource = self
-        profileTableView.tableHeaderView = headerView
-        profileTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
-        let refleshControl = UIRefreshControl()
-        self.profileTableView.refreshControl = refleshControl
-        self.profileTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
     }
     
     
@@ -125,6 +103,47 @@ final class ProfileViewController: UIViewController {
     
     
     
+    private func createProfileTableView(){
+        profileTableView.delegate = self
+        profileTableView.dataSource = self
+        profileTableView.tableHeaderView = headerView
+        profileTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
+        let refleshControl = UIRefreshControl()
+        self.profileTableView.refreshControl = refleshControl
+        self.profileTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
+    }
+    
+    
+    
+    
+    
+    private func setupBinds() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        viewModel = ProfileViewModel(profileContentsListner: ProfileContentsDefaultListner(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
+        headerView.setupHeaderView(roomID: passedDocumentID, passedUid: passedModerator, titleName: titleName, vc: self)
+        createProfileTableView()
+        emptyCheck()
+        fetchContents()
+    }
+    
+    
+    
+    private func emptyCheck(){
+        viewModel.isEmpty
+            .drive { [weak self] bool in
+                if bool == true {
+                    self?.messageLabel.setupLabel(view: self!.view, y: self!.view.center.y + 50)
+                    self?.messageLabel.text = "投稿がまだありません"
+                    self?.profileTableView.addSubview(self!.messageLabel)
+                } else {
+                    self?.messageLabel.text = ""
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
     
     private func fetchContents() {
         viewModel.items.drive { [weak self] items in
@@ -141,7 +160,11 @@ final class ProfileViewController: UIViewController {
                 self?.profileTableView.reloadData()
             }
             .disposed(by: disposeBag)
-        
+    }
+    
+    
+    //いいねした投稿をリアルタイムで取得
+    private func fetchLatestLikeContent() {
         LatestContentsSubject.shared.latestLikeContents
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
@@ -158,8 +181,31 @@ final class ProfileViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
-        
-        
+    }
+    
+    //いいね数をリアルタイムでインクリメント
+    private func increaseLikeCount(element: Contents) {
+        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
+            var count = contentsArray[i].likeCount
+            count += 1
+            contentsArray[i].likeCount = count
+            contentsArray[i].isLiked = true
+        }
+    }
+    
+    //いいね数をリアルタイムでディクリメント
+    private func decreaseLikeCount(element: Contents) {
+        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
+            var count = contentsArray[i].likeCount
+            count -= 1
+            contentsArray[i].likeCount = count
+            contentsArray[i].isLiked = true
+        }
+    }
+    
+    
+    //投稿後リアルタイムで自分の投稿を取得
+    private func fetchLatestMyContent() {
         LatestContentsSubject.shared.latestFeedContents
             .subscribe { [weak self] content in
                 guard let element = content.element else { return }
@@ -167,8 +213,10 @@ final class ProfileViewController: UIViewController {
                 self?.profileTableView.reloadData()
             }
             .disposed(by: disposeBag)
-        
-        
+    }
+    
+    //削除した投稿を配列からremove
+    private func fetchDeletedPost() {
         LatestContentsSubject.shared.deletedContents
             .subscribe { [weak self] content in
                 guard let element = content.element else { return }
@@ -181,48 +229,6 @@ final class ProfileViewController: UIViewController {
     }
     
     
-    
-    private func increaseLikeCount(element: Contents) {
-        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
-            var count = contentsArray[i].likeCount
-            count += 1
-            contentsArray[i].likeCount = count
-            contentsArray[i].isLiked = true
-        }
-    }
-    
-    private func decreaseLikeCount(element: Contents) {
-        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
-            var count = contentsArray[i].likeCount
-            count -= 1
-            contentsArray[i].likeCount = count
-            contentsArray[i].isLiked = true
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    private func emptyCheck(){
-
-        viewModel.isEmpty
-            .drive { [weak self] bool in
-                if bool == true {
-                    self?.messageLabel.setupLabel(view: self!.view, y: self!.view.center.y + 50)
-                    self?.messageLabel.text = "投稿がまだありません"
-                    self?.profileTableView.addSubview(self!.messageLabel)
-                } else {
-                    self?.messageLabel.text = ""
-                    self?.fetchContents()
-                    
-                }
-            }
-            .disposed(by: disposeBag)
-        
-    }
     
     
     
@@ -274,7 +280,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == contentsArray.count {
-//            fetchMoreContents()
+            viewModel.isBottomObserver.onNext(true)
         }
     }
     
