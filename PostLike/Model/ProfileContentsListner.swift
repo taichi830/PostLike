@@ -11,9 +11,13 @@ import FirebaseFirestore
 
 protocol ProfileContentsListner {
     func fetchProfilePosts(uid: String, roomID: String) -> Observable<[Contents]>
+    func fetchMoreProfilePosts(uid: String, roomID: String) -> Observable<[Contents]>
 }
 
 final class ProfileContentsDefaultListner: ProfileContentsListner {
+    
+    
+    private var lastDocument: DocumentSnapshot?
     func fetchProfilePosts(uid: String, roomID: String) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
@@ -24,6 +28,8 @@ final class ProfileContentsDefaultListner: ProfileContentsListner {
                     return
                 }
                 guard let querySnapshot = querySnapshot else {return}
+                let lastDocument = querySnapshot.documents.last
+                self.lastDocument = lastDocument
                 let documents = querySnapshot.documents.map { snapshot -> Contents in
                     let dic = snapshot.data()
                     let content = Contents(dic: dic)
@@ -34,6 +40,36 @@ final class ProfileContentsDefaultListner: ProfileContentsListner {
             return Disposables.create()
         }
     }
+    
+    
+    func fetchMoreProfilePosts(uid: String, roomID: String) -> Observable<[Contents]> {
+        return Observable.create { observer in
+            let db = Firestore.firestore()
+            if let lastDocument = self.lastDocument {
+                db.collection("users").document(uid).collection("rooms").document(roomID).collection("posts").order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: 10).getDocuments { (querySnapshot, err) in
+                    if let err = err {
+                        print("取得に失敗しました。\(err)")
+                        observer.onError(err)
+                        return
+                    }
+                    guard let querySnapshot = querySnapshot else { return }
+                    let lastDocument = querySnapshot.documents.last
+                    self.lastDocument = lastDocument
+                    let documents = querySnapshot.documents.map { snapshot -> Contents in
+                        let dic = snapshot.data()
+                        let content = Contents(dic: dic)
+                        return content
+                    }
+                    observer.onNext(documents)
+                }
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
+    
+    
     
     
 }
