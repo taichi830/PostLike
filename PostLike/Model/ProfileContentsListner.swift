@@ -27,6 +27,7 @@ final class ProfileContentsDefaultListner: ProfileContentsListner {
                     observer.onError(err)
                     return
                 }
+                print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                 guard let querySnapshot = querySnapshot else {return}
                 let lastDocument = querySnapshot.documents.last
                 self.lastDocument = lastDocument

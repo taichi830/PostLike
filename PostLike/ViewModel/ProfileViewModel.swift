@@ -16,10 +16,15 @@ final class ProfileViewModel {
     let itemsRelay = BehaviorRelay<[Contents]>.init(value: [])
     let items: Driver<[Contents]>
     
-    let isEmpty: Driver<Bool>
+    var isEmpty: Driver<Bool> = Driver.never()
     
     let likesRelay = BehaviorRelay<[Contents]>.init(value: [])
     let likes: Driver<[Contents]>
+    
+    var reflashSubject = PublishSubject<Bool>()
+    var reflashObserver: AnyObserver<Bool> {
+        reflashSubject.asObserver()
+    }
     
     var isBottomSubject = PublishSubject<Bool>()
     var isBottomObserver: AnyObserver<Bool> {
@@ -27,20 +32,41 @@ final class ProfileViewModel {
     }
     
     
+    
     init(profileContentsListner: ProfileContentsListner, likeListner: LikeListner, uid: String, roomID: String) {
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])
         likes = likesRelay.asDriver(onErrorJustReturn: [])
         
-        //プロフィール投稿を取得
+        
+        fetchProfilePosts(profileContentsListner: profileContentsListner, likeListner: likeListner, uid: uid, roomID: roomID)
+        
+        
+        //更新の通知を受けて最新の投稿を取得する
+        reflashSubject.asObservable()
+            .subscribe { [weak self] _ in
+                self?.fetchProfilePosts(profileContentsListner: profileContentsListner, likeListner: likeListner, uid: uid, roomID: roomID)
+            }
+            .disposed(by: disposeBag)
+        
+        //最下部に来た通知を受けてfetchMoreProfilePostsを呼び出す
+        isBottomSubject.asObservable()
+            .subscribe { [weak self] _ in
+                self?.fetchMoreProfilePosts(profileContentsListner: profileContentsListner, likeListner: likeListner, uid: uid, roomID: roomID)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    //プロフィール投稿を取得
+    private func fetchProfilePosts(profileContentsListner: ProfileContentsListner, likeListner: LikeListner, uid: String, roomID: String) {
+        
         let fetchProfilePosts = profileContentsListner.fetchProfilePosts(uid: uid, roomID: roomID)
             .share(replay: 1)
         
         //プロフィール投稿の空チェック
-        isEmpty = fetchProfilePosts.map { posts in
-            return posts.isEmpty
-        }
-        .asDriver(onErrorJustReturn: true)
+        self.isEmpty = fetchProfilePosts.asObservable()
+            .map { $0.isEmpty }
+            .asDriver(onErrorJustReturn: true)
         
         //取得した投稿をitemsRelayにアクセプト&fetchLikesを呼び出す
         fetchProfilePosts.asObservable()
@@ -49,13 +75,6 @@ final class ProfileViewModel {
                 guard let element = contents.element else { return }
                 self?.itemsRelay.accept(element)
                 self?.fetchLikes(likeListner: likeListner, contents: element)
-            }
-            .disposed(by: disposeBag)
-        
-        //最下部に来た通知を受けてfetchMoreProfilePostsを呼び出す
-        isBottomSubject.asObservable()
-            .subscribe { [weak self] _ in
-                self?.fetchMoreProfilePosts(profileContentsListner: profileContentsListner, likeListner: likeListner, uid: uid, roomID: roomID)
             }
             .disposed(by: disposeBag)
     }
