@@ -133,8 +133,7 @@ final class ProfileViewController: UIViewController {
         profileTableView.refreshControl = refreshControl
         profileTableView.refreshControl?.rx.controlEvent(.valueChanged)
             .subscribe{ [weak self] _ in
-                self?.viewModel.reflashObserver.onNext(true)
-                self?.profileTableView.refreshControl?.endRefreshing()
+                self?.viewModel.reflashObserver.onNext(())
             }
             .disposed(by: disposeBag)
     }
@@ -147,12 +146,17 @@ final class ProfileViewController: UIViewController {
     private func emptyCheck(){
         viewModel.isEmpty
             .drive { [weak self] bool in
-                self?.dismissIndicator()
-                if bool == true {
+                switch bool {
+                case true :
+                    self?.dismissIndicator()
+                    self?.profileTableView.refreshControl?.endRefreshing()
                     self?.messageLabel.setupLabel(view: self!.view, y: self!.view.center.y + 50)
                     self?.messageLabel.text = "投稿がまだありません"
                     self?.profileTableView.addSubview(self!.messageLabel)
-                } else {
+                    
+                case false:
+                    self?.dismissIndicator()
+                    self?.profileTableView.refreshControl?.endRefreshing()
                     self?.messageLabel.text = ""
                 }
             }
@@ -297,7 +301,7 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == contentsArray.count {
-            viewModel.isBottomObserver.onNext(true)
+            viewModel.isBottomObserver.onNext(())
         }
     }
     

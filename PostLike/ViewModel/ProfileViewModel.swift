@@ -17,26 +17,27 @@ final class ProfileViewModel {
     let items: Driver<[Contents]>
     
     var isEmpty: Driver<Bool> = Driver.never()
+    var isEmptySubject = PublishRelay<Bool>()
     
     let likesRelay = BehaviorRelay<[Contents]>.init(value: [])
     let likes: Driver<[Contents]>
     
-    var reflashSubject = PublishSubject<Bool>()
-    var reflashObserver: AnyObserver<Bool> {
+    var reflashSubject = PublishSubject<()>()
+    var reflashObserver: AnyObserver<()> {
         reflashSubject.asObserver()
     }
     
-    var isBottomSubject = PublishSubject<Bool>()
-    var isBottomObserver: AnyObserver<Bool> {
+    var isBottomSubject = PublishSubject<()>()
+    var isBottomObserver: AnyObserver<()> {
         isBottomSubject.asObserver()
     }
-    
     
     
     init(profileContentsListner: ProfileContentsListner, likeListner: LikeListner, uid: String, roomID: String) {
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])
         likes = likesRelay.asDriver(onErrorJustReturn: [])
+        isEmpty = isEmptySubject.asDriver(onErrorJustReturn: true)
         
         
         fetchProfilePosts(profileContentsListner: profileContentsListner, likeListner: likeListner, uid: uid, roomID: roomID)
@@ -64,9 +65,12 @@ final class ProfileViewModel {
             .share(replay: 1)
         
         //プロフィール投稿の空チェック
-        self.isEmpty = fetchProfilePosts.asObservable()
+        fetchProfilePosts.asObservable()
             .map { $0.isEmpty }
-            .asDriver(onErrorJustReturn: true)
+            .subscribe{ [weak self] bool in
+                self?.isEmptySubject.accept(bool)
+            }
+            .disposed(by: disposeBag)
         
         //取得した投稿をitemsRelayにアクセプト&fetchLikesを呼び出す
         fetchProfilePosts.asObservable()
