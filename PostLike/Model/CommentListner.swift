@@ -13,18 +13,23 @@ import Firebase
 import FirebaseFirestore
 
 protocol CommentListner {
-    func createListner(documentID:String) -> Observable<[Contents]>
+    func fetchComments(documentID:String) -> Observable<[Contents]>
+    func fetchMoreComments(documentID:String) -> Observable<[Contents]>
 }
 
 final class CommentDefaultListner: NSObject,CommentListner {
-    private var listner: ListenerRegistration?
     
-    internal func createListner(documentID:String) -> Observable<[Contents]> {
+    
+    private var lastDocument: DocumentSnapshot?
+    private let limit: Int = 10
+    
+    func fetchComments(documentID:String) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
-            
-            self.listner = db.collectionGroup("comments").whereField("postID", isEqualTo: documentID).order(by: "createdAt", descending: true).addSnapshotListener({ querySnapshot, err in
+            db.collectionGroup("comments").whereField("postID", isEqualTo: documentID).order(by: "createdAt", descending: true).limit(to: self.limit).getDocuments { querySnapshot, err in
                 guard let querySnapshot = querySnapshot else { return }
+                let lastDocument = querySnapshot.documents.last
+                self.lastDocument = lastDocument
                 if let err = err {
                     observer.onError(err)
                     return
@@ -35,13 +40,36 @@ final class CommentDefaultListner: NSObject,CommentListner {
                     return content
                 }
                 observer.onNext(documents)
-            })
-            return Disposables.create {
-                self.listner?.remove()
+                observer.onCompleted()
             }
+            return Disposables.create()
         }
-        
-        
+    }
+    
+    
+    func fetchMoreComments(documentID: String) -> Observable<[Contents]> {
+        return Observable.create { observer in
+            let db = Firestore.firestore()
+            if let lastDocument = self.lastDocument {
+                db.collectionGroup("comments").whereField("postID", isEqualTo: documentID).order(by: "createdAt", descending: true).start(afterDocument: lastDocument).limit(to: self.limit).getDocuments { querySnapshot, err in
+                    guard let querySnapshot = querySnapshot else { return }
+                    let lastDocument = querySnapshot.documents.last
+                    self.lastDocument = lastDocument
+                    if let err = err {
+                        observer.onError(err)
+                        return
+                    }
+                    let documents = querySnapshot.documents.map { snapshot -> Contents in
+                        let dic = snapshot.data()
+                        let content = Contents(dic: dic)
+                        return content
+                    }
+                    observer.onNext(documents)
+                    observer.onCompleted()
+                }
+            }
+            return Disposables.create()
+        }
     }
     
     
