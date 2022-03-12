@@ -64,6 +64,7 @@ final class EnteredRoomContentViewController: UIViewController{
         
         self.setSwipeBackGesture()
         setupTableView()
+        refrashTableView()
         setupBinds()
         
     }
@@ -91,26 +92,21 @@ final class EnteredRoomContentViewController: UIViewController{
         contentsTableView.tableHeaderView =  headerView
         contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         contentsTableView.contentInsetAdjustmentBehavior = .never
-        let refleshControl = CustomRefreshControl()
-        contentsTableView.refreshControl = refleshControl
-        contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
+        
         
     }
     
     
     
-    
-    
-    
-    
-    
-    
-    @objc private func updateContents(){
-        indicator.startAnimating()
-        self.contentsArray.removeAll()
-        self.likeContentsArray.removeAll()
+    private func refrashTableView() {
+        let refreshControl = CustomRefreshControl()
+        contentsTableView.refreshControl = refreshControl
+        contentsTableView.refreshControl?.rx.controlEvent(.valueChanged)
+            .subscribe{ [weak self] _ in
+                self?.viewModel.refreshObserver.onNext(())
+            }
+            .disposed(by: disposeBag)
     }
-    
     
     
     
@@ -160,12 +156,16 @@ final class EnteredRoomContentViewController: UIViewController{
     private func emptyCheck() {
         viewModel.isEmpty
             .drive { [weak self] bool in
-                self?.dismissIndicator()
-                if bool == true {
+                switch bool {
+                case true:
+                    self?.dismissIndicator()
+                    self?.contentsTableView.refreshControl?.endRefreshing()
                     self?.messageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
-                }else {
+                    
+                case false:
+                    self?.dismissIndicator()
+                    self?.contentsTableView.refreshControl?.endRefreshing()
                     self?.messageLabel.text = ""
-                    self?.fetchFeedContents()
                 }
             }
             .disposed(by: disposeBag)
