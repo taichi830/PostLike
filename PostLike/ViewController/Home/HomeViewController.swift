@@ -37,6 +37,7 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
         
         setupCollectionView()
         setupTableView()
+        refreshTableView()
         setupBinds()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
@@ -82,9 +83,19 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
         timeLineTableView.tableHeaderView = headerView
         timeLineTableView.separatorInset = .zero
         
+        
+    }
+    
+    
+    
+    private func refreshTableView() {
         let refleshControl = UIRefreshControl()
-        self.timeLineTableView.refreshControl = refleshControl
-        self.timeLineTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
+        timeLineTableView.refreshControl = refleshControl
+        timeLineTableView.refreshControl?.rx.controlEvent(.valueChanged)
+            .subscribe { [weak self] _ in
+                self?.viewModel.refreshObserver.onNext(())
+            }
+            .disposed(by: disposeBag)
     }
     
     
@@ -133,10 +144,11 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     private func roomEmptyCheck() {
         viewModel.isRoomEmpty
             .drive { [weak self] bool in
-                if bool == true {
+                switch bool {
+                case true:
                     self?.dismissIndicator()
                     self?.messageLabel.setup(text: "参加中のルームはありません", at: self!.timeLineTableView)
-                }else {
+                case false:
                     self?.messageLabel.text = ""
                 }
             }
@@ -184,12 +196,16 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     
     
     private func feedEmptyCheck() {
-        viewModel.isFeedEmpty
+        viewModel.isItemEmpty
             .drive { [weak self] bool in
-                self?.dismissIndicator()
-                if bool == true {
+                switch bool {
+                case true:
+                    self?.dismissIndicator()
+                    self?.timeLineTableView.refreshControl?.endRefreshing()
                     self?.messageLabel.setup(text: "投稿はありません", at: self!.timeLineTableView)
-                }else {
+                case false:
+                    self?.dismissIndicator()
+                    self?.timeLineTableView.refreshControl?.endRefreshing()
                     self?.messageLabel.text = ""
                 }
             }
@@ -210,7 +226,7 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     
     
     private func bindFeeds() {
-        viewModel.feeds
+        viewModel.items
             .drive { [weak self] feeds in
                 self?.timeLineContents.removeAll()
                 self?.timeLineContents.append(contentsOf: feeds)
