@@ -15,7 +15,7 @@ final class HomeViewModel {
     private let disposeBag = DisposeBag()
     
     
-    let feedContentsRelay = PublishRelay<[Contents]>()
+//    let feedContentsRelay = PublishRelay<[Contents]>()
     
     
     var isLoadingRelay = BehaviorRelay<Bool>.init(value: true)
@@ -26,9 +26,11 @@ final class HomeViewModel {
     let isRoomEmpty: Driver<Bool>
     
     
-    var itemsSubject = BehaviorRelay<[Contents]>.init(value: [])
-    var feeds: Driver<[Contents]> = Driver.never()
-    var isFeedEmpty: Driver<Bool> = Driver.never()
+    var itemsRelay = BehaviorRelay<[Contents]>.init(value: [])
+    var items: Driver<[Contents]> = Driver.never()
+    
+    var isItemEmptyRelay = PublishRelay<Bool>()
+    var isItemEmpty: Driver<Bool> = Driver.never()
     
     
     var likeRelay = BehaviorRelay<[Contents]>.init(value: [])
@@ -38,6 +40,11 @@ final class HomeViewModel {
     var isBottomSubject = BehaviorSubject<Bool>.init(value: false)
     var isBottomObserver: AnyObserver<Bool> {
         isBottomSubject.asObserver()
+    }
+    
+    var refreshSubject = PublishSubject<()>()
+    var refreshObserver: AnyObserver<()> {
+        refreshSubject.asObserver()
     }
     
     
@@ -53,33 +60,28 @@ final class HomeViewModel {
                 return rooms.isEmpty
             }
             .asDriver(onErrorJustReturn: true)
-        feeds = itemsSubject.asDriver(onErrorJustReturn: [])
+        
+        
+        
+        items = itemsRelay.asDriver(onErrorJustReturn: [])
         likes = likeRelay.asDriver(onErrorJustReturn: [])
-        
-        
+        isItemEmpty = isItemEmptyRelay.asDriver(onErrorJustReturn: true)
         
         
         //feedsコレクションを取得
-        let fetchFeeds = feedListner.fetchModeratorFeeds()
-            .share(replay: 1)
-        
-        
+        let feedObservable = feedListner.fetchModeratorFeeds().share(replay: 1)
         //空チェック
-        isFeedEmpty = fetchFeeds.asObservable()
-            .map { contents -> Bool in
-                return contents.isEmpty
-            }
-            .asDriver(onErrorJustReturn: true)
-        
-        
-        
+        self.isEmptyCheck(feedObservable: feedObservable)
         //いいねした投稿とモデレーターの投稿を取得
-        fetchFeeds
-            .filter { !$0.isEmpty }
-            .subscribe { [weak self] contents in
-                guard let element = contents.element else { return }
-                self?.fetchLikes(likeListner: likeListner, contents: element)
-                self?.fetchModeratorPosts(feedListner: feedListner, contents: element)
+        self.callModeratorPostsAndLikes(feedObservable: feedObservable, feedListner: feedListner, likeListner: likeListner, currentItems: [], currentLikes: [])
+        
+        
+        //更新通知を受け取る
+        refreshSubject.asObservable()
+            .subscribe { [weak self] _ in
+                let fetchFeeds = feedListner.fetchModeratorFeeds().share(replay: 1)
+                self?.isEmptyCheck(feedObservable: fetchFeeds)
+                self?.callModeratorPostsAndLikes(feedObservable: fetchFeeds, feedListner: feedListner, likeListner: likeListner, currentItems: [], currentLikes: [])
             }
             .disposed(by: disposeBag)
         
@@ -100,12 +102,24 @@ final class HomeViewModel {
     
     
     
+    private func isEmptyCheck(feedObservable: Observable<[Contents]>) {
+        feedObservable.asObservable()
+            .map { $0.isEmpty }
+            .subscribe { [weak self] bool in
+                self?.isItemEmptyRelay.accept(bool)
+            }
+            .disposed(by: disposeBag)
+    }
     
-    private func fetchModeratorPosts(feedListner: FeedContentsListner, contents: [Contents]) {
-        let currentItems = self.itemsSubject.value
-        feedListner.fetchModeratorPosts(contents: contents)
+    
+    
+    private func callModeratorPostsAndLikes(feedObservable: Observable<[Contents]>, feedListner: FeedContentsListner, likeListner: LikeListner, currentItems: [Contents], currentLikes: [Contents]) {
+        feedObservable.asObservable()
+            .filter { !$0.isEmpty }
             .subscribe { [weak self] contents in
-                self?.itemsSubject.accept(currentItems + contents)
+                guard let element = contents.element else { return }
+                self?.fetchModeratorPosts(feedListner: feedListner, contents: element, currentItems: currentItems)
+                self?.fetchLikes(likeListner: likeListner, contents: element, currentLikes: currentLikes)
             }
             .disposed(by: disposeBag)
     }
@@ -113,8 +127,18 @@ final class HomeViewModel {
     
     
     
-    private func fetchLikes(likeListner: LikeListner, contents: [Contents]) {
-        let currentLikes = self.likeRelay.value
+    private func fetchModeratorPosts(feedListner: FeedContentsListner, contents: [Contents], currentItems: [Contents]) {
+        feedListner.fetchModeratorPosts(contents: contents)
+            .subscribe { [weak self] contents in
+                self?.itemsRelay.accept(currentItems + contents)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    private func fetchLikes(likeListner: LikeListner, contents: [Contents], currentLikes: [Contents]) {
         likeListner.fetchLikes(contents: contents)
             .subscribe { [weak self] likes in
                 self?.likeRelay.accept(currentLikes + likes)
@@ -126,12 +150,14 @@ final class HomeViewModel {
     
     
     private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: LikeListner) {
+        let currentItems = self.itemsRelay.value
+        let currentLikes = self.likeRelay.value
         feedListner.fetchMoreModeratorFeeds()
             .filter { !$0.isEmpty }
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
-                self?.fetchModeratorPosts(feedListner: feedListner, contents: element)
-                self?.fetchLikes(likeListner: likeListner, contents: element)
+                self?.fetchModeratorPosts(feedListner: feedListner, contents: element, currentItems: currentItems)
+                self?.fetchLikes(likeListner: likeListner, contents: element, currentLikes: currentLikes)
             }
             .disposed(by: disposeBag)
     }
