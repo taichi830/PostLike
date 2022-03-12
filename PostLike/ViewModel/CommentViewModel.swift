@@ -12,21 +12,48 @@ import RxCocoa
 import Firebase
 
 final class CommentViewModel {
-    let items: Driver<[Contents]>
-    let isEmpty: Driver<Bool>
+    private let disposeBag = DisposeBag()
+    
+    let itemsRelay = BehaviorRelay<[Contents]>.init(value: [])
+    var items: Driver<[Contents]> = Driver.never()
+    
+    var isEmpty: Driver<Bool> = Driver.never()
+    
+    var isBottomSubject = PublishSubject<()>()
+    var isBottomObserver: AnyObserver<()> {
+        isBottomSubject.asObserver()
+    }
     
     init (commentListner: CommentListner,documentID:String) {
         
-        let listner = commentListner.createListner(documentID: documentID)
+        items = itemsRelay.asDriver(onErrorJustReturn: [])
         
-        items = listner
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .asDriver(onErrorJustReturn: [])
+        let fetchComments = commentListner.fetchComments(documentID: documentID)
+            .share(replay: 1)
         
-        isEmpty = listner.map { contents -> Bool in
+        fetchComments.asObservable()
+            .subscribe { [weak self] items in
+                self?.itemsRelay.accept(items)
+            }
+            .disposed(by: disposeBag)
+        
+        isEmpty = fetchComments.map { contents -> Bool in
             return contents.isEmpty
         }
         .asDriver(onErrorJustReturn: true)
+        
+        //最下部に来た時、追加でコメントを追加する
+        isBottomSubject.asObservable()
+            .concatMap{ _ -> Observable<[Contents]> in
+                return commentListner.fetchMoreComments(documentID: documentID)
+            }
+            .subscribe { [weak self] items in
+                guard let element = items.element else { return }
+                let currentItems = self?.itemsRelay.value ?? []
+                self?.itemsRelay.accept(currentItems + element)
+            }
+            .disposed(by: disposeBag)
+        
         
     }
 }

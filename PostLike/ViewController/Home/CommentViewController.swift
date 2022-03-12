@@ -17,15 +17,15 @@ final class CommentViewController: UIViewController {
     
     
     
-    var passedUserImage = String()
-    var passedUserName = String()
-    var passedComment = String()
-    var passedDate = Timestamp()
-    var passedUid = String()
-    var passedRoomName = String()
-    var passedDocumentID = String()
-    var passedMediaArray = Array<String>()
-    var passedRoomID = String()
+//    var passedUserImage = String()
+//    var passedUserName = String()
+//    var passedComment = String()
+//    var passedDate = Timestamp()
+//    var passedUid = String()
+//    var passedRoomName = String()
+//    var passedDocumentID = String()
+//    var passedMediaArray = Array<String>()
+//    var passedRoomID = String()
     var passedContent = Contents(dic: ["" : ""])
     private var label = MessageLabel()
     private let disposeBag = DisposeBag()
@@ -194,6 +194,13 @@ final class CommentViewController: UIViewController {
                 if let indicator = self?.indicator {
                     cell.setupCell(item: item, indicator: indicator)
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        commentTableView.rx.willDisplayCell
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] _ in
+                self?.viewModel.isBottomObserver.onNext(())
             }
             .disposed(by: disposeBag)
     }
