@@ -16,16 +16,6 @@ final class CommentViewController: UIViewController {
     
     
     
-    
-//    var passedUserImage = String()
-//    var passedUserName = String()
-//    var passedComment = String()
-//    var passedDate = Timestamp()
-//    var passedUid = String()
-//    var passedRoomName = String()
-//    var passedDocumentID = String()
-//    var passedMediaArray = Array<String>()
-//    var passedRoomID = String()
     var passedContent = Contents(dic: ["" : ""])
     private var label = MessageLabel()
     private let disposeBag = DisposeBag()
@@ -65,7 +55,7 @@ final class CommentViewController: UIViewController {
         keyboardWillHideNotification()
         fetchComments()
         didScrollTableView()
-       
+        isNearBottom()
     }
     
     
@@ -196,11 +186,16 @@ final class CommentViewController: UIViewController {
                 }
             }
             .disposed(by: disposeBag)
-        
-        commentTableView.rx.willDisplayCell
-            .observe(on: MainScheduler.instance)
+    }
+    
+    
+    
+    private func isNearBottom() {
+        commentTableView.rx.didScroll
             .subscribe { [weak self] _ in
-                self?.viewModel.isBottomObserver.onNext(())
+                if self?.commentTableView.isNearBottomEdge() == true {
+                    self?.viewModel.isBottomObserver.onNext(())
+                }
             }
             .disposed(by: disposeBag)
     }
@@ -215,10 +210,9 @@ final class CommentViewController: UIViewController {
 
 
 
-//extension CommentViewController:UIScrollViewDelegate{
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if commentTableView.isDragging == true{
-//            self.inputCommentView.commentTextView.resignFirstResponder()
-//        }
-//    }
-//}
+extension UIScrollView {
+    func isNearBottomEdge() -> Bool {
+        let edgeOffset: CGFloat = 20
+        return contentOffset.y + frame.size.height + edgeOffset > contentSize.height
+    }
+}
