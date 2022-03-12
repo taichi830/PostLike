@@ -69,6 +69,7 @@ final class RoomDetailViewController: UIViewController {
         setupBinds()
         self.setSwipeBackGesture()
         setupTableView()
+        refreshTableView()
     }
     
     
@@ -161,9 +162,20 @@ final class RoomDetailViewController: UIViewController {
         self.contentsTableView.dataSource = self
         self.contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         self.contentsTableView.contentInsetAdjustmentBehavior = .never
+        
+    }
+    
+    
+    
+    
+    private func refreshTableView() {
         let refleshControl = CustomRefreshControl()
-        self.contentsTableView.refreshControl = refleshControl
-        self.contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
+        contentsTableView.refreshControl = refleshControl
+        contentsTableView.refreshControl?.rx.controlEvent(.valueChanged)
+            .subscribe { [weak self] _ in
+                self?.viewModel.refreshObserver.onNext(())
+            }
+            .disposed(by: disposeBag)
     }
     
     
@@ -173,6 +185,7 @@ final class RoomDetailViewController: UIViewController {
     private func setupBinds() {
         viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
         headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: roomName, vc: self, tableView: contentsTableView)
+        self.startIndicator()
         emptyCheck()
         fetchLatestMyContent()
         fetchLatestLikeContent()
@@ -186,9 +199,15 @@ final class RoomDetailViewController: UIViewController {
     private func emptyCheck() {
         viewModel.isEmpty
             .drive { [weak self] bool in
-                if bool == true {
+                switch bool {
+                case true:
+                    self?.dismissIndicator()
+                    self?.contentsTableView.refreshControl?.endRefreshing()
                     self?.mssageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
-                }else {
+                    
+                case false:
+                    self?.dismissIndicator()
+                    self?.contentsTableView.refreshControl?.endRefreshing()
                     self?.mssageLabel.text = ""
                 }
             }
