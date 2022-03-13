@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-final class NotificationViewModel: NSObject {
+final class NotificationViewModel {
     
     let items: Driver<[Contents]>
     let isEmpty: Driver<Bool>
@@ -21,7 +21,6 @@ final class NotificationViewModel: NSObject {
         let listner = notificationListner.items
         
         items = listner
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: [])
         
         isEmpty = listner
