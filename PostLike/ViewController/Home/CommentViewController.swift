@@ -7,10 +7,7 @@
 //
 
 import UIKit
-import Firebase
 import RxSwift
-import RxCocoa
-import FirebaseFirestore
 
 final class CommentViewController: UIViewController {
     
@@ -41,27 +38,45 @@ final class CommentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentTableViewCell")
-        commentTableView.rowHeight = UITableView.automaticDimension
-        
-        setupHeaderView()
-
         inputCommentView.setupBinds(roomID: passedContent.roomID, postID: passedContent.documentID, roomName: passedContent.roomName, passedUid: passedContent.uid, mediaArray: passedContent.mediaArray)
-        
         inputCommentView.didStartEditing()
+        setupTableView()
+        setupHeaderView()
         textViewDidChange()
         keyboardWillShowNotification()
         keyboardWillHideNotification()
         fetchComments()
-        didScrollTableView()
+        didEndDraggingTableView()
         isNearBottom()
     }
     
     
+    
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    
+    
+    
+    
+    @IBAction private func backButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    private func setupTableView() {
+        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentTableViewCell")
+        commentTableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    
 
-    
-    
     
     private func setupHeaderView(){
         let headerView = CommentHeaderView()
@@ -80,13 +95,6 @@ final class CommentViewController: UIViewController {
     
     
 
-    
-    @IBAction private func backButton(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    
     private func textViewDidChange() {
         inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
             guard let inputCommentView = self?.inputCommentView else { return }
@@ -140,15 +148,9 @@ final class CommentViewController: UIViewController {
     
     
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
     
     
-    
-    
-    
-    private func didScrollTableView() {
+    private func didEndDraggingTableView() {
         commentTableView.rx.didEndDragging.subscribe { [weak self] _ in
             self?.inputCommentView.commentTextView.resignFirstResponder()
         }
@@ -190,6 +192,9 @@ final class CommentViewController: UIViewController {
     
     
     
+    
+    
+    
     private func isNearBottom() {
         commentTableView.rx.didScroll
             .subscribe { [weak self] _ in
@@ -210,9 +215,4 @@ final class CommentViewController: UIViewController {
 
 
 
-extension UIScrollView {
-    func isNearBottomEdge() -> Bool {
-        let edgeOffset: CGFloat = 20
-        return contentOffset.y + frame.size.height + edgeOffset > contentSize.height
-    }
-}
+
