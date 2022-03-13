@@ -119,7 +119,7 @@
 		CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */; };
 		CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */; };
 		CECA9F1F279BD3CD0059939B /* CreatedAtExtenshionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F1E279BD3CD0059939B /* CreatedAtExtenshionTests.swift */; };
-		CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */; };
+		CECA9F28279BFECA0059939B /* UILabel＋Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */; };
 		CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F2B279E94740059939B /* PostViewModel.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
@@ -280,7 +280,7 @@
 		CECA9F1C279BD3CD0059939B /* PostLikeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PostLikeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CECA9F1E279BD3CD0059939B /* CreatedAtExtenshionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedAtExtenshionTests.swift; sourceTree = "<group>"; };
 		CECA9F20279BD3CD0059939B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CreatedAt-Extenshion.swift"; sourceTree = "<group>"; };
+		CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel＋Extenshion.swift"; sourceTree = "<group>"; };
 		CECA9F2B279E94740059939B /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
@@ -513,7 +513,7 @@
 				CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */,
 				CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */,
 				CEBD5B31274F6CAC00E2FB83 /* String-Extenshion.swift */,
-				CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */,
+				CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */,
 				CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */,
 			);
 			path = Extenshion;
@@ -1048,7 +1048,7 @@
 				CEE5BD9627C653AA004FD20A /* LikeListner.swift in Sources */,
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
-				CECA9F28279BFECA0059939B /* CreatedAt-Extenshion.swift in Sources */,
+				CECA9F28279BFECA0059939B /* UILabel＋Extenshion.swift in Sources */,
 				CEE5BD9427C644C9004FD20A /* FeedViewModel.swift in Sources */,
 				CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */,
 				CEA19BF126D7D70900283E91 /* InitialViewController.swift in Sources */,
