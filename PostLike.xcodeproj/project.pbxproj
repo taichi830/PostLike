@@ -29,7 +29,7 @@
 		CE012C2726B6EFD4006CC20E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA5C812520D56700755F90 /* LoginViewController.swift */; };
 		CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE249CAC25989C4E003C87A0 /* PostViewController.swift */; };
 		CE012C2E26B6EFD4006CC20E /* NativeAdTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA431C82604FC7C000FD842 /* NativeAdTableViewCell.swift */; };
-		CE012C2F26B6EFD4006CC20E /* TabImage-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */; };
+		CE012C2F26B6EFD4006CC20E /* UIImage+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE33BA5826637D1B001EC04B /* UIImage+Extenshion.swift */; };
 		CE012C3126B6EFD4006CC20E /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5C11FD25E371B100AAF0C0 /* CommentTableViewCell.swift */; };
 		CE012C3226B6EFD4006CC20E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE262B9725678434009B7F5D /* HomeViewController.swift */; };
 		CE012C3326B6EFD4006CC20E /* CreateRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52CD41256E34970032D661 /* CreateRoomViewController.swift */; };
@@ -195,7 +195,7 @@
 		CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		CE2FD87227DDFE210069511A /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		CE2FD87427DDFFC60069511A /* ModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewModel.swift; sourceTree = "<group>"; };
-		CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-Extenshion.swift"; sourceTree = "<group>"; };
+		CE33BA5826637D1B001EC04B /* UIImage+Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extenshion.swift"; sourceTree = "<group>"; };
 		CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestContentsSubject.swift; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE3D126C25BDC95800BEFAC6 /* RoomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -503,7 +503,7 @@
 		CE33BA5726637CDA001EC04B /* Extenshion */ = {
 			isa = PBXGroup;
 			children = (
-				CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */,
+				CE33BA5826637D1B001EC04B /* UIImage+Extenshion.swift */,
 				CEA19BEC26D631C800283E91 /* Array+Extenshion.swift */,
 				CE2E27E0276AD36E002D0E41 /* UIViewController+Extenshion.swift */,
 				CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */,
@@ -1049,7 +1049,7 @@
 				CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */,
 				CE54339327CC976C00A1A786 /* FeedTableViewModel.swift in Sources */,
 				CE79ED33279FC8B40047ABEF /* PostDefaultAPI.swift in Sources */,
-				CE012C2F26B6EFD4006CC20E /* TabImage-Extenshion.swift in Sources */,
+				CE012C2F26B6EFD4006CC20E /* UIImage+Extenshion.swift in Sources */,
 				CEE256BE27CE748D007BF9E6 /* RoomViewModel.swift in Sources */,
 				CE2FD87127DD9DEC0069511A /* UIScrollView+Extension.swift in Sources */,
 				CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */,
