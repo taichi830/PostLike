@@ -8,98 +8,23 @@
 
 import UIKit
 import RxSwift
-import RxCocoa
 import Firebase
 import FirebaseFirestore
-//import FirebaseAuth
 import FirebaseDynamicLinks
-
-
-enum ItemType {
-    case mute
-    case block
-    case cancel
-    case share
-    case report
-    case exit
-    case deletePost
-    case deleteRoom
-}
-
-
-struct Menu {
-    let type: ModalType
-    let item: [Item]
-}
-
-struct Item {
-    let title: String
-    let imageUrl: String
-    let type: ItemType
-}
-
-
-
-struct MenuViewModel {
-    var items = PublishSubject<[Menu]>()
-    
-    func fetchItems() {
-        let menu = [
-            Menu(type: .post,
-                 item: [
-                    Item(title: "投稿を報告・ミュートする", imageUrl: "square.slash", type: .mute),
-                    Item(title: "ユーザーを報告・ブロックする", imageUrl: "person", type: .block),
-                    Item(title: "キャンセル", imageUrl: "xmark", type: .cancel)
-                 ]),
-            Menu(type: .room,
-                 item: [
-                    Item(title: "シェアする", imageUrl: "square.and.arrow.up", type: .share),
-                    Item(title: "ルームを報告する", imageUrl: "flag", type: .report),
-                    Item(title: "キャンセル", imageUrl: "xmark", type: .cancel)
-                 ]),
-            Menu(type: .exit,
-                 item: [
-                    Item(title: "ルームを退出する", imageUrl: "arrowshape.turn.up.right", type: .exit),
-                    Item(title: "キャンセル", imageUrl: "xmark", type: .cancel)
-                 ]),
-            Menu(type: .delete,
-                 item: [
-                    Item(title: "投稿を削除する", imageUrl: "trash", type: .deletePost),
-                    Item(title: "キャンセル", imageUrl: "xmark", type: .cancel)
-                 ]),
-            Menu(type: .moderator,
-                 item: [
-                    Item(title: "ルームを退出する", imageUrl: "arrowshape.turn.up.right", type: .exit),
-                    Item(title: "ルームを削除する", imageUrl: "trash", type: .deleteRoom),
-                    Item(title: "キャンセル", imageUrl: "xmark", type: .cancel)
-                 ])
-        ]
-        
-        items.onNext(menu)
-        items.onCompleted()
-    }
-}
 
 
 final class ModalMenuViewController: UIViewController{
     
-    var passedDocumentID = String()
-    var passedRoomID = String()
-    var passedUid = String()
+
     var passedViewController = UIViewController()
-    var passedType = String()
-//    var passedRoomName = String()
-//    var passedRoomImageUrl = String()
-    var passedRoomIntro = String()
     var passedRoomImage = UIImage()
-//    var passedImageUrl = [String]()
     var passedModerator = String()
     var passedRoomInfo = Room(dic: [:])
     var passedModalType = ModalType(rawValue: "")
     var passedContent = Contents(dic: [:])
     weak var deletePostDelegate:DeletePostDelegate?
     weak var exitRoomDelegate:ExitRoomDelegate?
-    private let viewModel = MenuViewModel()
+    private let viewModel = ModalViewModel()
     private let disposeBag = DisposeBag()
     
     
@@ -126,6 +51,7 @@ final class ModalMenuViewController: UIViewController{
             backViewHeightConstraint.constant = 160
         }
         setupTableView(passedType: passedModalType!)
+        didSelectItem()
     }
     
     
@@ -136,63 +62,7 @@ final class ModalMenuViewController: UIViewController{
     
     
     
-    private func showActivityViewController(){
-        
-        var components = URLComponents()
-        components.scheme = "https"
-        #if DEBUG
-        components.host = "postliketest.page.link"
-        #else
-        components.host = "postlike.page.link"
-        #endif
-        components.path = "/rooms"
-        
-        let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedContent.roomID)
-        components.queryItems = [roomIDQueryItem]
-        
-        guard let link = components.url else {return}
-        #if DEBUG
-        let dynamicLinksDomainURIPrefix = "https://postliketest.page.link"
-        #else
-        let dynamicLinksDomainURIPrefix = "https://postlike.page.link"
-        #endif
-        
-        guard let shareLink = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else {return}
-        
-        if let bundleID = Bundle.main.bundleIdentifier {
-            shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
-        }
-        shareLink.iOSParameters?.appStoreID = "1584149456"
-        
-        shareLink.androidParameters = .none
-        shareLink.androidParameters?.minimumVersion = .zero
-        
-        shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-        shareLink.socialMetaTagParameters?.title = passedRoomInfo.roomName
-        shareLink.socialMetaTagParameters?.descriptionText = passedRoomInfo.roomIntro
-        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomInfo.roomImage)
-        shareLink.shorten { url, warnings, err in
-            if err != nil {
-                return
-            }else{
-                if let warnings = warnings {
-                    for warning in warnings {
-                        print("\(warning)")
-                    }
-                }
-                guard let url = url else {return}
-                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomInfo.roomName, roomImage: self.passedRoomImage)]
-                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
-                self.present(activityViewController, animated: true, completion: nil)
-            }
-        }
-        
-    }
-    
-    
-    
-    func setupTableView(passedType: ModalType) {
-        
+    private func setupTableView(passedType: ModalType) {
         viewModel.items.map{ menus -> [Item] in
             let filter = menus.filter { menu in
                 menu.type == passedType
@@ -207,6 +77,13 @@ final class ModalMenuViewController: UIViewController{
         }
         .disposed(by: disposeBag)
         
+        menuTableView.isScrollEnabled = false
+        menuTableView.rowHeight = 60
+        viewModel.fetchItems()
+    }
+    
+    
+    private func didSelectItem() {
         menuTableView.rx.modelSelected(Item.self).bind { [weak self] item in
             switch item.type {
             case .cancel:
@@ -265,14 +142,13 @@ final class ModalMenuViewController: UIViewController{
             }
         }
         .disposed(by: disposeBag)
-        
-        menuTableView.isScrollEnabled = false
-        menuTableView.rowHeight = 60
-        
-        
-        viewModel.fetchItems()
-
     }
+    
+    
+    
+    
+    
+    
     
     
 }
@@ -282,6 +158,7 @@ final class ModalMenuViewController: UIViewController{
 
 
 extension ModalMenuViewController {
+    //投稿を削除
     func deletePostBatch(documentID:String,imageUrl:[String]){
         let uid = Auth.auth().currentUser!.uid
         let batch = Firestore.firestore().batch()
@@ -309,23 +186,71 @@ extension ModalMenuViewController {
 }
 
 
-
-
-
+extension ModalMenuViewController {
+    //activityViewを表示
+    private func showActivityViewController(){
+        var components = URLComponents()
+        components.scheme = "https"
+        #if DEBUG
+        components.host = "postliketest.page.link"
+        #else
+        components.host = "postlike.page.link"
+        #endif
+        components.path = "/rooms"
+        
+        let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedContent.roomID)
+        components.queryItems = [roomIDQueryItem]
+        
+        guard let link = components.url else {return}
+        #if DEBUG
+        let dynamicLinksDomainURIPrefix = "https://postliketest.page.link"
+        #else
+        let dynamicLinksDomainURIPrefix = "https://postlike.page.link"
+        #endif
+        
+        guard let shareLink = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix) else {return}
+        
+        if let bundleID = Bundle.main.bundleIdentifier {
+            shareLink.iOSParameters = DynamicLinkIOSParameters(bundleID: bundleID)
+        }
+        shareLink.iOSParameters?.appStoreID = "1584149456"
+        
+        shareLink.androidParameters = .none
+        shareLink.androidParameters?.minimumVersion = .zero
+        
+        shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
+        shareLink.socialMetaTagParameters?.title = passedRoomInfo.roomName
+        shareLink.socialMetaTagParameters?.descriptionText = passedRoomInfo.roomIntro
+        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomInfo.roomImage)
+        shareLink.shorten { url, warnings, err in
+            if err != nil {
+                return
+            }else{
+                if let warnings = warnings {
+                    for warning in warnings {
+                        print("\(warning)")
+                    }
+                }
+                guard let url = url else {return}
+                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomInfo.roomName, roomImage: self.passedRoomImage)]
+                let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
+                self.present(activityViewController, animated: true, completion: nil)
+            }
+        }
+        
+    }
+}
 
 
 
 extension ModalMenuViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        
         return PresentModalViewController(presentedViewController: presented, presenting: presenting)
-        
     }
-    
-    
-    
-    
 }
+
+
+
 
 
 import LinkPresentation
