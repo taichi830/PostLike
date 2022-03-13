@@ -69,6 +69,7 @@
 		CE2E27E1276AD36E002D0E41 /* NavigationController-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */; };
 		CE2FD87127DD9DEC0069511A /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */; };
 		CE2FD87327DDFE210069511A /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87227DDFE210069511A /* Modal.swift */; };
+		CE2FD87527DDFFC60069511A /* ModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87427DDFFC60069511A /* ModalViewModel.swift */; };
 		CE369F5327D59B3A0013EAE2 /* LatestContentsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */; };
 		CE3F4DCA27AFEC5500780BEE /* InputCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */; };
 		CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */; };
@@ -195,6 +196,7 @@
 		CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationController-Extenshion.swift"; sourceTree = "<group>"; };
 		CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		CE2FD87227DDFE210069511A /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
+		CE2FD87427DDFFC60069511A /* ModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewModel.swift; sourceTree = "<group>"; };
 		CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-Extenshion.swift"; sourceTree = "<group>"; };
 		CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestContentsSubject.swift; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -497,6 +499,7 @@
 				CE9A933527D0AE7700D86009 /* ProfileHeaderViewModel.swift */,
 				CE9A933727D1B27200D86009 /* HomeViewModel.swift */,
 				CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */,
+				CE2FD87427DDFFC60069511A /* ModalViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1041,6 +1044,7 @@
 				CE012C2326B6EFD4006CC20E /* JoinedRoomViewController.swift in Sources */,
 				CE012C2726B6EFD4006CC20E /* LoginViewController.swift in Sources */,
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,
+				CE2FD87527DDFFC60069511A /* ModalViewModel.swift in Sources */,
 				CEE5BD9627C653AA004FD20A /* LikeListner.swift in Sources */,
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
