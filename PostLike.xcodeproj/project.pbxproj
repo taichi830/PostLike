@@ -114,7 +114,7 @@
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
-		CEBD5B32274F6CAC00E2FB83 /* String-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String-Extenshion.swift */; };
+		CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */; };
 		CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */; };
 		CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */; };
 		CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */; };
@@ -269,7 +269,7 @@
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRefreshController.swift; sourceTree = "<group>"; };
 		CEBA3B3A26A4698B00159B12 /* Alert-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert-Extenshion.swift"; sourceTree = "<group>"; };
-		CEBD5B31274F6CAC00E2FB83 /* String-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String-Extenshion.swift"; sourceTree = "<group>"; };
+		CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extenshion.swift"; sourceTree = "<group>"; };
 		CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
 		CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWithAppleViewController.swift; sourceTree = "<group>"; };
 		CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
@@ -512,7 +512,7 @@
 				CEA19BEC26D631C800283E91 /* Array-Extenshion.swift */,
 				CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */,
 				CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */,
-				CEBD5B31274F6CAC00E2FB83 /* String-Extenshion.swift */,
+				CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */,
 				CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */,
 				CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */,
 			);
@@ -1025,7 +1025,7 @@
 				CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */,
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
-				CEBD5B32274F6CAC00E2FB83 /* String-Extenshion.swift in Sources */,
+				CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */,
 				CEE5BD9827C76F78004FD20A /* RoomHeaderViewModel.swift in Sources */,
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
 				CED4902126ED024900582742 /* ShowIndicator-Extenshion.swift in Sources */,
