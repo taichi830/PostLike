@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		430FC9E19118A99B56BE2C5C /* Pods_PostLike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97086B01C8A0E0585C71C7D8 /* Pods_PostLike.framework */; };
 		6AC541B13928E92ECE8974C9 /* Pods_PostLike_PostLikeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F00215EF591118EDE7263601 /* Pods_PostLike_PostLikeTests.framework */; };
-		CE012C0B26B6EFD4006CC20E /* Alert-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBA3B3A26A4698B00159B12 /* Alert-Extenshion.swift */; };
 		CE012C0C26B6EFD4006CC20E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB53ADA26539B010099E606 /* FirstViewController.swift */; };
 		CE012C0D26B6EFD4006CC20E /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE12E55126423CB800A2765C /* BaseTabBarController.swift */; };
 		CE012C0E26B6EFD4006CC20E /* RoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */; };
@@ -267,7 +266,6 @@
 		CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		CEB5C4F3264C3EBC008C9FAA /* CustomRefreshController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRefreshController.swift; sourceTree = "<group>"; };
-		CEBA3B3A26A4698B00159B12 /* Alert-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert-Extenshion.swift"; sourceTree = "<group>"; };
 		CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extenshion.swift"; sourceTree = "<group>"; };
 		CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
 		CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWithAppleViewController.swift; sourceTree = "<group>"; };
@@ -505,7 +503,6 @@
 		CE33BA5726637CDA001EC04B /* Extenshion */ = {
 			isa = PBXGroup;
 			children = (
-				CEBA3B3A26A4698B00159B12 /* Alert-Extenshion.swift */,
 				CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */,
 				CEA19BEC26D631C800283E91 /* Array-Extenshion.swift */,
 				CE2E27E0276AD36E002D0E41 /* UIViewController+Extenshion.swift */,
@@ -991,7 +988,6 @@
 			files = (
 				CEFAC38A2774DFF100739549 /* Auth.swift in Sources */,
 				CE2E27E1276AD36E002D0E41 /* UIViewController+Extenshion.swift in Sources */,
-				CE012C0B26B6EFD4006CC20E /* Alert-Extenshion.swift in Sources */,
 				CE3F4DCE27B032D200780BEE /* CommentViewModel.swift in Sources */,
 				CE77EF5F26E67EEF00154886 /* Contents.swift in Sources */,
 				CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */,
