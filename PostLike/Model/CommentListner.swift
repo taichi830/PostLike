@@ -13,11 +13,36 @@ import Firebase
 import FirebaseFirestore
 
 protocol CommentListner {
+    func fetchMyLatestComment(roomID: String) -> Observable<[Contents]>
     func fetchComments(documentID:String) -> Observable<[Contents]>
     func fetchMoreComments(documentID:String) -> Observable<[Contents]>
 }
 
 final class CommentDefaultListner: NSObject,CommentListner {
+    private var listner: ListenerRegistration?
+    func fetchMyLatestComment(roomID: String) -> Observable<[Contents]> {
+        Observable.create { observer in
+            let uid = Auth.auth().currentUser?.uid ?? ""
+            let db = Firestore.firestore()
+            self.listner = db.collection("users").document(uid).collection("rooms").document(roomID).collection("comments")
+                .order(by: "createdAt", descending: true).limit(to: 1).addSnapshotListener { querySnapshot, err in
+                    guard let querySnapshot = querySnapshot else { return }
+                    if let err = err {
+                        observer.onError(err)
+                        return
+                    }
+                    let documents = querySnapshot.documents.map { snapshot -> Contents in
+                        let dic = snapshot.data()
+                        let content = Contents(dic: dic)
+                        return content
+                    }
+                    observer.onNext(documents)
+                }
+            return Disposables.create {
+                self.listner?.remove()
+            }
+        }
+    }
     
     
     private var lastDocument: DocumentSnapshot?
