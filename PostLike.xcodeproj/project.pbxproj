@@ -123,7 +123,6 @@
 		CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F2B279E94740059939B /* PostViewModel.swift */; };
 		CECFF3D926B9982E005E2071 /* UserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */; };
 		CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */; };
-		CED4902126ED024900582742 /* ShowIndicator-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */; };
 		CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */; };
 		CEE256BE27CE748D007BF9E6 /* RoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */; };
 		CEE256C427CE85CA007BF9E6 /* ProfileContentsListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256C327CE85CA007BF9E6 /* ProfileContentsListner.swift */; };
@@ -284,7 +283,6 @@
 		CECA9F2B279E94740059939B /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		CECFF3D726B9982E005E2071 /* UserProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserProfileHeaderView.xib; sourceTree = "<group>"; };
 		CECFF3DB26BA3337005E2071 /* UserProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeaderView.swift; sourceTree = "<group>"; };
-		CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowIndicator-Extenshion.swift"; sourceTree = "<group>"; };
 		CED7147425D021BA00390811 /* RoomImageContentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImageContentsViewController.swift; sourceTree = "<group>"; };
 		CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListner.swift; sourceTree = "<group>"; };
 		CEE256BD27CE748D007BF9E6 /* RoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomViewModel.swift; sourceTree = "<group>"; };
@@ -510,7 +508,6 @@
 				CEBA3B3A26A4698B00159B12 /* Alert-Extenshion.swift */,
 				CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */,
 				CEA19BEC26D631C800283E91 /* Array-Extenshion.swift */,
-				CED4902026ED024900582742 /* ShowIndicator-Extenshion.swift */,
 				CE2E27E0276AD36E002D0E41 /* UIViewController+Extenshion.swift */,
 				CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */,
 				CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */,
@@ -1028,7 +1025,6 @@
 				CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */,
 				CEE5BD9827C76F78004FD20A /* RoomHeaderViewModel.swift in Sources */,
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
-				CED4902126ED024900582742 /* ShowIndicator-Extenshion.swift in Sources */,
 				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
 				CE9A933827D1B27200D86009 /* HomeViewModel.swift in Sources */,
 				CE012C1D26B6EFD4006CC20E /* EnteredRoomContentViewController.swift in Sources */,
