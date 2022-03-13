@@ -24,7 +24,7 @@ final class CommentViewModel {
         isBottomSubject.asObserver()
     }
     
-    init (commentListner: CommentListner,documentID:String) {
+    init (commentListner: CommentListner, documentID: String, roomID: String) {
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])
         
@@ -53,6 +53,16 @@ final class CommentViewModel {
                 self?.itemsRelay.accept(currentItems + element)
             }
             .disposed(by: disposeBag)
+        
+        //コメントを投稿した時リアルタイムで取得
+        commentListner.fetchMyLatestComment(roomID: roomID).asObservable()
+            .subscribe { [weak self] items in
+                guard let element = items.element else { return }
+                let currentItems = self?.itemsRelay.value ?? []
+                self?.itemsRelay.accept(element + currentItems)
+            }
+            .disposed(by: disposeBag)
+            
         
         
     }

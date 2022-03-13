@@ -167,7 +167,7 @@ final class CommentViewController: UIViewController {
     
     private func fetchComments() {
         indicator.startAnimating()
-        viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedContent.documentID)
+        viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedContent.documentID, roomID: passedContent.roomID)
         
         //itemsが空かチェック
         viewModel.isEmpty.drive { [weak self] bool in
