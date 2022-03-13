@@ -67,6 +67,7 @@
 		CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */; };
 		CE2E27DF276A3AFB002D0E41 /* AccountSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */; };
 		CE2E27E1276AD36E002D0E41 /* NavigationController-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */; };
+		CE2FD87127DD9DEC0069511A /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */; };
 		CE369F5327D59B3A0013EAE2 /* LatestContentsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */; };
 		CE3F4DCA27AFEC5500780BEE /* InputCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */; };
 		CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */; };
@@ -192,6 +193,7 @@
 		CE2E27D6276099E2002D0E41 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingViewController.swift; sourceTree = "<group>"; };
 		CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationController-Extenshion.swift"; sourceTree = "<group>"; };
+		CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-Extenshion.swift"; sourceTree = "<group>"; };
 		CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestContentsSubject.swift; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 				CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */,
 				CEBD5B31274F6CAC00E2FB83 /* String-Extenshion.swift */,
 				CECA9F27279BFECA0059939B /* CreatedAt-Extenshion.swift */,
+				CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -1053,6 +1056,7 @@
 				CE79ED33279FC8B40047ABEF /* PostDefaultAPI.swift in Sources */,
 				CE012C2F26B6EFD4006CC20E /* TabImage-Extenshion.swift in Sources */,
 				CEE256BE27CE748D007BF9E6 /* RoomViewModel.swift in Sources */,
+				CE2FD87127DD9DEC0069511A /* UIScrollView+Extension.swift in Sources */,
 				CECFF3DD26BA3337005E2071 /* UserProfileHeaderView.swift in Sources */,
 				CE012C3126B6EFD4006CC20E /* CommentTableViewCell.swift in Sources */,
 				CEE5BD9227C63E09004FD20A /* FeedContentsListner.swift in Sources */,
