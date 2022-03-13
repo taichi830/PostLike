@@ -80,7 +80,6 @@ final class ProfileViewController: UIViewController {
         let modalMenuVC = storyboard.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
-        modalMenuVC.passedRoomID = passedDocumentID
         modalMenuVC.passedViewController = self
         if passedModerator == uid {
             modalMenuVC.passedModalType = .moderator
