@@ -68,6 +68,7 @@
 		CE2E27DF276A3AFB002D0E41 /* AccountSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */; };
 		CE2E27E1276AD36E002D0E41 /* NavigationController-Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */; };
 		CE2FD87127DD9DEC0069511A /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */; };
+		CE2FD87327DDFE210069511A /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87227DDFE210069511A /* Modal.swift */; };
 		CE369F5327D59B3A0013EAE2 /* LatestContentsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */; };
 		CE3F4DCA27AFEC5500780BEE /* InputCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */; };
 		CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */; };
@@ -193,6 +194,7 @@
 		CE2E27DE276A3AFB002D0E41 /* AccountSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingViewController.swift; sourceTree = "<group>"; };
 		CE2E27E0276AD36E002D0E41 /* NavigationController-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationController-Extenshion.swift"; sourceTree = "<group>"; };
 		CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
+		CE2FD87227DDFE210069511A /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		CE33BA5826637D1B001EC04B /* TabImage-Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabImage-Extenshion.swift"; sourceTree = "<group>"; };
 		CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestContentsSubject.swift; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -521,6 +523,7 @@
 				CE77EF5B26E67EEF00154886 /* Room.swift */,
 				CE77EF5926E67EEF00154886 /* User.swift */,
 				CE77EF5C26E67EEF00154886 /* Response.swift */,
+				CE2FD87227DDFE210069511A /* Modal.swift */,
 				CE79ED32279FC8B40047ABEF /* PostDefaultAPI.swift */,
 				CE3F4DCF27B0C04000780BEE /* PostCommentAPI.swift */,
 				CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */,
@@ -1074,6 +1077,7 @@
 				CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */,
 				CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */,
 				CE1C23CF276DB44600D3CAC8 /* Firestore.swift in Sources */,
+				CE2FD87327DDFE210069511A /* Modal.swift in Sources */,
 				CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */,
 				CE54339827CC97CE00A1A786 /* ReportTableViewCell.swift in Sources */,
 				CE9A933427CF911900D86009 /* CreateProfileViewModel.swift in Sources */,
