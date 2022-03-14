@@ -36,9 +36,8 @@ class NotificationTableViewCell: UITableViewCell {
     
     
     func setupCell(notification: Contents) {
-        if notification.userImage != "" {
-            userImageView.setImage(imageUrl: notification.userImage)
-        }
+        
+        userImageView.setImage(imageUrl: notification.userImage)
         
         roomNameLabel.text = notification.roomName
         
