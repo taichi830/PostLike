@@ -14,9 +14,6 @@ import FirebaseAuth
 import FirebaseStorage
 
 
-protocol DeletePostDelegate:AnyObject {
-    func deletePostBatch(documentID:String,imageUrl:[String])
-}
 protocol ExitRoomDelegate:AnyObject {
     func exitRoomBatch()
 }
@@ -57,19 +54,7 @@ final class ProfileViewController: UIViewController {
     }
     
     
-
     
-    
-    
-    
-    
-    
-    
-    @objc private func updateContents(){
-    }
-    
-    
-
     
     
     
@@ -93,7 +78,7 @@ final class ProfileViewController: UIViewController {
     
     
     
-
+    
     @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
@@ -122,6 +107,9 @@ final class ProfileViewController: UIViewController {
         reflashTableView()
         emptyCheck()
         fetchContents()
+        fetchLatestMyContent()
+        fetchLatestLikeContent()
+        fetchDeletedPost()
     }
     
     
@@ -183,6 +171,40 @@ final class ProfileViewController: UIViewController {
     }
     
     
+    
+    
+    
+    //投稿後リアルタイムで自分の投稿を取得
+    private func fetchLatestMyContent() {
+        LatestContentsSubject.shared.latestFeedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.insert(element, at: 0)
+                self?.profileTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    //削除した投稿を配列からremove
+    private func fetchDeletedPost() {
+        LatestContentsSubject.shared.deletedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.removeAll {
+                    $0.documentID == element.documentID
+                }
+                self?.profileTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
     //いいねした投稿をリアルタイムで取得
     private func fetchLatestLikeContent() {
         LatestContentsSubject.shared.latestLikeContents
@@ -202,7 +224,6 @@ final class ProfileViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
-    
     //いいね数をリアルタイムでインクリメント
     private func increaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
@@ -212,7 +233,6 @@ final class ProfileViewController: UIViewController {
             contentsArray[i].isLiked = true
         }
     }
-    
     //いいね数をリアルタイムでディクリメント
     private func decreaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
@@ -224,35 +244,6 @@ final class ProfileViewController: UIViewController {
     }
     
     
-    //投稿後リアルタイムで自分の投稿を取得
-    private func fetchLatestMyContent() {
-        LatestContentsSubject.shared.latestFeedContents
-            .subscribe { [weak self] content in
-                guard let element = content.element else { return }
-                self?.contentsArray.insert(element, at: 0)
-                self?.profileTableView.reloadData()
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    //削除した投稿を配列からremove
-    private func fetchDeletedPost() {
-        LatestContentsSubject.shared.deletedContents
-            .subscribe { [weak self] content in
-                guard let element = content.element else { return }
-                self?.contentsArray.removeAll {
-                    $0.documentID == element.documentID
-                }
-                self?.profileTableView.reloadData()
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    
-    
-    
-    
-    
     
     
     
@@ -260,7 +251,7 @@ final class ProfileViewController: UIViewController {
 
 
 
-
+// MARK: - UIViewControllerTransitioningDelegate
 extension ProfileViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return PresentModalViewController(presentedViewController: presented, presenting: presenting)
@@ -270,33 +261,19 @@ extension ProfileViewController:UIViewControllerTransitioningDelegate {
 
 
 
-
-
-
+// MARK: - UITabelView Delegate,DataSource Method
 extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return contentsArray.count
     }
     
-    
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
         let cell = profileTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell")  as! FeedTableViewCell
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
         cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self, modalType: .delete)
-
-        
         return cell
     }
-    
-    
- 
-    
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == contentsArray.count {
@@ -304,16 +281,13 @@ extension ProfileViewController:UITableViewDelegate,UITableViewDataSource,UIGest
         }
     }
     
-    
-    
-
 }
 
 
 
-//MARK: ルーム退出時のデリゲート処理
-extension ProfileViewController:ExitRoomDelegate{
 
+// MARK: - ルーム退出時のデリゲート処理
+extension ProfileViewController:ExitRoomDelegate{
     func exitRoomBatch(){
         let batch = Firestore.firestore().batch()
         Firestore.exitRoom(documentID: passedDocumentID, batch: batch)
@@ -332,17 +306,12 @@ extension ProfileViewController:ExitRoomDelegate{
             }
         }
     }
-    
-    
-    
-    
 }
 
 
 
-//MARK: ルーム削除時のデリゲート処理
+// MARK: - ルーム削除時のデリゲート処理
 extension ProfileViewController:DeleteRoomDelegate{
-
     func deleteRoomAtContainerView(){
         let batch = Firestore.firestore().batch()
         Firestore.deleteRoom(documentID: passedDocumentID, batch: batch)
@@ -359,12 +328,9 @@ extension ProfileViewController:DeleteRoomDelegate{
                 return
             }else{
                 self.navigationController?.popToRootViewController(animated: true)
-                }
             }
         }
-    
-    
-    
+    }
 }
 
 
