@@ -520,13 +520,6 @@
                                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="dah-9b-XaG">
-                                                <rect key="frame" x="30" y="29.5" width="60" height="60"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="60" id="cn3-CW-K7H"/>
-                                                </constraints>
-                                            </imageView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wxm-or-DQg">
                                                 <rect key="frame" x="85" y="85" width="40" height="40"/>
                                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
@@ -543,20 +536,15 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="120" id="1Xs-i6-Ggx"/>
-                                            <constraint firstAttribute="bottom" secondItem="dah-9b-XaG" secondAttribute="bottom" constant="29" id="Civ-6A-Tjh"/>
                                             <constraint firstAttribute="bottom" secondItem="wxm-or-DQg" secondAttribute="bottom" constant="-5" id="NPu-4W-102"/>
                                             <constraint firstItem="8EB-fw-4Ba" firstAttribute="top" secondItem="5Fr-WH-FoC" secondAttribute="top" id="OqA-pF-VlX"/>
                                             <constraint firstItem="8EB-fw-4Ba" firstAttribute="leading" secondItem="5Fr-WH-FoC" secondAttribute="leading" id="ULo-hc-HPD"/>
                                             <constraint firstAttribute="bottom" secondItem="8EB-fw-4Ba" secondAttribute="bottom" id="Uaq-rk-XKm"/>
                                             <constraint firstAttribute="width" constant="120" id="UlN-Pd-Aia"/>
-                                            <constraint firstAttribute="trailing" secondItem="dah-9b-XaG" secondAttribute="trailing" constant="30" id="f6A-cr-Lz2"/>
                                             <constraint firstAttribute="trailing" secondItem="8EB-fw-4Ba" secondAttribute="trailing" id="gAj-42-KiD"/>
                                             <constraint firstAttribute="trailing" secondItem="wxm-or-DQg" secondAttribute="trailing" constant="-5" id="odf-IP-jmO"/>
-                                            <constraint firstItem="dah-9b-XaG" firstAttribute="leading" secondItem="5Fr-WH-FoC" secondAttribute="leading" constant="30" id="rod-kx-V9p"/>
-                                            <constraint firstItem="dah-9b-XaG" firstAttribute="top" secondItem="5Fr-WH-FoC" secondAttribute="top" constant="28" id="ruB-qO-OXb"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nq8-tG-uDM">
@@ -610,7 +598,6 @@
                         <outlet property="callAlubmButton" destination="wxm-or-DQg" id="dSI-tE-Dbv"/>
                         <outlet property="clearView" destination="A1O-dp-BEQ" id="B7m-cl-XCb"/>
                         <outlet property="doneButton" destination="nq8-tG-uDM" id="K33-9L-bJt"/>
-                        <outlet property="personImageView" destination="dah-9b-XaG" id="6KH-Uk-Qoy"/>
                         <outlet property="profileImageView" destination="8EB-fw-4Ba" id="HbK-AY-gCD"/>
                         <outlet property="userNameTextField" destination="89y-pH-oML" id="ZzO-1Y-n2J"/>
                     </connections>

@@ -20,7 +20,6 @@ final class CreateProfileModalViewController: UIViewController {
     @IBOutlet private weak var doneButton: UIButton!
     @IBOutlet private weak var callAlubmButton: UIButton!
     @IBOutlet private weak var profileImageView: UIImageView!
-    @IBOutlet private weak var personImageView: UIImageView!
     @IBOutlet private weak var backView: UIView!
     @IBOutlet private weak var clearView: UIView!
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
