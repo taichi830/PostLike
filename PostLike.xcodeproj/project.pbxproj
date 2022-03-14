@@ -69,6 +69,7 @@
 		CE2FD87127DD9DEC0069511A /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */; };
 		CE2FD87327DDFE210069511A /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87227DDFE210069511A /* Modal.swift */; };
 		CE2FD87527DDFFC60069511A /* ModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87427DDFFC60069511A /* ModalViewModel.swift */; };
+		CE2FD87727DEEB780069511A /* UImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2FD87627DEEB780069511A /* UImageView+Extension.swift */; };
 		CE369F5327D59B3A0013EAE2 /* LatestContentsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */; };
 		CE3F4DCA27AFEC5500780BEE /* InputCommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DC927AFEC5500780BEE /* InputCommentViewModel.swift */; };
 		CE3F4DCC27B02B0D00780BEE /* CommentListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DCB27B02B0D00780BEE /* CommentListner.swift */; };
@@ -195,6 +196,7 @@
 		CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		CE2FD87227DDFE210069511A /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		CE2FD87427DDFFC60069511A /* ModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewModel.swift; sourceTree = "<group>"; };
+		CE2FD87627DEEB780069511A /* UImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UImageView+Extension.swift"; sourceTree = "<group>"; };
 		CE33BA5826637D1B001EC04B /* UIImage+Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extenshion.swift"; sourceTree = "<group>"; };
 		CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestContentsSubject.swift; sourceTree = "<group>"; };
 		CE3D126B25BDC95800BEFAC6 /* RoomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */,
 				CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */,
 				CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */,
+				CE2FD87627DEEB780069511A /* UImageView+Extension.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -1072,6 +1075,7 @@
 				CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */,
 				CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */,
 				CE012C3A26B6EFD4006CC20E /* ShowImageViewController.swift in Sources */,
+				CE2FD87727DEEB780069511A /* UImageView+Extension.swift in Sources */,
 				CE1C23CF276DB44600D3CAC8 /* Firestore.swift in Sources */,
 				CE2FD87327DDFE210069511A /* Modal.swift in Sources */,
 				CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */,
