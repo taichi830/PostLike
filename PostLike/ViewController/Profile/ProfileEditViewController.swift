@@ -16,8 +16,7 @@ import FirebaseAuth
 final class ProfileEditViewController: UIViewController {
     
     
-    @IBOutlet private weak var personView: UIImageView!
-    @IBOutlet private weak var userImage: UIImageView!
+    @IBOutlet private weak var userImageView: UIImageView!
     @IBOutlet private weak var userNameEditLabel: UITextField!
     @IBOutlet private weak var topLabel: UILabel!
     @IBOutlet private weak var completeButton: UIButton!
@@ -29,17 +28,12 @@ final class ProfileEditViewController: UIViewController {
     
     private var updatedUserImage = UIImage()
     var passedUserInfo = Contents(dic: [:])
-//    private var roomDetailInfo:Contents?
-//    var passedRoomName = String()
-//    var passedDocumentID = String()
-//    var passedUserName = String()
-//    var passedUserImage = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        userImage.layer.cornerRadius = 50
+        userImageView.layer.cornerRadius = 50
         completeButton.layer.cornerRadius = 23
         
         setProfile()
@@ -54,10 +48,7 @@ final class ProfileEditViewController: UIViewController {
     
     
     private func setProfile(){
-        if passedUserInfo.userImage != "" {
-            userImage.sd_setImage(with: URL(string: passedUserInfo.userImage), completed: nil)
-            personView.image = UIImage()
-        }
+        userImageView.setImage(imageUrl: passedUserInfo.userImage)
         userNameEditLabel.text = passedUserInfo.userName
     }
     
@@ -83,8 +74,7 @@ final class ProfileEditViewController: UIViewController {
         pickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
-                    self.userImage.image = image
-                    self.personView.image = UIImage()
+                    self.userImageView.image = image
                     self.updatedUserImage = image!
                 })
             }
