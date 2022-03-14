@@ -42,15 +42,6 @@ final class EnteredRoomContentViewController: UIViewController{
     private var messageLabel = MessageLabel()
     private var contentsArray = [Contents]()
     private var likeContentsArray = [Contents]()
-    private lazy var indicator:UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView()
-        indicator.center = roomImageView.center
-        indicator.style = .medium
-        indicator.color = .white
-        indicator.hidesWhenStopped = true
-        roomImageView.addSubview(indicator)
-        return indicator
-    }()
     private let disposeBag = DisposeBag()
     var viewModel: FeedViewModel!
     
@@ -311,8 +302,9 @@ final class EnteredRoomContentViewController: UIViewController{
 
 
 
-
+// MARK: - UITabelView Delegate,DataSource Method
 extension EnteredRoomContentViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contentsArray.count
     }
@@ -331,11 +323,10 @@ extension EnteredRoomContentViewController: UITableViewDelegate, UITableViewData
         }
     }
     
-    
 }
 
 
-
+// MARK: - UIViewControllerTransitioningDelegate
 extension EnteredRoomContentViewController:UIViewControllerTransitioningDelegate{
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return PresentModalViewController(presentedViewController: presented, presenting: presenting)
