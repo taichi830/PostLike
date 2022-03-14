@@ -17,29 +17,29 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @IBOutlet weak var roomName: UILabel! {
+    @IBOutlet private weak var roomName: UILabel! {
         didSet {
             roomName.adjustsFontSizeToFitWidth = true
             roomName.minimumScaleFactor = 0.9
         }
     }
-    @IBOutlet weak var backButtonBackView: UIView! {
+    @IBOutlet private weak var backButtonBackView: UIView! {
         didSet {
             backButtonBackView.layer.cornerRadius = 15
         }
     }
-    @IBOutlet weak var dotButtonBackView: UIView! {
+    @IBOutlet private weak var dotButtonBackView: UIView! {
         didSet {
             dotButtonBackView.layer.cornerRadius = 15
         }
     }
-    @IBOutlet weak var contentsTableView: UITableView!
-    @IBOutlet weak var roomImageView: UIImageView!
-    @IBOutlet weak var roomImageViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var roomImageViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topBlurEffectView: UIVisualEffectView!
-    @IBOutlet weak var headerView: SearchResultHeaderView!
-    @IBOutlet weak var effectViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var contentsTableView: UITableView!
+    @IBOutlet private weak var roomImageView: UIImageView!
+    @IBOutlet private weak var roomImageViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var roomImageViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var topBlurEffectView: UIVisualEffectView!
+    @IBOutlet private weak var headerView: SearchResultHeaderView!
+    @IBOutlet private weak var effectViewHeight: NSLayoutConstraint!
     
 
     var passedDocumentID = String()
@@ -75,10 +75,6 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    
-    
-    
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         effectViewHeight.constant = self.view.safeAreaInsets.top + 46
@@ -87,26 +83,9 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @IBAction private func backButton(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -121,24 +100,6 @@ final class RoomDetailViewController: UIViewController {
         modalMenuVC.passedRoomInfo = headerView.roomInfo ?? Room(dic: [:])
         present(modalMenuVC, animated: true, completion: nil)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @objc private func swiped(_ sender:UISwipeGestureRecognizer){
-        navigationController?.popViewController(animated: true)
-    }
-    
-    
-    
-    
-    
     
     
     
@@ -241,7 +202,6 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    
     //他画面でいいねした投稿をリアルタイムで取得
     private func fetchLatestLikeContent() {
         LatestContentsSubject.shared.latestLikeContents
@@ -282,6 +242,7 @@ final class RoomDetailViewController: UIViewController {
     
     
     
+    
     //削除した投稿を配列からremove
     private func fetchDeletedPost() {
         LatestContentsSubject.shared.deletedContents
@@ -314,7 +275,7 @@ final class RoomDetailViewController: UIViewController {
 
 
 
-
+// MARK: - UITabelView Delegate,DataSource Method
 extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -340,7 +301,7 @@ extension RoomDetailViewController: UITableViewDelegate,UITableViewDataSource{
 
 
 
-
+// MARK: - UIViewControllerTransitioningDelegate
 extension RoomDetailViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         
