@@ -15,9 +15,9 @@ final class RoomHeaderView: UIView {
     @IBOutlet private weak var bluredImageView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
     @IBOutlet private weak var memberLabel: UILabel!
-    @IBOutlet private weak var myProfileImageView: UIImageView! {
+    @IBOutlet private weak var profileImageView: UIImageView! {
         didSet {
-            myProfileImageView.layer.cornerRadius = myProfileImageView.frame.height/2
+            profileImageView.layer.cornerRadius = profileImageView.frame.height/2
         }
     }
     @IBOutlet private weak var imageCollectionButton: UIButton!
@@ -54,11 +54,7 @@ final class RoomHeaderView: UIView {
             .drive { [weak self] userInfo in
                 self?.didTapProfileImage(roomID: roomID, userInfo: userInfo, vc: vc)
                 self?.didTapPostButton(userInfo: userInfo, vc: vc)
-                if userInfo.userImage == "" {
-                    self?.myProfileImageView.image = UIImage(systemName: "person.fill")
-                }else{
-                    self?.myProfileImageView.sd_setImage(with: URL(string: userInfo.userImage), completed: nil)
-                }
+                self?.profileImageView.setImage(imageUrl: userInfo.userImage)
             }
             .disposed(by: disposeBag)
         
@@ -67,7 +63,7 @@ final class RoomHeaderView: UIView {
             .drive { [weak self] bool in
                 self?.postButton.isEnabled = bool
                 self?.postButton.tintColor = bool ? .label : .lightGray
-                self?.myProfileImageView.isUserInteractionEnabled = bool
+                self?.profileImageView.isUserInteractionEnabled = bool
                 self?.memberLabel.text = bool ? "" : "このルームから退出しました"
             }
             .disposed(by: disposeBag)
@@ -143,7 +139,7 @@ final class RoomHeaderView: UIView {
         }
         .disposed(by: disposeBag)
         
-        myProfileImageView.addGestureRecognizer(tapGesture)
+        profileImageView.addGestureRecognizer(tapGesture)
     }
 
 
