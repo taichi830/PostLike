@@ -303,11 +303,6 @@
                                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Sfv-6A-1mY">
-                                                <rect key="frame" x="25" y="26" width="50" height="50.000000000000014"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -380,10 +375,9 @@
                         <outlet property="backView" destination="BnF-Iq-eka" id="sf1-5p-SNn"/>
                         <outlet property="bottomConstraint" destination="DVF-Cj-D1g" id="exa-Ml-oab"/>
                         <outlet property="completeButton" destination="KbX-9b-aV1" id="xED-ka-8am"/>
-                        <outlet property="personView" destination="Sfv-6A-1mY" id="xt0-dj-kcg"/>
                         <outlet property="stackView" destination="MrA-FN-78d" id="iaI-aT-Z3J"/>
                         <outlet property="topLabel" destination="tNc-Zd-GJC" id="JNJ-t0-3rf"/>
-                        <outlet property="userImage" destination="2Qs-9w-5uF" id="wzL-bq-w75"/>
+                        <outlet property="userImageView" destination="2Qs-9w-5uF" id="wzL-bq-w75"/>
                         <outlet property="userNameEditLabel" destination="dvt-iw-jhw" id="iN3-p4-Ab8"/>
                     </connections>
                 </viewController>
@@ -810,7 +804,6 @@
     <resources>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
-        <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
