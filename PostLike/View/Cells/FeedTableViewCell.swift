@@ -85,14 +85,14 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     
     func setContent(contents:Contents,likeContensArray:[Contents]){
-        //ユーザー画像をセット
-        userImageView.setImage(imageUrl: contents.userImage)
         
         //ユーザーネームをセット
         userNameLabel.text = contents.userName
         
+        //ユーザー画像をセット
+        userImageView.setImage(imageUrl: contents.userImage)
         
-//        投稿文をセット
+        //投稿文をセット
         postTextView.setText(text: contents.text, urls: contents.text.urlsFromRegexs)
         postTextView.textContainerInset = UIEdgeInsets(top: 0, left: -3, bottom: 0, right: -3)
         if contents.text == "" {
@@ -101,39 +101,27 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
             postTextView.isHidden = false
         }
         
-        
-        
-        
-        
         //投稿画像をセット
         if contents.mediaArray[0] == "" {
             underHeight.constant = 0
         }else{
             underHeight.constant = 210 * underView.frame.width / 340
         }
-        
-        
         if contents.mediaArray.count == 1 && contents.mediaArray[0] != "" {
             singlePostImageView.isHidden = false
             postImageView.isHidden = true
             postImageView2.isHidden = true
             singlePostImageView.sd_setImage(with: URL(string: contents.mediaArray[0]), completed: nil)
         }else if contents.mediaArray.count == 2 {
-            
             singlePostImageView.isHidden = true
             postImageView.isHidden = false
             postImageView2.isHidden = false
-            
             postImageView.sd_setImage(with: URL(string: contents.mediaArray[0] as String), completed: nil)
-            
             postImageView2.sd_setImage(with: URL(string: contents.mediaArray[1] as String), completed: nil)
         }
         
-        
-        
         //いいね数をセット
         likeCountLabel.text = contents.likeCount.description
-        
         
         let likeCheck = likeContensArray.filter {
             $0.documentID == contents.documentID
@@ -149,16 +137,12 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
             contents.isLiked = true
         }
         
-        
         //コメント数をセット
         commentCountLabel.text = contents.commentCount.description
-        
-        
         
         //投稿から何日経ったかを算出
         let createdAt = contents.createdAt.dateValue()
         self.createdAt.text = UILabel().createdAtString(createdAt: createdAt)
-        
         
         
     }
