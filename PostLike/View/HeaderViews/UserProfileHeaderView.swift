@@ -41,7 +41,6 @@ final class UserProfileHeaderView: UIView{
             profileEditButton.layer.borderWidth = 1
         }
     }
-    @IBOutlet weak var personImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var postCountLabel: UILabel!
     @IBOutlet weak var likeCountLabel: UILabel!
@@ -82,13 +81,7 @@ final class UserProfileHeaderView: UIView{
                 
                 guard let uid = Auth.auth().currentUser?.uid else { return }
                 self?.userNameLabel.text = userInfo.userName
-                
-                if userInfo.userImage == "" {
-                    self?.personImageView.image = UIImage(systemName: "person.fill")
-                }else {
-                    self?.userImageView.sd_setImage(with: URL(string: userInfo.userImage), completed: nil)
-                    self?.personImageView.image = UIImage()
-                }
+                self?.userImageView.setImage(imageUrl: userInfo.userImage)
                 
                 if passedUid == uid {
                     self?.profileEditButton.isHidden = true
