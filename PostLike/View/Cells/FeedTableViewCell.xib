@@ -28,13 +28,8 @@
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xvn-kZ-v3x">
                                                 <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
-                                                <color key="backgroundColor" systemColor="systemGray5Color"/>
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
-                                            </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="zCs-NX-mHa">
-                                                <rect key="frame" x="5" y="8.5" width="26" height="19"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -43,12 +38,8 @@
                                             <constraint firstAttribute="trailing" secondItem="xvn-kZ-v3x" secondAttribute="trailing" id="GHS-K9-lLe"/>
                                             <constraint firstAttribute="width" constant="36" id="XHP-ed-zku"/>
                                             <constraint firstItem="xvn-kZ-v3x" firstAttribute="leading" secondItem="Se4-Jx-lQh" secondAttribute="leading" id="YhH-vx-JCn"/>
-                                            <constraint firstAttribute="trailing" secondItem="zCs-NX-mHa" secondAttribute="trailing" constant="5" id="mz2-TG-i9m"/>
                                             <constraint firstAttribute="bottom" secondItem="xvn-kZ-v3x" secondAttribute="bottom" id="sNO-1g-3Tf"/>
-                                            <constraint firstItem="zCs-NX-mHa" firstAttribute="top" secondItem="Se4-Jx-lQh" secondAttribute="top" constant="7" id="uaf-F7-FTQ"/>
                                             <constraint firstItem="xvn-kZ-v3x" firstAttribute="top" secondItem="Se4-Jx-lQh" secondAttribute="top" id="vTX-Uc-HYL"/>
-                                            <constraint firstItem="zCs-NX-mHa" firstAttribute="leading" secondItem="Se4-Jx-lQh" secondAttribute="leading" constant="5" id="xM7-Er-fdS"/>
-                                            <constraint firstAttribute="bottom" secondItem="zCs-NX-mHa" secondAttribute="bottom" constant="7" id="yJp-i9-Zcm"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="AeU-HF-hMx">
@@ -82,9 +73,6 @@
                                         <state key="normal" image="ellipsis" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium" weight="thin"/>
                                         </state>
-                                        <connections>
-                                            <action selector="pushReportButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="111-gU-lP7"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -155,9 +143,6 @@
                                         <state key="normal" image="heart" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default" weight="regular"/>
                                         </state>
-                                        <connections>
-                                            <action selector="pushLikeButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="xFh-Br-1fI"/>
-                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qB-Y5-5T2">
                                         <rect key="frame" x="25" y="0.0" width="8.5" height="16"/>
@@ -196,9 +181,6 @@
                                         <state key="normal" image="message" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default" weight="regular"/>
                                         </state>
-                                        <connections>
-                                            <action selector="pushCommentButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="eTI-HG-8Lf"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -253,7 +235,6 @@
                 <outlet property="createdAt" destination="cup-ah-Bil" id="186-fG-g7S"/>
                 <outlet property="likeButton" destination="HbS-h9-f2y" id="4Mj-IG-VNr"/>
                 <outlet property="likeCountLabel" destination="5qB-Y5-5T2" id="DQd-Dd-CGg"/>
-                <outlet property="personImageView" destination="zCs-NX-mHa" id="q3t-ls-b3D"/>
                 <outlet property="postImageView" destination="Qeo-Ya-wHq" id="FoL-Ew-FmS"/>
                 <outlet property="postImageView2" destination="DCh-UL-mLg" id="hbO-hL-9QJ"/>
                 <outlet property="postTextView" destination="Sze-mn-Ula" id="6LE-Fg-d56"/>
@@ -272,15 +253,11 @@
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="message" catalog="system" width="128" height="113"/>
-        <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
