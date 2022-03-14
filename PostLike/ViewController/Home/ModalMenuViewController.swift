@@ -22,7 +22,7 @@ final class ModalMenuViewController: UIViewController{
     var passedRoomInfo = Room(dic: [:])
     var passedModalType = ModalType(rawValue: "")
     var passedContent = Contents(dic: [:])
-    weak var deletePostDelegate:DeletePostDelegate?
+//    weak var deletePostDelegate:DeletePostDelegate?
     weak var exitRoomDelegate:ExitRoomDelegate?
     private let viewModel = ModalViewModel()
     private let disposeBag = DisposeBag()
