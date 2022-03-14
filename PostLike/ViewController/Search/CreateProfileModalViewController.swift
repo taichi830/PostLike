@@ -39,7 +39,7 @@ final class CreateProfileModalViewController: UIViewController {
         
 
         profileImageView.layer.cornerRadius = 60
-        profileImageView.sd_setImage(with: URL(string: passedUserInfo.userImage), completed: nil)
+        profileImageView.setImage(imageUrl: passedUserInfo.userImage)
         
         callAlubmButton.layer.cornerRadius = 20
         callAlubmButton.layer.borderWidth = 5
@@ -112,7 +112,6 @@ final class CreateProfileModalViewController: UIViewController {
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { [weak self] (image, info) in
                     self?.profileImageView.image = image
-                    self?.personImageView.image = UIImage()
                     self?.viewModel.userImageSubject.onNext(image ?? UIImage())
                 })
             }
