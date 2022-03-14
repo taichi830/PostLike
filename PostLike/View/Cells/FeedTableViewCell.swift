@@ -7,9 +7,7 @@
 //
 
 import UIKit
-//import SDWebImage
 import RxSwift
-//import RxCocoa
 
 final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDelegate{
     
@@ -17,7 +15,6 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     @IBOutlet weak var postTextView: LinkTextView!
     @IBOutlet weak var userImageView: UIImageView!
-    @IBOutlet weak var personImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var reportButton: UIButton!
     @IBOutlet weak var singlePostImageView: UIImageView!
@@ -32,7 +29,6 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     @IBOutlet weak var underHeight: NSLayoutConstraint!
     @IBOutlet weak var roomNameLabel: UILabel!
     
-//    timeLineContents[i]weak var tableViewCellDelegate:TableViewCellDelegate?
     private var disposeBag = DisposeBag()
     private var viewModel: FeedTableViewModel!
     private var feedViewModel: FeedViewModel!
@@ -90,13 +86,7 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
     
     func setContent(contents:Contents,likeContensArray:[Contents]){
         //ユーザー画像をセット
-        if contents.userImage != "" {
-            userImageView.sd_setImage(with: URL(string: contents.userImage as String), completed: nil)
-            personImageView.image = UIImage()
-        }else{
-            userImageView.image = UIImage()
-            personImageView.image = UIImage(systemName: "person.fill")
-        }
+        userImageView.setImage(imageUrl: contents.userImage)
         
         //ユーザーネームをセット
         userNameLabel.text = contents.userName
@@ -270,71 +260,6 @@ final class FeedTableViewCell: UITableViewCell, UIViewControllerTransitioningDel
             }
             .disposed(by: disposeBag)
     }
-    
-    
-    
-    
-   
-    
-    
-    
-    
-    @IBAction func pushLikeButton(_ sender: Any) {
-//        let tableView = superview as!
-//            UITableView
-//        let tappedIndexPath = tableView.indexPath(for: self)
-//        let row = tappedIndexPath?.row
-//        self.tableViewCellDelegate?.pushLikeButton(row: row!, sender: likeButton, countLabel: likeCountLabel)
-    }
-    
-    
-    
-    
-    
-    @IBAction func pushCommentButton(_ sender: Any) {
-//        let tableView = superview as!
-//            UITableView
-//        let tappedIndexPath = tableView.indexPath(for: self)
-//        let row = tappedIndexPath?.row
-//        self.tableViewCellDelegate?.pushedCommentButton(row: row!)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @IBAction func pushReportButton(_ sender: Any) {
-//        let tableView = superview as!
-//            UITableView
-//        let tappedIndexPath = tableView.indexPath(for: self)
-//        let row = tappedIndexPath?.row
-//        tableViewCellDelegate?.reportButton(row: row!)
-    }
-    
-    
-    
-    
-    
-    @objc func tappedPostImageView(_ sender: UITapGestureRecognizer) {
-//        let tableView = superview as!
-//            UITableView
-//        let tappedLocation = sender.location(in: tableView)
-//        let tappedIndexPath = tableView.indexPathForRow(at: tappedLocation)
-//        let tappedRow = tappedIndexPath?.row
-//        self.tableViewCellDelegate?.tappedPostImageView(row: tappedRow!)
-    }
-    
-    
-    
     
     
     
