@@ -144,6 +144,7 @@ final class EnteredRoomContentViewController: UIViewController{
         fetchFeedContents()
         fetchLatestMyContent()
         fetchLatestLikeContent()
+        fetchDeletedPost()
         tableViewDidScroll()
     }
     
@@ -256,6 +257,22 @@ final class EnteredRoomContentViewController: UIViewController{
             contentsArray[i].likeCount = count
             contentsArray[i].isLiked = true
         }
+    }
+    
+    
+    
+    
+    //削除した投稿を配列からremove
+    private func fetchDeletedPost() {
+        LatestContentsSubject.shared.deletedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.removeAll {
+                    $0.documentID == element.documentID
+                }
+                self?.contentsTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
     }
     
     
