@@ -241,6 +241,7 @@ final class RoomDetailViewController: UIViewController {
     //投稿後リアルタイムで自分の投稿を取得
     private func fetchLatestMyContent() {
         LatestContentsSubject.shared.latestFeedContents
+            .filter { $0.roomID == self.passedDocumentID }
             .subscribe { [weak self] content in
                 guard let element = content.element else { return }
                 self?.contentsArray.insert(element, at: 0)
