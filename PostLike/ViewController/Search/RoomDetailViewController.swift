@@ -95,20 +95,6 @@ final class RoomDetailViewController: UIViewController {
     
     
     
-    @objc private func updateContents(){
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     @IBAction private func backButton(_ sender: Any) {
@@ -187,9 +173,11 @@ final class RoomDetailViewController: UIViewController {
         headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: roomName, vc: self, tableView: contentsTableView)
         self.startIndicator()
         emptyCheck()
+        fetchContents()
         fetchLatestMyContent()
         fetchLatestLikeContent()
-        fetchContents()
+        fetchDeletedPost()
+        
     }
     
     
@@ -273,8 +261,6 @@ final class RoomDetailViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
-    
-    
     //いいね数をリアルタイムでインクリメント
     private func increaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
@@ -284,9 +270,6 @@ final class RoomDetailViewController: UIViewController {
             contentsArray[i].isLiked = true
         }
     }
-    
-    
-    
     //いいね数をリアルタイムでディクリメント
     private func decreaseLikeCount(element: Contents) {
         if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
@@ -295,6 +278,21 @@ final class RoomDetailViewController: UIViewController {
             contentsArray[i].likeCount = count
             contentsArray[i].isLiked = true
         }
+    }
+    
+    
+    
+    //削除した投稿を配列からremove
+    private func fetchDeletedPost() {
+        LatestContentsSubject.shared.deletedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.contentsArray.removeAll {
+                    $0.documentID == element.documentID
+                }
+                self?.contentsTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
     }
     
     
