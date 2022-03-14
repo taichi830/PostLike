@@ -19,7 +19,6 @@ final class CreateModeratorProfileViewController: UIViewController {
     
     
     @IBOutlet private weak var userImage: UIImageView!
-    @IBOutlet private weak var personImage: UIImageView!
     @IBOutlet private weak var backView: UIImageView!
     @IBOutlet private weak var completeButton: UIButton!
     @IBOutlet private weak var userNameTextField: UITextField!
@@ -67,9 +66,7 @@ final class CreateModeratorProfileViewController: UIViewController {
         imagePickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
-                    
                     self.userImage.image = image
-                    self.personImage.image = UIImage()
                 })
             }
         }

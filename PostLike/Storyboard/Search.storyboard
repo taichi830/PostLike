@@ -829,11 +829,6 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                             </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jRc-DA-1yB">
-                                                <rect key="frame" x="25" y="26" width="50" height="46"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fZ3-5f-GxU">
                                                 <rect key="frame" x="65" y="65" width="40" height="40"/>
                                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
@@ -933,7 +928,6 @@
                     <connections>
                         <outlet property="backView" destination="fZ3-5f-GxU" id="ttA-TB-9U6"/>
                         <outlet property="completeButton" destination="Jcp-Xt-zaW" id="bcc-Jh-NCc"/>
-                        <outlet property="personImage" destination="jRc-DA-1yB" id="n4e-18-lGe"/>
                         <outlet property="userImage" destination="50Z-o1-6hE" id="2Wd-yb-51w"/>
                         <outlet property="userNameTextField" destination="h1Q-Rt-930" id="I4A-Bc-P8C"/>
                     </connections>
@@ -1053,7 +1047,6 @@
     <resources>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
-        <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
