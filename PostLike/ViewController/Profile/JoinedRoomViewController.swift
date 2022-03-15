@@ -108,16 +108,7 @@ extension JoinedRoomViewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = roomCollectionView.dequeueReusableCell(withReuseIdentifier: "myroomCell", for: indexPath) as! RoomCollectionViewCell
-        
-        cell.roomName.text = joinedRoomsArray[indexPath.row].roomName
-        if joinedRoomsArray[indexPath.row].roomImage != "" {
-            cell.roomImage.sd_setImage(with: URL(string: joinedRoomsArray[indexPath.row].roomImage), completed: nil)
-            cell.personImage.image = UIImage()
-        }else{
-            cell.roomImage.image = UIImage()
-            cell.roomImage.backgroundColor = .systemGray6
-            cell.personImage.image = UIImage(systemName: "person.3.fill")
-        }
+        cell.setupCell(item: joinedRoomsArray[indexPath.row])
         return cell
         
     }
