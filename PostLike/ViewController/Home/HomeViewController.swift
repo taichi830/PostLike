@@ -99,19 +99,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private func setupBinds() {
         viewModel = HomeViewModel(roomListner: RoomDefaultListner(), feedListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), reportListner: ReportDefaultListner())
         startIndicator()
@@ -121,24 +108,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
         roomEmptyCheck()
         fetchLatestLikeContents()
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     private func roomEmptyCheck() {
@@ -156,25 +125,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private func bindRooms() {
         viewModel.rooms
             .drive { [weak self] rooms in
@@ -184,15 +134,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
             }
             .disposed(by: disposeBag)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     private func feedEmptyCheck() {
@@ -213,18 +154,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private func bindFeeds() {
         viewModel.items
             .drive { [weak self] feeds in
@@ -242,20 +171,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
             }
             .disposed(by: disposeBag)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     private func fetchLatestLikeContents() {
@@ -278,20 +193,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private func increaseLikeCount(element: Contents) {
         guard let i = timeLineContents.firstIndex(where: { $0.documentID == element.documentID }) else { return }
         var count = timeLineContents[i].likeCount
@@ -302,19 +203,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private func decreaseLikeCount(element: Contents) {
         guard let i = timeLineContents.firstIndex(where: { $0.documentID == element.documentID }) else { return }
         var count = timeLineContents[i].likeCount
@@ -323,43 +211,6 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
         timeLineContents[i].isLiked = true
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @objc private func updateContents(){
-        //        self.joinedRoomsArray.removeAll()
-        //        self.moderatorPosts.removeAll()
-        //        self.nativeAds.removeAll()
-        //        self.likeContentsArray.removeAll()
-        //        self.tableViewItems.removeAll()
-        //        fetchModeratorPosts()
-        //        fetchJoinedRoom()
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     @IBAction private func allViewButton(_ sender: Any) {
@@ -411,20 +262,8 @@ extension HomeViewController: UICollectionViewDelegate,UICollectionViewDataSourc
         
         
         let cell = roomCollectionView.dequeueReusableCell(withReuseIdentifier: "myroomCell", for: indexPath) as! RoomCollectionViewCell
-        if self.joinedRoomsArray.count != 0 {
-            cell.roomName.text = joinedRoomsArray[indexPath.row].roomName
-            if joinedRoomsArray[indexPath.row].roomImage != "" {
-                cell.roomImage.sd_setImage(with: URL(string: joinedRoomsArray[indexPath.row].roomImage), completed: nil)
-                cell.personImage.image = UIImage()
-            }else{
-                cell.roomImage.image = UIImage()
-                cell.roomImage.backgroundColor = .systemGray6
-                cell.personImage.image = UIImage(systemName: "person.3.fill")
-            }
-        }else{
-            cell.personImage.image = UIImage()
-            cell.roomImage.image = UIImage()
-            cell.roomName.text = ""
+        if !joinedRoomsArray.isEmpty {
+            cell.setupCell(item: joinedRoomsArray[indexPath.row])
         }
         return cell
     }
