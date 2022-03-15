@@ -47,26 +47,18 @@
                             <constraint firstAttribute="height" constant="10" id="1Zb-w7-1Vh"/>
                         </constraints>
                     </view>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JLT-Lj-ahY">
-                        <rect key="frame" x="45" y="22" width="40" height="36"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </imageView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstItem="Qcv-Fr-cqj" firstAttribute="top" secondItem="JLT-Lj-ahY" secondAttribute="bottom" constant="22" id="1Mr-6P-5nC"/>
                 <constraint firstAttribute="trailing" secondItem="vej-9m-XtW" secondAttribute="trailing" id="1ry-r1-oh7"/>
                 <constraint firstItem="Aw3-X1-CyS" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="3iR-GZ-NLw"/>
                 <constraint firstAttribute="trailing" secondItem="Aw3-X1-CyS" secondAttribute="trailing" id="B3l-zF-6qm"/>
                 <constraint firstAttribute="bottom" secondItem="vej-9m-XtW" secondAttribute="bottom" id="Bql-7g-Mxc"/>
-                <constraint firstAttribute="trailing" secondItem="JLT-Lj-ahY" secondAttribute="trailing" constant="45" id="D7b-jU-ElH"/>
-                <constraint firstItem="JLT-Lj-ahY" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="22" id="LMX-gY-gf8"/>
                 <constraint firstItem="Qcv-Fr-cqj" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="OYv-Kk-D1s"/>
                 <constraint firstAttribute="bottom" secondItem="Qcv-Fr-cqj" secondAttribute="bottom" constant="30" id="RXF-xr-Lon"/>
                 <constraint firstAttribute="trailing" secondItem="Qcv-Fr-cqj" secondAttribute="trailing" id="btH-Ec-76x"/>
                 <constraint firstItem="vej-9m-XtW" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="cqi-xl-wsf"/>
-                <constraint firstItem="JLT-Lj-ahY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="45" id="dcQ-Ut-XkF"/>
                 <constraint firstAttribute="trailing" secondItem="Qcv-Fr-cqj" secondAttribute="trailing" id="fpg-SX-gYB"/>
                 <constraint firstItem="Qcv-Fr-cqj" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="k3Z-8R-QNW"/>
                 <constraint firstItem="Aw3-X1-CyS" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="kR2-ij-TPI"/>
@@ -76,7 +68,6 @@
             </constraints>
             <size key="customSize" width="46" height="28"/>
             <connections>
-                <outlet property="personImage" destination="JLT-Lj-ahY" id="ao0-t5-vej"/>
                 <outlet property="roomImage" destination="Aw3-X1-CyS" id="Tb1-xN-wun"/>
                 <outlet property="roomName" destination="jRK-Sw-qwD" id="Rgk-KN-oXr"/>
                 <outlet property="roomNameBackView" destination="vej-9m-XtW" id="6jl-B3-5Fr"/>
