@@ -12,7 +12,6 @@ import RxSwift
 final class RoomCollectionViewCell: UICollectionViewCell {
     
    
-    @IBOutlet weak var personImage: UIImageView!
     @IBOutlet weak var roomName: UILabel!
     @IBOutlet weak var roomImage: UIImageView!
     @IBOutlet weak var roomNameBackView: UIView!
@@ -46,11 +45,9 @@ final class RoomCollectionViewCell: UICollectionViewCell {
         roomName.text = item.roomName
         if item.roomImage != "" {
             roomImage.sd_setImage(with: URL(string: item.roomImage), completed: nil)
-            personImage.image = UIImage()
         }else{
             roomImage.image = UIImage()
             roomImage.backgroundColor = .systemGray6
-            personImage.image = UIImage(systemName: "person.3.fill")
         }
     }
     
