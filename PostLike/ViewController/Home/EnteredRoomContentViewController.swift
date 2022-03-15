@@ -174,7 +174,7 @@ final class EnteredRoomContentViewController: UIViewController{
             self?.contentsTableView.reloadData()
         }
         .disposed(by: disposeBag)
-        
+
         viewModel.likes.drive { [weak self] likes in
             self?.likeContentsArray.removeAll()
             self?.likeContentsArray.append(contentsOf: likes)
@@ -192,7 +192,7 @@ final class EnteredRoomContentViewController: UIViewController{
         LatestContentsSubject.shared.latestFeedContents
             .subscribe { [weak self] content in
                 guard let element = content.element else { return }
-                self?.contentsArray.insert(element, at: 0)
+                self?.viewModel.insertLatestItem(item: [element])
                 self?.contentsTableView.reloadData()
             }
             .disposed(by: disposeBag)
@@ -208,14 +208,10 @@ final class EnteredRoomContentViewController: UIViewController{
             .subscribe { [weak self] contents in
                 guard let element = contents.element else { return }
                 if element.isLiked == true {
-                    self?.likeContentsArray.append(element)
-                    self?.increaseLikeCount(element: element)
+                    self?.viewModel.appendLatestLikeContent(content: [element])
                     self?.contentsTableView.reloadData()
                 }else {
-                    self?.likeContentsArray.removeAll {
-                        $0.documentID == element.documentID
-                    }
-                    self?.decreaseLikeCount(element: element)
+                    self?.viewModel.removeLikeContent(content: element)
                     self?.contentsTableView.reloadData()
                 }
             }
@@ -224,43 +220,12 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    
-    
-    //いいね数をインクリメント
-    private func increaseLikeCount(element: Contents) {
-        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
-            var count = contentsArray[i].likeCount
-            count += 1
-            contentsArray[i].likeCount = count
-            contentsArray[i].isLiked = true
-        }
-    }
-    
-    
-    
-    
-    
-    //いいね数をディクリメント
-    private func decreaseLikeCount(element: Contents) {
-        if let i = contentsArray.firstIndex(where: {$0.documentID == element.documentID}) {
-            var count = contentsArray[i].likeCount
-            count -= 1
-            contentsArray[i].likeCount = count
-            contentsArray[i].isLiked = true
-        }
-    }
-    
-    
-    
-    
     //削除した投稿を配列からremove
     private func fetchDeletedPost() {
         LatestContentsSubject.shared.deletedContents
             .subscribe { [weak self] content in
                 guard let element = content.element else { return }
-                self?.contentsArray.removeAll {
-                    $0.documentID == element.documentID
-                }
+                self?.viewModel.removeDeletedItem(item: element)
                 self?.contentsTableView.reloadData()
             }
             .disposed(by: disposeBag)
