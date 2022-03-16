@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import FirebaseFirestore
 
-final class HomeViewModel {
+final class HomeFeedViewModel {
     
     private let disposeBag = DisposeBag()
     
@@ -95,7 +95,7 @@ final class HomeViewModel {
 
 
 // MARK: - Privete Methods
-extension HomeViewModel {
+extension HomeFeedViewModel {
     //空チェック
     private func isEmptyCheck() {
         itemsRelay.asObservable()
