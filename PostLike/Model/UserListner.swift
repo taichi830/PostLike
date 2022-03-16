@@ -34,7 +34,9 @@ final class UserDefaultLisner: UserListner {
                 let content = Contents(dic: dic)
                 observer.onNext(content)
             }
-            return Disposables.create()
+            return Disposables.create {
+                self.listner?.remove()
+            }
         }
     }
     
@@ -53,7 +55,9 @@ final class UserDefaultLisner: UserListner {
                 let content = Contents(dic: dic)
                 observer.onNext(content)
             }
-            return Disposables.create()
+            return Disposables.create {
+                self.listner?.remove()
+            }
         }
     }
     

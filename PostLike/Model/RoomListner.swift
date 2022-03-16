@@ -35,7 +35,7 @@ final class RoomDefaultListner: RoomListner {
                 observer.onNext(documents ?? [])
             }
             return Disposables.create {
-                
+                self.listner?.remove()
             }
         }
     }
