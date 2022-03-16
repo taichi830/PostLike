@@ -830,16 +830,16 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crm-2C-a1X">
-                                            <rect key="frame" x="167" y="52" width="41.333333333333343" height="30"/>
+                                            <rect key="frame" x="167" y="44" width="41.333333333333343" height="46"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="g1W-hC-riY"/>
+                                                <constraint firstAttribute="height" constant="46" id="uwh-1U-SpQ"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="crm-2C-a1X" secondAttribute="bottom" constant="8" id="eGb-Yo-4Fq"/>
+                                        <constraint firstAttribute="bottom" secondItem="crm-2C-a1X" secondAttribute="bottom" id="mSa-yX-vO4"/>
                                         <constraint firstItem="crm-2C-a1X" firstAttribute="centerX" secondItem="goD-Ad-OAr" secondAttribute="centerX" id="sCO-QT-Rbl"/>
                                     </constraints>
                                 </view>
@@ -851,7 +851,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lVb-mQ-RRP">
                                 <rect key="frame" x="0.0" y="44" width="375" height="46"/>
                                 <subviews>
-                                    <view alpha="0.40000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RTo-B8-Ljb">
+                                    <view alpha="0.59999999999999998" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RTo-B8-Ljb">
                                         <rect key="frame" x="17" y="8" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -866,13 +866,13 @@
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" image="chevron.left" catalog="system">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="light"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small" weight="regular"/>
                                         </state>
                                         <connections>
                                             <action selector="backButton:" destination="iVt-jJ-wNd" eventType="touchUpInside" id="Owe-nN-sAX"/>
                                         </connections>
                                     </button>
-                                    <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eTv-D9-LAN">
+                                    <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eTv-D9-LAN">
                                         <rect key="frame" x="328" y="8" width="30" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
