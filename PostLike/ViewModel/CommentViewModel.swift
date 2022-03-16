@@ -24,7 +24,7 @@ final class CommentViewModel {
         isBottomSubject.asObserver()
     }
     
-    init (commentListner: CommentListner, documentID: String, roomID: String) {
+    init (commentListner: GetComments, documentID: String, roomID: String) {
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])
         
