@@ -25,12 +25,12 @@ final class RoomDetailViewController: UIViewController {
     }
     @IBOutlet private weak var backButtonBackView: UIView! {
         didSet {
-            backButtonBackView.layer.cornerRadius = 15
+            backButtonBackView.layer.cornerRadius = backButtonBackView.frame.height / 2
         }
     }
     @IBOutlet private weak var dotButtonBackView: UIView! {
         didSet {
-            dotButtonBackView.layer.cornerRadius = 15
+            dotButtonBackView.layer.cornerRadius = backButtonBackView.frame.height / 2
         }
     }
     @IBOutlet private weak var contentsTableView: UITableView!
