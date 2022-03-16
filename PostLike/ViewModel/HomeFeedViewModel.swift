@@ -46,7 +46,7 @@ final class HomeFeedViewModel {
     
     
     
-    init(roomListner: RoomListner, feedListner: FeedContentsListner, likeListner: GetLikes, reportListner: ReportListner) {
+    init(roomListner: RoomListner, feedListner: GetPosts, likeListner: GetLikes, reportListner: ReportListner) {
         //ルームを取得
         let fetchRooms = roomListner.fetchRooms().share(replay: 1)
         rooms = fetchRooms.asDriver(onErrorJustReturn: [])
@@ -107,7 +107,7 @@ extension HomeFeedViewModel {
             .disposed(by: disposeBag)
     }
     //fetchModeratorPosts()とfetchLikes()を呼ぶ
-    private func callModeratorPostsAndLikes(feedObservable: Observable<[Contents]>, feedListner: FeedContentsListner, likeListner: GetLikes, currentItems: [Contents], currentLikes: [Contents]) {
+    private func callModeratorPostsAndLikes(feedObservable: Observable<[Contents]>, feedListner: GetPosts, likeListner: GetLikes, currentItems: [Contents], currentLikes: [Contents]) {
         //feedObservableが空の場合itemsRelayに空の配列を流す
         feedObservable.asObservable()
             .filter { $0.isEmpty }
@@ -126,7 +126,7 @@ extension HomeFeedViewModel {
             .disposed(by: disposeBag)
     }
     //モデレーターの投稿を取得
-    private func fetchModeratorPosts(feedListner: FeedContentsListner, contents: [Contents], currentItems: [Contents]) {
+    private func fetchModeratorPosts(feedListner: GetPosts, contents: [Contents], currentItems: [Contents]) {
         feedListner.fetchModeratorPosts(contents: contents)
             .subscribe { [weak self] contents in
                 self?.itemsRelay.accept(currentItems + contents)
@@ -142,7 +142,7 @@ extension HomeFeedViewModel {
             .disposed(by: disposeBag)
     }
     //モデレーターの投稿を追加で取得
-    private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: GetLikes) {
+    private func fetchMoreContents(feedListner: GetPosts, likeListner: GetLikes) {
         let currentItems = self.itemsRelay.value
         let currentLikes = self.likeRelay.value
         feedListner.fetchMoreModeratorFeeds()
