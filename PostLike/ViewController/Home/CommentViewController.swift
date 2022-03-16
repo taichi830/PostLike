@@ -17,15 +17,15 @@ final class CommentViewController: UIViewController {
     private var label = MessageLabel()
     private let disposeBag = DisposeBag()
     private var viewModel:CommentViewModel!
-    private lazy var indicator:UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView()
-        indicator.style = .medium
-        indicator.color = .lightGray
-        indicator.hidesWhenStopped = true
-        indicator.center = self.view.center
-        self.view.addSubview(indicator)
-        return indicator
-    }()
+//    private lazy var indicator:UIActivityIndicatorView = {
+//        let indicator = UIActivityIndicatorView()
+//        indicator.style = .medium
+//        indicator.color = .lightGray
+//        indicator.hidesWhenStopped = true
+//        indicator.center = self.view.center
+//        self.view.addSubview(indicator)
+//        return indicator
+//    }()
     
     
     
@@ -166,15 +166,16 @@ final class CommentViewController: UIViewController {
 
     
     private func fetchComments() {
-        indicator.startAnimating()
+        self.startIndicator()
         viewModel = CommentViewModel(commentListner: GetDefaultComments(), documentID: passedContent.documentID, roomID: passedContent.roomID)
         
         //itemsが空かチェック
         viewModel.isEmpty.drive { [weak self] bool in
             if bool == true {
-                self?.indicator.stopAnimating()
+                self?.dismissIndicator()
                 self?.label.setup(text: "コメントがありません。", at: self!.commentTableView)
             }else{
+                self?.dismissIndicator()
                 self?.label.text = ""
             }
         }
@@ -182,10 +183,8 @@ final class CommentViewController: UIViewController {
         
         //itemsをtableViewにバインド
         viewModel.items
-            .drive( commentTableView.rx.items(cellIdentifier: "CommentTableViewCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
-                if let indicator = self?.indicator {
-                    cell.setupCell(item: item, indicator: indicator)
-                }
+            .drive( commentTableView.rx.items(cellIdentifier: "CommentTableViewCell", cellType: CommentTableViewCell.self)) { (row, item, cell) in
+                cell.setupCell(item: item)
             }
             .disposed(by: disposeBag)
     }
