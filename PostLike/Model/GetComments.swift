@@ -12,13 +12,13 @@ import RxCocoa
 import Firebase
 import FirebaseFirestore
 
-protocol CommentListner {
+protocol GetComments {
     func fetchMyLatestComment(roomID: String) -> Observable<[Contents]>
     func fetchComments(documentID:String) -> Observable<[Contents]>
     func fetchMoreComments(documentID:String) -> Observable<[Contents]>
 }
 
-final class CommentDefaultListner: NSObject,CommentListner {
+final class GetDefaultComments: NSObject,GetComments {
     private var listner: ListenerRegistration?
     func fetchMyLatestComment(roomID: String) -> Observable<[Contents]> {
         Observable.create { observer in
