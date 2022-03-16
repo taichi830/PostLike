@@ -167,44 +167,37 @@ final class ReportViewController: UIViewController  {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     private func didTapSendButton(field: String) {
         let documentID = passedContent.documentID
         let roomID = passedContent.roomID
         let uid = passedContent.uid
         let myuid = Auth.auth().currentUser!.uid
-        reportButton.rx.tap
-            .subscribe { [weak self] _ in
-                switch self?.reportType {
-                case .post:
-                    self?.report(type: "post", documentID: documentID, roomID: roomID, uid: uid, myuid: myuid, field: field, collection: "reportedPosts")
-
-                case .user:
-                    let documentID = "\(roomID)-\(uid)"
-                    self?.report(type: "user", documentID: documentID, roomID: roomID, uid: uid, myuid: myuid, field: field, collection: "reportedUsers")
-
-                case .room:
-                    let roomID = self?.passedRoomInfo.documentID ?? ""
-                    self?.reportRoom(roomID: roomID, field: field)
-                    
-                case .none:
-                    return
-                }
+        if uid == myuid {
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                self.dismiss(animated: true, completion: nil)
             }
-            .disposed(by: self.disposeBag)
+            self.showAlert(title: "自分の投稿は報告できません", message: "", actions: [okAction])
+        }else {
+            reportButton.rx.tap
+                .subscribe { [weak self] _ in
+                    switch self?.reportType {
+                    case .post:
+                        self?.report(type: "post", documentID: documentID, roomID: roomID, uid: uid, myuid: myuid, field: field, collection: "reportedPosts")
 
+                    case .user:
+                        let documentID = "\(roomID)-\(uid)"
+                        self?.report(type: "user", documentID: documentID, roomID: roomID, uid: uid, myuid: myuid, field: field, collection: "reportedUsers")
+
+                    case .room:
+                        let roomID = self?.passedRoomInfo.documentID ?? ""
+                        self?.reportRoom(roomID: roomID, field: field)
+                        
+                    case .none:
+                        return
+                    }
+                }
+                .disposed(by: self.disposeBag)
+        }
         
     }
     
@@ -213,13 +206,13 @@ final class ReportViewController: UIViewController  {
     
     
     private func setupTableView() {
+        
         reportItemTableView.register(UINib(nibName: "ReportTableViewCell", bundle: nil), forCellReuseIdentifier: "ReportTableViewCell")
+        
         viewModel.items.bind(to: reportItemTableView.rx.items(cellIdentifier: "ReportTableViewCell", cellType: ReportTableViewCell.self)) { (row,item,cell) in
             cell.setupBinds(item: item)
         }
         .disposed(by: disposeBag)
-        
-        
         
         reportItemTableView.rx.modelSelected(ReportItems.self).bind { [weak self] item in
             self?.reportButton.isEnabled = true
@@ -228,7 +221,19 @@ final class ReportViewController: UIViewController  {
         }
         .disposed(by: disposeBag)
         
+        reportItemTableView.rx.itemSelected.subscribe { [weak self] indexPath in
+            guard let indexPath = indexPath.element else { return }
+            let cell = self?.reportItemTableView.cellForRow(at: indexPath) as! ReportTableViewCell
+            cell.didSelect()
+        }
+        .disposed(by: disposeBag)
         
+        reportItemTableView.rx.itemDeselected.subscribe { [weak self] indexPath in
+            guard let indexPath = indexPath.element else { return }
+            let cell = self?.reportItemTableView.cellForRow(at: indexPath) as! ReportTableViewCell
+            cell.didDeselect()
+        }
+        .disposed(by: disposeBag)
         
         
         viewModel.fetchItems()
@@ -241,55 +246,3 @@ final class ReportViewController: UIViewController  {
    
 }
 
-//extension ReportViewController:UITableViewDelegate, UITableViewDataSource{
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return reportItems.count
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = reportItemTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-//
-//        let backView = cell.viewWithTag(1)!
-//        let circleView = cell.viewWithTag(2) as! UIImageView
-//        let reportItem = cell.viewWithTag(3) as! UILabel
-//        backView.layer.cornerRadius = 20
-//        backView.layer.borderWidth = 1
-//        backView.layer.borderColor = UIColor.systemGray5.cgColor
-//        circleView.layer.cornerRadius = 10
-//        reportItem.text = reportItems[indexPath.row]
-//
-//
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 62
-//    }
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let uid = Auth.auth().currentUser!.uid
-//        if passedContent.uid == uid {
-//            reportButton.isEnabled = false
-//            reportButton.backgroundColor = .lightGray
-//            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-//                self.dismiss(animated: true, completion: nil)
-//            }
-//            self.showAlert(title: "自分の投稿は報告できません", message: "", actions: [okAction])
-//        }else{
-//            let cell = reportItemTableView.cellForRow(at: indexPath)
-//            cell?.viewWithTag(2)?.backgroundColor = .systemRed
-//            reportButton.isEnabled = true
-//            reportButton.backgroundColor = .systemRed
-//            self.row = indexPath.row
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        let cell = reportItemTableView.cellForRow(at: indexPath)
-//        cell?.viewWithTag(2)?.backgroundColor = .clear
-//    }
-//
-//
-//
-//}
