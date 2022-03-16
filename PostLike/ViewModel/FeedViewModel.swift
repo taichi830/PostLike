@@ -33,7 +33,7 @@ final class FeedViewModel {
     }
     
     
-    init(feedContentsListner: FeedContentsListner, likeListner: LikeListner, userListner: UserListner, reportListner: ReportListner, roomID: String) {
+    init(feedContentsListner: FeedContentsListner, likeListner: GetLikes, userListner: UserListner, reportListner: ReportListner, roomID: String) {
         
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])
@@ -123,7 +123,7 @@ extension FeedViewModel {
             .disposed(by: disposeBag)
     }
     //いいねした投稿を取得
-    private func fetchLikes(fetchObservable: Observable<[Contents]>, likeListner: LikeListner, currentLikes: [Contents]) {
+    private func fetchLikes(fetchObservable: Observable<[Contents]>, likeListner: GetLikes, currentLikes: [Contents]) {
         fetchObservable.asObservable()
             .filter { !$0.isEmpty }
             .concatMap { contents -> Observable<[Contents]> in

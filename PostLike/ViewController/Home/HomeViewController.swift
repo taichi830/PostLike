@@ -100,7 +100,7 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     
     
     private func setupBinds() {
-        viewModel = HomeFeedViewModel(roomListner: RoomDefaultListner(), feedListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), reportListner: ReportDefaultListner())
+        viewModel = HomeFeedViewModel(roomListner: RoomDefaultListner(), feedListner: FeedContentsDefaultListner(), likeListner: GetDefaultLikes(), reportListner: ReportDefaultListner())
         startIndicator()
         bindRooms()
         bindFeeds()

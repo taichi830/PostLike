@@ -11,11 +11,11 @@ import RxCocoa
 import FirebaseFirestore
 import FirebaseAuth
 
-protocol LikeListner {
+protocol GetLikes {
     func fetchLikes(contents: [Contents]) -> Observable<[Contents]>
 }
 
-final class GetDefaultLikes: LikeListner {
+final class GetDefaultLikes: GetLikes {
     func fetchLikes(contents: [Contents]) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()

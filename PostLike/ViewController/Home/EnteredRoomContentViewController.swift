@@ -128,7 +128,7 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     private func setupBinds() {
-        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
+        viewModel = FeedViewModel(feedContentsListner: FeedContentsDefaultListner(), likeListner: GetDefaultLikes(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
         headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
         self.startIndicator()
         emptyCheck()

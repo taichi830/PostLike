@@ -112,6 +112,7 @@
 		CEA2EAC727B4134C000AD484 /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEA2EAC527B4134C000AD484 /* NotificationTableViewCell.xib */; };
 		CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */; };
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
+		CEAC4C7427E1ADE200F6783A /* GetDefaultLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7327E1ADE200F6783A /* GetDefaultLikes.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */; };
@@ -129,7 +130,6 @@
 		CEE256C627CE8B9D007BF9E6 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE256C527CE8B9D007BF9E6 /* ProfileViewModel.swift */; };
 		CEE5BD9227C63E09004FD20A /* FeedContentsListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */; };
 		CEE5BD9427C644C9004FD20A /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */; };
-		CEE5BD9627C653AA004FD20A /* LikeListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9527C653AA004FD20A /* LikeListner.swift */; };
 		CEE5BD9827C76F78004FD20A /* RoomHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9727C76F78004FD20A /* RoomHeaderViewModel.swift */; };
 		CEE5BD9A27C7CA15004FD20A /* RoomInfoListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5BD9927C7CA15004FD20A /* RoomInfoListner.swift */; };
 		CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEED8F37273509BD000563E4 /* RecommendRoomViewController.swift */; };
@@ -264,6 +264,7 @@
 		CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalMenuViewController.swift; sourceTree = "<group>"; };
 		CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		CEAA5C812520D56700755F90 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		CEAC4C7327E1ADE200F6783A /* GetDefaultLikes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDefaultLikes.swift; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
 		CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -290,7 +291,6 @@
 		CEE256C527CE8B9D007BF9E6 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContentsListner.swift; sourceTree = "<group>"; };
 		CEE5BD9327C644C9004FD20A /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
-		CEE5BD9527C653AA004FD20A /* LikeListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListner.swift; sourceTree = "<group>"; };
 		CEE5BD9727C76F78004FD20A /* RoomHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomHeaderViewModel.swift; sourceTree = "<group>"; };
 		CEE5BD9927C7CA15004FD20A /* RoomInfoListner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoListner.swift; sourceTree = "<group>"; };
 		CEE6A42125C104AA00F6FE06 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -530,7 +530,7 @@
 				CE3F4DD127B0E61E00780BEE /* UserListner.swift */,
 				CEA2EAC027B408C8000AD484 /* NotificationListner.swift */,
 				CEE5BD9127C63E09004FD20A /* FeedContentsListner.swift */,
-				CEE5BD9527C653AA004FD20A /* LikeListner.swift */,
+				CEAC4C7327E1ADE200F6783A /* GetDefaultLikes.swift */,
 				CE54339027CC96F000A1A786 /* ReportListner.swift */,
 				CEE5BD9927C7CA15004FD20A /* RoomInfoListner.swift */,
 				CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */,
@@ -1040,8 +1040,8 @@
 				CE012C2726B6EFD4006CC20E /* LoginViewController.swift in Sources */,
 				CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */,
 				CE2FD87527DDFFC60069511A /* ModalViewModel.swift in Sources */,
-				CEE5BD9627C653AA004FD20A /* LikeListner.swift in Sources */,
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
+				CEAC4C7427E1ADE200F6783A /* GetDefaultLikes.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
 				CECA9F28279BFECA0059939B /* UILabel＋Extenshion.swift in Sources */,
 				CEE5BD9427C644C9004FD20A /* FeedViewModel.swift in Sources */,

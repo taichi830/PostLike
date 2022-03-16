@@ -33,7 +33,7 @@ final class ProfileViewModel {
     }
     
     
-    init(profileContentsListner: GetProfilePosts, likeListner: LikeListner, uid: String, roomID: String) {
+    init(profileContentsListner: GetProfilePosts, likeListner: GetLikes, uid: String, roomID: String) {
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])
         likes = likesRelay.asDriver(onErrorJustReturn: [])
@@ -59,7 +59,7 @@ final class ProfileViewModel {
     }
     
     //プロフィール投稿を取得
-    private func fetchProfilePosts(profileContentsListner: GetProfilePosts, likeListner: LikeListner, uid: String, roomID: String) {
+    private func fetchProfilePosts(profileContentsListner: GetProfilePosts, likeListner: GetLikes, uid: String, roomID: String) {
         
         let fetchProfilePosts = profileContentsListner.fetchProfilePosts(uid: uid, roomID: roomID)
             .share(replay: 1)
@@ -84,7 +84,7 @@ final class ProfileViewModel {
     }
     
     //いいねした投稿を取得
-    private func fetchLikes(likeListner: LikeListner, contents: [Contents]) {
+    private func fetchLikes(likeListner: GetLikes, contents: [Contents]) {
         let currentLikes = self.likesRelay.value
         likeListner.fetchLikes(contents: contents)
             .subscribe { [weak self] likes in
@@ -94,7 +94,7 @@ final class ProfileViewModel {
     }
     
     //投稿を追加で取得
-    private func fetchMoreProfilePosts(profileContentsListner: GetProfilePosts, likeListner: LikeListner, uid: String, roomID: String) {
+    private func fetchMoreProfilePosts(profileContentsListner: GetProfilePosts, likeListner: GetLikes, uid: String, roomID: String) {
         let currentItems = self.itemsRelay.value
         profileContentsListner.fetchMoreProfilePosts(uid: uid, roomID: roomID)
             .filter { !$0.isEmpty }
