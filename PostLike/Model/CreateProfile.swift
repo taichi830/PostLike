@@ -84,34 +84,6 @@ final class CreateProfile: CreateProfileBatch {
     
     
     
-    //参加したことあるルームに再び参加するときの処理
-//    func createProfileWhenHaveCreated(roomInfo: Room) -> Observable<Bool> {
-//        return Observable.create { observer in
-//            let batch = Firestore.firestore().batch()
-//            let uid = Auth.auth().currentUser!.uid
-//            let timestamp = Timestamp()
-//            let ref = Firestore.firestore().collection("users").document(uid).collection("rooms").document(roomInfo.documentID)
-//            batch.updateData(["isJoined": true, "createdAt":timestamp, "roomName":roomInfo.roomName, "roomImage": roomInfo.roomImage], forDocument: ref)
-//            self.increaseMemberCount(roomInfo: roomInfo, batch: batch)
-//            self.createMemberList(roomInfo: roomInfo, batch: batch)
-//            batch.commit { err in
-//                if let err = err {
-//                    print("err:", err)
-//                    observer.onError(err)
-//                    return
-//                }
-//                observer.onNext(true)
-//                observer.onCompleted()
-//            }
-//            return Disposables.create()
-//        }
-//    }
-    
-    
-    
-    
-    
-    
     
     //メンバーズコレクションにuidを保存
     private func createMemberList(roomInfo: Room,batch: WriteBatch){
