@@ -44,6 +44,15 @@ final class EnteredRoomContentViewController: UIViewController{
     private var likeContentsArray = [Contents]()
     private let disposeBag = DisposeBag()
     var viewModel: FeedViewModel!
+    private lazy var indicator:UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .medium
+        indicator.color = .white
+        indicator.hidesWhenStopped = true
+        indicator.center = CGPoint(x: self.view.center.x, y: 100)
+        self.roomImageView.addSubview(indicator)
+        return indicator
+    }()
     
     
     
@@ -95,6 +104,7 @@ final class EnteredRoomContentViewController: UIViewController{
         contentsTableView.refreshControl?.rx.controlEvent(.valueChanged)
             .subscribe{ [weak self] _ in
                 self?.viewModel.refreshObserver.onNext(())
+                self?.indicator.startAnimating()
             }
             .disposed(by: disposeBag)
     }
@@ -152,11 +162,13 @@ final class EnteredRoomContentViewController: UIViewController{
                 case true:
                     self?.dismissIndicator()
                     self?.contentsTableView.refreshControl?.endRefreshing()
+                    self?.indicator.stopAnimating()
                     self?.messageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
                     
                 case false:
                     self?.dismissIndicator()
                     self?.contentsTableView.refreshControl?.endRefreshing()
+                    self?.indicator.stopAnimating()
                     self?.messageLabel.text = ""
                 }
             }
