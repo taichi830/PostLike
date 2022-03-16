@@ -100,7 +100,7 @@ final class ProfileViewController: UIViewController {
     
     private func setupBinds() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        viewModel = ProfileViewModel(profileContentsListner: GetDefaultProfilePosts(), likeListner: LikeDefaultListner(), uid: uid, roomID: passedDocumentID)
+        viewModel = ProfileViewModel(profileContentsListner: GetDefaultProfilePosts(), likeListner: GetDefaultLikes(), uid: uid, roomID: passedDocumentID)
         headerView.setupHeaderView(roomID: passedDocumentID, passedUid: passedModerator, titleName: titleName, vc: self)
         startIndicator()
         createProfileTableView()

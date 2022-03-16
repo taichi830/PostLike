@@ -46,7 +46,7 @@ final class HomeFeedViewModel {
     
     
     
-    init(roomListner: RoomListner, feedListner: FeedContentsListner, likeListner: LikeListner, reportListner: ReportListner) {
+    init(roomListner: RoomListner, feedListner: FeedContentsListner, likeListner: GetLikes, reportListner: ReportListner) {
         //ルームを取得
         let fetchRooms = roomListner.fetchRooms().share(replay: 1)
         rooms = fetchRooms.asDriver(onErrorJustReturn: [])
@@ -107,7 +107,7 @@ extension HomeFeedViewModel {
             .disposed(by: disposeBag)
     }
     //fetchModeratorPosts()とfetchLikes()を呼ぶ
-    private func callModeratorPostsAndLikes(feedObservable: Observable<[Contents]>, feedListner: FeedContentsListner, likeListner: LikeListner, currentItems: [Contents], currentLikes: [Contents]) {
+    private func callModeratorPostsAndLikes(feedObservable: Observable<[Contents]>, feedListner: FeedContentsListner, likeListner: GetLikes, currentItems: [Contents], currentLikes: [Contents]) {
         //feedObservableが空の場合itemsRelayに空の配列を流す
         feedObservable.asObservable()
             .filter { $0.isEmpty }
@@ -134,7 +134,7 @@ extension HomeFeedViewModel {
             .disposed(by: disposeBag)
     }
     //いいねした投稿を取得
-    private func fetchLikes(likeListner: LikeListner, contents: [Contents], currentLikes: [Contents]) {
+    private func fetchLikes(likeListner: GetLikes, contents: [Contents], currentLikes: [Contents]) {
         likeListner.fetchLikes(contents: contents)
             .subscribe { [weak self] likes in
                 self?.likeRelay.accept(currentLikes + likes)
@@ -142,7 +142,7 @@ extension HomeFeedViewModel {
             .disposed(by: disposeBag)
     }
     //モデレーターの投稿を追加で取得
-    private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: LikeListner) {
+    private func fetchMoreContents(feedListner: FeedContentsListner, likeListner: GetLikes) {
         let currentItems = self.itemsRelay.value
         let currentLikes = self.likeRelay.value
         feedListner.fetchMoreModeratorFeeds()
