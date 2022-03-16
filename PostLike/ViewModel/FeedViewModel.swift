@@ -33,7 +33,7 @@ final class FeedViewModel {
     }
     
     
-    init(feedContentsListner: FeedContentsListner, likeListner: GetLikes, userListner: UserListner, reportListner: ReportListner, roomID: String) {
+    init(feedContentsListner: GetPosts, likeListner: GetLikes, userListner: UserListner, reportListner: ReportListner, roomID: String) {
         
         
         items = itemsRelay.asDriver(onErrorJustReturn: [])

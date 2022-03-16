@@ -158,7 +158,7 @@ final class PostViewModel {
     
     
     
-    func fetchMyLatestPost(feedListner: FeedContentsListner ,roomID:String) {
+    func fetchMyLatestPost(feedListner: GetPosts ,roomID:String) {
         feedListner.fetchMyLatestPost(roomID: roomID)
             .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             .subscribe{ content in

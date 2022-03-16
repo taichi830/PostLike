@@ -170,7 +170,7 @@ final class PostViewController: UIViewController{
                 case true:
                     self?.dismissIndicator()
                     self?.dismiss(animated: true) {
-                        self?.postViewModel.fetchMyLatestPost(feedListner: FeedContentsDefaultListner(), roomID: self?.passedDocumentID ?? "")
+                        self?.postViewModel.fetchMyLatestPost(feedListner: GetDefaultPosts(), roomID: self?.passedDocumentID ?? "")
                     }
                 case false:
                     let alertAction = UIAlertAction(title: "OK", style: .default) { _ in

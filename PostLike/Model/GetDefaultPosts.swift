@@ -11,7 +11,7 @@ import RxCocoa
 import FirebaseAuth
 import FirebaseFirestore
 
-protocol FeedContentsListner {
+protocol GetPosts {
     func fetchMyLatestPost(roomID: String) -> Observable<Contents>
     func fetchMoreModeratorFeeds() -> Observable<[Contents]>
     func fetchModeratorFeeds() -> Observable<[Contents]>
@@ -20,7 +20,7 @@ protocol FeedContentsListner {
     func fetchMorePosts(roomID: String) -> Observable<[Contents]>
 }
 
-final class FeedContentsDefaultListner: FeedContentsListner {
+final class GetDefaultPosts: GetPosts {
     
     private let limit:Int = 10
     
