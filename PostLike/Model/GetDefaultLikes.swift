@@ -15,8 +15,7 @@ protocol LikeListner {
     func fetchLikes(contents: [Contents]) -> Observable<[Contents]>
 }
 
-final class LikeDefaultListner: LikeListner {
-//    private var listner: ListenerRegistration?
+final class GetDefaultLikes: LikeListner {
     func fetchLikes(contents: [Contents]) -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
@@ -40,9 +39,6 @@ final class LikeDefaultListner: LikeListner {
             }
             
             return Disposables.create()
-//            {
-////                self.listner?.remove()
-//            }
         }
     }
     
