@@ -9,12 +9,12 @@
 import RxSwift
 import FirebaseFirestore
 
-protocol ProfileContentsListner {
+protocol GetProfilePosts {
     func fetchProfilePosts(uid: String, roomID: String) -> Observable<[Contents]>
     func fetchMoreProfilePosts(uid: String, roomID: String) -> Observable<[Contents]>
 }
 
-final class ProfileContentsDefaultListner: ProfileContentsListner {
+final class GetDefaultProfilePosts: GetProfilePosts {
     
     
     private var lastDocument: DocumentSnapshot?
