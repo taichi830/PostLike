@@ -27,18 +27,24 @@ class ReportTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        if circleImageView.image == UIImage() {
-            circleImageView.image = UIImage(systemName: "circlebadge.fill")
-            circleImageView.tintColor = .red
-        } else {
-            circleImageView.image = UIImage()
-        }
     }
     
     
     func setupBinds(item: ReportItems) {
         munuLabel.text = item.title
+    }
+    
+    func didSelect() {
+        
+        circleImageView.image = UIImage(systemName: "circlebadge.fill")
+        circleImageView.tintColor = .red
+        
+    }
+    
+    func didDeselect() {
+        
+        circleImageView.image = UIImage()
+        
     }
     
 }
