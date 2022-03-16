@@ -27,7 +27,7 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     private var likeContentsArray = [Contents]()
     private var timeLineContents = [Contents]()
     private var messageLabel = MessageLabel()
-    private var viewModel: HomeViewModel!
+    private var viewModel: HomeFeedViewModel!
     private let disposeBag = DisposeBag()
     
     
@@ -100,7 +100,7 @@ final class HomeViewController: UIViewController,UIGestureRecognizerDelegate{
     
     
     private func setupBinds() {
-        viewModel = HomeViewModel(roomListner: RoomDefaultListner(), feedListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), reportListner: ReportDefaultListner())
+        viewModel = HomeFeedViewModel(roomListner: RoomDefaultListner(), feedListner: FeedContentsDefaultListner(), likeListner: LikeDefaultListner(), reportListner: ReportDefaultListner())
         startIndicator()
         bindRooms()
         bindFeeds()
