@@ -51,11 +51,11 @@ final class RoomDetailViewController: UIViewController {
     private var lastDocument:QueryDocumentSnapshot?
     private lazy var indicator:UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
-        indicator.center = roomImageView.center
         indicator.style = .medium
         indicator.color = .white
         indicator.hidesWhenStopped = true
-        roomImageView.addSubview(indicator)
+        indicator.center = CGPoint(x: self.view.center.x, y: 100)
+        self.roomImageView.addSubview(indicator)
         return indicator
     }()
     private var viewModel: FeedViewModel!
@@ -120,6 +120,7 @@ final class RoomDetailViewController: UIViewController {
         contentsTableView.refreshControl = refleshControl
         contentsTableView.refreshControl?.rx.controlEvent(.valueChanged)
             .subscribe { [weak self] _ in
+                self?.indicator.startAnimating()
                 self?.viewModel.refreshObserver.onNext(())
             }
             .disposed(by: disposeBag)
@@ -152,11 +153,13 @@ final class RoomDetailViewController: UIViewController {
                 case true:
                     self?.dismissIndicator()
                     self?.contentsTableView.refreshControl?.endRefreshing()
+                    self?.indicator.stopAnimating()
                     self?.mssageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
                     
                 case false:
                     self?.dismissIndicator()
                     self?.contentsTableView.refreshControl?.endRefreshing()
+                    self?.indicator.stopAnimating()
                     self?.mssageLabel.text = ""
                 }
             }
