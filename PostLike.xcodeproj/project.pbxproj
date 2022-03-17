@@ -116,6 +116,7 @@
 		CEAC4C7C27E2DC4800F6783A /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */; };
 		CEAC4C7D27E2DC4800F6783A /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */; };
 		CEAC4C7F27E3183E00F6783A /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7E27E3183E00F6783A /* SearchViewModel.swift */; };
+		CEAC4C8227E31D2800F6783A /* AlgoliaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C8127E31D2800F6783A /* AlgoliaAPI.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */; };
@@ -271,6 +272,7 @@
 		CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		CEAC4C7E27E3183E00F6783A /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		CEAC4C8127E31D2800F6783A /* AlgoliaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoliaAPI.swift; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
 		CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 		CE18882525205A24001C687C /* PostLike */ = {
 			isa = PBXGroup;
 			children = (
+				CEAC4C8027E319F200F6783A /* API */,
 				CE1C23CD276DB43100D3CAC8 /* Firebase */,
 				CE012C5D26B6F196006CC20E /* Configs */,
 				CE1C23C5276B24A300D3CAC8 /* CustomClass */,
@@ -676,6 +679,14 @@
 				CE1C23C3276B1D8D00D3CAC8 /* HeaderViews */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		CEAC4C8027E319F200F6783A /* API */ = {
+			isa = PBXGroup;
+			children = (
+				CEAC4C8127E31D2800F6783A /* AlgoliaAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		CEAE5951271C1E41009CD18D /* HTML Files */ = {
@@ -1033,6 +1044,7 @@
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
 				CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */,
+				CEAC4C8227E31D2800F6783A /* AlgoliaAPI.swift in Sources */,
 				CEE5BD9827C76F78004FD20A /* RoomHeaderViewModel.swift in Sources */,
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
 				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
