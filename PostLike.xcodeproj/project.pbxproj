@@ -115,6 +115,7 @@
 		CEAC4C7427E1ADE200F6783A /* GetDefaultLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7327E1ADE200F6783A /* GetDefaultLikes.swift */; };
 		CEAC4C7C27E2DC4800F6783A /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */; };
 		CEAC4C7D27E2DC4800F6783A /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */; };
+		CEAC4C7F27E3183E00F6783A /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7E27E3183E00F6783A /* SearchViewModel.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */; };
@@ -269,6 +270,7 @@
 		CEAC4C7327E1ADE200F6783A /* GetDefaultLikes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDefaultLikes.swift; sourceTree = "<group>"; };
 		CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
+		CEAC4C7E27E3183E00F6783A /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
 		CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -503,6 +505,7 @@
 				CE9A933727D1B27200D86009 /* HomeFeedViewModel.swift */,
 				CE369F5227D59B3A0013EAE2 /* LatestContentsSubject.swift */,
 				CE2FD87427DDFFC60069511A /* ModalViewModel.swift */,
+				CEAC4C7E27E3183E00F6783A /* SearchViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1038,6 +1041,7 @@
 				CEA2EAC127B408C8000AD484 /* NotificationListner.swift in Sources */,
 				CE012C1E26B6EFD4006CC20E /* CustomRefreshController.swift in Sources */,
 				CEA2EAC627B4134C000AD484 /* NotificationTableViewCell.swift in Sources */,
+				CEAC4C7F27E3183E00F6783A /* SearchViewModel.swift in Sources */,
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
 				CE54339127CC96F000A1A786 /* ReportListner.swift in Sources */,
