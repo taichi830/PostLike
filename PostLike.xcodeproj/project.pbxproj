@@ -113,6 +113,8 @@
 		CEA580D827785ADD00C63649 /* FlexibleHeightImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */; };
 		CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA97FE427284BE600B51A96 /* ModalMenuViewController.swift */; };
 		CEAC4C7427E1ADE200F6783A /* GetDefaultLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7327E1ADE200F6783A /* GetDefaultLikes.swift */; };
+		CEAC4C7C27E2DC4800F6783A /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */; };
+		CEAC4C7D27E2DC4800F6783A /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */; };
@@ -265,6 +267,8 @@
 		CEAA5C7F2520D41B00755F90 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		CEAA5C812520D56700755F90 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CEAC4C7327E1ADE200F6783A /* GetDefaultLikes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDefaultLikes.swift; sourceTree = "<group>"; };
+		CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
 		CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -451,6 +455,8 @@
 				CEA2EAC527B4134C000AD484 /* NotificationTableViewCell.xib */,
 				CE54339627CC97CE00A1A786 /* ReportTableViewCell.swift */,
 				CE54339727CC97CE00A1A786 /* ReportTableViewCell.xib */,
+				CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */,
+				CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -807,6 +813,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEAC4C7D27E2DC4800F6783A /* SearchResultTableViewCell.xib in Resources */,
 				CEA2EAC727B4134C000AD484 /* NotificationTableViewCell.xib in Resources */,
 				CE199F7526DD159B009F1B7E /* index.html in Resources */,
 				CE012C4326B6EFD4006CC20E /* BaseTabBar.storyboard in Resources */,
@@ -995,6 +1002,7 @@
 				CE77EF5F26E67EEF00154886 /* Contents.swift in Sources */,
 				CEA97FE527284BE600B51A96 /* ModalMenuViewController.swift in Sources */,
 				CE77EF6226E67EEF00154886 /* Room.swift in Sources */,
+				CEAC4C7C27E2DC4800F6783A /* SearchResultTableViewCell.swift in Sources */,
 				CE199F7926DE125E009F1B7E /* TermOfUseViewController.swift in Sources */,
 				CE012C0C26B6EFD4006CC20E /* FirstViewController.swift in Sources */,
 				CE1C23C8276B946000D3CAC8 /* SearchTableViewCell.swift in Sources */,
