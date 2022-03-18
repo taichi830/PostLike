@@ -9,10 +9,10 @@
 import Foundation
 
 struct Hits: Codable {
-    let hits: [Post_Like]
+    let hits: [Result]
 }
 
-struct Post_Like: Codable {
+struct Result: Codable {
     let objectID: String
     let roomName: String
     let roomImage: String
