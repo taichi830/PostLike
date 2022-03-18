@@ -88,10 +88,10 @@ extension RecommendRoomViewController:UITableViewDelegate,UITableViewDataSource{
         switch Section(rawValue: indexPath.section) {
         
         case .popular:
-            cell.setupCell(roomInfo: popularRoomsArray[indexPath.row])
+            cell.setupCell(roomName: popularRoomsArray[indexPath.row].roomName, roomImage: popularRoomsArray[indexPath.row].roomImage, roomIntro: popularRoomsArray[indexPath.row].roomIntro)
             
         case .latest:
-            cell.setupCell(roomInfo: latestRoomsArray[indexPath.row])
+            cell.setupCell(roomName: latestRoomsArray[indexPath.row].roomName, roomImage: latestRoomsArray[indexPath.row].roomImage, roomIntro: latestRoomsArray[indexPath.row].roomIntro)
             
         default:
             break

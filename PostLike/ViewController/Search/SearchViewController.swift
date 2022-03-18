@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 import FirebaseFirestore
 import FirebaseAuth
 import InstantSearchClient
@@ -25,19 +26,40 @@ final class SearchViewController: UIViewController, UIGestureRecognizerDelegate 
     private var cellIdentifier = ""
     private var label = MessageLabel()
     private var timer: Timer?
+    private var viewModel: SearchViewModel!
+    private let disposeBag = DisposeBag()
     
     
+    @IBOutlet private weak var resultTableView: UITableView! {
+        didSet {
+            resultTableView.delegate = self
+            resultTableView.dataSource = self
+            resultTableView.register(UINib(nibName: "SearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchResultTableViewCell")
+        }
+    }
     
-    @IBOutlet private weak var resultTableView: UITableView!
-    @IBOutlet private weak var searchField: UISearchBar!
-    @IBOutlet private weak var createButton: UIButton!
-    @IBOutlet private weak var headerView: UIView!
-    @IBOutlet private weak var alertLabel: UILabel!
-    @IBOutlet private weak var separateView: UIView!
-    @IBOutlet private weak var historyTableView: UITableView!
+    @IBOutlet private weak var searchField: UISearchBar! {
+        didSet {
+            searchField.backgroundImage = UIImage()
+        }
+    }
+    
+    @IBOutlet private weak var historyTableView: UITableView! {
+        didSet {
+            historyTableView.delegate = self
+            historyTableView.dataSource = self
+            historyTableView.register(UINib(nibName: "SearchResultTableViewCell", bundle: nil), forCellReuseIdentifier: "SearchResultTableViewCell")
+        }
+    }
+    
+    @IBOutlet private weak var topCreateRoomButton: UIButton! {
+        didSet {
+            topCreateRoomButton.layer.cornerRadius = 15
+            topCreateRoomButton.clipsToBounds = true
+        }
+    }
     @IBOutlet private weak var backView: UIView!
     @IBOutlet private weak var containerView: UIView!
-    @IBOutlet private weak var topCreateRoomButton: UIButton!
     @IBOutlet private weak var topView: UIView!
     @IBOutlet private weak var searchBackView: UIView!
     @IBOutlet private weak var topViewHeight: NSLayoutConstraint!
@@ -46,34 +68,8 @@ final class SearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        historyTableView.delegate = self
-        historyTableView.dataSource = self
-        historyTableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "searchTableViewCell")
-        
-        resultTableView.delegate = self
-        resultTableView.dataSource = self
-        resultTableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: "searchTableViewCell")
-        
-        searchField.delegate = self
-        searchField.backgroundImage = UIImage()
-        
-        headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        headerView.isHidden = true
-        resultTableView.tableHeaderView = headerView
-        
-        
-        createButton.layer.cornerRadius = 15
-        createButton.clipsToBounds = true
-        createButton.isEnabled = false
-        
-        
-        topCreateRoomButton.layer.cornerRadius = 15
-        topCreateRoomButton.clipsToBounds = true
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         navigationController?.interactivePopGestureRecognizer?.delegate = self
+        setupBinds()
     }
     
     
@@ -87,39 +83,6 @@ final class SearchViewController: UIViewController, UIGestureRecognizerDelegate 
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-    }
-    
-    
-    
-    
-    @objc private func keybordWillShow(_ notification: Notification) {
-        searchField.setShowsCancelButton(true, animated: true)
-        UIView.animate(withDuration: 0.2) {
-            self.containerView.alpha = 0
-            self.topViewHeight.constant = 0
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    private func fetchHistory(){
-        self.historyArray.removeAll()
-        Firestore.fetchHistroy { contents in
-            if contents.isEmpty == true {
-                self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
-                self.historyTableView.addSubview(self.label)
-                self.label.text = "ルームを検索、作成してみよう！"
-            }else{
-                self.label.removeFromSuperview()
-                self.historyArray.append(contentsOf: contents)
-                self.historyTableView.reloadData()
-            }
-        }
     }
     
     
@@ -141,105 +104,167 @@ final class SearchViewController: UIViewController, UIGestureRecognizerDelegate 
 
 
 
-
-extension SearchViewController: UISearchBarDelegate {
+// MARK: - RxSwift Method
+extension SearchViewController {
     
-    private func emptyCheckOfSearchField(searchText:String){
-        if searchText == "" {
-            headerView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-            headerView.isHidden = true
-            resultTableView.isHidden = true
-            backView.isHidden = false
-        }else{
-            alertLabel.text = "\"\(searchText)\" のRoomが見つかりませんでした。"
-            headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 138)
-            headerView.isHidden = false
-            resultTableView.isHidden = false
-            backView.isHidden = true
-            createButton.isEnabled = true
-        }
+    private func setupBinds() {
+        viewModel = SearchViewModel(text: searchField.rx.text.orEmpty.asDriver())
+        fetchResult()
+        resultEmptyCheck()
+        searchFieldEmptyCheck()
+        didTapCancelButton()
+        keyboardWillShow()
+        
     }
     
-    private func callAlgolia(searchText:String){
-        #if DEBUG
-        let appID = "AT9Z5755AK"
-        let apiKey = "91c505ad021fe4eaf299f4a9d15fbd2b"
-        let indexName = "PostLike_dev"
-        #else
-        let appID = "GICHEEECDF"
-        let apiKey = "e66bef3d0dd124854d5137007a5aafc2"
-        let indexName = "rooms"
-        #endif
-        
-        let client = Client(appID: appID, apiKey: apiKey)
-        let index = client.index(withName: indexName)
-        let query = Query(query: searchText)
-        let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
-        if text == "" {
-            self.resultArray.removeAll()
-            self.resultTableView.reloadData()
-        }else{
-            index.search(query, completionHandler: { (content,err) -> Void in
-                self.resultArray.removeAll()
-                do {
-                    guard let content = content else { fatalError("no content") }
-                    let data = try JSONSerialization.data(withJSONObject: content, options: .prettyPrinted)
-                    let response = try JSONDecoder().decode(Hits.self, from: data)
-                    self.resultArray.append(contentsOf: response.hits)
-                    self.resultTableView.reloadData()
-                } catch {
-                    print(err ?? "")
+    //検索結果を取得
+    private func fetchResult() {
+        viewModel.resultDriver
+            .drive { [weak self] result in
+                self?.resultArray.removeAll()
+                self?.resultArray.append(contentsOf: result)
+                self?.resultTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    //結果が空かどうかをチェック
+    private func resultEmptyCheck() {
+        viewModel.isResultEmpty
+            .drive { [weak self] bool in
+                switch bool {
+                case true:
+                    self?.resultTableView.isHidden = false
+                    self?.backView.isHidden = true
+                    self?.label.setupLabel(view: self!.view, y: self!.view.center.y - 200)
+                    self?.resultTableView.addSubview(self!.label)
+                    self?.label.text = "ルームが見つかりませんでした"
+                    
+                case false:
+                    self?.resultTableView.isHidden = false
+                    self?.backView.isHidden = true
+                    self?.label.text = ""
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    //searchFieldが空かどうかをチェック
+    private func searchFieldEmptyCheck() {
+        viewModel.isTextEmpty
+            .drive { [weak self] bool in
+                if bool {
+                    self?.resultTableView.isHidden = true
+                    self?.backView.isHidden = false
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    //キャンセルボタンを押した時の処理
+    private func didTapCancelButton() {
+        searchField.rx.cancelButtonClicked
+            .subscribe { [weak self] _ in
+                self?.searchField.setShowsCancelButton(false, animated: true)
+                self?.searchField.resignFirstResponder()
+                self?.searchField.text = ""
+                self?.resultTableView.isHidden = true
+                self?.backView.isHidden = false
+                UIView.animate(withDuration: 0.3) {
+                    self?.containerView.alpha = 1
+                    self?.topViewHeight.constant = 50
+                    self?.view.layoutIfNeeded()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    //キーボードが表示された時の処理
+    private func keyboardWillShow() {
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification, object: nil)
+            .subscribe({ [weak self] notificationEvent in
+                guard let notification = notificationEvent.element else { return }
+                guard let userInfo = notification.userInfo as? [String:Any] else {
+                    return
+                }
+                guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
+                    return
+                }
+                UIView.animate(withDuration: duration) {
+                    self?.searchField.setShowsCancelButton(true, animated: true)
+                    UIView.animate(withDuration: 0.2) {
+                        self?.containerView.alpha = 0
+                        self?.topViewHeight.constant = 0
+                        self?.view.layoutIfNeeded()
+                    }
                 }
             })
-        }
+            .disposed(by: disposeBag)
     }
-    
-    
-    
-    
-    @objc private func call(){
-        self.callAlgolia(searchText: searchField.text!)
-    }
-    
-    
-    
-    
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let searchText: String = (searchBar.text! as NSString).replacingCharacters(in: range, with: text)
-        self.emptyCheckOfSearchField(searchText: searchText)
-        self.timer?.invalidate()
-        self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(call), userInfo: nil, repeats: false)
-        return true
-    }
-    
-    
-    
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchField.setShowsCancelButton(false, animated: true)
-        searchField.resignFirstResponder()
-        searchField.text = ""
-        headerView.isHidden = true
-        resultTableView.isHidden = true
-        backView.isHidden = false
-        UIView.animate(withDuration: 0.3) {
-            self.containerView.alpha = 1
-            self.topViewHeight.constant = 50
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    
-    
-    
-    
-    
     
 }
 
 
 
 
+
+
+
+
+// MARK: - Firestore Method
+extension SearchViewController {
+    
+    //履歴を取得
+    private func fetchHistory(){
+        self.historyArray.removeAll()
+        Firestore.fetchHistroy { contents in
+            if contents.isEmpty == true {
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
+                self.historyTableView.addSubview(self.label)
+                self.label.text = "ルームを検索、作成してみよう！"
+            }else{
+                self.label.removeFromSuperview()
+                self.historyArray.append(contentsOf: contents)
+                self.historyTableView.reloadData()
+            }
+        }
+    }
+    
+    //履歴を作成
+    private func createHistory(roomImageUrl:String,roomName:String,documentID:String){
+        let dic = [
+            "roomImage":roomImageUrl,
+            "roomName":roomName,
+            "documentID":documentID,
+            "createdAt":Timestamp()] as [String : Any]
+        Firestore.createHistory(documentID: documentID, dic: dic)
+    }
+    
+    //履歴を削除
+    @objc private func deleteContent(_ sender:UIButton){
+        let documentID = historyArray[-sender.tag].documentID
+        Firestore.deleteHistory(documentID: documentID) {
+            self.historyArray.remove(at: -sender.tag)
+            self.historyTableView.reloadData()
+            if self.historyArray.isEmpty == true {
+                self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
+                self.label.text = "ルームを検索、作成してみよう！"
+                self.historyTableView.addSubview(self.label)
+            }
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+// MARK: - UITableView Method
 extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
     
     private func idetifyTable(_ tableView:UITableView) -> Void{
@@ -250,9 +275,6 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
             cellIdentifier = TableType.result.rawValue
         }
     }
-    
-    
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         idetifyTable(tableView)
@@ -265,14 +287,10 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
         return Int()
     }
     
-    
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         idetifyTable(tableView)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchTableViewCell", for: indexPath) as! SearchTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultTableViewCell", for: indexPath) as! SearchResultTableViewCell
         if cellIdentifier == TableType.history.rawValue {
-            cell.setupCell(roomImageUrl: historyArray[indexPath.row].roomImage, roomName: historyArray[indexPath.row].roomName)
             let btn = UIButton()
             let btnImage = UIImage(systemName: "xmark")
             btn.tag = -indexPath.row
@@ -281,18 +299,14 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
             btn.addTarget(self, action: #selector(deleteContent(_:)), for: .touchUpInside)
             btn.tintColor = .black
             cell.accessoryView = btn
+            cell.setupCell(roomName: historyArray[indexPath.row].roomName, roomImage: historyArray[indexPath.row].roomImage, roomIntro: historyArray[indexPath.row].roomIntro)
             
         }else if cellIdentifier == TableType.result.rawValue {
-            cell.setupCell(roomImageUrl: resultArray[indexPath.row].roomImage, roomName: resultArray[indexPath.row].roomName)
+            cell.setupCell(roomName: resultArray[indexPath.row].roomName, roomImage: resultArray[indexPath.row].roomImage, roomIntro: resultArray[indexPath.row].roomIntro)
         }
         return cell
         
     }
-    
-    
-    
-    
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = storyboard?.instantiateViewController(withIdentifier: "detailVC") as! RoomDetailViewController
@@ -307,48 +321,11 @@ extension SearchViewController: UITableViewDelegate,UITableViewDataSource{
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    
-    
-    
-    
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 77
-    }
-    
-    
-    
-    
-    @objc private func deleteContent(_ sender:UIButton){
-        let documentID = historyArray[-sender.tag].documentID
-        Firestore.deleteHistory(documentID: documentID) {
-            self.historyArray.remove(at: -sender.tag)
-            self.historyTableView.reloadData()
-            if self.historyArray.isEmpty == true {
-                self.label.setupLabel(view: self.view, y: self.view.center.y - 200)
-                self.label.text = "ルームを検索、作成してみよう！"
-                self.historyTableView.addSubview(self.label)
-            }
-        }
-    }
-    
-    
-    
-    private func createHistory(roomImageUrl:String,roomName:String,documentID:String){
-        let dic = [
-            "roomImage":roomImageUrl,
-            "roomName":roomName,
-            "documentID":documentID,
-            "createdAt":Timestamp()] as [String : Any]
-        Firestore.createHistory(documentID: documentID, dic: dic)
-    }
 }
 
 
-
-
-
-extension SearchViewController:UIScrollViewDelegate{
+// MARK: - UIScrollViewDelegate Method
+extension SearchViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if historyTableView.isDragging == true || resultTableView.isDragging == true {
             searchField.resignFirstResponder()
