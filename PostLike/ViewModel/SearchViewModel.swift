@@ -13,8 +13,8 @@ final class SearchViewModel {
     
     private let disposeBag = DisposeBag()
     
-    private var resultRelay = PublishRelay<[Post_Like]>()
-    var resultDriver: Driver<[Post_Like]> = Driver.never()
+    private var resultRelay = PublishRelay<[Result]>()
+    var resultDriver: Driver<[Result]> = Driver.never()
     
     let isTextEmpty: Driver<Bool>
     let isResultEmpty: Driver<Bool>
@@ -46,7 +46,7 @@ final class SearchViewModel {
         text.asObservable()
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .flatMapLatest { text -> Observable<[Post_Like]> in
+            .flatMapLatest { text -> Observable<[Result]> in
                 return AlgoliaAPI.shared.callAlgolia(text: text)
             }
             .subscribe { [weak self] result in

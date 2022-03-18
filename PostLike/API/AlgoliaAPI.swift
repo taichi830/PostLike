@@ -14,7 +14,7 @@ final class AlgoliaAPI {
     
     static let shared = AlgoliaAPI()
     
-    func callAlgolia(text: String) -> Observable<[Post_Like]> {
+    func callAlgolia(text: String) -> Observable<[Result]> {
         return Observable.create { observer in
             #if DEBUG
             let appID = "AT9Z5755AK"

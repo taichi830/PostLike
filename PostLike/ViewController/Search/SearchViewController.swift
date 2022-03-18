@@ -21,7 +21,7 @@ final class SearchViewController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     private var roomArrray = [Room]()
-    private var resultArray = [Post_Like]()
+    private var resultArray = [Result]()
     private var historyArray = [Contents]()
     private var cellIdentifier = ""
     private var label = MessageLabel()
