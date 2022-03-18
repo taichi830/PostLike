@@ -77,37 +77,6 @@
                                 <rect key="frame" x="0.0" y="154" width="414" height="742"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UAG-Js-paY">
-                                <rect key="frame" x="0.0" y="340" width="375" height="132"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m0g-pH-j63">
-                                        <rect key="frame" x="37" y="8" width="301" height="49"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j8y-K1-WIJ">
-                                        <rect key="frame" x="0.0" y="120" width="375" height="10"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                    </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cc0-Z6-2di">
-                                        <rect key="frame" x="133" y="65" width="108" height="37"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" systemColor="systemRedColor"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                        <state key="normal" title="Roomを作成">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="createRoomWithSender:" destination="rYi-Tq-OuW" eventType="touchUpInside" id="Eqq-Nn-PjR"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NPG-l3-kxB">
                                 <rect key="frame" x="0.0" y="154" width="414" height="708"/>
                                 <subviews>
@@ -185,16 +154,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="KGY-Yq-A1h"/>
                     <connections>
-                        <outlet property="alertLabel" destination="m0g-pH-j63" id="Olk-xL-Oiw"/>
                         <outlet property="backView" destination="NPG-l3-kxB" id="Oqy-aZ-RDp"/>
                         <outlet property="containerView" destination="j4B-jN-zF9" id="rA4-FV-NPL"/>
-                        <outlet property="createButton" destination="Cc0-Z6-2di" id="qkq-Db-tK4"/>
-                        <outlet property="headerView" destination="UAG-Js-paY" id="9Ie-6I-Q5s"/>
                         <outlet property="historyTableView" destination="Dbz-4U-c2W" id="cXU-0T-quQ"/>
                         <outlet property="resultTableView" destination="1mT-pY-hWH" id="h89-nm-bSm"/>
                         <outlet property="searchBackView" destination="In4-vE-WPn" id="wsH-DP-oIP"/>
                         <outlet property="searchField" destination="VlP-fW-Rac" id="t2U-AI-cn0"/>
-                        <outlet property="separateView" destination="j8y-K1-WIJ" id="V0N-02-eED"/>
                         <outlet property="topCreateRoomButton" destination="y03-BE-4lu" id="waQ-NT-H7j"/>
                         <outlet property="topView" destination="lMC-J1-2yt" id="6z2-Cr-1Xc"/>
                         <outlet property="topViewHeight" destination="5AI-gz-v57" id="pNF-aK-YOq"/>
@@ -202,7 +167,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OTl-D5-gga" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5728.8000000000002" y="291.13300492610841"/>
+            <point key="canvasLocation" x="5727.536231884058" y="290.625"/>
         </scene>
         <!--Room Detail View Controller-->
         <scene sceneID="hpw-2u-hmq">
