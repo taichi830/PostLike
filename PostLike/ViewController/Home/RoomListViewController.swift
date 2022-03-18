@@ -11,10 +11,8 @@ import UIKit
 final class RoomListViewController: UIViewController {
    
 
-    
-    var passedFollwedRoomArray = [Contents]()
-    
     @IBOutlet private weak var roomListTableView: UITableView!
+    var passedFollwedRoomArray = [Contents]()
     
     
     
@@ -56,19 +54,12 @@ extension RoomListViewController: UITableViewDelegate,UITableViewDataSource {
         let cell = roomListTableView.dequeueReusableCell(withIdentifier: "room", for: indexPath)
         
         let roomImage = cell.viewWithTag(1) as! UIImageView
-        let roomName = cell.viewWithTag(2) as! UILabel
-        let personImage = cell.viewWithTag(3) as! UIImageView
-        
-        if passedFollwedRoomArray[indexPath.row].roomImage != "" {
-            roomImage.sd_setImage(with: URL(string: passedFollwedRoomArray[indexPath.row].roomImage), completed: nil)
-            personImage.image = UIImage()
-        }else{
-            personImage.image = UIImage(systemName: "person.3.fill")
-        }
-        
-        roomImage.layer.cornerRadius = roomImage.frame.height/2
+        roomImage.setImage(imageUrl: passedFollwedRoomArray[indexPath.row].roomImage)
+        roomImage.layer.cornerRadius = 10
         roomImage.layer.borderColor = UIColor.systemGray6.cgColor
         roomImage.layer.borderWidth = 1
+        
+        let roomName = cell.viewWithTag(2) as! UILabel
         roomName.text = passedFollwedRoomArray[indexPath.row].roomName
         
         return cell
