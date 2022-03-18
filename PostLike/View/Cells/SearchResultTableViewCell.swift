@@ -33,16 +33,16 @@ class SearchResultTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setupCell(roomInfo: Room) {
-        roomImageView.setImage(imageUrl: roomInfo.roomImage)
-        roomNameLabel.text = roomInfo.roomName
-        roomIntroLabel.text = roomInfo.roomIntro
-        if roomInfo.roomIntro == "" {
+    func setupCell(roomName: String, roomImage: String, roomIntro: String) {
+        roomImageView.setImage(imageUrl: roomImage)
+        roomNameLabel.text = roomName
+        roomIntroLabel.text = roomIntro
+        if roomIntro == "" {
             roomIntroLabel.textColor = .lightGray
             roomIntroLabel.text = "紹介文はありません"
         }else{
             roomIntroLabel.textColor = .black
-            roomIntroLabel.text = roomInfo.roomIntro
+            roomIntroLabel.text = roomIntro
         }
     }
     
