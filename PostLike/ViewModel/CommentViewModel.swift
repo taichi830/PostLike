@@ -26,17 +26,21 @@ final class CommentViewModel {
     
     init (commentListner: GetComments, documentID: String, roomID: String) {
         
+        // itemsRelayをdriverに紐付け
         items = itemsRelay.asDriver(onErrorJustReturn: [])
         
+        // コメントを取得
         let fetchComments = commentListner.fetchComments(documentID: documentID)
             .share(replay: 1)
         
+        // 取得したコメントをitemsRelayにアクセプト
         fetchComments.asObservable()
             .subscribe { [weak self] items in
                 self?.itemsRelay.accept(items)
             }
             .disposed(by: disposeBag)
         
+        // 取得したコメントが空かどうかチェック
         isEmpty = fetchComments.map { contents -> Bool in
             return contents.isEmpty
         }

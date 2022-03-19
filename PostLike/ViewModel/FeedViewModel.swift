@@ -68,7 +68,7 @@ final class FeedViewModel {
         
         
         
-        
+        //最下部に来た時、追加で投稿を取得
         isBottomSubject.asObservable()
             .subscribe { [weak self] _ in
                 let fetchMorePosts = feedContentsListner.fetchMorePosts(roomID: roomID)
@@ -92,7 +92,7 @@ final class FeedViewModel {
 
 
 
-// MARK: - provate methods
+// MARK: - private method
 extension FeedViewModel {
     private func fetchItems(fetchObservable: Observable<[Contents]>, reportListner: ReportListner, currentItems: [Contents]) {
         //報告したユーザーを取得
@@ -128,7 +128,6 @@ extension FeedViewModel {
             .filter { !$0.isEmpty }
             .concatMap { contents -> Observable<[Contents]> in
                 return likeListner.fetchLikes(contents: contents)
-                    .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             }
             .subscribe { [weak self] likes in
                 self?.likesRelay.accept(currentLikes + likes)
@@ -138,7 +137,7 @@ extension FeedViewModel {
     //空チェック
     private func isEmptyCheck() {
         itemsRelay.asObservable()
-            .skip(1)
+            .skip(1) //itemsRelayの初期値をスキップ
             .map { $0.isEmpty }
             .subscribe { [weak self] bool  in
                 self?.isEmptyRelay.accept(bool)
@@ -151,14 +150,14 @@ extension FeedViewModel {
 
 
 
-// MARK: - VCから呼び出すmethods
+// MARK: - VCから呼び出すmethod
 extension FeedViewModel {
     //最新の投稿をaccept
     func insertLatestItem(item: [Contents]) {
         let currrentItems = self.itemsRelay.value
         self.itemsRelay.accept(item + currrentItems)
     }
-    //最新の投稿をaccept
+    //最新のいいねをaccept
     func appendLatestLikeContent(content: [Contents]) {
         let cuurentItems = self.itemsRelay.value
         let currentLikes = self.likesRelay.value

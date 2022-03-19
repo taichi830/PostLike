@@ -19,28 +19,32 @@ final class RoomHeaderViewModel {
     let memberCount: Driver<Room>
     
     init(userListner: UserListner, roomInfoListner: RoomInfoListner, roomID: String) {
-        let userInfoListner = userListner.createUserListner(roomID: roomID)
-        userInfo = userInfoListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
-            .asDriver(onErrorDriveWith: Driver.empty())
-        isJoined = userInfo.asObservable()
+        //ユーザー情報を取得
+        let userInfoListner = userListner.createUserListner(roomID: roomID).share(replay: 1)
+        //取得したユーザー情報をdriverに紐付け
+        userInfo = userInfoListner.asDriver(onErrorDriveWith: Driver.empty())
+        //ルームに参加しているかチェック
+        isJoined = userInfoListner.asObservable()
             .map { content -> Bool in
                 return content.isJoined
             }
-            .asDriver(onErrorJustReturn: false)
-        
-        
-        let roomListner = roomInfoListner.fetchRoomInfo(roomID: roomID)
-        roomInfo = roomListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
             .asDriver(onErrorDriveWith: Driver.empty())
         
+        //ルーム情報を取得
+        let roomListner = roomInfoListner.fetchRoomInfo(roomID: roomID).share(replay: 1)
+        //取得したルーム情報をdriverにバインド
+        roomInfo = roomListner.asDriver(onErrorDriveWith: Driver.empty())
+        //ルームが削除されているかチェック
         isDeleted = roomInfo.asObservable()
             .map{ room -> Bool in
                 return room.isDeleted
             }
-            .asDriver(onErrorJustReturn: true)
+            .asDriver(onErrorDriveWith: Driver.empty())
         
-        let memberCountListner = roomInfoListner.fetchMemberCount(roomID: roomID)
-        memberCount = memberCountListner.debounce(.milliseconds(100), scheduler: MainScheduler.instance)
+        //メンバー数を取得
+        let memberCountListner = roomInfoListner.fetchMemberCount(roomID: roomID).share(replay: 1)
+        memberCount = memberCountListner
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)//複数回呼ばれる可能性があるのでdebounceで制御
             .asDriver(onErrorDriveWith: Driver.empty())
         
         

@@ -15,16 +15,14 @@ final class ProfileHeaderViewModel {
     let likeCount: Driver<Contents>
     
     init(userListner: UserListner, roomID: String) {
+        //ユーザー情報を取得
         userInfo = userListner.createUserListner(roomID: roomID)
-            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             .asDriver(onErrorDriveWith: Driver.empty())
-        
+        //投稿数を取得
         postCount = userListner.fetchPostCount(roomID: roomID)
-            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             .asDriver(onErrorDriveWith: Driver.empty())
-        
+        //自分がいいねした数を取得
         likeCount = userListner.fetchLikeCount(roomID: roomID)
-            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
             .asDriver(onErrorDriveWith: Driver.empty())
     }
 }
