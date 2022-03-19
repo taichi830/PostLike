@@ -12,15 +12,14 @@ import RxCocoa
 final class CreateProfileViewModel {
     
     private let disposeBag = DisposeBag()
-    let isValidTap: Driver<Bool>
+    
     var createCompletedSubject = BehaviorSubject<Bool>.init(value: false)
     var createErrorSubject = PublishSubject<Error>()
-    
     var userImageSubject = PublishSubject<UIImage>()
     
-    
-    let isCompleted: Driver<Bool>
-    let errorDriver: Driver<Error>
+    var isValidTap: Driver<Bool> = Driver.never()
+    var isCompleted: Driver<Bool> = Driver.never()
+    var errorDriver: Driver<Error> = Driver.never()
     
     init(input:(createButtonTap: Signal<()>, userName: Driver<String>), roomInfo: Room, createProfile: CreateProfileBatch) {
         
@@ -30,22 +29,22 @@ final class CreateProfileViewModel {
                 return userName != ""
             }
         
-        //userNameが空出なければボタンを有効にする
-        isValidTap = userNameValidation.asDriver(onErrorJustReturn: false)
-        
-        //userImageがあるかチェック
+        // userImageがあるかチェック
         let userImageViewIsEmpty = userImageSubject.asObservable()
             .map { image in
                 return image == UIImage()
             }
         
+        // userImageViewIsEmptyとinput.userNameとuserImageSubjectを合成
+        let combinedObserVables = Observable.combineLatest(userImageViewIsEmpty, input.userName.asObservable(), userImageSubject.asObservable())
         
         
+        isValidTap = userNameValidation.asDriver(onErrorJustReturn: false)
         isCompleted = createCompletedSubject.asDriver(onErrorJustReturn: false)
         errorDriver = createErrorSubject.asDriver(onErrorDriveWith: Driver.empty())
         
-        let combinedObserVables = Observable.combineLatest(userImageViewIsEmpty, input.userName.asObservable(), userImageSubject.asObservable())
         
+        // プロフィールをFirestoreに保存
         input.createButtonTap.asObservable()
             .withLatestFrom(combinedObserVables)
             .flatMapLatest { (userImageViewIsEmpty, userName, userImage) -> Observable<Bool> in
@@ -66,14 +65,7 @@ final class CreateProfileViewModel {
                 }
             }
             .disposed(by: disposeBag)
-            
-        
-        
-        
-        
-        
-        
-        
-        
     }
+    
+    
 }

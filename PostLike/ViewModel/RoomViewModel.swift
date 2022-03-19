@@ -14,12 +14,12 @@ final class RoomViewModel {
     let isEmpty: Driver<Bool>
     
     init(roomListner: RoomListner) {
-        
-        rooms = roomListner.fetchRooms()
-            .debounce(.milliseconds(50), scheduler: MainScheduler.instance)
-            .asDriver(onErrorJustReturn: [])
-        
-        isEmpty = rooms.compactMap{ rooms in
+        //ルームを取得
+        let fetchRooms = roomListner.fetchRooms().share(replay: 1)
+        //取得したルームをdriverに紐付け
+        rooms = fetchRooms.asDriver(onErrorJustReturn: [])
+        //ルームが空かどうかをチェック
+        isEmpty = fetchRooms.compactMap { rooms in
             return rooms.isEmpty
         }
         .asDriver(onErrorJustReturn: true)

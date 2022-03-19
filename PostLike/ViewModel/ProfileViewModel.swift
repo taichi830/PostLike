@@ -58,12 +58,22 @@ final class ProfileViewModel {
             .disposed(by: disposeBag)
     }
     
+    
+    
+    
+    
+    
+    
+}
+
+
+// MARK: - Private Method
+extension ProfileViewModel {
     //プロフィール投稿を取得
     private func fetchProfilePosts(profileContentsListner: GetProfilePosts, likeListner: GetLikes, uid: String, roomID: String) {
-        
+        //プロフィール投稿を取得
         let fetchProfilePosts = profileContentsListner.fetchProfilePosts(uid: uid, roomID: roomID)
             .share(replay: 1)
-        
         //プロフィール投稿の空チェック
         fetchProfilePosts.asObservable()
             .map { $0.isEmpty }
@@ -71,7 +81,6 @@ final class ProfileViewModel {
                 self?.isEmptySubject.accept(bool)
             }
             .disposed(by: disposeBag)
-        
         //取得した投稿をitemsRelayにアクセプト&fetchLikesを呼び出す
         fetchProfilePosts.asObservable()
             .filter { !$0.isEmpty }
@@ -82,7 +91,6 @@ final class ProfileViewModel {
             }
             .disposed(by: disposeBag)
     }
-    
     //いいねした投稿を取得
     private func fetchLikes(likeListner: GetLikes, contents: [Contents]) {
         let currentLikes = self.likesRelay.value
@@ -92,7 +100,6 @@ final class ProfileViewModel {
             }
             .disposed(by: disposeBag)
     }
-    
     //投稿を追加で取得
     private func fetchMoreProfilePosts(profileContentsListner: GetProfilePosts, likeListner: GetLikes, uid: String, roomID: String) {
         let currentItems = self.itemsRelay.value
@@ -105,9 +112,4 @@ final class ProfileViewModel {
             }
             .disposed(by: disposeBag)
     }
-    
-    
-    
-    
-    
 }

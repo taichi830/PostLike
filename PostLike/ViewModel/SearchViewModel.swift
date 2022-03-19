@@ -14,35 +14,27 @@ final class SearchViewModel {
     private let disposeBag = DisposeBag()
     
     private var resultRelay = PublishRelay<[Result]>()
-    var resultDriver: Driver<[Result]> = Driver.never()
     
+    var resultDriver: Driver<[Result]> = Driver.never()
     let isTextEmpty: Driver<Bool>
     let isResultEmpty: Driver<Bool>
     
     init(text: Driver<String>) {
-        
-        text.asObservable()
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .subscribe { text in
-                print("text:", text)
-            }
-            .disposed(by: disposeBag)
-        
+        // textが空かどうかチェック
         isTextEmpty = text.asObservable()
             .map { text -> Bool in
                 return text.isEmpty
             }
             .asDriver(onErrorDriveWith: Driver.empty())
-        
-        resultDriver = resultRelay.asDriver(onErrorJustReturn: [])
-        
+        // 検索結果が空かどうかチェック
         isResultEmpty = resultRelay.asObservable()
             .map { result -> Bool in
                 return result.isEmpty
             }
             .asDriver(onErrorDriveWith: Driver.empty())
-        
+        // resultRelayをdriverに紐付け
+        resultDriver = resultRelay.asDriver(onErrorJustReturn: [])
+        // 検索処理を呼ぶ
         text.asObservable()
             .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
@@ -54,14 +46,10 @@ final class SearchViewModel {
             }
             .disposed(by: disposeBag)
         
-        
-        
-        
-        
-        
-        
-        
-        
     }
+    
+    
+    
+    
 }
 

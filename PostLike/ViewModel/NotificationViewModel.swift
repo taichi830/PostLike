@@ -17,12 +17,12 @@ final class NotificationViewModel {
     let isEmpty: Driver<Bool>
 
     init(notificationListner: NotificationListner) {
-        
+        //お知らせを取得
         let listner = notificationListner.items
-        
+        // 取得したお知らせをdriverに紐付け
         items = listner
             .asDriver(onErrorJustReturn: [])
-        
+        // 取得したお知らせが空かどうかチェック
         isEmpty = listner
             .map { contents -> Bool in
                 return contents.isEmpty

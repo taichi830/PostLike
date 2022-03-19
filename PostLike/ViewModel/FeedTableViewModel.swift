@@ -19,17 +19,14 @@ final class FeedTableViewModel {
     
     init(likeButtonTap: Signal<()>, createLikes: CreateLikes, content: Contents, userInfoListner: UserListner, roomID: String) {
         
-        let userInfo = userInfoListner.createUserListner(roomID: roomID)
-            .debounce(.milliseconds(100), scheduler: MainScheduler.instance)
-        
-        
+        let userInfo = userInfoListner.createUserListner(roomID: roomID).share(replay: 1)
+        //ルームに参加しているかチェック
         isJoined = userInfo.asObservable()
             .map { userInfo -> Bool in
                 return userInfo.isJoined
             }
-            .asDriver(onErrorJustReturn: false)
-        
-        
+            .asDriver(onErrorDriveWith: Driver.empty())
+        //いいねボタンが押された時の処理
         likeButtonTap.asObservable()
             .withLatestFrom(userInfo)
             .flatMapLatest { userInfo -> Observable<Contents> in
@@ -43,6 +40,9 @@ final class FeedTableViewModel {
                 LatestContentsSubject.shared.latestLikeContents.accept(item)
             }
             .disposed(by: disposedBag)
-        
     }
+    
+    
+    
+    
 }
