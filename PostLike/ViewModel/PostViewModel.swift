@@ -15,8 +15,8 @@ final class PostViewModel {
     
     private let disposeBag = DisposeBag()
     
-    private var postTextOutPut = PublishSubject<String>()
-    private var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
+    var postTextOutPut = PublishSubject<String>()
+    var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
     
     private var validPostSubject = BehaviorSubject<Bool>.init(value: false)
     private var validAddImageSubject = BehaviorSubject<Bool>.init(value: true)
