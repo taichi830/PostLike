@@ -214,8 +214,8 @@ final class PostViewController: UIViewController{
         pickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage { image, info in
-                    if var item = try? self.postViewModel.photoArrayOutPut.value() {
-                        item.append(image!)
+                    if let image = image, var item = try? self.postViewModel.photoArrayOutPut.value() {
+                        item.append(image)
                         self.postViewModel.photoArrayInPut.onNext(item)
                     }
                 }
