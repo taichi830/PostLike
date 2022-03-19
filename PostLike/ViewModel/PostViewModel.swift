@@ -15,13 +15,13 @@ final class PostViewModel {
     
     private let disposeBag = DisposeBag()
     
-    var postTextOutPut = PublishSubject<String>()
-    var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
+    private var postTextOutPut = PublishSubject<String>()
+    private var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
     
-    var validPostSubject = BehaviorSubject<Bool>.init(value: false)
-    var validAddImageSubject = BehaviorSubject<Bool>.init(value: true)
-    var postCompletedSubject = PublishSubject<Bool>()
-    var imageArrayCountSubject = BehaviorSubject<Int>.init(value: 0)
+    private var validPostSubject = BehaviorSubject<Bool>.init(value: false)
+    private var validAddImageSubject = BehaviorSubject<Bool>.init(value: true)
+    private var postCompletedSubject = PublishSubject<Bool>()
+    private var imageArrayCountSubject = BehaviorSubject<Int>.init(value: 0)
     
     
     var postTextInPut:AnyObserver<String> {
@@ -35,7 +35,6 @@ final class PostViewModel {
     var validAddImageDriver:Driver<Bool> = Driver.never()
     var postedDriver:Driver<Bool> = Driver.never()
     var imageCountDriver:Driver<Int> = Driver.never()
-    
     var latestContent: Driver<Contents> = Driver.never()
     
     
@@ -174,9 +173,14 @@ final class PostViewModel {
     
     
     func remove(row:Int) {
-        var items = try! photoArrayOutPut.value()
-        items.remove(at: row)
-        photoArrayOutPut.onNext(items)
+        do {
+            var items = try photoArrayOutPut.value()
+            items.remove(at: row)
+            photoArrayOutPut.onNext(items)
+        } catch {
+            return
+        }
+        
     }
 
     
