@@ -28,13 +28,6 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     
     
     
-    var passedMedia = Array<String>()
-    var passedUid = String()
-    var passedUserName = String()
-    var passedText = String()
-    var passedUserImage = String()
-    var passedRoomID = String()
-    var passedDocumentID = String()
     var passedContent =  Contents(dic: [:])
     var tappedNumber = Int()
     
