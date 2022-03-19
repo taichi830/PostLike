@@ -7,27 +7,42 @@
 //
 
 import XCTest
+import RxSwift
+import RxCocoa
+import RxTest
+@testable import PostLike_Dev
 
 class SearchViewModelTest: XCTestCase {
+    
+    let disposeBag = DisposeBag()
+    let sheduler = TestScheduler(initialClock: 0)
+    var textEvent: Driver<String>!
+    var viewModel: SearchViewModel!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        // 検索バー入力イベント
+        textEvent = sheduler.createHotObservable([
+            .next(10, ""),
+            .next(20, "スニーカー")
+        ])
+        .asDriver(onErrorDriveWith: Driver.empty())
+        
+        // viewModelをセットアップ
+        viewModel = SearchViewModel(text: textEvent)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testIsTextEmpty() throws {
+        
+        let isEmpty = sheduler.createObserver(Bool.self)
+        viewModel.isTextEmpty.drive(isEmpty).disposed(by: disposeBag)
+        
+        sheduler.start()
+        
+        XCTAssertEqual(isEmpty.events, [
+            .next(10, true),
+            .next(20, false)
+        ])
+        
     }
 
 }
