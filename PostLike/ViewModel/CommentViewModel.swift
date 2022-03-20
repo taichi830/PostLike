@@ -41,7 +41,9 @@ final class CommentViewModel {
             .disposed(by: disposeBag)
         
         // 取得したコメントが空かどうかチェック
-        isEmpty = fetchComments.map { contents -> Bool in
+        isEmpty = itemsRelay
+            .skip(1) //itemsRelayの初期値をスキップ
+            .map { contents -> Bool in
             return contents.isEmpty
         }
         .asDriver(onErrorJustReturn: true)
