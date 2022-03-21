@@ -36,15 +36,7 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
         fetchImages()
         self.setSwipeBackGesture()
     }
-    
-    
-    
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
+
     
     
     
@@ -136,13 +128,7 @@ final class RoomImageContentsViewController: UIViewController,UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let showImageVC = storyboard?.instantiateViewController(withIdentifier: "showImage") as! ShowImageViewController
-        showImageVC.passedText = imagesArray[indexPath.row].text
-        showImageVC.passedMedia = imagesArray[indexPath.row].mediaArray
-        showImageVC.passedUid = imagesArray[indexPath.row].uid
-        showImageVC.passedRoomID = imagesArray[indexPath.row].roomID
-        showImageVC.passedDocumentID = imagesArray[indexPath.row].documentID
-        showImageVC.passedUserName = imagesArray[indexPath.row].userName
-        showImageVC.passedUserImage = imagesArray[indexPath.row].userImage
+        showImageVC.passedContent = imagesArray[indexPath.row]
         present(showImageVC, animated: true, completion: nil)
     }
     

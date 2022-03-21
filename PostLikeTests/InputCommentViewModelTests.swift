@@ -63,7 +63,7 @@ class InputCommentViewModelTests: XCTestCase {
     //プロフィール情報の取得テスト
     func testFetchProfileInfo() {
         //参加中のルームかチェック
-        XCTAssertEqual(try viewModel.isJoined.toBlocking().first(), true)
+        XCTAssertEqual(try viewModel.isJoined.toBlocking().first(), false)
     }
 
 }

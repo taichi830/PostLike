@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Image references" minToolsVersion="12.0"/>
@@ -14,8 +13,8 @@
                 <outlet property="bluredImageView" destination="Ugh-DG-Twg" id="9tv-I6-LTS"/>
                 <outlet property="imageCollectionButton" destination="NW8-0o-hq2" id="aXW-Vd-CH5"/>
                 <outlet property="memberLabel" destination="cXj-fe-bdn" id="0wl-DT-GdE"/>
-                <outlet property="myProfileImageView" destination="ZD0-gz-y7Q" id="Mno-sH-Hpq"/>
                 <outlet property="postButton" destination="EvK-zF-tDU" id="CrA-yx-33h"/>
+                <outlet property="profileImageView" destination="ZD0-gz-y7Q" id="Mno-sH-Hpq"/>
                 <outlet property="roomNameLabel" destination="7xg-vs-MTE" id="8GJ-c2-xHB"/>
             </connections>
         </placeholder>

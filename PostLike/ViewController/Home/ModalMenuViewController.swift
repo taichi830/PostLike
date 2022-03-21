@@ -7,23 +7,25 @@
 //
 
 import UIKit
+import RxSwift
+import Firebase
+import FirebaseFirestore
 import FirebaseDynamicLinks
 
 
-final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+final class ModalMenuViewController: UIViewController{
     
-    var passedDocumentID = String()
-    var passedRoomID = String()
-    var passedUid = String()
+
     var passedViewController = UIViewController()
-    var passedType = String()
-    var passedRoomName = String()
-    var passedRoomImageUrl = String()
-    var passedRoomIntro = String()
     var passedRoomImage = UIImage()
-    var passedImageUrl = [String]()
-    weak var deletePostDelegate:DeletePostDelegate?
+    var passedModerator = String()
+    var passedRoomInfo = Room(dic: [:])
+    var passedModalType = ModalType(rawValue: "")
+    var passedContent = Contents(dic: [:])
+//    weak var deletePostDelegate:DeletePostDelegate?
     weak var exitRoomDelegate:ExitRoomDelegate?
+    private let viewModel = ModalViewModel()
+    private let disposeBag = DisposeBag()
     
     
     
@@ -36,8 +38,6 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        menuTableView.delegate = self
-        menuTableView.dataSource = self
         self.transitioningDelegate = self
         clearView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.viewDidTouch)))
         backView.layer.cornerRadius = 10
@@ -47,9 +47,11 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if passedType == ModalType.exit.rawValue || passedType == ModalType.delete.rawValue {
+        if passedModalType == .exit || passedModalType == .delete {
             backViewHeightConstraint.constant = 160
         }
+        setupTableView(passedType: passedModalType!)
+        didSelectItem()
     }
     
     
@@ -60,8 +62,133 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
     
     
     
-    private func showActivityViewController(){
+    private func setupTableView(passedType: ModalType) {
+        viewModel.items.map{ menus -> [Item] in
+            let filter = menus.filter { menu in
+                menu.type == passedType
+            }
+            return filter[0].item
+        }
+        .bind(to: menuTableView.rx.items(cellIdentifier: "cell")) { (row,item,cell) in
+            cell.imageView?.tintColor = .label
+            cell.imageView?.image = UIImage(systemName: item.imageUrl)
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+            cell.textLabel?.text = item.title
+        }
+        .disposed(by: disposeBag)
         
+        menuTableView.isScrollEnabled = false
+        menuTableView.rowHeight = 60
+        viewModel.fetchItems()
+    }
+    
+    
+    private func didSelectItem() {
+        menuTableView.rx.modelSelected(Item.self).bind { [weak self] item in
+            switch item.type {
+            case .cancel:
+                self?.dismiss(animated: true,completion: nil)
+                
+            case .mute:
+                let reportVC = self?.storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
+                reportVC.passedContent = self!.passedContent
+                reportVC.reportType = .post
+                self?.present(reportVC, animated: true,completion: nil)
+                
+            case .block:
+                let reportVC = self?.storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
+                reportVC.passedContent = self!.passedContent
+                reportVC.reportType = .user
+                self?.present(reportVC, animated: true, completion: nil)
+                
+            case .share:
+                self?.showActivityViewController()
+                
+            case .report:
+                let reportVC = self?.storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
+                reportVC.passedContent = self?.passedContent ?? Contents(dic: [:])
+                reportVC.passedRoomInfo = self?.passedRoomInfo ?? Room(dic: [:])
+                reportVC.reportType = .room
+                self?.present(reportVC, animated: true, completion: nil)
+                
+            case .exit:
+                let alert = UIAlertController(title: "ルームを退出", message: "ルームから退出してよろしいですか？", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
+                    self?.exitRoomDelegate?.exitRoomBatch()
+                    self?.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
+                
+            case .deletePost:
+                let alert = UIAlertController(title: "投稿を削除", message: "本当に投稿を削除してもよろしいですか？", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
+                    self?.deletePostBatch(documentID: self?.passedContent.documentID ?? "", imageUrl: self?.passedContent.mediaArray ?? [""])
+                    self?.dismiss(animated: true,completion: {
+                        LatestContentsSubject.shared.deletedContents.accept(self!.passedContent)
+                    })
+                }))
+                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
+                
+            case .deleteRoom:
+                let storyboard = UIStoryboard.init(name: "Profile", bundle: nil)
+                let deleteAlertVC = storyboard.instantiateViewController(withIdentifier: "deleteAlert") as! DeleteRoomViewController
+                deleteAlertVC.modalPresentationStyle = .custom
+                deleteAlertVC.transitioningDelegate = self?.passedViewController as? UIViewControllerTransitioningDelegate
+                deleteAlertVC.passedRoomID = self?.passedContent.roomID ?? ""
+                deleteAlertVC.deleteRoomDelegate = self?.passedViewController as? DeleteRoomDelegate
+                self?.present(deleteAlertVC, animated: true, completion: nil)
+            }
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+extension ModalMenuViewController {
+    //投稿を削除
+    func deletePostBatch(documentID:String,imageUrl:[String]){
+        let uid = Auth.auth().currentUser!.uid
+        let batch = Firestore.firestore().batch()
+        Firestore.decreasePostCount(roomID: passedContent.roomID, batch: batch)
+        Firestore.decreaseRoomPostCount(roomID: passedContent.roomID, batch: batch)
+        Firestore.deletePosts(roomID: passedContent.roomID, documentID: documentID, batch: batch)
+        Firestore.deleteModeratorPosts(uid: uid, moderatorUid: passedModerator,roomID: passedContent.roomID, documentID: documentID, batch: batch)
+        if passedContent.mediaArray[0] != "" {
+            Firestore.deleteMediaPosts(roomID: passedContent.roomID, documentID: documentID, batch: batch)
+        }
+        batch.commit { err in
+            if let err = err {
+                print("false\(err)")
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.dismissIndicator()
+                }
+                self.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+                return
+            }
+            if imageUrl[0] != "" {
+                Storage.deleteStrageFile(imageUrl: imageUrl)
+            }
+        }
+    }
+}
+
+
+extension ModalMenuViewController {
+    //activityViewを表示
+    private func showActivityViewController(){
         var components = URLComponents()
         components.scheme = "https"
         #if DEBUG
@@ -71,7 +198,7 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
         #endif
         components.path = "/rooms"
         
-        let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedRoomID)
+        let roomIDQueryItem = URLQueryItem(name: "roomID", value: passedContent.roomID)
         components.queryItems = [roomIDQueryItem]
         
         guard let link = components.url else {return}
@@ -92,9 +219,9 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
         shareLink.androidParameters?.minimumVersion = .zero
         
         shareLink.socialMetaTagParameters = DynamicLinkSocialMetaTagParameters()
-        shareLink.socialMetaTagParameters?.title = passedRoomName
-        shareLink.socialMetaTagParameters?.descriptionText = passedRoomIntro
-        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomImageUrl)
+        shareLink.socialMetaTagParameters?.title = passedRoomInfo.roomName
+        shareLink.socialMetaTagParameters?.descriptionText = passedRoomInfo.roomIntro
+        shareLink.socialMetaTagParameters?.imageURL = URL(string: passedRoomInfo.roomImage)
         shareLink.shorten { url, warnings, err in
             if err != nil {
                 return
@@ -105,195 +232,25 @@ final class ModalMenuViewController: UIViewController,UITableViewDelegate,UITabl
                     }
                 }
                 guard let url = url else {return}
-                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomName, roomImage: self.passedRoomImage)]
+                let activityItems: [Any] = [url,ShareActivitySource(url: url, roomName: self.passedRoomInfo.roomName, roomImage: self.passedRoomImage)]
                 let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: .none)
                 self.present(activityViewController, animated: true, completion: nil)
             }
         }
         
     }
-    
-    
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch passedType {
-        case ModalType.post.rawValue:
-            return 3
-            
-        case ModalType.room.rawValue:
-            return 3
-            
-        case ModalType.exit.rawValue:
-            return 2
-            
-        case ModalType.delete.rawValue:
-            return 2
-            
-        case ModalType.moderator.rawValue:
-            return 3
-            
-        default:
-            break
-        }
-        
-        return Int()
-        
-    }
-    
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = menuTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let imageView = cell.viewWithTag(1) as! UIImageView
-        let label = cell.viewWithTag(2) as! UILabel
-        
-        switch passedType {
-        case ModalType.post.rawValue:
-            CommonModal.shared.items(type: .post, label: label, imageView: imageView, row: indexPath.row)
-            
-        case ModalType.room.rawValue:
-            CommonModal.shared.items(type: .room, label: label, imageView: imageView, row: indexPath.row)
-            
-        case ModalType.exit.rawValue:
-            CommonModal.shared.items(type: .exit, label: label, imageView: imageView, row: indexPath.row)
-            
-        case ModalType.exit.rawValue:
-            CommonModal.shared.items(type: .exit, label: label, imageView: imageView, row: indexPath.row)
-            
-        case ModalType.delete.rawValue:
-            CommonModal.shared.items(type: .delete, label: label, imageView: imageView, row: indexPath.row)
-            
-        case ModalType.moderator.rawValue:
-            CommonModal.shared.items(type: .moderator, label: label, imageView: imageView, row: indexPath.row)
-            
-        default: break
-        }
-        return cell
-    }
-    
-    
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-    
-    
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch passedType {
-        case ModalType.post.rawValue:
-            if indexPath.row == 0 {
-                let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-                reportVC.passedDocumentID = passedDocumentID
-                reportVC.passedRoomID = passedRoomID
-                reportVC.passedUid = passedUid
-                reportVC.reportType = ReportType.post.rawValue
-                reportVC.removeContentsDelegate = passedViewController as? RemoveContentsDelegate
-                present(reportVC, animated: true,completion: nil)
-                
-            }else if indexPath.row == 1 {
-                let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-                reportVC.passedDocumentID = passedDocumentID
-                reportVC.passedRoomID = passedRoomID
-                reportVC.passedUid = passedUid
-                reportVC.reportType = ReportType.user.rawValue
-                reportVC.removeContentsDelegate = passedViewController as? RemoveContentsDelegate
-                present(reportVC, animated: true, completion: nil)
-                
-            }else{
-                dismiss(animated: true, completion: nil)
-            }
-            
-        case ModalType.room.rawValue:
-            if indexPath.row == 0 {
-                self.showActivityViewController()
-
-            }else if indexPath.row == 1 {
-                let reportVC = storyboard?.instantiateViewController(withIdentifier: "report") as! ReportViewController
-                reportVC.passedDocumentID = passedDocumentID
-                reportVC.passedRoomID = passedRoomID
-                reportVC.passedUid = passedUid
-                reportVC.reportType = ReportType.room.rawValue
-                present(reportVC, animated: true, completion: nil)
-            }else{
-                dismiss(animated: true, completion: nil)
-            }
-            
-        case ModalType.exit.rawValue:
-            if indexPath.row == 0 {
-                let alert = UIAlertController(title: "ルームを退出", message: "ルームから退出してよろしいですか？", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
-                    self.exitRoomDelegate?.exitRoomBatch()
-                    self.dismiss(animated: true, completion: nil)
-                }))
-                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                
-            }else if indexPath.row == 1 {
-                dismiss(animated: true, completion: nil)
-            }
-            
-        case ModalType.delete.rawValue:
-            if indexPath.row == 0 {
-                let alert = UIAlertController(title: "投稿を削除", message: "本当に投稿を削除してもよろしいですか？", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
-                    self.deletePostDelegate?.deletePostBatch(documentID: self.passedDocumentID, imageUrl: self.passedImageUrl)
-                    self.dismiss(animated: true,completion: nil)
-                }))
-                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-               
-            }else if indexPath.row == 1 {
-                dismiss(animated: true, completion: nil)
-            }
-            
-        case ModalType.moderator.rawValue:
-            if indexPath.row == 0 {
-                let alert = UIAlertController(title: "ルームを退出", message: "ルームから退出してよろしいですか？", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "はい", style: .default, handler: { _ in
-                    self.exitRoomDelegate?.exitRoomBatch()
-                    self.dismiss(animated: true,completion: nil)
-                }))
-                alert.addAction(UIAlertAction(title: "いいえ", style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                
-            }else if indexPath.row == 1 {
-                let storyboard = UIStoryboard.init(name: "Profile", bundle: nil)
-                let deleteAlertVC = storyboard.instantiateViewController(withIdentifier: "deleteAlert") as! DeleteRoomViewController
-                deleteAlertVC.modalPresentationStyle = .custom
-                deleteAlertVC.transitioningDelegate = passedViewController as? UIViewControllerTransitioningDelegate
-                deleteAlertVC.passedRoomID = passedRoomID
-                deleteAlertVC.deleteRoomDelegate = passedViewController as? DeleteRoomDelegate
-                present(deleteAlertVC, animated: true, completion: nil)
-            }else {
-                dismiss(animated: true,completion: nil)
-            }
-            
-        default:
-            return
-        }
-        
-    }
-    
-    
 }
-
 
 
 
 extension ModalMenuViewController:UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        
         return PresentModalViewController(presentedViewController: presented, presenting: presenting)
-        
     }
-    
-    
-    
-    
 }
+
+
+
 
 
 import LinkPresentation

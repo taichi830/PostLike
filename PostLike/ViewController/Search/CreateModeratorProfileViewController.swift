@@ -18,8 +18,7 @@ import DKImagePickerController
 final class CreateModeratorProfileViewController: UIViewController {
     
     
-    @IBOutlet private weak var userImage: UIImageView!
-    @IBOutlet private weak var personImage: UIImageView!
+    @IBOutlet private weak var userImageView: UIImageView!
     @IBOutlet private weak var backView: UIImageView!
     @IBOutlet private weak var completeButton: UIButton!
     @IBOutlet private weak var userNameTextField: UITextField!
@@ -39,7 +38,7 @@ final class CreateModeratorProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        userImage.layer.cornerRadius = 50
+        userImageView.layer.cornerRadius = 50
         
         backView.layer.cornerRadius = 20
         backView.layer.borderWidth = 5
@@ -67,9 +66,7 @@ final class CreateModeratorProfileViewController: UIViewController {
         imagePickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
-                    
-                    self.userImage.image = image
-                    self.personImage.image = UIImage()
+                    self.userImageView.image = image
                 })
             }
         }
@@ -171,7 +168,7 @@ final class CreateModeratorProfileViewController: UIViewController {
     
     private func batchWhenOnlyUserImage(documentID:String){
         let batch = Firestore.firestore().batch()
-        Storage.addUserImageToStrage(userImage: self.userImage.image ?? UIImage(), self: self) { userImageUrl in
+        Storage.addUserImageToStrage(userImage: self.userImageView.image ?? UIImage(), self: self) { userImageUrl in
             self.createRoomDetail(documentID: documentID, roomImageUrl: "", userImageUrl: userImageUrl, batch: batch)
             self.createRoom(documentID: documentID, roomImageUrl: "", batch: batch)
             Firestore.createMemberCount(documentID: documentID, batch: batch)
@@ -196,7 +193,7 @@ final class CreateModeratorProfileViewController: UIViewController {
     private func batchWhenUserImageAndRoomImage(documentID:String){
         let batch = Firestore.firestore().batch()
         Storage.addRoomImageToStrage(roomImage: passedRoomImage, self: self) { roomImageUrl in
-            Storage.addUserImageToStrage(userImage: self.userImage.image ?? UIImage(), self: self) { userImageUrl in
+            Storage.addUserImageToStrage(userImage: self.userImageView.image ?? UIImage(), self: self) { userImageUrl in
                 self.createRoomDetail(documentID: documentID, roomImageUrl: roomImageUrl, userImageUrl: userImageUrl, batch: batch)
                 self.createRoom(documentID: documentID, roomImageUrl: roomImageUrl, batch: batch)
                 Firestore.createMemberCount(documentID: documentID, batch: batch)
@@ -228,16 +225,16 @@ final class CreateModeratorProfileViewController: UIViewController {
     @IBAction private func completeButton(_ sender: Any) {
         let documentID = Firestore.firestore().collection("rooms").document().documentID
         startIndicator()
-        if passedRoomImage == UIImage() && userImage.image == nil {
+        if passedRoomImage == UIImage() && userImageView.image == nil {
             batchWhenNoImage(documentID: documentID)
             
-        }else if passedRoomImage != UIImage() && userImage.image == nil {
+        }else if passedRoomImage != UIImage() && userImageView.image == nil {
             batchWhenOnlyRoomImage(documentID: documentID)
             
-        }else if passedRoomImage == UIImage() && userImage.image != nil {
+        }else if passedRoomImage == UIImage() && userImageView.image != nil {
             batchWhenOnlyUserImage(documentID: documentID)
             
-        }else if passedRoomImage != UIImage() && userImage.image != nil{
+        }else if passedRoomImage != UIImage() && userImageView.image != nil{
             batchWhenUserImageAndRoomImage(documentID: documentID)
         }
     }

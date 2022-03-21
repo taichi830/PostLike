@@ -30,9 +30,7 @@ final class CommentTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setupCell(item:Contents,indicator:UIActivityIndicatorView) {
-        
-        indicator.stopAnimating()
+    func setupCell(item:Contents) {
         if item.userImage != "" {
             self.userImage.sd_setImage(with: URL(string: item.userImage), completed: nil)
             self.personView.image = UIImage()

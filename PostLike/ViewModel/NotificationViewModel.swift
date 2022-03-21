@@ -11,19 +11,18 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-final class NotificationViewModel: NSObject {
+final class NotificationViewModel {
     
     let items: Driver<[Contents]>
     let isEmpty: Driver<Bool>
 
     init(notificationListner: NotificationListner) {
-        
+        //お知らせを取得
         let listner = notificationListner.items
-        
+        // 取得したお知らせをdriverに紐付け
         items = listner
-            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
             .asDriver(onErrorJustReturn: [])
-        
+        // 取得したお知らせが空かどうかチェック
         isEmpty = listner
             .map { contents -> Bool in
                 return contents.isEmpty

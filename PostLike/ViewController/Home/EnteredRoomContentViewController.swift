@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import FirebaseFirestore
 import FirebaseAuth
 
@@ -37,20 +39,18 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     var passedDocumentID = String()
-    private var label = MessageLabel()
-    private var roomInfo:Room?
+    private var messageLabel = MessageLabel()
     private var contentsArray = [Contents]()
     private var likeContentsArray = [Contents]()
-    private var joinedRoom:Contents?
-    private var lastDocument:QueryDocumentSnapshot?
-    private var lastLikeDocument:QueryDocumentSnapshot?
+    private let disposeBag = DisposeBag()
+    var viewModel: FeedViewModel!
     private lazy var indicator:UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
-        indicator.center = roomImageView.center
         indicator.style = .medium
         indicator.color = .white
         indicator.hidesWhenStopped = true
-        roomImageView.addSubview(indicator)
+        indicator.center = CGPoint(x: self.view.center.x, y: 100)
+        self.roomImageView.addSubview(indicator)
         return indicator
     }()
     
@@ -61,28 +61,14 @@ final class EnteredRoomContentViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
-        startIndicator()
-        fetchContents {
-            self.dismissIndicator()
-            self.contentsTableView.reloadData()
-        }
-        setupHeaderView()
+        
         self.setSwipeBackGesture()
-        
-        
-        
+        setupTableView()
+        refrashTableView()
+        setupBinds()
         
     }
     
-    
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchProfileInfo()
-        roomExistCheck()
-    }
     
     
     
@@ -97,57 +83,6 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    private func setupHeaderView() {
-        let tapGesure:UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapMyprofile(_:)))
-        tapGesure.delegate = self
-        headerView.myProfileImageView.layer.cornerRadius = 15
-        headerView.myProfileImageView.isUserInteractionEnabled = true
-        headerView.myProfileImageView.addGestureRecognizer(tapGesure)
-        
-        headerView.imageCollectionButton.addTarget(self, action: #selector(tappedImageCollectionButton(_:)), for: .touchUpInside)
-        headerView.postButton.addTarget(self, action: #selector(tappedPostButton(_:)), for: .touchUpInside)
-    }
-    
-    
-    
-    
-    
-    @objc private func tappedImageCollectionButton(_ sender:UIButton){
-        let imageVC = storyboard?.instantiateViewController(withIdentifier: "images") as! RoomImageContentsViewController
-        imageVC.passedRoomID = passedDocumentID
-        imageVC.passedRoomName = headerView.roomNameLabel.text ?? ""
-        navigationController?.pushViewController(imageVC, animated: true)
-    }
-    
-    
-    
-    
-    
-    @objc private func tappedPostButton(_ sender:UIButton){
-        let postVC = storyboard?.instantiateViewController(withIdentifier: "postVC") as! PostViewController
-        postVC.passedRoomTitle = self.headerView.roomNameLabel.text!
-        postVC.passedDocumentID = self.roomInfo?.documentID ?? ""
-        postVC.passedHostUid = self.roomInfo?.moderator ?? ""
-        postVC.passedUserImageUrl = self.joinedRoom?.userImage ?? ""
-        postVC.passedUserName = self.joinedRoom?.userName ?? ""
-        present(postVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    
-    @objc private func tapMyprofile(_ sender: UITapGestureRecognizer){
-        let storyboard = UIStoryboard(name: "Profile", bundle: nil)
-        let myproVC = storyboard.instantiateViewController(withIdentifier: "myproVC") as! ProfileViewController
-        myproVC.passedDocumentID = passedDocumentID
-        myproVC.passedModerator = roomInfo?.moderator ?? ""
-        navigationController?.pushViewController(myproVC, animated: true)
-    }
-    
-    
-    
-    
     
     
     
@@ -157,33 +92,22 @@ final class EnteredRoomContentViewController: UIViewController{
         contentsTableView.tableHeaderView =  headerView
         contentsTableView.register(UINib(nibName: "FeedTableViewCell", bundle: nil), forCellReuseIdentifier: "FeedTableViewCell")
         contentsTableView.contentInsetAdjustmentBehavior = .never
-        let refleshControl = CustomRefreshControl()
-        contentsTableView.refreshControl = refleshControl
-        contentsTableView.refreshControl?.addTarget(self, action: #selector(updateContents), for: .valueChanged)
+        
         
     }
     
     
     
-    
-    
-    
-    
-    
-    
-    @objc private func updateContents(){
-        indicator.startAnimating()
-        self.contentsArray.removeAll()
-        self.likeContentsArray.removeAll()
-        roomExistCheck()
-        fetchProfileInfo()
-        fetchContents {
-            self.contentsTableView.refreshControl?.endRefreshing()
-            self.indicator.stopAnimating()
-            self.contentsTableView.reloadData()
-        }
+    private func refrashTableView() {
+        let refreshControl = CustomRefreshControl()
+        contentsTableView.refreshControl = refreshControl
+        contentsTableView.refreshControl?.rx.controlEvent(.valueChanged)
+            .subscribe{ [weak self] _ in
+                self?.viewModel.refreshObserver.onNext(())
+                self?.indicator.startAnimating()
+            }
+            .disposed(by: disposeBag)
     }
-    
     
     
     
@@ -202,12 +126,9 @@ final class EnteredRoomContentViewController: UIViewController{
         let modalMenuVC = storyboard?.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
         modalMenuVC.modalPresentationStyle = .custom
         modalMenuVC.transitioningDelegate = self
-        modalMenuVC.passedRoomID = passedDocumentID
+        modalMenuVC.passedModalType = .room
         modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = ModalType.room.rawValue
-        modalMenuVC.passedRoomImageUrl = roomInfo?.roomImage ?? ""
-        modalMenuVC.passedRoomName = roomInfo?.roomName ?? ""
-        modalMenuVC.passedRoomIntro = roomInfo?.roomIntro ?? ""
+        modalMenuVC.passedRoomInfo = headerView.roomInfo ?? Room(dic: [:])
         modalMenuVC.passedRoomImage = roomImageView.image ?? UIImage()
         present(modalMenuVC, animated: true, completion: nil)
     }
@@ -216,163 +137,139 @@ final class EnteredRoomContentViewController: UIViewController{
     
     
     
-    private func fetchProfileInfo(){
-        Firestore.isJoinedCheck(roomID: passedDocumentID) { joinedRoom in
-            if joinedRoom?.isJoined == false {
-                self.headerView.postButton.isEnabled = false
-                self.headerView.postButton.tintColor = .lightGray
-                self.headerView.myProfileImageView.isUserInteractionEnabled = false
-                self.headerView.memberLabel.text = "このルームから退出しました"
-            }else {
-                self.joinedRoom = joinedRoom
-                if joinedRoom?.userImage == "" {
-                    self.headerView.myProfileImageView.image = UIImage(systemName: "person.fill")
+    private func setupBinds() {
+        viewModel = FeedViewModel(feedContentsListner: GetDefaultPosts(), likeListner: GetDefaultLikes(), userListner: UserDefaultLisner(), reportListner: ReportDefaultListner(), roomID: passedDocumentID)
+        headerView.setupBind(roomID: passedDocumentID, roomImageView: roomImageView, topRoomNameLabel: topRoomNameLabel, vc: self)
+        self.startIndicator()
+        emptyCheck()
+        fetchFeedContents()
+        fetchLatestMyContent()
+        fetchLatestLikeContent()
+        fetchDeletedPost()
+        tableViewDidScroll()
+    }
+    
+    
+    
+    
+    
+    
+    
+    private func emptyCheck() {
+        viewModel.isEmpty
+            .drive { [weak self] bool in
+                switch bool {
+                case true:
+                    self?.dismissIndicator()
+                    self?.contentsTableView.refreshControl?.endRefreshing()
+                    self?.indicator.stopAnimating()
+                    self?.messageLabel.setup(text: "投稿がありません", at: self!.contentsTableView)
+                    
+                case false:
+                    self?.dismissIndicator()
+                    self?.contentsTableView.refreshControl?.endRefreshing()
+                    self?.indicator.stopAnimating()
+                    self?.messageLabel.text = ""
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    private func fetchFeedContents() {
+        viewModel.items.drive { [weak self] contents in
+            self?.contentsArray.removeAll()
+            self?.contentsArray.append(contentsOf: contents)
+            self?.contentsTableView.reloadData()
+        }
+        .disposed(by: disposeBag)
+
+        viewModel.likes.drive { [weak self] likes in
+            self?.likeContentsArray.removeAll()
+            self?.likeContentsArray.append(contentsOf: likes)
+            self?.contentsTableView.reloadData()
+        }
+        .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    //投稿後リアルタイムで自分の投稿を取得
+    private func fetchLatestMyContent() {
+        LatestContentsSubject.shared.latestFeedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.viewModel.insertLatestItem(item: [element])
+                self?.contentsTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    //他画面でいいねした投稿をリアルタイムで取得
+    private func fetchLatestLikeContent() {
+        LatestContentsSubject.shared.latestLikeContents
+            .subscribe { [weak self] contents in
+                guard let element = contents.element else { return }
+                if element.isLiked == true {
+                    self?.viewModel.appendLatestLikeContent(content: [element])
+                    self?.contentsTableView.reloadData()
+                }else {
+                    self?.viewModel.removeLikeContent(content: element)
+                    self?.contentsTableView.reloadData()
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    //削除した投稿を配列からremove
+    private func fetchDeletedPost() {
+        LatestContentsSubject.shared.deletedContents
+            .subscribe { [weak self] content in
+                guard let element = content.element else { return }
+                self?.viewModel.removeDeletedItem(item: element)
+                self?.contentsTableView.reloadData()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    private func tableViewDidScroll() {
+        contentsTableView.rx.didScroll
+            .withLatestFrom(contentsTableView.rx.contentOffset)
+            .map { [weak self] point in
+                if point.y <= 0 {
+                    self?.headerViewHeight.constant = -(point.y - 180)
+                    self?.headerViewTopConstraint.constant = 0
                 }else{
-                    self.headerView.myProfileImageView.sd_setImage(with: URL(string: joinedRoom?.userImage ?? ""), completed: nil)
+                    self?.headerViewHeight.constant = 180
+                    self?.headerViewTopConstraint.constant = -point.y
                 }
+                //下にスクロールに合わせて徐々にblurをかける
+                self?.topBlurEffect.alpha = -0.7 + (point.y - 50) / 50
             }
-        }
+            .subscribe()
+            .disposed(by: disposeBag)
+        
+        
     }
     
-    
-    
-    
-    
-    private func roomExistCheck(){
-        Firestore.fetchRoomInfo(roomID: passedDocumentID) { roomInfo in
-            if roomInfo?.documentID == "" {
-                self.headerView.postButton.isEnabled = false
-                self.headerView.postButton.tintColor = .lightGray
-                self.headerView.myProfileImageView.isUserInteractionEnabled = false
-                self.headerView.memberLabel.text = "このルームは削除されました"
-            }else {
-                self.roomInfo = roomInfo
-                self.fetchMemberCount()
-                self.roomImageView.sd_setImage(with: URL(string: self.roomInfo?.roomImage ?? ""), completed: nil)
-                self.headerView.bluredImageView.sd_setImage(with: URL(string: self.roomInfo?.roomImage ?? ""), completed: nil)
-                
-                self.headerView.roomNameLabel.text = self.roomInfo?.roomName
-                self.headerView.roomNameLabel.adjustsFontSizeToFitWidth = true
-                self.headerView.roomNameLabel.minimumScaleFactor = 0.8
-                
-                self.topRoomNameLabel.text = self.roomInfo?.roomName
-                self.topRoomNameLabel.adjustsFontSizeToFitWidth = true
-                self.topRoomNameLabel.minimumScaleFactor = 0.8
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchMemberCount(){
-        Firestore.fetchRoomMemberCount(roomID: passedDocumentID) { memberCount in
-            self.headerView.memberLabel.text = "メンバー \(String(describing: memberCount.numberOfMember))人"
-        }
-    }
-    
-    
-    
-    private func fetchReportedContents(documentIDs:[String],_ completed: @escaping() -> Void){
-        Firestore.fetchReportedContents(documentIDs: documentIDs) { contents in
-            for content in contents {
-                self.contentsArray.removeAll {
-                    $0.documentID == content.documentID
-                }
-            }
-            completed()
-        }
-    }
-    
-    
-    
-    
-    
-    private func fetchReportedUsers(uids:[String],_ completed: @escaping() -> Void){
-        Firestore.fetchReportedUsers(uids: uids) { contents in
-            for content in contents {
-                self.contentsArray.removeAll { element in
-                    element.uid == content.uid && element.roomID == content.roomID
-                }
-            }
-            completed()
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchLikeContents(documentIDs:[String],_ completed: @escaping() -> Void){
-        Firestore.fetchLikeContents(documentIDs: documentIDs) { contents in
-            self.likeContentsArray.append(contentsOf: contents)
-            completed()
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchContents(_ completed: @escaping() -> Void){
-        Firestore.fetchRoomContents(roomID: passedDocumentID, viewController: self) { querySnapshot,contents,uids,documentIDs  in
-            if contents.isEmpty == true {
-                self.label.setup(text: "投稿がまだありません。", at: self.contentsTableView)
-                completed()
-            }else{
-                self.label.text = ""
-                self.lastDocument = querySnapshot.documents.last
-                self.contentsArray.append(contentsOf: contents)
-                self.fetchReportedUsers(uids: uids) {
-                    self.fetchReportedContents(documentIDs: documentIDs) {
-                        self.fetchLikeContents(documentIDs: documentIDs) {
-                            completed()
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private func fetchMoreContetns(){
-        guard let lastDocument = lastDocument else {return}
-        Firestore.fetchMoreRoomContents(roomID: passedDocumentID, lastDocument: lastDocument) { querySnapshot,contents,uids,documentIDs  in
-            if contents.isEmpty == false {
-                self.lastDocument = querySnapshot.documents.last
-                self.contentsArray.append(contentsOf: contents)
-                self.fetchReportedUsers(uids: uids) {
-                    self.fetchReportedContents(documentIDs: documentIDs) {
-                        self.fetchLikeContents(documentIDs: documentIDs) {
-                            self.contentsTableView.reloadData()
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     
     
@@ -382,280 +279,31 @@ final class EnteredRoomContentViewController: UIViewController{
 
 
 
-
-extension EnteredRoomContentViewController: UITableViewDelegate,UITableViewDataSource{
-    
-    
+// MARK: - UITabelView Delegate,DataSource Method
+extension EnteredRoomContentViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if contentsArray.count == 0 {
-            return 0
-        }else{
-            return contentsArray.count
-        }
+        return contentsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = contentsTableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell")  as! FeedTableViewCell
-        
-        cell.tableViewCellDelegate = self
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FeedTableViewCell") as! FeedTableViewCell
+        cell.setupBinds(content: contentsArray[indexPath.row], roomID: passedDocumentID, vc: self, modalType: .post)
         cell.setContent(contents: contentsArray[indexPath.row], likeContensArray: likeContentsArray)
-        
-        
         return cell
     }
     
     
-    
-    
-    
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (indexPath.row + 1 == self.contentsArray.count - 8) && self.contentsArray.count == 10 {
-            fetchMoreContetns()
+        if (indexPath.row + 1 == self.contentsArray.count)  {
+            viewModel.isBottomObserver.onNext(true)
         }
     }
-    
-    
-    
-    
-    
-    //MARK: いいねした時の処理
-    private func createLikeContents(row:Int,batch:WriteBatch){
-        let myuid = Auth.auth().currentUser!.uid
-        let uid = contentsArray[row].uid
-        let timestamp = Timestamp()
-        let documentID = contentsArray[row].documentID
-        let postedAt = contentsArray[row].createdAt
-        let dic = [
-            "media": contentsArray[row].mediaArray,
-            "text":contentsArray[row].text,
-            "userImage":contentsArray[row].userImage,
-            "userName":contentsArray[row].userName,
-            "documentID":documentID,
-            "roomID":passedDocumentID,
-            "createdAt":timestamp,
-            "uid":uid,
-            "postedAt":postedAt,
-            "myUid":myuid
-        ] as [String:Any]
-        
-        Firestore.createLikedPost(myuid: myuid, documentID: documentID, dic: dic, batch: batch)
-    }
-    
-    
-    
-    private func updateLikeCount(row:Int,batch:WriteBatch){
-        let myuid = Auth.auth().currentUser!.uid
-        let uid = contentsArray[row].uid
-        let documentID = contentsArray[row].documentID
-        let roomID = contentsArray[row].roomID
-        let mediaArray = contentsArray[row].mediaArray[0]
-        Firestore.increaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaArray, batch: batch)
-    }
-    
-    
-    
-    private func giveNotification(row:Int,batch:WriteBatch){
-        let uid = contentsArray[row].uid
-        let myuid = Auth.auth().currentUser!.uid
-        let postID = contentsArray[row].documentID
-        let documentID = "\(myuid)-\(postID)"
-        let dic = [
-            "userName":joinedRoom?.userName ?? "",
-            "userImage":joinedRoom?.userImage ?? "",
-            "uid":myuid,
-            "roomName":self.roomInfo!.roomName,
-            "createdAt":Timestamp(),
-            "postID":postID,
-            "roomID":contentsArray[row].roomID,
-            "documentID":documentID,
-            "type":"like"
-        ] as [String:Any]
-        Firestore.createNotification(uid: uid, myuid: myuid, documentID: documentID, dic: dic, batch: batch)
-    }
-    
-    
-    
-    private func likeBatch(row:Int){
-        let batch = Firestore.firestore().batch()
-        createLikeContents(row: row, batch: batch)
-        updateLikeCount(row: row, batch: batch)
-        giveNotification(row: row, batch: batch)
-        batch.commit { err in
-            if let err = err {
-                print("false\(err)")
-                return
-            }else{
-                print("scucces")
-                let likedContent = self.contentsArray[row]
-                self.likeContentsArray.append(likedContent)
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    //MARK: いいねをやめた時の処理
-    private func deleteLikeContents(row:Int,batch:WriteBatch){
-        let uid = Auth.auth().currentUser!.uid
-        let documentID = contentsArray[row].documentID
-        Firestore.deleteLikedPost(uid: uid, documentID: documentID, batch: batch)
-    }
-    
-    
-    
-    private func deleteLikeCount(row:Int,batch:WriteBatch){
-        let myuid = Auth.auth().currentUser!.uid
-        let uid = contentsArray[row].uid
-        let documentID = contentsArray[row].documentID
-        let roomID = contentsArray[row].roomID
-        let mediaArray = contentsArray[row].mediaArray[0]
-        Firestore.decreaseLikeCount(uid: uid, myuid: myuid, roomID: roomID, documentID: documentID, mediaUrl: mediaArray, batch: batch)
-    }
-    
-    
-    
-    private func deleteNotification(row:Int,batch:WriteBatch){
-        let uid = contentsArray[row].uid
-        let myuid = Auth.auth().currentUser!.uid
-        let postID = contentsArray[row].documentID
-        let documentID = "\(myuid)-\(postID)"
-        Firestore.deleteNotification(uid: uid, myuid: myuid, documentID: documentID, batch: batch)
-    }
-    
-    
-    private func deleteLikeBatch(row:Int){
-        let batch = Firestore.firestore().batch()
-        let documentID = contentsArray[row].documentID
-        deleteLikeContents(row: row, batch: batch)
-        deleteLikeCount(row: row, batch: batch)
-        deleteNotification(row: row, batch: batch)
-        batch.commit { err in
-            if let err = err {
-                print("false\(err)")
-                return
-            }else{
-                print("scucces")
-                self.likeContentsArray.removeAll(where: {$0.documentID == documentID})
-            }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }
 
 
-
-
-
-extension EnteredRoomContentViewController:TableViewCellDelegate {
-    func reportButton(row: Int) {
-        let modalMenuVC = storyboard!.instantiateViewController(withIdentifier: "modalMenu") as! ModalMenuViewController
-        modalMenuVC.modalPresentationStyle = .custom
-        modalMenuVC.transitioningDelegate = self
-        modalMenuVC.passedDocumentID = contentsArray[row].documentID
-        modalMenuVC.passedRoomID = contentsArray[row].roomID
-        modalMenuVC.passedUid = contentsArray[row].uid
-        modalMenuVC.passedViewController = self
-        modalMenuVC.passedType = "post"
-        present(modalMenuVC, animated: true, completion: nil)
-    }
-    
-    func tappedPostImageView(row: Int) {
-        let showImageVC = storyboard?.instantiateViewController(identifier: "showImage") as! ShowImageViewController
-        showImageVC.passedMedia = contentsArray[row].mediaArray
-        showImageVC.passedUid = contentsArray[row].uid
-        showImageVC.passedText = contentsArray[row].text
-        showImageVC.passedRoomID = contentsArray[row].roomID
-        showImageVC.passedDocumentID = contentsArray[row].documentID
-        showImageVC.passedUserName = contentsArray[row].userName
-        showImageVC.passedUserImage = contentsArray[row].userImage
-        present(showImageVC, animated: true, completion: nil)
-    }
-    
-    func pushLikeButton(row: Int, sender: UIButton, countLabel: UILabel) {
-        if sender.tintColor == UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)  {
-            sender.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            sender.tintColor = .red
-            likeBatch(row:row)
-            var count = Int(contentsArray[row].likeCount)
-            count += 1
-            countLabel.text = count.description
-            contentsArray[row].likeCount = count
-            
-        }else if sender.tintColor == .red {
-            sender.setImage(UIImage(systemName: "heart"), for: .normal)
-            sender.tintColor = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1)
-            deleteLikeBatch(row: row)
-            self.likeContentsArray.removeAll(where: {$0.documentID == contentsArray[row].documentID})
-            var count = Int(countLabel.text!)!
-            if count >= 1{
-                count -= 1
-                countLabel.text = count.description
-                contentsArray[row].likeCount = count
-            }
-        }
-    }
-    
-    
-    
-    func pushedCommentButton(row: Int) {
-        let cLVC = storyboard?.instantiateViewController(withIdentifier: "commentList") as! CommentViewController
-        cLVC.passedUserImage = contentsArray[row].userImage
-        cLVC.passedUserName = contentsArray[row].userName
-        cLVC.passedComment = contentsArray[row].text
-        cLVC.passedDate = contentsArray[row].createdAt
-        cLVC.passedDocumentID = contentsArray[row].documentID
-        cLVC.passedRoomID = contentsArray[row].roomID
-        cLVC.passedUid = contentsArray[row].uid
-        cLVC.passedMediaArray = contentsArray[row].mediaArray
-        
-        present(cLVC, animated: true, completion: nil)
-    }
-    
-    
-}
-
-
-
-
-
-
-
-extension EnteredRoomContentViewController:RemoveContentsDelegate{
-    func removeMutedContent(documentID:String) {
-        self.contentsArray.removeAll { content in
-            return content.documentID == documentID
-        }
-        self.contentsTableView.reloadData()
-    }
-    
-    
-    func removeBlockedUserContents(uid:String,roomID:String){
-        self.contentsArray.removeAll { content in
-            return content.uid == uid && content.roomID == roomID
-        }
-        self.contentsTableView.reloadData()
-    }
-}
-
-
-
+// MARK: - UIViewControllerTransitioningDelegate
 extension EnteredRoomContentViewController:UIViewControllerTransitioningDelegate{
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return PresentModalViewController(presentedViewController: presented, presenting: presenting)
@@ -669,33 +317,5 @@ extension EnteredRoomContentViewController:UIViewControllerTransitioningDelegate
 
 
 
-extension EnteredRoomContentViewController:UIScrollViewDelegate,UIGestureRecognizerDelegate{
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y <= 0 {
-            self.headerViewHeight.constant = -(scrollView.contentOffset.y - 180)
-            self.headerViewTopConstraint.constant = 0
-        }else{
-            self.headerViewHeight.constant = 180
-            self.headerViewTopConstraint.constant = -scrollView.contentOffset.y
-        }
-        
-        //下にスクロールに合わせて徐々にblurをかける
-        topBlurEffect.alpha = -0.7 + (scrollView.contentOffset.y - 50)/50
-        
-        
-    }
-    
-    
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
-    
-    
-    
-    
-    
-    
-}
+
+

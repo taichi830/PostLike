@@ -24,7 +24,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vej-9m-XtW">
                         <rect key="frame" x="0.0" y="85" width="130" height="35"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTS" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jRK-Sw-qwD">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jRK-Sw-qwD">
                                 <rect key="frame" x="7" y="5" width="123" height="20"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                 <nil key="textColor"/>
@@ -40,11 +40,6 @@
                             <constraint firstItem="jRK-Sw-qwD" firstAttribute="top" secondItem="vej-9m-XtW" secondAttribute="top" constant="5" id="mWx-MC-Rn1"/>
                         </constraints>
                     </view>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JLT-Lj-ahY">
-                        <rect key="frame" x="45" y="29" width="40" height="36"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qcv-Fr-cqj">
                         <rect key="frame" x="0.0" y="80" width="130" height="10"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -73,7 +68,6 @@
             </constraints>
             <size key="customSize" width="46" height="28"/>
             <connections>
-                <outlet property="personImage" destination="JLT-Lj-ahY" id="ao0-t5-vej"/>
                 <outlet property="roomImage" destination="Aw3-X1-CyS" id="Tb1-xN-wun"/>
                 <outlet property="roomName" destination="jRK-Sw-qwD" id="Rgk-KN-oXr"/>
                 <outlet property="roomNameBackView" destination="vej-9m-XtW" id="6jl-B3-5Fr"/>

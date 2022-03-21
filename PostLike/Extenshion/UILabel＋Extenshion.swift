@@ -31,7 +31,7 @@ extension UILabel {
         }else if diff.year != 0 {
           return "\(diff.year ?? 0)年前"
         }
-        return ""
+        return "0秒前"
     }
 }
 

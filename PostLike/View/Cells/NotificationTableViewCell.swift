@@ -10,14 +10,14 @@ import UIKit
 
 class NotificationTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var roomNameLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var notifiedAtLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        profileImageView.layer.cornerRadius = profileImageView.frame.height/2
+        userImageView.layer.cornerRadius = userImageView.frame.height/2
         
         roomNameLabel.baselineAdjustment = .alignBaselines
         roomNameLabel.lineBreakMode = .byTruncatingTail
@@ -36,9 +36,8 @@ class NotificationTableViewCell: UITableViewCell {
     
     
     func setupCell(notification: Contents) {
-        if notification.userImage != "" {
-            profileImageView.sd_setImage(with: URL(string: notification.userImage), completed: nil)
-        }
+        
+        userImageView.setImage(imageUrl: notification.userImage)
         
         roomNameLabel.text = notification.roomName
         
