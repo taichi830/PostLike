@@ -48,7 +48,6 @@ final class PostViewController: UIViewController{
     @IBOutlet private weak var postTitleLabel: UILabel!
     @IBOutlet private weak var profileName: UILabel!
     @IBOutlet private weak var postContentView: UIView!
-    @IBOutlet private weak var personImage: UIImageView!
     @IBOutlet private weak var backButton: UIButton!
     
     
@@ -74,10 +73,7 @@ final class PostViewController: UIViewController{
         
         buttonView.frame.size.width = self.view.frame.size.width
         
-        if passedUserImageUrl != "" {
-            profileImage.sd_setImage(with: URL(string: passedUserImageUrl), completed: nil)
-            personImage.image = UIImage()
-        }
+        profileImage.setImage(imageUrl: passedUserImageUrl)
         
         profileName.text = passedUserName
         
@@ -169,9 +165,10 @@ final class PostViewController: UIViewController{
                 switch bool {
                 case true:
                     self?.dismissIndicator()
-                    self?.dismiss(animated: true, completion: nil)
+                    self?.dismiss(animated: true) {
+                        self?.postViewModel.fetchMyLatestPost(feedListner: GetDefaultPosts(), roomID: self?.passedDocumentID ?? "")
+                    }
                 case false:
-                    print("false!!!!!!!!!!!!!")
                     let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
                         self?.dismissIndicator()
                     }
@@ -213,8 +210,8 @@ final class PostViewController: UIViewController{
         pickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage { image, info in
-                    if var item = try? self.postViewModel.photoArrayOutPut.value() {
-                        item.append(image!)
+                    if let image = image, var item = try? self.postViewModel.photoArrayOutPut.value() {
+                        item.append(image)
                         self.postViewModel.photoArrayInPut.onNext(item)
                     }
                 }

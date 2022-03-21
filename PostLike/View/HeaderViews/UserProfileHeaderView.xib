@@ -13,7 +13,6 @@
                 <outlet property="editButtonStackView" destination="k5e-a8-K5G" id="sf3-Rs-d4r"/>
                 <outlet property="hostProfileEditButton" destination="a4i-jL-im8" id="iUM-Jn-GAD"/>
                 <outlet property="likeCountLabel" destination="c6h-gq-vRS" id="YiJ-k4-kO4"/>
-                <outlet property="personImageView" destination="aEq-wx-Yex" id="AYK-Lu-rke"/>
                 <outlet property="postCountLabel" destination="U81-JN-zTW" id="EIo-If-dZ9"/>
                 <outlet property="profileEditButton" destination="9gU-Kl-I3G" id="uON-wf-Bxq"/>
                 <outlet property="roomEditButton" destination="hhp-lD-wo0" id="Lr7-F6-fbE"/>
@@ -31,17 +30,11 @@
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="12m-uP-mBP">
                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                            <color key="backgroundColor" systemColor="systemGray5Color"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="100" id="Jag-xc-fgd"/>
                                 <constraint firstAttribute="width" constant="100" id="fNp-uU-Ss8"/>
                             </constraints>
-                        </imageView>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aEq-wx-Yex">
-                            <rect key="frame" x="25" y="26" width="50" height="46.666666666666664"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -186,15 +179,11 @@
         </view>
     </objects>
     <resources>
-        <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

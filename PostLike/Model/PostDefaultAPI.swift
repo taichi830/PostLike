@@ -114,7 +114,7 @@ final class PostDefaultAPI: PostAPI {
         let documentID = NSUUID().uuidString
         guard let uid = Auth.auth().currentUser?.uid else { return }
         if passedUid == uid {
-            createMediaPosts(roomID: roomID, userName: userName, userImage: userImage, text: text, uid: uid, documentID: documentID, media: media, batch: batch)
+            createModeratorPosts(uid: uid, documentID: documentID, roomID: roomID, batch: batch)
             createPost(passedUserName: userName, passedUserImageUrl: userImage, documentID: documentID, passedUid: passedUid, roomID: roomID, media: media, text: text, uid: uid, batch: batch)
             Firestore.increaseRoomPostCount(uid: uid, roomID: roomID, batch: batch)
             Firestore.increaseProfilePostCount(uid: uid, roomID: roomID, batch: batch)

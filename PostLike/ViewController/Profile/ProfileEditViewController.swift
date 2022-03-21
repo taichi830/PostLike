@@ -16,8 +16,7 @@ import FirebaseAuth
 final class ProfileEditViewController: UIViewController {
     
     
-    @IBOutlet private weak var personView: UIImageView!
-    @IBOutlet private weak var userImage: UIImageView!
+    @IBOutlet private weak var userImageView: UIImageView!
     @IBOutlet private weak var userNameEditLabel: UITextField!
     @IBOutlet private weak var topLabel: UILabel!
     @IBOutlet private weak var completeButton: UIButton!
@@ -28,17 +27,13 @@ final class ProfileEditViewController: UIViewController {
     
     
     private var updatedUserImage = UIImage()
-    private var roomDetailInfo:Contents?
-    var passedRoomName = String()
-    var passedDocumentID = String()
-    var passedUserName = String()
-    var passedUserImage = String()
+    var passedUserInfo = Contents(dic: [:])
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        userImage.layer.cornerRadius = 50
+        userImageView.layer.cornerRadius = 50
         completeButton.layer.cornerRadius = 23
         
         setProfile()
@@ -53,11 +48,8 @@ final class ProfileEditViewController: UIViewController {
     
     
     private func setProfile(){
-        if passedUserImage != "" {
-            userImage.sd_setImage(with: URL(string: passedUserImage), completed: nil)
-            personView.image = UIImage()
-        }
-        userNameEditLabel.text = passedUserName
+        userImageView.setImage(imageUrl: passedUserInfo.userImage)
+        userNameEditLabel.text = passedUserInfo.userName
     }
     
     
@@ -82,8 +74,7 @@ final class ProfileEditViewController: UIViewController {
         pickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage(completeBlock: { (image, info) in
-                    self.userImage.image = image
-                    self.personView.image = UIImage()
+                    self.userImageView.image = image
                     self.updatedUserImage = image!
                 })
             }
@@ -98,7 +89,7 @@ final class ProfileEditViewController: UIViewController {
     @IBAction private func changeButton(_ sender: Any) {
         startIndicator()
         if updatedUserImage == UIImage() {
-            updateProfile(userImageUrl: self.passedUserImage)
+            updateProfile(userImageUrl: self.passedUserInfo.userImage)
         }else{
             createUserStrage()
         }
@@ -107,8 +98,8 @@ final class ProfileEditViewController: UIViewController {
     
     
     private func updateProfile(userImageUrl:String){
-        let dic = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
-        Firestore.updateProfileInfo(dic: dic, roomID: passedDocumentID) { bool in
+        let dic = ["userName":userNameEditLabel.text ?? "","userImage":userImageUrl]
+        Firestore.updateProfileInfo(dic: dic, roomID: passedUserInfo.documentID) { bool in
             if bool == false {
                 let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
                     self.dismissIndicator()
@@ -118,8 +109,8 @@ final class ProfileEditViewController: UIViewController {
             }else{
                 print("firestoreへの保存に成功しました。")
                 self.dismiss(animated: true) {
-                    if self.passedUserImage != "" {
-                        Storage.deleteStrage(roomImageUrl: self.passedUserImage)
+                    if self.passedUserInfo.userImage != "" {
+                        Storage.deleteStrage(roomImageUrl: self.passedUserInfo.userImage)
                     }
                 }
             }

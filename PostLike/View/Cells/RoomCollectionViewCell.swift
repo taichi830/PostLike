@@ -7,14 +7,16 @@
 //
 
 import UIKit
+import RxSwift
 
 final class RoomCollectionViewCell: UICollectionViewCell {
     
    
-    @IBOutlet weak var personImage: UIImageView!
     @IBOutlet weak var roomName: UILabel!
     @IBOutlet weak var roomImage: UIImageView!
     @IBOutlet weak var roomNameBackView: UIView!
+    
+    var disposeBag = DisposeBag()
     
     
     override func awakeFromNib() {
@@ -36,8 +38,19 @@ final class RoomCollectionViewCell: UICollectionViewCell {
         self.contentView.layer.shadowOpacity = 0.1
         self.contentView.layer.shadowOffset = CGSize(width: 3, height: 3)
         self.contentView.layer.shadowColor = UIColor.black.cgColor
-        
-        
     }
+    
+    
+    func setupCell(item: Contents) {
+        roomName.text = item.roomName
+        if item.roomImage != "" {
+            roomImage.sd_setImage(with: URL(string: item.roomImage), completed: nil)
+        }else{
+            roomImage.image = UIImage()
+            roomImage.backgroundColor = .systemGray6
+        }
+    }
+    
+    
 
 }

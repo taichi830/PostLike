@@ -7,37 +7,25 @@
 //
 
 import UIKit
-import Firebase
 import RxSwift
-import RxCocoa
-import FirebaseFirestore
 
 final class CommentViewController: UIViewController {
     
     
     
-    
-    var passedUserImage = String()
-    var passedUserName = String()
-    var passedComment = String()
-    var passedDate = Timestamp()
-    var passedUid = String()
-    var passedRoomName = String()
-    var passedDocumentID = String()
-    var passedMediaArray = Array<String>()
-    var passedRoomID = String()
+    var passedContent = Contents(dic: ["" : ""])
     private var label = MessageLabel()
     private let disposeBag = DisposeBag()
     private var viewModel:CommentViewModel!
-    private lazy var indicator:UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView()
-        indicator.style = .medium
-        indicator.color = .lightGray
-        indicator.hidesWhenStopped = true
-        indicator.center = self.view.center
-        self.view.addSubview(indicator)
-        return indicator
-    }()
+//    private lazy var indicator:UIActivityIndicatorView = {
+//        let indicator = UIActivityIndicatorView()
+//        indicator.style = .medium
+//        indicator.color = .lightGray
+//        indicator.hidesWhenStopped = true
+//        indicator.center = self.view.center
+//        self.view.addSubview(indicator)
+//        return indicator
+//    }()
     
     
     
@@ -50,31 +38,49 @@ final class CommentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentTableViewCell")
-        commentTableView.rowHeight = UITableView.automaticDimension
-        
-        setupHeaderView()
-
-        inputCommentView.setupBinds(roomID: passedRoomID, postID: passedDocumentID, roomName: passedRoomName, passedUid: passedUid, mediaArray: passedMediaArray)
-        
+        inputCommentView.setupBinds(roomID: passedContent.roomID, postID: passedContent.documentID, roomName: passedContent.roomName, passedUid: passedContent.uid, mediaArray: passedContent.mediaArray)
         inputCommentView.didStartEditing()
+        setupTableView()
+        setupHeaderView()
         textViewDidChange()
         keyboardWillShowNotification()
         keyboardWillHideNotification()
         fetchComments()
-        didScrollTableView()
-       
+        didEndDraggingTableView()
+        isNearBottom()
+    }
+    
+    
+    
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    
+    
+    
+    
+    @IBAction private func backButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    private func setupTableView() {
+        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentTableViewCell")
+        commentTableView.rowHeight = UITableView.automaticDimension
     }
     
     
 
     
-    
-    
     private func setupHeaderView(){
         let headerView = CommentHeaderView()
-        headerView.setupHeaderView(userName: passedUserName, userImageUrl: passedUserImage, comment: passedComment, date: passedDate)
+        headerView.setupHeaderView(userName: passedContent.userName, userImageUrl: passedContent.userImage, comment: passedContent.text, date: passedContent.createdAt)
         self.commentTableView.tableHeaderView = headerView
         if let tableHeaderView = self.commentTableView.tableHeaderView {
             tableHeaderView.setNeedsLayout()
@@ -89,13 +95,6 @@ final class CommentViewController: UIViewController {
     
     
 
-    
-    @IBAction private func backButton(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    
     private func textViewDidChange() {
         inputCommentView.commentTextView.rx.didChange.subscribe({ [weak self] _ in
             guard let inputCommentView = self?.inputCommentView else { return }
@@ -149,15 +148,9 @@ final class CommentViewController: UIViewController {
     
     
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
     
     
-    
-    
-    
-    private func didScrollTableView() {
+    private func didEndDraggingTableView() {
         commentTableView.rx.didEndDragging.subscribe { [weak self] _ in
             self?.inputCommentView.commentTextView.resignFirstResponder()
         }
@@ -173,15 +166,16 @@ final class CommentViewController: UIViewController {
 
     
     private func fetchComments() {
-        indicator.startAnimating()
-        viewModel = CommentViewModel(commentListner: CommentDefaultListner(), documentID: passedDocumentID)
+        self.startIndicator()
+        viewModel = CommentViewModel(commentListner: GetDefaultComments(), documentID: passedContent.documentID, roomID: passedContent.roomID)
         
         //itemsが空かチェック
         viewModel.isEmpty.drive { [weak self] bool in
             if bool == true {
-                self?.indicator.stopAnimating()
+                self?.dismissIndicator()
                 self?.label.setup(text: "コメントがありません。", at: self!.commentTableView)
             }else{
+                self?.dismissIndicator()
                 self?.label.text = ""
             }
         }
@@ -189,9 +183,22 @@ final class CommentViewController: UIViewController {
         
         //itemsをtableViewにバインド
         viewModel.items
-            .drive( commentTableView.rx.items(cellIdentifier: "CommentTableViewCell", cellType: CommentTableViewCell.self)) { [weak self] (row, item, cell) in
-                if let indicator = self?.indicator {
-                    cell.setupCell(item: item, indicator: indicator)
+            .drive( commentTableView.rx.items(cellIdentifier: "CommentTableViewCell", cellType: CommentTableViewCell.self)) { (row, item, cell) in
+                cell.setupCell(item: item)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    
+    
+    
+    
+    
+    private func isNearBottom() {
+        commentTableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                if self?.commentTableView.isNearBottomEdge() == true {
+                    self?.viewModel.isBottomObserver.onNext(())
                 }
             }
             .disposed(by: disposeBag)
@@ -207,10 +214,4 @@ final class CommentViewController: UIViewController {
 
 
 
-//extension CommentViewController:UIScrollViewDelegate{
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if commentTableView.isDragging == true{
-//            self.inputCommentView.commentTextView.resignFirstResponder()
-//        }
-//    }
-//}
+
