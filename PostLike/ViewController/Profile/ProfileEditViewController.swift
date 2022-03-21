@@ -98,7 +98,7 @@ final class ProfileEditViewController: UIViewController {
     
     
     private func updateProfile(userImageUrl:String){
-        let dic = ["userName":userNameEditLabel.text!,"userImage":userImageUrl]
+        let dic = ["userName":userNameEditLabel.text ?? "","userImage":userImageUrl]
         Firestore.updateProfileInfo(dic: dic, roomID: passedUserInfo.documentID) { bool in
             if bool == false {
                 let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
