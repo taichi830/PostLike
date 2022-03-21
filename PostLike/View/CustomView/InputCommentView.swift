@@ -64,7 +64,7 @@ final class InputCommentView: UIView {
         
         //プロフィール画像を取得
         viewModel.userInfoDriver.drive { [weak self] content in
-            self?.profileImageView.sd_setImage(with: URL(string: content.userImage), completed: nil)
+            self?.profileImageView.setImage(imageUrl: content.userImage)
         }
         .disposed(by: disposeBag)
         

@@ -48,7 +48,6 @@ final class PostViewController: UIViewController{
     @IBOutlet private weak var postTitleLabel: UILabel!
     @IBOutlet private weak var profileName: UILabel!
     @IBOutlet private weak var postContentView: UIView!
-    @IBOutlet private weak var personImage: UIImageView!
     @IBOutlet private weak var backButton: UIButton!
     
     
@@ -74,10 +73,7 @@ final class PostViewController: UIViewController{
         
         buttonView.frame.size.width = self.view.frame.size.width
         
-        if passedUserImageUrl != "" {
-            profileImage.sd_setImage(with: URL(string: passedUserImageUrl), completed: nil)
-            personImage.image = UIImage()
-        }
+        profileImage.setImage(imageUrl: passedUserImageUrl)
         
         profileName.text = passedUserName
         

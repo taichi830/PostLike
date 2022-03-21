@@ -21,7 +21,6 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     @IBOutlet private weak var imageScrollView: UIScrollView!
     @IBOutlet private var panGesture: UIPanGestureRecognizer!
     @IBOutlet private weak var backView: UIView!
-    @IBOutlet private weak var personImage: UIImageView!
     @IBOutlet private weak var topView: UIView!
     
     
@@ -55,12 +54,7 @@ final class ShowImageViewController: UIViewController,UIGestureRecognizerDelegat
     
     private func setContents(){
         userImage.layer.cornerRadius = 19
-        if passedContent.userImage != "" {
-            self.userImage.sd_setImage(with: URL(string: passedContent.userImage), completed: nil)
-            personImage.image = UIImage()
-        }else{
-            personImage.image = UIImage(systemName: "person.fill")
-        }
+        userImage.setImage(imageUrl: passedContent.userImage)
         self.userName.text = passedContent.userName
         self.textLabel.text = passedContent.text
         self.bluredImage.sd_setImage(with: URL(string: passedContent.mediaArray[0] ), completed: nil)
