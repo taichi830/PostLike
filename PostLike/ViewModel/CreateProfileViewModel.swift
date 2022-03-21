@@ -32,7 +32,7 @@ final class CreateProfileViewModel {
         // userImageがあるかチェック
         let userImageViewIsEmpty = userImageSubject.asObservable()
             .map { image in
-                return image == UIImage()
+                return image == UIImage() || image == UIImage(named: "person")
             }
         
         // userImageViewIsEmptyとinput.userNameとuserImageSubjectを合成
