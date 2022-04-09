@@ -86,6 +86,7 @@
 		CE54339927CC97CE00A1A786 /* ReportTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE54339727CC97CE00A1A786 /* ReportTableViewCell.xib */; };
 		CE5D0C23270715100019F9D5 /* GoogleService-Info.Release.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0C22270715100019F9D5 /* GoogleService-Info.Release.plist */; };
 		CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */; };
+		CE770A6C28014C2700148DCB /* CustomSignUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE770A6B28014C2500148DCB /* CustomSignUpButton.swift */; };
 		CE77EF5F26E67EEF00154886 /* Contents.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5826E67EEF00154886 /* Contents.swift */; };
 		CE77EF6026E67EEF00154886 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5926E67EEF00154886 /* User.swift */; };
 		CE77EF6126E67EEF00154886 /* DKImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */; };
@@ -238,6 +239,7 @@
 		CE5DA40B25924889005CF79D /* EnteredRoomContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnteredRoomContentViewController.swift; sourceTree = "<group>"; };
 		CE65D28E265CE22500811EA0 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		CE741CD62706B7A700712DBE /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		CE770A6B28014C2500148DCB /* CustomSignUpButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSignUpButton.swift; sourceTree = "<group>"; };
 		CE77EF5826E67EEF00154886 /* Contents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contents.swift; sourceTree = "<group>"; };
 		CE77EF5926E67EEF00154886 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DKImagePicker.swift; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 				CE77EF5A26E67EEF00154886 /* DKImagePicker.swift */,
 				CE1C23CA276C5CE800D3CAC8 /* MessageLabel.swift */,
 				CEA580D727785ADD00C63649 /* FlexibleHeightImageView.swift */,
+				CE770A6B28014C2500148DCB /* CustomSignUpButton.swift */,
 			);
 			path = CustomClass;
 			sourceTree = "<group>";
@@ -1029,6 +1032,7 @@
 				CE8EB72B27AF8EC20036DBF0 /* InputCommentView.swift in Sources */,
 				CE012C0E26B6EFD4006CC20E /* RoomListViewController.swift in Sources */,
 				CE3F4DD027B0C04000780BEE /* PostCommentAPI.swift in Sources */,
+				CE770A6C28014C2700148DCB /* CustomSignUpButton.swift in Sources */,
 				CE012C1026B6EFD4006CC20E /* DeleteRoomViewController.swift in Sources */,
 				CE9A933227CF5EB500D86009 /* CreateProfile.swift in Sources */,
 				CE012C1326B6EFD4006CC20E /* RoomCollectionViewCell.swift in Sources */,
@@ -1273,7 +1277,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1331,7 +1335,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1395,7 +1399,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
