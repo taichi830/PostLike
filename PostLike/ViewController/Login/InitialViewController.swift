@@ -17,13 +17,29 @@ final class InitialViewController: UIViewController, UIGestureRecognizerDelegate
     
     @IBOutlet private weak var backView: UIView!
     
-    @IBOutlet weak var signUpWithAppleButton: UIButton!
+    @IBOutlet weak var signUpWithAppleButton: CustomSignUpButton! {
+        didSet {
+            signUpWithAppleButton.configure(title: "Appleで登録", image: UIImage(named: "apple"))
+        }
+    }
     
-    @IBOutlet weak var signUpWithGoogleButton: UIButton!
+    @IBOutlet weak var signUpWithGoogleButton: CustomSignUpButton! {
+        didSet {
+            signUpWithGoogleButton.configure(title: "Googleで登録", image: UIImage(named: "google"))
+        }
+    }
     
-    @IBOutlet private weak var signUpWithEmailButton: UIButton!
+    @IBOutlet private weak var signUpWithEmailButton: CustomSignUpButton! {
+        didSet {
+            signUpWithEmailButton.configure(title: "メールアドレスで登録", image: UIImage(named: "mail"))
+        }
+    }
     
-    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var loginButton: CustomSignUpButton! {
+        didSet {
+            loginButton.configure(title: "ログイン", image: UIImage())
+        }
+    }
     
     @IBOutlet private weak var agreeTextView: UITextView!{
         didSet{
@@ -55,43 +71,12 @@ final class InitialViewController: UIViewController, UIGestureRecognizerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        signUpWithGoogleButton.layer.cornerRadius = 27
-        signUpWithGoogleButton.layer.shadowColor = UIColor.black.cgColor
-        signUpWithGoogleButton.layer.shadowRadius = 4
-        signUpWithGoogleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        signUpWithGoogleButton.layer.shadowOpacity = 0.2
-        
-        signUpWithAppleButton.layer.cornerRadius = 27
-        signUpWithAppleButton.layer.shadowColor = UIColor.black.cgColor
-        signUpWithAppleButton.layer.shadowRadius = 4
-        signUpWithAppleButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        signUpWithAppleButton.layer.shadowOpacity = 0.2
-        
-        signUpWithEmailButton.layer.cornerRadius = 27
-        signUpWithEmailButton.layer.shadowColor = UIColor.black.cgColor
-        signUpWithEmailButton.layer.shadowRadius = 4
-        signUpWithEmailButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        signUpWithEmailButton.layer.shadowOpacity = 0.2
-        
-        loginButton.layer.cornerRadius = 27
-        loginButton.layer.shadowColor = UIColor.black.cgColor
-        loginButton.layer.shadowRadius = 4
-        loginButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        loginButton.layer.shadowOpacity = 0.2
-        
-        
         navigationController?.interactivePopGestureRecognizer?.delegate = self
-        
-        
-        
         
         if Auth.auth().currentUser?.isEmailVerified == false{
             let confirmVC = self.storyboard?.instantiateViewController(withIdentifier: "confirm") as! ComfirmEmailViewController
             self.navigationController?.pushViewController(confirmVC, animated: true)
         }
-        
-        
-        
     }
     
     
