@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Hax-db-Ppr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Hax-db-Ppr">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -48,49 +49,47 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="JdK-Bo-AEE">
                                         <rect key="frame" x="16" y="192" width="382" height="260"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbV-5j-EC5">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbV-5j-EC5" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="50"/>
-                                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="epJ-Bd-NgO"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <state key="normal" title="Googleで登録">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="didTapRegisterWithGoogleButton:" destination="fzG-U9-UxR" eventType="touchUpInside" id="49X-eN-KCs"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjK-Rt-ANr">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjK-Rt-ANr" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="70" width="382" height="50"/>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="Hq1-ar-Tbp"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <state key="normal" title="Appleで登録">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="didTapRegisterWithAppleButton:" destination="fzG-U9-UxR" eventType="touchUpInside" id="klQ-Tx-eFz"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtG-sg-Lk2">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtG-sg-Lk2" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="140" width="382" height="50"/>
-                                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="E8Q-Xf-F7K"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                 <state key="normal" title="メールアドレスで登録">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="createAccount:" destination="fzG-U9-UxR" eventType="touchUpInside" id="SmL-7z-7g2"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9o-zJ-K3n">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9o-zJ-K3n" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="210" width="382" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -140,10 +139,10 @@
                     <connections>
                         <outlet property="agreeTextView" destination="K2t-Dw-G4K" id="X7M-cm-Rl9"/>
                         <outlet property="backView" destination="6HW-Hn-bs8" id="5kx-0Q-WFi"/>
-                        <outlet property="loginButton" destination="q9o-zJ-K3n" id="Lg0-HZ-IHk"/>
-                        <outlet property="signUpWithAppleButton" destination="hjK-Rt-ANr" id="BRs-Gh-AsP"/>
-                        <outlet property="signUpWithEmailButton" destination="dtG-sg-Lk2" id="5lu-kj-FQk"/>
-                        <outlet property="signUpWithGoogleButton" destination="bbV-5j-EC5" id="yxE-Rd-kga"/>
+                        <outlet property="loginButton" destination="q9o-zJ-K3n" id="jEM-1C-KfN"/>
+                        <outlet property="signUpWithAppleButton" destination="hjK-Rt-ANr" id="qEM-vq-fdc"/>
+                        <outlet property="signUpWithEmailButton" destination="dtG-sg-Lk2" id="HfL-6s-yZa"/>
+                        <outlet property="signUpWithGoogleButton" destination="bbV-5j-EC5" id="3Hq-8r-K6J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ksY-n1-7Th" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -728,33 +727,32 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="tKc-ls-NjV">
-                                        <rect key="frame" x="0.0" y="81" width="382" height="105"/>
+                                        <rect key="frame" x="0.0" y="71" width="382" height="115"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVN-qz-xfN">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="45"/>
-                                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVN-qz-xfN" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="45" id="NBy-K9-IFF"/>
+                                                    <constraint firstAttribute="height" constant="50" id="NBy-K9-IFF"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <state key="normal" title="Googleでログイン">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cp-Wp-n94">
-                                                <rect key="frame" x="0.0" y="60" width="382" height="45"/>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cp-Wp-n94" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="65" width="382" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="45" id="6eU-RI-SAh"/>
+                                                    <constraint firstAttribute="height" constant="50" id="6eU-RI-SAh"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <state key="normal" title="Appleでログイン">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="105" id="6hV-f5-1Ud"/>
+                                            <constraint firstAttribute="height" constant="115" id="6hV-f5-1Ud"/>
                                         </constraints>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="その他のログイン方法　" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2N-Po-oTG">
@@ -818,8 +816,8 @@
                         <outlet property="eyeButton" destination="RWj-Ii-zjp" id="Dz5-PF-WfC"/>
                         <outlet property="loginMenuBackView" destination="9ua-Qd-jd9" id="I6z-mo-AiK"/>
                         <outlet property="passwordTextField" destination="uVY-DM-7Rq" id="Y8D-dg-lzZ"/>
-                        <outlet property="signInWithAppleButton" destination="2cp-Wp-n94" id="0A7-kV-zPH"/>
-                        <outlet property="signInWithGoogleButton" destination="RVN-qz-xfN" id="nK3-0x-9rI"/>
+                        <outlet property="signInWithAppleButton" destination="2cp-Wp-n94" id="L5d-hE-fXW"/>
+                        <outlet property="signInWithGoogleButton" destination="RVN-qz-xfN" id="WsU-7J-3iG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZyM-W8-EA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1101,12 +1099,6 @@
         </systemColor>
         <systemColor name="systemGray5Color">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
