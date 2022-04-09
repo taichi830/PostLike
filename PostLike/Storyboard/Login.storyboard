@@ -727,32 +727,32 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="tKc-ls-NjV">
-                                        <rect key="frame" x="0.0" y="81" width="382" height="105"/>
+                                        <rect key="frame" x="0.0" y="71" width="382" height="115"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVN-qz-xfN">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="45"/>
-                                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVN-qz-xfN" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="45" id="NBy-K9-IFF"/>
+                                                    <constraint firstAttribute="height" constant="50" id="NBy-K9-IFF"/>
                                                 </constraints>
                                                 <state key="normal" title="Googleでログイン">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cp-Wp-n94">
-                                                <rect key="frame" x="0.0" y="60" width="382" height="45"/>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cp-Wp-n94" customClass="CustomSignUpButton" customModule="PostLike" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="65" width="382" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="45" id="6eU-RI-SAh"/>
+                                                    <constraint firstAttribute="height" constant="50" id="6eU-RI-SAh"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <state key="normal" title="Appleでログイン">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="105" id="6hV-f5-1Ud"/>
+                                            <constraint firstAttribute="height" constant="115" id="6hV-f5-1Ud"/>
                                         </constraints>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="その他のログイン方法　" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A2N-Po-oTG">
@@ -816,8 +816,8 @@
                         <outlet property="eyeButton" destination="RWj-Ii-zjp" id="Dz5-PF-WfC"/>
                         <outlet property="loginMenuBackView" destination="9ua-Qd-jd9" id="I6z-mo-AiK"/>
                         <outlet property="passwordTextField" destination="uVY-DM-7Rq" id="Y8D-dg-lzZ"/>
-                        <outlet property="signInWithAppleButton" destination="2cp-Wp-n94" id="0A7-kV-zPH"/>
-                        <outlet property="signInWithGoogleButton" destination="RVN-qz-xfN" id="nK3-0x-9rI"/>
+                        <outlet property="signInWithAppleButton" destination="2cp-Wp-n94" id="L5d-hE-fXW"/>
+                        <outlet property="signInWithGoogleButton" destination="RVN-qz-xfN" id="WsU-7J-3iG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZyM-W8-EA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1099,9 +1099,6 @@
         </systemColor>
         <systemColor name="systemGray5Color">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
