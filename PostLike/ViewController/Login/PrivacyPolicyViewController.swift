@@ -29,8 +29,6 @@ final class PrivacyPolicyViewController: UIViewController{
             let url = URL(fileURLWithPath: targetURL)
             let req = URLRequest(url: url)
             webView.load(req)
-        }else{
-            print("hi")
         }
     }
     
