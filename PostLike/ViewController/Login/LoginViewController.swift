@@ -18,15 +18,35 @@ final class LoginViewController: UIViewController{
     
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
-    @IBOutlet private weak var doneButton: UIButton!
-    @IBOutlet private weak var alertView: UILabel!
     @IBOutlet private weak var alertLabelHeight: NSLayoutConstraint!
-    @IBOutlet private weak var eyeButton: UIButton!
-    @IBOutlet weak var signInWithAppleButton: UIButton!
-    @IBOutlet weak var signInWithGoogleButton: UIButton!
-    @IBOutlet weak var loginMenuBackView: UIView!
-    @IBOutlet weak var doneButtonBackView: UIView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var loginMenuBackView: UIView!
+    @IBOutlet private weak var doneButtonBackView: UIView!
+    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var doneButton: UIButton!  {
+        didSet {
+            doneButton.layer.cornerRadius = 20
+        }
+    }
+    @IBOutlet private weak var alertView: UILabel!  {
+        didSet {
+            alertView.layer.cornerRadius = 5
+        }
+    }
+    @IBOutlet private weak var eyeButton: UIButton! {
+        didSet {
+            eyeButton.tintColor = .lightGray
+        }
+    }
+    @IBOutlet private weak var signInWithAppleButton: CustomSignUpButton!  {
+        didSet {
+            signInWithAppleButton.configure(title: "Appleでログイン", image: UIImage(named: "apple"))
+        }
+    }
+    @IBOutlet private weak var signInWithGoogleButton: CustomSignUpButton!  {
+        didSet {
+            signInWithGoogleButton.configure(title: "Googleでログイン", image: UIImage(named: "google"))
+        }
+    }
     
     
     
@@ -39,22 +59,10 @@ final class LoginViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        eyeButton.tintColor = .lightGray
-        alertView.layer.cornerRadius = 5
-        doneButton.layer.cornerRadius = 20
-        
-        signInWithAppleButton.layer.cornerRadius = 20
-        signInWithGoogleButton.layer.cornerRadius = 20
-        
         setupBinds()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         self.setSwipeBackGesture()
+        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keybordWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
@@ -62,6 +70,7 @@ final class LoginViewController: UIViewController{
         guard let userInfo = notification.userInfo as? [String:Any] else {
             return
         }
+        
         guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else {
             return
         }
