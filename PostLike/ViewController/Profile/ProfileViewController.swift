@@ -44,6 +44,15 @@ final class ProfileViewController: UIViewController {
     @IBOutlet private weak var topView: UIView!
     @IBOutlet private weak var profileTableView: UITableView!
     
+    @IBOutlet weak var threeLineButton: UIButton! {
+        didSet {
+            if #available(iOS 15, *) {
+                threeLineButton.setImage(UIImage(systemName: "line.3.horizontal"), for: .normal)
+            }else {
+                threeLineButton.setImage(UIImage(systemName: "line.horizontal.3"), for: .normal)
+            }
+        }
+    }
     
     
     
