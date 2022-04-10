@@ -17,6 +17,15 @@ final class JoinedRoomViewController: UIViewController, UIGestureRecognizerDeleg
     
     @IBOutlet private weak var roomCollectionView: UICollectionView!
     
+    @IBOutlet weak var threeLineButton: UIButton! {
+        didSet {
+            if #available(iOS 15, *) {
+                threeLineButton.setImage(UIImage(systemName: "line.3.horizontal"), for: .normal)
+            }else {
+                threeLineButton.setImage(UIImage(systemName: "line.horizontal.3"), for: .normal)
+            }
+        }
+    }
     
     
     private var joinedRoomsArray = [Contents]()
