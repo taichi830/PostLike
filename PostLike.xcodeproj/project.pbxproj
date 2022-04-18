@@ -124,6 +124,7 @@
 		CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */; };
 		CEBD5B34274FCD3000E2FB83 /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */; };
 		CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */; };
+		CEC3AE2E280DAE63007074F5 /* AccessTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC3AE2D280DAE62007074F5 /* AccessTokens.swift */; };
 		CECA9F10279BBBA10059939B /* PostLikeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F0F279BBBA10059939B /* PostLikeUITests.swift */; };
 		CECA9F1F279BD3CD0059939B /* CreatedAtExtenshionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F1E279BD3CD0059939B /* CreatedAtExtenshionTests.swift */; };
 		CECA9F28279BFECA0059939B /* UILabel＋Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */; };
@@ -284,6 +285,7 @@
 		CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extenshion.swift"; sourceTree = "<group>"; };
 		CEBD5B33274FCD2F00E2FB83 /* CustomTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextView.swift; sourceTree = "<group>"; };
 		CEBFD89927987282008930B6 /* SignUpWithAppleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWithAppleViewController.swift; sourceTree = "<group>"; };
+		CEC3AE2D280DAE62007074F5 /* AccessTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessTokens.swift; sourceTree = "<group>"; };
 		CEC58E1D260C6C27005AF7A7 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
 		CEC58E1F260C6E25005AF7A7 /* RoomEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomEditViewController.swift; sourceTree = "<group>"; };
 		CECA9F0D279BBBA10059939B /* PostLikeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PostLikeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -690,6 +692,7 @@
 			isa = PBXGroup;
 			children = (
 				CEAC4C8127E31D2800F6783A /* AlgoliaAPI.swift */,
+				CEC3AE2D280DAE62007074F5 /* AccessTokens.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1051,6 +1054,7 @@
 				CE012C1A26B6EFD4006CC20E /* ReportViewController.swift in Sources */,
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
 				CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */,
+				CEC3AE2E280DAE63007074F5 /* AccessTokens.swift in Sources */,
 				CEAC4C8227E31D2800F6783A /* AlgoliaAPI.swift in Sources */,
 				CEE5BD9827C76F78004FD20A /* RoomHeaderViewModel.swift in Sources */,
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
