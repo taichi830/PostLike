@@ -5,6 +5,7 @@
 # Xcode
 .DS_Store
 PostLike/API/AccessTokens.swift
+PostLike/Configs
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
