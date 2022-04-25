@@ -25,6 +25,10 @@ https://www.youtube.com/watch?v=TG8QqUoy-Rs
 - ライブラリ管理 : CocoaPods
 - テスト : XCTest, RxTest, RxBlocking
 - CI/CD : GitHub Actions, fastlane
+## CI/CD
+開発フロー：git flow
+
+Run workflowでreleaseブランチを作成(この時version upを行う) -> 問題がなければ作成されたPull Requestにrelease labelをつけてmainブランチとdevelopブランチに同時マージする -> mainブランチにマージされたら自動的にrelease tag作成とappstore connectへ アップロードが行われる
 
 
 
