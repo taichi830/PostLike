@@ -79,7 +79,6 @@
 		CE3F4DD227B0E61E00780BEE /* UserListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DD127B0E61E00780BEE /* UserListner.swift */; };
 		CE3F4DD427B23F7E00780BEE /* InputCommentViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3F4DD327B23F7E00780BEE /* InputCommentViewModelTests.swift */; };
 		CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE441D4926DA8AB5006C6270 /* ComfirmEmailViewController.swift */; };
-		CE54339127CC96F000A1A786 /* ReportListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339027CC96F000A1A786 /* ReportListner.swift */; };
 		CE54339327CC976C00A1A786 /* FeedTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339227CC976C00A1A786 /* FeedTableViewModel.swift */; };
 		CE54339527CC979E00A1A786 /* CreateLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339427CC979E00A1A786 /* CreateLikes.swift */; };
 		CE54339827CC97CE00A1A786 /* ReportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54339627CC97CE00A1A786 /* ReportTableViewCell.swift */; };
@@ -97,6 +96,8 @@
 		CE79ED33279FC8B40047ABEF /* PostDefaultAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79ED32279FC8B40047ABEF /* PostDefaultAPI.swift */; };
 		CE79ED3627A2E78C0047ABEF /* PostPreViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79ED3427A2E78C0047ABEF /* PostPreViewTableViewCell.swift */; };
 		CE79ED3727A2E78C0047ABEF /* PostPreViewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79ED3527A2E78C0047ABEF /* PostPreViewTableViewCell.xib */; };
+		CE7AE7AC281BC00800BBAAF8 /* ReportListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7AE7AB281BC00800BBAAF8 /* ReportListner.swift */; };
+		CE7AE7AE281BC5CA00BBAAF8 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7AE7AD281BC5CA00BBAAF8 /* API.swift */; };
 		CE7D8C0F26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */; };
 		CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */; };
 		CE8EB72927AF8D080036DBF0 /* InputCommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8EB72827AF8D080036DBF0 /* InputCommentView.xib */; };
@@ -118,7 +119,6 @@
 		CEAC4C7C27E2DC4800F6783A /* SearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */; };
 		CEAC4C7D27E2DC4800F6783A /* SearchResultTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */; };
 		CEAC4C7F27E3183E00F6783A /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C7E27E3183E00F6783A /* SearchViewModel.swift */; };
-		CEAC4C8227E31D2800F6783A /* AlgoliaAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC4C8127E31D2800F6783A /* AlgoliaAPI.swift */; };
 		CEB2EC3726F2436000D89A93 /* CommentHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */; };
 		CEB2EC3B26F24D0400D89A93 /* CommentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */; };
 		CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBD5B31274F6CAC00E2FB83 /* String+Extenshion.swift */; };
@@ -223,7 +223,6 @@
 		CE4B637A2670977200BC356F /* DeleteRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRoomViewController.swift; sourceTree = "<group>"; };
 		CE4F960826CCD25B00213900 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Home.strings; sourceTree = "<group>"; };
 		CE52CD41256E34970032D661 /* CreateRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRoomViewController.swift; sourceTree = "<group>"; };
-		CE54339027CC96F000A1A786 /* ReportListner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReportListner.swift; path = PostLike/Model/Create/ReportListner.swift; sourceTree = SOURCE_ROOT; };
 		CE54339227CC976C00A1A786 /* FeedTableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewModel.swift; sourceTree = "<group>"; };
 		CE54339427CC979E00A1A786 /* CreateLikes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateLikes.swift; path = PostLike/Model/Create/CreateLikes.swift; sourceTree = SOURCE_ROOT; };
 		CE54339627CC97CE00A1A786 /* ReportTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTableViewCell.swift; sourceTree = "<group>"; };
@@ -251,6 +250,8 @@
 		CE79ED32279FC8B40047ABEF /* PostDefaultAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDefaultAPI.swift; sourceTree = "<group>"; };
 		CE79ED3427A2E78C0047ABEF /* PostPreViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPreViewTableViewCell.swift; sourceTree = "<group>"; };
 		CE79ED3527A2E78C0047ABEF /* PostPreViewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostPreViewTableViewCell.xib; sourceTree = "<group>"; };
+		CE7AE7AB281BC00800BBAAF8 /* ReportListner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportListner.swift; sourceTree = "<group>"; };
+		CE7AE7AD281BC5CA00BBAAF8 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		CE7D8C0E26DCD87D00FB1B85 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomHeaderView.swift; sourceTree = "<group>"; };
 		CE8EB72827AF8D080036DBF0 /* InputCommentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputCommentView.xib; sourceTree = "<group>"; };
@@ -277,7 +278,6 @@
 		CEAC4C7A27E2DC4800F6783A /* SearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		CEAC4C7B27E2DC4800F6783A /* SearchResultTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultTableViewCell.xib; sourceTree = "<group>"; };
 		CEAC4C7E27E3183E00F6783A /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		CEAC4C8127E31D2800F6783A /* AlgoliaAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoliaAPI.swift; sourceTree = "<group>"; };
 		CEB2EC3626F2436000D89A93 /* CommentHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentHeaderView.xib; sourceTree = "<group>"; };
 		CEB2EC3A26F24D0400D89A93 /* CommentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeaderView.swift; sourceTree = "<group>"; };
 		CEB53ADA26539B010099E606 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
@@ -680,8 +680,8 @@
 		CEAC4C8027E319F200F6783A /* API */ = {
 			isa = PBXGroup;
 			children = (
-				CEAC4C8127E31D2800F6783A /* AlgoliaAPI.swift */,
 				CEC3AE2D280DAE62007074F5 /* AccessTokens.swift */,
+				CE7AE7AD281BC5CA00BBAAF8 /* API.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -738,7 +738,7 @@
 				CEE256BB27CE71F0007BF9E6 /* RoomListner.swift */,
 				CE3F4DD127B0E61E00780BEE /* UserListner.swift */,
 				CEE5BD9927C7CA15004FD20A /* RoomInfoListner.swift */,
-				CE54339027CC96F000A1A786 /* ReportListner.swift */,
+				CE7AE7AB281BC00800BBAAF8 /* ReportListner.swift */,
 			);
 			path = Get;
 			sourceTree = "<group>";
@@ -1071,7 +1071,6 @@
 				CE012C1C26B6EFD4006CC20E /* RoomEditViewController.swift in Sources */,
 				CEBD5B32274F6CAC00E2FB83 /* String+Extenshion.swift in Sources */,
 				CEC3AE2E280DAE63007074F5 /* AccessTokens.swift in Sources */,
-				CEAC4C8227E31D2800F6783A /* AlgoliaAPI.swift in Sources */,
 				CEE5BD9827C76F78004FD20A /* RoomHeaderViewModel.swift in Sources */,
 				CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */,
 				CEF363292725858B00D5D443 /* PresentModalViewController.swift in Sources */,
@@ -1083,7 +1082,6 @@
 				CEAC4C7F27E3183E00F6783A /* SearchViewModel.swift in Sources */,
 				CE012C1F26B6EFD4006CC20E /* RoomImageContentsViewController.swift in Sources */,
 				CE012C2026B6EFD4006CC20E /* SearchViewController.swift in Sources */,
-				CE54339127CC96F000A1A786 /* ReportListner.swift in Sources */,
 				CE3F4DCC27B02B0D00780BEE /* GetComments.swift in Sources */,
 				CE77EF6026E67EEF00154886 /* User.swift in Sources */,
 				CE012C2126B6EFD4006CC20E /* ProfileEditViewController.swift in Sources */,
@@ -1094,6 +1092,7 @@
 				CE012C2826B6EFD4006CC20E /* PostViewController.swift in Sources */,
 				CEAC4C7427E1ADE200F6783A /* GetDefaultLikes.swift in Sources */,
 				CE441D4A26DA8AB5006C6270 /* ComfirmEmailViewController.swift in Sources */,
+				CE7AE7AC281BC00800BBAAF8 /* ReportListner.swift in Sources */,
 				CECA9F28279BFECA0059939B /* UILabel＋Extenshion.swift in Sources */,
 				CEE5BD9427C644C9004FD20A /* FeedViewModel.swift in Sources */,
 				CECA9F2C279E94740059939B /* PostViewModel.swift in Sources */,
@@ -1122,6 +1121,7 @@
 				CE2E27D7276099E2002D0E41 /* LoginViewModel.swift in Sources */,
 				CEA2EAC327B410BD000AD484 /* NotificationViewModel.swift in Sources */,
 				CE741CD72706B7A700712DBE /* ResetPasswordViewController.swift in Sources */,
+				CE7AE7AE281BC5CA00BBAAF8 /* API.swift in Sources */,
 				CE012C3526B6EFD4006CC20E /* NotificationViewController.swift in Sources */,
 				CEED8F38273509BD000563E4 /* RecommendRoomViewController.swift in Sources */,
 				CEBFD89A27987282008930B6 /* SignUpWithAppleViewController.swift in Sources */,
