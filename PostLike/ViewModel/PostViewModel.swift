@@ -47,8 +47,6 @@ final class PostViewModel: PostViewModelType, PostViewModelInputs, PostViewModel
     
     private let disposeBag = DisposeBag()
     var isLoadingSubject = PublishSubject<Bool>()
-    var latestContent: Driver<Contents> = Driver.never()
-    
     
     
     
