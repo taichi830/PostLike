@@ -53,8 +53,8 @@ final class PostViewController: UIViewController{
     
     
     
-    private var photoArray:[UIImage] = []
-    private var photoUrl :[String] = []
+//    private var photoArray:[UIImage] = []
+//    private var photoUrl :[String] = []
     private var postViewModel:PostViewModel!
     private let disposeBag = DisposeBag()
     var passedRoomTitle = String()
@@ -88,10 +88,16 @@ final class PostViewController: UIViewController{
     
     
     private func setupBinds() {
-        self.postViewModel = PostViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), text: textView.rx.text.orEmpty.asDriver(), albumButtonTap: showAlbumButton.rx.tap.asSignal()), userName: passedUserName, userImage: passedUserImageUrl, passedUid: passedHostUid, roomID: passedDocumentID, postAPI: PostDefaultAPI())
+        self.postViewModel = PostViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), albumButtonTap: showAlbumButton.rx.tap.asSignal()), userName: passedUserName, userImage: passedUserImageUrl, passedUid: passedHostUid, roomID: passedDocumentID, postAPI: PostDefaultAPI())
+        
+        textView.rx.text.orEmpty
+            .bind(to: postViewModel.inputs.text)
+            .disposed(by: disposeBag)
+        
+        
         
         textViewDidChange()
-        postValidateCheck()
+        postValidationCheck()
         didTapPostButton()
         didTapAlubumButton()
         didTapBackButton()
@@ -122,9 +128,9 @@ final class PostViewController: UIViewController{
     
     
     
-    private func postValidateCheck() {
+    private func postValidationCheck() {
         //投稿文または写真があれば投稿できるようにする
-        postViewModel.validPostDriver
+        postViewModel.outputs.isPostButtonEnabled
             .drive { [weak self] bool in
                 self?.postButton.isEnabled = bool
                 self?.postButton.backgroundColor = bool ? .red : .systemGray4
@@ -160,7 +166,7 @@ final class PostViewController: UIViewController{
         .disposed(by: disposeBag)
         
         //投稿完了通知
-        postViewModel.postedDriver
+        postViewModel.outputs.isLoading
             .drive { [weak self] bool in
                 switch bool {
                 case true:
@@ -174,9 +180,10 @@ final class PostViewController: UIViewController{
                     }
                     self?.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 }
-                
             }
             .disposed(by: disposeBag)
+        
+        
     }
     
     
@@ -210,9 +217,10 @@ final class PostViewController: UIViewController{
         pickerController.didSelectAssets = {(assets: [DKAsset]) in
             for asset in assets {
                 asset.fetchFullScreenImage { image, info in
-                    if let image = image, var item = try? self.postViewModel.photoArrayOutPut.value() {
+                    if let image = image {
+                        var item = self.postViewModel.inputs.photos.value
                         item.append(image)
-                        self.postViewModel.photoArrayInPut.onNext(item)
+                        self.postViewModel.inputs.photos.accept(item)
                     }
                 }
             }
@@ -231,13 +239,13 @@ final class PostViewController: UIViewController{
     
     private func didTapAlubumButton() {
         
-        postViewModel.validAddImageDriver
+        postViewModel.outputs.isAlbumButtonEnabled
             .drive { [weak self] bool in
                 self?.showAlbumButton.isEnabled = bool
             }
             .disposed(by: disposeBag)
         
-        postViewModel.imageCountDriver
+        postViewModel.outputs.imageCountDriver
             .drive { [weak self] count in
                 self?.showAlbum(count: count)
             }
@@ -273,7 +281,8 @@ final class PostViewController: UIViewController{
         
         NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification, object: nil)
             .subscribe({ [weak self] _ in
-                self!.buttonView.frame.origin.y = self!.view.frame.size.height - (self!.buttonView.frame.size.height+self!.view.safeAreaInsets.bottom)
+                guard let `self` = self else { return }
+                self.buttonView.frame.origin.y = self.view.frame.size.height - (self.buttonView.frame.size.height + self.view.safeAreaInsets.bottom)
             })
             .disposed(by: disposeBag)
     }
@@ -285,12 +294,13 @@ final class PostViewController: UIViewController{
     
     private func setUpTableView() {
         photoTableView.register(UINib(nibName: "PostPreViewTableViewCell", bundle: nil), forCellReuseIdentifier: "PostPreViewTableViewCell")
-        postViewModel.photoArrayOutPut.bind(to: photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,dkAsset,cell in
+        postViewModel.inputs.photos.bind(to: photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,dkAsset,cell in
             
             cell.setUpCell(image: dkAsset)
             
             cell.deleteButton.rx.tap.subscribe { [weak self] _ in
-                cell.didTapDeleteButton(viewModel: self!.postViewModel)
+                guard let `self` = self else { return }
+                cell.didTapDeleteButton(viewModel: self.postViewModel)
             }
             .disposed(by: self.disposeBag)
             

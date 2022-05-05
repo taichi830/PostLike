@@ -46,7 +46,7 @@ class PostViewModelTests: XCTestCase {
         
         
         
-        viewModel = PostViewModel(input: (postButtonTap: postButtonEvent, text: textEvent, albumButtonTap: albumButtonTapEvent), userName: "", userImage: "", passedUid: "", roomID: "", postAPI: PostDefaultAPI())
+        viewModel = PostViewModel(input: (postButtonTap: postButtonEvent, text: textEvent, albumButtonTap: albumButtonTapEvent), userName: "", userImage: "", passedUid: "", roomID: "")
         
         
         
