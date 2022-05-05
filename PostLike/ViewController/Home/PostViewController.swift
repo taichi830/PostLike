@@ -53,8 +53,6 @@ final class PostViewController: UIViewController{
     
     
     
-//    private var photoArray:[UIImage] = []
-//    private var photoUrl :[String] = []
     private var postViewModel:PostViewModel!
     private let disposeBag = DisposeBag()
     var passedRoomTitle = String()
@@ -93,8 +91,6 @@ final class PostViewController: UIViewController{
         textView.rx.text.orEmpty
             .bind(to: postViewModel.inputs.text)
             .disposed(by: disposeBag)
-        
-        
         
         textViewDidChange()
         postValidationCheck()
@@ -294,16 +290,15 @@ final class PostViewController: UIViewController{
     
     private func setUpTableView() {
         photoTableView.register(UINib(nibName: "PostPreViewTableViewCell", bundle: nil), forCellReuseIdentifier: "PostPreViewTableViewCell")
-        postViewModel.inputs.photos.bind(to: photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,dkAsset,cell in
+        postViewModel.outputs.outputPhotos.drive(photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,image,cell in
             
-            cell.setUpCell(image: dkAsset)
+            cell.setUpCell(image: image)
             
             cell.deleteButton.rx.tap.subscribe { [weak self] _ in
                 guard let `self` = self else { return }
                 cell.didTapDeleteButton(viewModel: self.postViewModel)
             }
             .disposed(by: self.disposeBag)
-            
         }
         .disposed(by: disposeBag)
     }

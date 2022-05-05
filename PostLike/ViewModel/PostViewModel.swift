@@ -20,21 +20,19 @@ protocol PostViewModelOutputs {
     var isPostButtonEnabled: Driver<Bool> { get }
     var isAlbumButtonEnabled: Driver<Bool> { get }
     var imageCountDriver: Driver<Int> { get }
+    var outputPhotos: Driver<[UIImage]> { get }
     var isLoading: Driver<Bool> { get }
 }
 
 protocol PostViewModelType {
     var inputs: PostViewModelInputs { get }
     var outputs: PostViewModelOutputs { get }
-    var isLoadingSubject: PublishSubject<Bool> { get }
 }
 
 final class PostViewModel: PostViewModelType, PostViewModelInputs, PostViewModelOutputs {
     
-    
     var inputs: PostViewModelInputs { return self }
     var outputs: PostViewModelOutputs { return self }
-    var isLoadingSubject = PublishSubject<Bool>()
     
     //MARK: - Inputs
     var text = BehaviorRelay<String>.init(value: "")
@@ -45,13 +43,12 @@ final class PostViewModel: PostViewModelType, PostViewModelInputs, PostViewModel
     var isAlbumButtonEnabled: Driver<Bool>
     var imageCountDriver:Driver<Int>
     var isLoading: Driver<Bool> = Driver.never()
-    
+    var outputPhotos: Driver<[UIImage]>
     
     private let disposeBag = DisposeBag()
-    private let postAPI = PostDefaultAPI()
-    private var postCompletedSubject = PublishSubject<Bool>()
-    var postedDriver:Driver<Bool> = Driver.never()
+    var isLoadingSubject = PublishSubject<Bool>()
     var latestContent: Driver<Contents> = Driver.never()
+    
     
     
     
@@ -69,18 +66,20 @@ final class PostViewModel: PostViewModelType, PostViewModelInputs, PostViewModel
                 return photos.count < 2
             }
             .asDriver(onErrorDriveWith: .empty())
-        //テキストまたは写真があれば投稿ボタンを有効にする
+        //アルバムボタンが押されるたび現在の写真の数を通知する
         imageCountDriver = input.albumButtonTap.asObservable()
             .withLatestFrom(photos.asObservable())
             .map { photos in
                 return photos.count
             }
             .asDriver(onErrorDriveWith: .empty())
-        
+        //写真をアウトプット
+        outputPhotos = photos.asDriver(onErrorJustReturn: [])
+        //投稿処理
         post(postButtonTap: input.postButtonTap, userName: userName, userImage: userImage, passedUid: passedUid, roomID: roomID, postAPI: postAPI)
         
         
- 
+        
     }
     
     
