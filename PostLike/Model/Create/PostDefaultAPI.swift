@@ -8,51 +8,50 @@
 
 import Foundation
 import Firebase
-import FirebaseFirestore
 import RxSwift
 
 protocol PostAPI {
-    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String,imageArray:[UIImage]) -> Single<Bool>
+    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String,imageArray:[UIImage]) -> Observable<Bool>
 }
 
 final class PostDefaultAPI: PostAPI {
     
-    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String,imageArray:[UIImage]) -> Single<Bool> {
-        return Single.create { [weak self] single in
+    func post(userName:String,userImage:String,text:String,passedUid:String,roomID:String,imageArray:[UIImage]) -> Observable<Bool> {
+        return Observable.create { [weak self] observer in
             
             let batch = Firestore.firestore().batch()
 
-            if imageArray.isEmpty == true {
+            if imageArray.isEmpty {
                 self?.createPostWhenNoImages(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, media: [""], batch: batch)
                 batch.commit { err in
                     if let err = err {
-                        single(.failure(err))
+                        observer.onError(err)
                     }else{
-                        single(.success(true))
+                        observer.onNext(true)
+                        observer.onCompleted()
                     }
                 }
             }else {
                 Storage.addPostImagesToStrage(imagesArray: imageArray) { bool, urls in
                     switch bool {
                     case false:
-                        print("err")
+                        print("Storageへ保存が失敗しました")
+                        return
                     case true:
                         self?.postBatch(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, media: urls, batch: batch)
                         batch.commit { err in
                             if let err = err {
-                                single(.failure(err))
+                                observer.onError(err)
                             }else{
-                                single(.success(true))
+                                observer.onNext(true)
+                                observer.onCompleted()
                             }
                         }
-                        
                     }
                 }
             }
             return Disposables.create()
         }
-        
-        
     }
     
     
@@ -75,7 +74,6 @@ final class PostDefaultAPI: PostAPI {
             "commentCount":0
         ] as [String:Any]
         Firestore.createPost(roomID: roomID, documentID: documentID, media: media, dic: dic, batch: batch)
-        
     }
     
     
@@ -123,7 +121,6 @@ final class PostDefaultAPI: PostAPI {
             Firestore.increaseRoomPostCount(uid: uid, roomID: roomID, batch: batch)
             Firestore.increaseProfilePostCount(uid: uid, roomID: roomID, batch: batch)
         }
-        
     }
     
     
@@ -144,7 +141,6 @@ final class PostDefaultAPI: PostAPI {
             Firestore.increaseRoomPostCount(uid: uid, roomID: roomID, batch: batch)
             Firestore.increaseProfilePostCount(uid: uid, roomID: roomID, batch: batch)
         }
-        
     }
     
     

@@ -82,120 +82,121 @@ final class PostViewController: UIViewController{
     
     
     
-
-    
-    
     private func setupBinds() {
+        // PostViewModelを初期化
         self.postViewModel = PostViewModel(input: (postButtonTap: postButton.rx.tap.asSignal(), albumButtonTap: showAlbumButton.rx.tap.asSignal()), userName: passedUserName, userImage: passedUserImageUrl, passedUid: passedHostUid, roomID: passedDocumentID, postAPI: PostDefaultAPI())
         
+        
+        // 戻るボタンの処理
+        backButton.rx.tap.subscribe { [weak self] _ in
+            self?.dismiss(animated: true, completion: nil)
+        }
+        .disposed(by: disposeBag)
+        
+        
+        // 投稿文をviewModel.inputs.textにバインド
         textView.rx.text.orEmpty
             .bind(to: postViewModel.inputs.text)
             .disposed(by: disposeBag)
         
-        textViewDidChange()
-        postValidationCheck()
-        didTapPostButton()
-        didTapAlubumButton()
-        didTapBackButton()
-        keybordNotifications()
-        setUpTableView()
-        tapGesture()
-        didScrollTableView()
-    }
-    
-    
-    
-    
-    
-    
-    private func textViewDidChange() {
+        
+        // urlを識別できるようにする
         textView.rx.didChange.subscribe { [weak self] _ in
             if self?.textView.markedTextRange == nil{
                 self?.textView.setText(text: self?.textView.text ?? "", urls: self?.textView.text.urlsFromRegexs ?? [""])
             }
         }
         .disposed(by: disposeBag)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func postValidationCheck() {
-        //投稿文または写真があれば投稿できるようにする
+        
+        
+        // 現在の写真の数が2枚より少なかったらAlbumButtonを押せるようにする
+        postViewModel.outputs.isAlbumButtonEnabled
+            .drive { [weak self] bool in
+                self?.showAlbumButton.isEnabled = bool
+            }
+            .disposed(by: disposeBag)
+        
+        
+        // 現在の写真の数をshowAlbumメソッドに通知
+        postViewModel.outputs.imageCountDriver
+            .drive { [weak self] count in
+                self?.showAlbum(count: count)
+            }
+            .disposed(by: disposeBag)
+        
+        
+        // 投稿文または写真があれば投稿できるようにする
         postViewModel.outputs.isPostButtonEnabled
             .drive { [weak self] bool in
                 self?.postButton.isEnabled = bool
                 self?.postButton.backgroundColor = bool ? .red : .systemGray4
             }
             .disposed(by: disposeBag)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func didScrollTableView() {
+        
+        
+        // photoTableViewをドラッグしたらtextViewを閉じる
         photoTableView.rx.didEndDragging.subscribe { [weak self] _ in
             self?.textView.resignFirstResponder()
         }
         .disposed(by: disposeBag)
-    }
-    
-    
-    
-    
-    
-    
-    
-    private func didTapPostButton() {
         
+        
+        // 投稿ボタンタップ時indicatorを回す
         postButton.rx.tap.subscribe { [weak self] _ in
             self?.startIndicator()
         }
         .disposed(by: disposeBag)
         
-        //投稿完了通知
-        postViewModel.outputs.isLoading
+        
+        // 投稿完了通知
+        postViewModel.outputs.isPosted
             .drive { [weak self] bool in
-                switch bool {
-                case true:
-                    self?.dismissIndicator()
+                if bool == true {
                     self?.dismiss(animated: true) {
                         self?.postViewModel.fetchMyLatestPost(feedListner: GetDefaultPosts(), roomID: self?.passedDocumentID ?? "")
                     }
-                case false:
-                    let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                        self?.dismissIndicator()
-                    }
-                    self?.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
                 }
             }
             .disposed(by: disposeBag)
         
         
+        // 投稿失敗時にアラートを表示する
+        postViewModel.outputs.postError
+            .drive { [weak self] err in
+                print("投稿に失敗しました。:", err)
+                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self?.dismissIndicator()
+                }
+                self?.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
+            }
+            .disposed(by: disposeBag)
+        
+        
+        keybordNotifications()
+        setUpTableView()
+        tapGesture()
+        
+        
     }
     
     
     
     
     
-    
-    
-    
-    private func didTapBackButton() {
-        backButton.rx.tap.subscribe { [weak self] _ in
-            self?.dismiss(animated: true, completion: nil)
+    private func setUpTableView() {
+        photoTableView.register(UINib(nibName: "PostPreViewTableViewCell", bundle: nil), forCellReuseIdentifier: "PostPreViewTableViewCell")
+        postViewModel.outputs.outputPhotos.drive(photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,image,cell in
+            
+            cell.setUpCell(image: image)
+            
+            cell.deleteButton.rx.tap.subscribe { [weak self] _ in
+                guard let `self` = self else { return }
+                cell.didTapDeleteButton(viewModel: self.postViewModel)
+            }
+            .disposed(by: self.disposeBag)
         }
         .disposed(by: disposeBag)
     }
-    
     
     
     
@@ -225,29 +226,6 @@ final class PostViewController: UIViewController{
         pickerController.UIDelegate = CustomUIDelegate()
         self.present(pickerController, animated: true, completion: nil)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func didTapAlubumButton() {
-        
-        postViewModel.outputs.isAlbumButtonEnabled
-            .drive { [weak self] bool in
-                self?.showAlbumButton.isEnabled = bool
-            }
-            .disposed(by: disposeBag)
-        
-        postViewModel.outputs.imageCountDriver
-            .drive { [weak self] count in
-                self?.showAlbum(count: count)
-            }
-            .disposed(by: disposeBag)
-    }
-    
     
     
     
@@ -288,27 +266,7 @@ final class PostViewController: UIViewController{
     
     
     
-    private func setUpTableView() {
-        photoTableView.register(UINib(nibName: "PostPreViewTableViewCell", bundle: nil), forCellReuseIdentifier: "PostPreViewTableViewCell")
-        postViewModel.outputs.outputPhotos.drive(photoTableView.rx.items(cellIdentifier: "PostPreViewTableViewCell", cellType: PostPreViewTableViewCell.self)){ row,image,cell in
-            
-            cell.setUpCell(image: image)
-            
-            cell.deleteButton.rx.tap.subscribe { [weak self] _ in
-                guard let `self` = self else { return }
-                cell.didTapDeleteButton(viewModel: self.postViewModel)
-            }
-            .disposed(by: self.disposeBag)
-        }
-        .disposed(by: disposeBag)
-    }
-    
-    
-    
-    
- 
-    
-    func tapGesture() {
+    private func tapGesture() {
         let tapGesture = UITapGestureRecognizer()
         tapGesture.rx.event
             .subscribe { [weak self] _ in
@@ -317,8 +275,14 @@ final class PostViewController: UIViewController{
             .disposed(by: disposeBag)
         view.addGestureRecognizer(tapGesture)
     }
-  
- 
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 
