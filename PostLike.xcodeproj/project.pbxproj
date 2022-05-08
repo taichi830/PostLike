@@ -102,6 +102,7 @@
 		CE7FA755273CD03E0006B34E /* RoomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */; };
 		CE8EB72927AF8D080036DBF0 /* InputCommentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE8EB72827AF8D080036DBF0 /* InputCommentView.xib */; };
 		CE8EB72B27AF8EC20036DBF0 /* InputCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8EB72A27AF8EC20036DBF0 /* InputCommentView.swift */; };
+		CE945C6D282780960028488D /* Alert+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE945C6C282780960028488D /* Alert+Rx.swift */; };
 		CE9A933227CF5EB500D86009 /* CreateProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A933127CF5EB500D86009 /* CreateProfile.swift */; };
 		CE9A933427CF911900D86009 /* CreateProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A933327CF911900D86009 /* CreateProfileViewModel.swift */; };
 		CE9A933627D0AE7700D86009 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9A933527D0AE7700D86009 /* ProfileHeaderViewModel.swift */; };
@@ -256,6 +257,7 @@
 		CE7FA754273CD03E0006B34E /* RoomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomHeaderView.swift; sourceTree = "<group>"; };
 		CE8EB72827AF8D080036DBF0 /* InputCommentView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputCommentView.xib; sourceTree = "<group>"; };
 		CE8EB72A27AF8EC20036DBF0 /* InputCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCommentView.swift; sourceTree = "<group>"; };
+		CE945C6C282780960028488D /* Alert+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Alert+Rx.swift"; sourceTree = "<group>"; };
 		CE967139265AAE1700E7820F /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		CE9A933127CF5EB500D86009 /* CreateProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfile.swift; sourceTree = "<group>"; };
 		CE9A933327CF911900D86009 /* CreateProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileViewModel.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 				CECA9F27279BFECA0059939B /* UILabel＋Extenshion.swift */,
 				CE2FD87027DD9DEC0069511A /* UIScrollView+Extension.swift */,
 				CE2FD87627DEEB780069511A /* UImageView+Extension.swift */,
+				CE945C6C282780960028488D /* Alert+Rx.swift */,
 			);
 			path = Extenshion;
 			sourceTree = "<group>";
@@ -1131,6 +1134,7 @@
 				CE2FD87327DDFE210069511A /* Modal.swift in Sources */,
 				CEE256BC27CE71F0007BF9E6 /* RoomListner.swift in Sources */,
 				CE54339827CC97CE00A1A786 /* ReportTableViewCell.swift in Sources */,
+				CE945C6D282780960028488D /* Alert+Rx.swift in Sources */,
 				CE9A933427CF911900D86009 /* CreateProfileViewModel.swift in Sources */,
 				CE369F5327D59B3A0013EAE2 /* LatestContentsSubject.swift in Sources */,
 				CE012C3B26B6EFD4006CC20E /* RegisterViewController.swift in Sources */,
