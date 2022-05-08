@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 extension Reactive where Base: UIViewController {
+    // エラーアラートを表示
     var showErrorAlert: Binder<Error?> {
         return Binder(self.base) { (target,value) in
             if let error = value {
