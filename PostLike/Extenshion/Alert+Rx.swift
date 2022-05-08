@@ -16,7 +16,7 @@ extension Reactive where Base: UIViewController {
             if let error = value {
                 let alertController = UIAlertController(title: "エラーが発生しました", message: error.localizedDescription, preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .cancel) { _ in
-                    base.dismiss(animated: true, completion: nil)
+                    target.dismiss(animated: true, completion: nil)
                 }
                 alertController.addAction(okAction)
                 target.present(alertController, animated: true, completion: nil)
