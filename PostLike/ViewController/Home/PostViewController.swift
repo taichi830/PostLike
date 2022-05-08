@@ -162,13 +162,7 @@ final class PostViewController: UIViewController{
         
         // 投稿失敗時にアラートを表示する
         postViewModel.outputs.postError
-            .drive { [weak self] err in
-                print("投稿に失敗しました。:", err)
-                let alertAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self?.dismissIndicator()
-                }
-                self?.showAlert(title: "エラーが発生しました", message: "もう一度試してください", actions: [alertAction])
-            }
+            .drive ( self.rx.showErrorAlert )
             .disposed(by: disposeBag)
         
         
