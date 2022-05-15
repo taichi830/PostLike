@@ -20,19 +20,20 @@ final class RoomDefaultListner: RoomListner {
     func fetchRooms() -> Observable<[Contents]> {
         return Observable.create { observer in
             let db = Firestore.firestore()
-            let uid = Auth.auth().currentUser!.uid
-            self.listner = db.collection("users").document(uid).collection("rooms").whereField("isJoined", isEqualTo: true).order(by: "createdAt", descending: true).addSnapshotListener { querySnapshot, err in
-                if let err = err {
-                    print("err:", err)
-                    observer.onError(err)
-                    return
+            if let uid = Auth.auth().currentUser?.uid {
+                self.listner = db.collection("users").document(uid).collection("rooms").whereField("isJoined", isEqualTo: true).order(by: "createdAt", descending: true).addSnapshotListener { querySnapshot, err in
+                    if let err = err {
+                        print("err:", err)
+                        observer.onError(err)
+                        return
+                    }
+                    let documents = querySnapshot?.documents.map { snapshot -> Contents in
+                        let dic = snapshot.data()
+                        let content = Contents(dic: dic)
+                        return content
+                    }
+                    observer.onNext(documents ?? [])
                 }
-                let documents = querySnapshot?.documents.map { snapshot -> Contents in
-                    let dic = snapshot.data()
-                    let content = Contents(dic: dic)
-                    return content
-                }
-                observer.onNext(documents ?? [])
             }
             return Disposables.create {
                 self.listner?.remove()

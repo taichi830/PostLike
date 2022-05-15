@@ -7,149 +7,113 @@
 //
 
 import Foundation
-import DKImagePickerController
 import RxSwift
 import RxCocoa
+import UIKit
 
-final class PostViewModel {
+protocol PostViewModelInputs {
+    var text: BehaviorRelay<String> { get }
+    var photos: BehaviorRelay<[UIImage]> { get }
+}
+
+protocol PostViewModelOutputs {
+    var isPostButtonEnabled: Driver<Bool> { get }
+    var isAlbumButtonEnabled: Driver<Bool> { get }
+    var imageCountDriver: Driver<Int> { get }
+    var outputPhotos: Driver<[UIImage]> { get }
+    var isPosted: Driver<Bool> { get }
+    var postError: Driver<Error> { get }
+}
+
+protocol PostViewModelType {
+    var inputs: PostViewModelInputs { get }
+    var outputs: PostViewModelOutputs { get }
+}
+
+final class PostViewModel: PostViewModelType, PostViewModelInputs, PostViewModelOutputs {
+    
+    var inputs: PostViewModelInputs { return self }
+    var outputs: PostViewModelOutputs { return self }
+    
+    //MARK: - Inputs
+    var text = BehaviorRelay<String>.init(value: "")
+    var photos = BehaviorRelay<[UIImage]>.init(value: [])
+    
+    //MARK: - Outputs
+    var isPostButtonEnabled: Driver<Bool>
+    var isAlbumButtonEnabled: Driver<Bool>
+    var isPosted: Driver<Bool> = Driver.never()
+    var postError: Driver<Error> = Driver.never()
+    var imageCountDriver:Driver<Int>
+    var outputPhotos: Driver<[UIImage]>
     
     private let disposeBag = DisposeBag()
     
-    var postTextOutPut = PublishSubject<String>()
-    var photoArrayOutPut = BehaviorSubject<[UIImage]>.init(value: [])
-    
-    private var validPostSubject = BehaviorSubject<Bool>.init(value: false)
-    private var validAddImageSubject = BehaviorSubject<Bool>.init(value: true)
-    private var postCompletedSubject = PublishSubject<Bool>()
-    private var imageArrayCountSubject = BehaviorSubject<Int>.init(value: 0)
-    
-    
-    var postTextInPut:AnyObserver<String> {
-        postTextOutPut.asObserver()
-    }
-    var photoArrayInPut:AnyObserver<[UIImage]> {
-        photoArrayOutPut.asObserver()
-    }
-    
-    var validPostDriver:Driver<Bool> = Driver.never()
-    var validAddImageDriver:Driver<Bool> = Driver.never()
-    var postedDriver:Driver<Bool> = Driver.never()
-    var imageCountDriver:Driver<Int> = Driver.never()
-    var latestContent: Driver<Contents> = Driver.never()
     
     
     
-    
-    init(input:(postButtonTap:Signal<()>,text:Driver<String>,albumButtonTap:Signal<()>),userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
+    init(input:(postButtonTap:Signal<()>,albumButtonTap:Signal<()>),userName:String,userImage:String,passedUid:String,roomID:String, postAPI: PostAPI) {
         
         
-        PostButtonValidation(text: input.text)
-        alubumButtonValidation(alubumButtonTap: input.albumButtonTap)
-        post(postButtonTap: input.postButtonTap, text: input.text, userName: userName, userImage: userImage, passedUid: passedUid, roomID: roomID, postAPI: postAPI)
- 
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    private func PostButtonValidation(text:Driver<String>) {
-        validPostDriver = validPostSubject
-            .asDriver(onErrorJustReturn: false)
-        
-        let validPostText = text
-            .asObservable()
-            .map { text -> Bool in
-                return text != ""
+        //テキストまたは写真があれば投稿ボタンを有効にする
+        isPostButtonEnabled = Observable.combineLatest(text, photos)
+            .map { (text, photos)  in
+                return text != "" || !photos.isEmpty
             }
+            .asDriver(onErrorDriveWith: .empty())
+        
+        
+        //写真が２個より少なければアルバムボタンを有効にする
+        isAlbumButtonEnabled = photos.asObservable()
+            .map { photos in
+                return photos.count < 2
+            }
+            .asDriver(onErrorDriveWith: .empty())
+        
+        
+        //アルバムボタンが押されるたび現在の写真の数を通知する
+        imageCountDriver = input.albumButtonTap.asObservable()
+            .withLatestFrom(photos.asObservable())
+            .map { photos in
+                return photos.count
+            }
+            .asDriver(onErrorDriveWith: .empty())
+        
+        
+        //写真をアウトプット
+        outputPhotos = photos.asDriver(onErrorJustReturn: [])
+        
+        
+        //投稿処理
+        post(postButtonTap: input.postButtonTap, userName: userName, userImage: userImage, passedUid: passedUid, roomID: roomID, postAPI: postAPI)
+        
+        
+    }
+    
+    
+    
+    
+    
+    func post(postButtonTap:Signal<()>,userName:String,userImage:String,passedUid:String,roomID:String, postAPI: PostAPI) {
+        let combinedObservable = Observable.combineLatest(text.asObservable(), photos.asObservable())
+        
+        let result = postButtonTap
+            .asObservable()
+            .withLatestFrom(combinedObservable)
+            .flatMapLatest { (text, photos) -> Observable<Bool> in
+                return postAPI.post(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, imageArray: photos)
+            }
+            .materialize()
+            .share(replay: 1)
             
-        let validPhotoArray = photoArrayOutPut
-            .asObservable()
-            .map { photos -> Bool in
-                return photos != []
-            }
-        
-        Observable.combineLatest(validPostText, validPhotoArray) { $0 || $1 }
-            .subscribe { bool in
-                self.validPostSubject.onNext(bool)
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    
-    
-    private func alubumButtonValidation(alubumButtonTap:Signal<()>) {
-        
-        validAddImageDriver = validAddImageSubject
+        isPosted = result
+            .filter { $0.event.element == true }
+            .map { $0.event.element ?? false }
             .asDriver(onErrorJustReturn: false)
-        
-        let validAddImage = photoArrayOutPut
-            .asObservable()
-            .map { imageArray -> Bool in
-                return imageArray.count < 2
-            }
-        
-        validAddImage.subscribe { [weak self] bool in
-                self?.validAddImageSubject.onNext(bool)
-            }
-            .disposed(by: disposeBag)
-        
-
-        
-        imageCountDriver = imageArrayCountSubject.asDriver(onErrorDriveWith: Driver.empty())
-        
-        let imageArrayCountObservable = photoArrayOutPut
-            .asObservable()
-            .map { imageArray -> Int in
-                return imageArray.count
-            }
-        
-        alubumButtonTap.asObservable()
-            .withLatestFrom(imageArrayCountObservable)
-            .subscribe { [weak self] count in
-                self?.imageArrayCountSubject.onNext(count)
-            }
-            .disposed(by: disposeBag)
             
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private func post(postButtonTap:Signal<()>,text:Driver<String>,userName:String,userImage:String,passedUid:String,roomID:String,postAPI:PostAPI) {
-        
-        postedDriver = postCompletedSubject.asDriver(onErrorJustReturn: false)
-        let imageArrayObservable = photoArrayOutPut
-            .asObservable()
-        let textObservable = text.asObservable()
-        let combineObservable = Observable.combineLatest(imageArrayObservable, textObservable)
-        
-        postButtonTap
-            .asObservable()
-            .withLatestFrom(combineObservable)
-            .flatMapLatest { (imageArray,text) -> Single<Bool> in
-                return postAPI.post(userName: userName, userImage: userImage, text: text, passedUid: passedUid, roomID: roomID, imageArray: imageArray)
-            }
-            .subscribe { [weak self] bool in
-                switch bool {
-                case .next(let bool):
-                    self?.postCompletedSubject.onNext(bool)
-                case .error(let error):
-                    print(error)
-                    self?.postCompletedSubject.onNext(false)
-                case .completed:
-                    print("completed")
-                }
-            }
-            .disposed(by: disposeBag)
+        postError = result
+            .compactMap { $0.event.error }
+            .asDriver(onErrorDriveWith: .empty())
     }
     
     
@@ -173,15 +137,14 @@ final class PostViewModel {
     
     
     func remove(row:Int) {
-        do {
-            var items = try photoArrayOutPut.value()
-            items.remove(at: row)
-            photoArrayOutPut.onNext(items)
-        } catch {
-            return
-        }
-        
+        var items = photos.value
+        items.remove(at: row)
+        photos.accept(items)
     }
+    
+    
+    
+    
 
     
     
