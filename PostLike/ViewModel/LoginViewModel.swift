@@ -6,7 +6,6 @@
 //  Copyright © 2021 taichi. All rights reserved.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
 

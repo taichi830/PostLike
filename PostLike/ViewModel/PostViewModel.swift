@@ -6,10 +6,8 @@
 //  Copyright © 2022 taichi. All rights reserved.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
-import UIKit
 
 protocol PostViewModelInputs {
     var text: BehaviorRelay<String> { get }
